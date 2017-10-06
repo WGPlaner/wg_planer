@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.login.LoginActivity;
+import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 /**
  * Created by D067867 on 06.10.2017.
@@ -29,7 +30,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void loadConfig(){
-
+        Configuration.initConfig(this);
     }
 
     private void getData(){
