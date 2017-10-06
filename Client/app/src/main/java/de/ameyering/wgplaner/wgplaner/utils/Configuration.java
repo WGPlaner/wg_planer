@@ -56,6 +56,7 @@ public class Configuration implements Serializable{
 
     public enum Type{
         //Declare Config-Tye here
+        NAME;
     }
 
     /*
