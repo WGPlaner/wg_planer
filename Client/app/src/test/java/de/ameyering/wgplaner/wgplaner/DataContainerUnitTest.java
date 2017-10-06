@@ -25,20 +25,26 @@ public class DataContainerUnitTest {
 
         Assert.assertEquals(item, DataContainer.Item.getItem(0));
         Assert.assertEquals(1, DataContainer.Item.getSize());
+
+        DataContainer.Item.removeItem(item);
     }
 
     @Test
     public void testRemove(){
         Item item = new Item("Milch", new User("1", "Arne"), Mockito.mock(User.class));
 
+        int size = DataContainer.Item.getSize();
+
         DataContainer.Item.addItem(item);
         DataContainer.Item.removeItem(item);
 
-        Assert.assertEquals(0, DataContainer.Item.getSize());
+        Assert.assertEquals(size, DataContainer.Item.getSize());
+
+        size = DataContainer.Item.getSize();
 
         DataContainer.Item.addItem(item);
         DataContainer.Item.removeItem(new Item("Milch", new User("1", "Arne"), Mockito.mock(User.class)));
 
-        Assert.assertEquals(0, DataContainer.Item.getSize());
+        Assert.assertEquals(size, DataContainer.Item.getSize());
     }
 }
