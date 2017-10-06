@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ProgressBar;
 
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.section.login.LoginActivity;
+import de.ameyering.wgplaner.wgplaner.section.home.Home;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 /**
@@ -20,13 +21,21 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        loadConfig();
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                loadConfig();
+                getData();
+
+                Intent intent = new Intent(SplashScreen.this, Home.class);
+                startActivity(intent);
+                finish();
+            }
+        }).start();
+
         getData();
-
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     private void loadConfig(){

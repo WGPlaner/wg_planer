@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#afb2c1</color>
+    <color name="colorPrimaryDark">#878993</color>
+    <color name="colorAccent">#4e4c4d</color>
+
+    <!-- Colors Navigation drawer gradient -->
+
+    <color name="navDrawerGradientDark">#4e4c4d</color>
+    <color name="navDrawerGradientLight">#afb2c1</color>
+    <color name="navDrawerGradientMedium">#878993</color>
 </resources>

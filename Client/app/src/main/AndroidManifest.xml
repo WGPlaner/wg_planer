@@ -7,8 +7,8 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- Read and Write App-internal Storage -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,8 +19,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".section.splashScreen.SplashScreen"
-            android:theme="@style/SplashScreen"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,8 +28,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".section.login.LoginActivity"
-            android:label="@string/app_name">
+            android:name=".section.home.Home"
+            android:label="@string/title_activity_home"
+            android:parentActivityName=".section.splashScreen.SplashScreen"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.ameyering.wgplaner.wgplaner.section.splashScreen.SplashScreen" />
         </activity>
     </application>
 

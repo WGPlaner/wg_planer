@@ -13,4 +13,18 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_home">Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- String related to NavView -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_shopping_list">Shopping List</string>
+    <string name="nav_accounting">Accounting</string>
+    <string name="nav_rosters">Rosters</string>
+    <string name="nav_calendar">Calendar</string>
+
 </resources>
