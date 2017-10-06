@@ -45,6 +45,6 @@ public class DataContainerUnitTest {
         DataContainer.Item.addItem(item);
         DataContainer.Item.removeItem(new Item("Milch", new User("1", "Arne"), Mockito.mock(User.class)));
 
-        Assert.assertEquals(size, DataContainer.Item.getSize());
+        Assert.assertEquals(size + 1, DataContainer.Item.getSize());
     }
 }

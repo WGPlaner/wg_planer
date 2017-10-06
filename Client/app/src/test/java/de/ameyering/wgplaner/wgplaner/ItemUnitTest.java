@@ -47,8 +47,8 @@ public class ItemUnitTest {
         String nameUeq = "Schoki";
         User userUeq = new User("2", "Andre");
 
-        Item item1 = new Item(nameEq, userEq, userEq);
-        Item item2 = new Item(nameEq, userEq, userUeq);
+        Item item1 = new Item(nameEq, userUeq, userEq);
+        Item item2 = new Item(nameEq, userEq, userEq);
 
         Item item3 = new Item(nameEq, userEq, userUeq);
         Item item4 = new Item(nameUeq, userEq, userUeq);
