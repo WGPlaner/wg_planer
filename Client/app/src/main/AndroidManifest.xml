@@ -32,9 +32,6 @@
             android:label="@string/title_activity_home"
             android:parentActivityName=".section.splashScreen.SplashScreen"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.ameyering.wgplaner.wgplaner.section.splashScreen.SplashScreen" />
         </activity>
     </application>
 

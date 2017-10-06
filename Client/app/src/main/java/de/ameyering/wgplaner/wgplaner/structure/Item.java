@@ -22,9 +22,7 @@ public class Item {
     }
 
     private Item(String name, User requestedBy, User requestedFor, float price, String bougthOn) {
-        this.name = name;
-        this.requestedBy = requestedBy;
-        this.requestedFor = requestedFor;
+        new Item(name, requestedBy, requestedFor);
         this.price = price;
         this.bougthOn = bougthOn;
     }
@@ -42,19 +40,7 @@ public class Item {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj.getClass() == this.getClass()){
-            Item other = (Item) obj; // Object gets parsed into Item Structure
-
-            if(this.name.equals(other.name) && this.requestedBy.equals(other.requestedBy)){
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        else{
-            return false;
-        }
+        return obj.getClass() == this.getClass() && this.name.equals(((Item) obj).name) && this.requestedFor.equals(((Item) obj).requestedFor);
     }
 
     public float getPrice() {

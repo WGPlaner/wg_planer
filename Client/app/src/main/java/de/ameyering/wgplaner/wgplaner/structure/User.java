@@ -23,18 +23,6 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj.getClass() == this.getClass()){
-            User other = (User) obj;
-
-            if(this.uid.equals(other.uid)){
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        else{
-            return false;
-        }
+        return this.getClass() == obj.getClass() && this.uid.equals(((User) obj).uid);
     }
 }

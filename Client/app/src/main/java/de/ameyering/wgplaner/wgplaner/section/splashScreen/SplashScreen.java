@@ -6,8 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
+import java.util.Locale;
+
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.Home;
+import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 /**
@@ -26,7 +29,7 @@ public class SplashScreen extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                loadConfig();
+                initialize();
                 getData();
 
                 Intent intent = new Intent(SplashScreen.this, Home.class);
@@ -38,8 +41,9 @@ public class SplashScreen extends AppCompatActivity {
         getData();
     }
 
-    private void loadConfig(){
+    private void initialize(){
         Configuration.initConfig(this);
+        Money.initialize(Locale.getDefault());
     }
 
     private void getData(){

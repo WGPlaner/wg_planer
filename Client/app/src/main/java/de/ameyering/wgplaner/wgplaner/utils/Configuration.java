@@ -19,13 +19,13 @@ import java.util.HashMap;
 public class Configuration implements Serializable{
     public static Configuration singleton;
     public static final long serialVersionUID = 7526471155622776137L; //Needed for Serialization (ObjectOutputStream)
-    private static ConifgFileHandler handler;
+    private static ConfigFileHandler handler;
 
     private HashMap<Type, String> configs; //Stores configurations
 
 
     public static void initConfig(Context context) {
-        handler = new ConifgFileHandler(context);
+        handler = new ConfigFileHandler(context);
         Configuration configuration = handler.readConfig();
 
         if(configuration != null){
@@ -64,11 +64,11 @@ public class Configuration implements Serializable{
     Uses ObjectInputStream and ObjectOutputStream to convert read data easily into objects
      */
 
-    private static class ConifgFileHandler{
+    private static class ConfigFileHandler {
         private static final String fileName = ".config";
         private final File config;
 
-        private ConifgFileHandler(Context context){
+        private ConfigFileHandler(Context context){
             config = new File(context.getFilesDir(), fileName);
 
             if(!config.exists()){
@@ -89,10 +89,13 @@ public class Configuration implements Serializable{
                 configuration = (Configuration) objectInputStream.readObject();
             }
             catch(ClassNotFoundException e){
+                return new Configuration();
             }
             catch(NotSerializableException e){
+                return new Configuration();
             }
             catch (IOException e){
+                return new Configuration();
             }
             finally{
                 if(fileInputStream != null){
