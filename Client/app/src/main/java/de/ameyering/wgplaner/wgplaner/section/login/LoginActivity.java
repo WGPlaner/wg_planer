@@ -1,4 +1,4 @@
-package de.ameyering.wgplaner.wgplaner;
+package de.ameyering.wgplaner.wgplaner.section.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -31,6 +31,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.ameyering.wgplaner.wgplaner.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
