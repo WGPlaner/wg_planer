@@ -5,10 +5,6 @@ import java.util.ArrayList;
 
 import de.ameyering.wgplaner.wgplaner.structure.Item;
 
-/**
- * Created by D067867 on 06.10.2017.
- */
-
 public abstract class DataContainer {
 
     public static abstract class Item{

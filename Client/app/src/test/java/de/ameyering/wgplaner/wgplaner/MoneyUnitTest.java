@@ -11,10 +11,6 @@ import java.util.Random;
 
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 
-/**
- * Created by D067867 on 06.10.2017.
- */
-
 @RunWith(MockitoJUnitRunner.class)
 public class MoneyUnitTest {
 

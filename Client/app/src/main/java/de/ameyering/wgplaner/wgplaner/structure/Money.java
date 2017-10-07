@@ -6,10 +6,6 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by D067867 on 06.10.2017.
- */
-
 public class Money {
     private static Currency currency = null;
 

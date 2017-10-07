@@ -13,10 +13,6 @@ import de.ameyering.wgplaner.wgplaner.section.home.Home;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
-/**
- * Created by D067867 on 06.10.2017.
- */
-
 public class SplashScreen extends AppCompatActivity {
 
     @Override

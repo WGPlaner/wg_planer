@@ -12,10 +12,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 
-/**
- * Created by D067867 on 06.10.2017.
- */
-
 public class Configuration implements Serializable{
     public static Configuration singleton;
     public static final long serialVersionUID = 7526471155622776137L; //Needed for Serialization (ObjectOutputStream)

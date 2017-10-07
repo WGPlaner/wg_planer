@@ -12,10 +12,6 @@ import de.ameyering.wgplaner.wgplaner.structure.Item;
 import de.ameyering.wgplaner.wgplaner.structure.User;
 import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
-/**
- * Created by D067867 on 06.10.2017.
- */
-
 @RunWith(MockitoJUnitRunner.class)
 public class ItemUnitTest {
 
