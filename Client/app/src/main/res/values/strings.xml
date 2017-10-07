@@ -26,5 +26,6 @@
     <string name="nav_accounting">Accounting</string>
     <string name="nav_rosters">Rosters</string>
     <string name="nav_calendar">Calendar</string>
+    <string name="nav_pinboard">Pinboard</string>
 
 </resources>
