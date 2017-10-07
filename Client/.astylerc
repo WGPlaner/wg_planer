@@ -1,0 +1,30 @@
+# Artistic style
+
+suffix=none # Don't backup files
+formatted   # Display only formatted files
+verbose
+recursive
+
+style=java
+
+lineend=linux
+preserve-date
+
+indent=spaces=4
+indent-switches
+indent-after-parens
+
+# Convert tabs to spaces in the non-indentation part of the line
+convert-tabs
+
+add-braces
+attach-classes
+attach-closing-while
+break-blocks=all
+break-after-logical
+break-one-line-headers
+pad-oper
+pad-header
+pad-comma
+unpad-paren
+max-code-length=100
