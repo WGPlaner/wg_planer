@@ -16,7 +16,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 public class ItemsUnitTest {
 
     @Test
-    public void testBuy(){
+    public void testBuy() {
         Random random = new Random();
 
         float price = random.nextFloat() * 2 - 1;
@@ -26,18 +26,18 @@ public class ItemsUnitTest {
 
         boolean success = item.buy(price);
 
-        if(price > 0){
+        if (price > 0) {
             Assert.assertEquals(price, item.getPrice(), 0.01f);
             Assert.assertEquals(date, item.getBougthOn());
-        }
-        else{
+
+        } else {
             Assert.assertEquals(false, success);
             Assert.assertEquals(null, item.getBougthOn());
         }
     }
 
     @Test
-    public void testEquals(){
+    public void testEquals() {
         String nameEq = "Milch";
         User userEq = new User("1", "Arne");
         String nameUeq = "Schoki";
@@ -56,5 +56,5 @@ public class ItemsUnitTest {
         Assert.assertEquals(false, item3.equals(item4));
         Assert.assertEquals(false, item5.equals(item6));
         Assert.assertEquals(item3.equals(item6), item6.equals(item3));
-     }
+    }
 }

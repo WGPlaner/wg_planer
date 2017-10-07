@@ -37,12 +37,12 @@ public class SplashScreen extends AppCompatActivity {
         getData();
     }
 
-    private void initialize(){
+    private void initialize() {
         Configuration.initConfig(this);
         Money.initialize(Locale.getDefault());
     }
 
-    private void getData(){
+    private void getData() {
 
     }
 }

@@ -23,20 +23,22 @@ public class Item {
         this.bougthOn = bougthOn;
     }
 
-    public boolean buy(float price){
-        if(price > 0){
+    public boolean buy(float price) {
+        if (price > 0) {
             this.price = price;
-            this.bougthOn = DataContainer.Items.getDateFormat().format(Calendar.getInstance().getTime()); //Formats actual Time to String
+            this.bougthOn = DataContainer.Items.getDateFormat().format(
+                    Calendar.getInstance().getTime()); //Formats actual Time to String
             return true;
-        }
-        else{
+
+        } else {
             return false;
         }
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj.getClass() == this.getClass() && this.name.equals(((Item) obj).name) && this.requestedFor.equals(((Item) obj).requestedFor);
+        return obj.getClass() == this.getClass() && this.name.equals(((Item) obj).name) &&
+            this.requestedFor.equals(((Item) obj).requestedFor);
     }
 
     public float getPrice() {
