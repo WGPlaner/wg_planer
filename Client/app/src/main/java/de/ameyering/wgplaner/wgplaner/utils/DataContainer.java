@@ -3,8 +3,6 @@ package de.ameyering.wgplaner.wgplaner.utils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import de.ameyering.wgplaner.wgplaner.structure.Item;
-
 public abstract class DataContainer {
 
     public static abstract class Item{
