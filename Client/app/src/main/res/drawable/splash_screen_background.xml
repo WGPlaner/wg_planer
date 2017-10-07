@@ -4,10 +4,13 @@
     <item
         android:drawable="@color/colorPrimary"/>
 
-    <item>
+    <item
+        android:gravity="center"
+        android:height="200dp"
+        android:width="200dp">
         <bitmap
-            android:gravity="center"
-            android:src="@mipmap/ic_launcher"/>
+            android:gravity="fill"
+            android:src="@drawable/web_hi_res_512"/>
     </item>
 
 </layer-list>
