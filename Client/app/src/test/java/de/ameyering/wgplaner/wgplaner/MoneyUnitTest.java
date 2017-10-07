@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,12 +15,16 @@ public class MoneyUnitTest {
     @Test
     public void testToString(){
         Random random = new Random();
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 100; i++){
             int preDecimal = random.nextInt(11);
-            int decimal = random.nextInt(100);
+            int decimal = i;
             Money test = new Money(preDecimal, decimal);
 
-            if(decimal < 10){
+            if(decimal == 0){
+                String expected = preDecimal + ",-";
+                Assert.assertEquals(expected, test.toString());
+            }
+            else if(decimal < 10){
                 String expected = preDecimal + "," + "0" + decimal;
                 Assert.assertEquals(expected, test.toString());
             } else {
