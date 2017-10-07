@@ -4,10 +4,6 @@ import java.util.Calendar;
 
 import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
-/**
- * Created by D067867 on 06.10.2017.
- */
-
 public class Item {
     public String name;
     public User requestedBy;
