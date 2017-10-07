@@ -22,27 +22,28 @@ public abstract class DataContainer {
             return (ArrayList<Item>) items.clone();
         }
 
-        public static void addItem(Item item){
+        public static void addItem(Item item) {
             items.add(item);
         }
 
         @Nullable
-        public static Item getItem(int index){
-            if(index < items.size()) {
+        public static Item getItem(int index) {
+            if (index < items.size()) {
                 return items.get(index);
             }
+
             return null;
         }
 
-        public static void removeItem(Item item){
+        public static void removeItem(Item item) {
             items.remove(item);
         }
 
-        public static int getSize(){
+        public static int getSize() {
             return items.size();
         }
 
-        public static SimpleDateFormat getDateFormat(){
+        public static SimpleDateFormat getDateFormat() {
             return dateFormat;
         }
     }
@@ -54,35 +55,38 @@ public abstract class DataContainer {
     public static abstract class Users {
         private static ArrayList<User> users = new ArrayList<>();
 
-        protected static void addAllUsers(ArrayList<User> users){
-            if(users != null) {
+        protected static void addAllUsers(ArrayList<User> users) {
+            if (users != null) {
                 Users.users.addAll(users);
             }
         }
 
         @Nullable
-        public static String getDisplayNameByUid(String uid){
+        public static String getDisplayNameByUid(String uid) {
             User user = new User(uid, "");
-            if(users.contains(user)){
+
+            if (users.contains(user)) {
                 int index = users.indexOf(user);
                 return users.get(index).getDisplayName();
             }
+
             return null;
         }
 
-        public static ArrayList<User> getAll(){
+        public static ArrayList<User> getAll() {
             return (ArrayList<User>) users.clone(); //returns cloned List to avoid changes on Users.users
         }
 
         @Nullable
-        public static User getUser(int index){
-            if(index < users.size()){
+        public static User getUser(int index) {
+            if (index < users.size()) {
                 return users.get(index);
             }
+
             return null;
         }
 
-        protected static void removeUser(User user){
+        protected static void removeUser(User user) {
             users.remove(user);
         }
     }

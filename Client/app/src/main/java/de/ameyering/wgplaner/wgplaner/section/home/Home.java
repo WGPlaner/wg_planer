@@ -18,7 +18,7 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+    implements NavigationView.OnNavigationItemSelectedListener {
 
     FrameLayout container;
 
@@ -34,7 +34,7 @@ public class Home extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                .setAction("Action", null).show();
             }
         });
 
@@ -42,7 +42,7 @@ public class Home extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -53,8 +53,10 @@ public class Home extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+
         } else {
             super.onBackPressed();
         }
@@ -88,7 +90,7 @@ public class Home extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if(id == R.id.nav_dashboard){
+        if (id == R.id.nav_dashboard) {
 
         } else if (id == R.id.nav_shopping_list) {
 
@@ -98,7 +100,7 @@ public class Home extends AppCompatActivity
 
         } else if (id == R.id.nav_calendar) {
 
-        } else if (id == R.id.nav_pinboard){
+        } else if (id == R.id.nav_pinboard) {
 
         } else if (id == R.id.nav_share) {
 

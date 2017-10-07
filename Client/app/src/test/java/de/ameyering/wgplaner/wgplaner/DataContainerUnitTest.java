@@ -14,7 +14,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 public class DataContainerUnitTest {
 
     @Test
-    public void testAdd(){
+    public void testAdd() {
         Item item = new Item("Milch", Mockito.mock(User.class), Mockito.mock(User.class));
 
         DataContainer.Items.addItem(item);
@@ -26,7 +26,7 @@ public class DataContainerUnitTest {
     }
 
     @Test
-    public void testRemove(){
+    public void testRemove() {
         Item item = new Item("Milch", new User("1", "Arne"), Mockito.mock(User.class));
 
         int size = DataContainer.Items.getSize();

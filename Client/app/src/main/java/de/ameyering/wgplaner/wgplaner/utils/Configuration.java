@@ -12,9 +12,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class Configuration implements Serializable{
+public class Configuration implements Serializable {
     public static Configuration singleton;
-    public static final long serialVersionUID = 7526471155622776137L; //Needed for Serialization (ObjectOutputStream)
+    public static final long serialVersionUID =
+        7526471155622776137L; //Needed for Serialization (ObjectOutputStream)
     private static ConfigFileHandler handler;
 
     private HashMap<Type, String> configs; //Stores configurations
@@ -24,24 +25,24 @@ public class Configuration implements Serializable{
         handler = new ConfigFileHandler(context);
         Configuration configuration = handler.readConfig();
 
-        if(configuration != null){
+        if (configuration != null) {
             singleton = configuration;
-        }
-        else {
+
+        } else {
             singleton = new Configuration();
         }
     }
 
-    private Configuration(){
+    private Configuration() {
         configs = new HashMap<>();
     }
 
-    public void addConfig(Type type, String value){
+    public void addConfig(Type type, String value) {
         configs.put(type, value);
         handler.writeConfig(singleton);
     }
 
-    public String getConfig(Type type){
+    public String getConfig(Type type) {
         return configs.get(type);
     }
 
@@ -50,7 +51,7 @@ public class Configuration implements Serializable{
     Needed to identify configurations
      */
 
-    public enum Type{
+    public enum Type {
         //Declare Config-Tye here
         NAME;
     }
@@ -64,71 +65,78 @@ public class Configuration implements Serializable{
         private static final String fileName = ".config";
         private final File config;
 
-        private ConfigFileHandler(Context context){
+        private ConfigFileHandler(Context context) {
             config = new File(context.getFilesDir(), fileName);
 
-            if(!config.exists()){
+            if (!config.exists()) {
                 try {
                     config.createNewFile();
-                } catch (Exception e){}
+
+                } catch (Exception e) {}
             }
         }
 
-        private Configuration readConfig(){
+        private Configuration readConfig() {
             FileInputStream fileInputStream = null;
             ObjectInputStream objectInputStream = null;
             Configuration configuration = null;
 
-            try{
+            try {
                 fileInputStream = new FileInputStream(config);
                 objectInputStream = new ObjectInputStream(fileInputStream);
                 configuration = (Configuration) objectInputStream.readObject();
-            }
-            catch(ClassNotFoundException e){
+
+            } catch (ClassNotFoundException e) {
                 return new Configuration();
-            }
-            catch(NotSerializableException e){
+
+            } catch (NotSerializableException e) {
                 return new Configuration();
-            }
-            catch (IOException e){
+
+            } catch (IOException e) {
                 return new Configuration();
-            }
-            finally{
-                if(fileInputStream != null){
+
+            } finally {
+                if (fileInputStream != null) {
                     try {
                         fileInputStream.close();
-                    }
-                    catch(IOException e){}
+
+                    } catch (IOException e) {}
                 }
-                if(objectInputStream != null){
-                    try{
+
+                if (objectInputStream != null) {
+                    try {
                         objectInputStream.close();
-                    }
-                    catch(IOException e){}
+
+                    } catch (IOException e) {}
                 }
+
                 return configuration;
             }
         }
 
-        private void writeConfig(Configuration configuration){
+        private void writeConfig(Configuration configuration) {
             FileOutputStream fileOutputStream = null;
             ObjectOutputStream objectOutputStream = null;
 
-            try{
+            try {
                 fileOutputStream = new FileOutputStream(config);
                 objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 objectOutputStream.writeObject(configuration);
-            } catch (Exception e){
+
+            } catch (Exception e) {
 
             } finally {
-                try{
+                try {
                     fileOutputStream.close();
-                } catch(IOException e){
+
+                } catch (IOException e) {
 
                 }
-                try{
+
+                try {
                     objectOutputStream.close();
-                } catch (IOException e){
+
+                } catch (IOException e) {
 
                 }
             }

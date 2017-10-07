@@ -13,20 +13,22 @@ import de.ameyering.wgplaner.wgplaner.structure.Money;
 public class MoneyUnitTest {
 
     @Test
-    public void testToString(){
+    public void testToString() {
         Random random = new Random();
-        for(int i = 0; i < 100; i++){
+
+        for (int i = 0; i < 100; i++) {
             int preDecimal = random.nextInt(11);
             int decimal = i;
             Money test = new Money(preDecimal, decimal);
 
-            if(decimal == 0){
+            if (decimal == 0) {
                 String expected = preDecimal + ",-";
                 Assert.assertEquals(expected, test.toString());
-            }
-            else if(decimal < 10){
+
+            } else if (decimal < 10) {
                 String expected = preDecimal + "," + "0" + decimal;
                 Assert.assertEquals(expected, test.toString());
+
             } else {
                 String expected = preDecimal + "," + decimal;
                 Assert.assertEquals(expected, test.toString());
@@ -35,14 +37,15 @@ public class MoneyUnitTest {
     }
 
     @Test
-    public void testSum(){
+    public void testSum() {
         ArrayList<Money> test = new ArrayList<>();
 
         int expectedPreDecimal = 0;
         int expectedDecimal = 0;
 
         Random random = new Random();
-        for(int i = 0; i < 20; i++){
+
+        for (int i = 0; i < 20; i++) {
             int preDecimal = random.nextInt(11);
             int decimal = random.nextInt(100);
             Money money = new Money(preDecimal, decimal);
@@ -50,7 +53,8 @@ public class MoneyUnitTest {
 
             expectedPreDecimal = expectedPreDecimal + preDecimal;
             expectedDecimal = expectedDecimal + decimal;
-            if(expectedDecimal >= 100){
+
+            if (expectedDecimal >= 100) {
                 expectedDecimal = expectedDecimal - 100;
                 expectedPreDecimal = expectedPreDecimal + 1;
             }
