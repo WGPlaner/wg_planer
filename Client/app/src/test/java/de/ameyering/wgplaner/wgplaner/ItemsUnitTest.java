@@ -13,14 +13,14 @@ import de.ameyering.wgplaner.wgplaner.structure.User;
 import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ItemUnitTest {
+public class ItemsUnitTest {
 
     @Test
     public void testBuy(){
         Random random = new Random();
 
         float price = random.nextFloat() * 2 - 1;
-        String date = DataContainer.Item.getDateFormat().format(Calendar.getInstance().getTime());
+        String date = DataContainer.Items.getDateFormat().format(Calendar.getInstance().getTime());
 
         Item item = new Item("Milch", new User("1", "Arne"), new User("1", "Arne"));
 
