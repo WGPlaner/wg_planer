@@ -26,7 +26,7 @@ public class Item {
     public boolean buy(float price){
         if(price > 0){
             this.price = price;
-            this.bougthOn = DataContainer.Item.getDateFormat().format(Calendar.getInstance().getTime()); //Formats actual Time to String
+            this.bougthOn = DataContainer.Items.getDateFormat().format(Calendar.getInstance().getTime()); //Formats actual Time to String
             return true;
         }
         else{
