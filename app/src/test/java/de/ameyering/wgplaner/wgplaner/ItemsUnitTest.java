@@ -6,9 +6,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Calendar;
+
 import de.ameyering.wgplaner.wgplaner.structure.Item;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.structure.User;
+import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemsUnitTest {
@@ -77,5 +80,23 @@ public class ItemsUnitTest {
         Assert.assertEquals(item, clone);
         clone.buy(new Money(1,1));
         Assert.assertEquals(item, clone);
+    }
+
+    @Test
+    public void testGetBougthOn(){
+        Item item = new Item("name", Mockito.mock(User.class), Mockito.mock(User.class));
+        Money price = new Money(1, 1);
+        item.buy(price);
+
+        Assert.assertEquals(DataContainer.Items.getDateFormat().format(Calendar.getInstance().getTime()), item.getBougthOn());
+    }
+
+    @Test
+    public void testGetPrice(){
+        Item item = new Item("name", Mockito.mock(User.class), Mockito.mock(User.class));
+        Money price = new Money(1, 1);
+        item.buy(price);
+
+        Assert.assertEquals(price, item.getPrice());
     }
 }

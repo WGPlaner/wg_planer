@@ -62,7 +62,7 @@ public class Money {
                 return String.format(out, this.preDecimal);
 
             } else {
-                String out = "%s,%2d" + currency.getSymbol();
+                String out = "%s,%02d" + currency.getSymbol();
                 return String.format(out, preDecimal, decimal);
             }
         }
