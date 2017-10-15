@@ -80,7 +80,11 @@ project.afterEvaluate {
                 executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec")
 
                 if (project.hasProperty("teamcity")) {
-                    println "##teamcity[jacocoReport dataPath=\'${project.buildDir}/jacoco/${testTaskName}.exec\' includes=\'de.ameyering.wgplaner.*\' excludes=\'**/R.class **/R\$*.class **/*\$ViewInjector*.* **/BuildConfig.* **/Manifest*.*\']"
+                    println "##teamcity[jacocoReport dataPath='${project.buildDir}/jacoco/\
+                        ${testTaskName}.exec' includes='de.ameyering.wgplaner.*' \
+                        excludes='**/R.class **/R\$*.class **/*Dagger*.* **/*MembersInjector*.* \
+                        **/*_Factory.* **/*_Provide*Factory*.* **/*_ViewBinding*.* \
+                        **/AutoValue_*.* **/R2.class **/R2\$*.class **/com/example/mock/**']"
                 }
 
                 reports {
@@ -111,7 +115,11 @@ project.afterEvaluate {
                 ])
 
                 if (project.hasProperty("teamcity")) {
-                    println "##teamcity[jacocoReport dataPath=\'${project.buildDir}/jacoco/${testTaskName}.exec\' includes=\'de.ameyering.wgplaner.*\' excludes=\'**/R.class **/R\$*.class **/*\$ViewInjector*.* **/BuildConfig.* **/Manifest*.*\']"
+                    println "##teamcity[jacocoReport dataPath='${project.buildDir}/jacoco/\
+                        ${testTaskName}.exec' includes='de.ameyering.wgplaner.*' \
+                        excludes='**/R.class **/R\$*.class **/*Dagger*.* **/*MembersInjector*.* \
+                        **/*_Factory.* **/*_Provide*Factory*.* **/*_ViewBinding*.* \
+                        **/AutoValue_*.* **/R2.class **/R2\$*.class **/com/example/mock/**']"
                 }
 
                 reports {
