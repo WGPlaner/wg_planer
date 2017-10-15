@@ -9,8 +9,8 @@ import java.util.Locale;
 public class Money {
     private static Currency currency = null;
 
-    private int preDecimal;
-    private int decimal;
+    private int preDecimal = -1;
+    private int decimal = -1;
 
     public static void initialize(Locale locale) {
         currency = Currency.getInstance(locale);

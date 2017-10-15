@@ -5,19 +5,30 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
-import java.util.Random;
 
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MoneyUnitTest {
 
+
+    @Test
+    public void testConstructor(){
+        for(int i = -2; i < 101; i++){
+            Money money = new Money(1, i);
+
+            if(i < 0 || i >= 100){
+                Assert.assertEquals(new Money(-1, -1), money);
+            }
+            else{
+                Assert.assertEquals(new Money(1, i), new Money(1, i));
+            }
+        }
+    }
     @Test
     public void testToString() {
-        Random random = new Random();
-
         for (int i = 0; i < 100; i++) {
-            int preDecimal = random.nextInt(11);
+            int preDecimal = 1;
             int decimal = i;
             Money test = new Money(preDecimal, decimal);
 
@@ -43,11 +54,9 @@ public class MoneyUnitTest {
         int expectedPreDecimal = 0;
         int expectedDecimal = 0;
 
-        Random random = new Random();
-
-        for (int i = 0; i < 20; i++) {
-            int preDecimal = random.nextInt(11);
-            int decimal = random.nextInt(100);
+        for (int i = 0; i < 100; i++) {
+            int preDecimal = 1;
+            int decimal = i;
             Money money = new Money(preDecimal, decimal);
             test.add(money);
 

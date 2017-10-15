@@ -3,36 +3,40 @@ package de.ameyering.wgplaner.wgplaner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Calendar;
-import java.util.Random;
-
 import de.ameyering.wgplaner.wgplaner.structure.Item;
+import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.structure.User;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemsUnitTest {
 
     @Test
+    public void testConstructor(){
+        User user = Mockito.mock(User.class);
+
+        Item item = new Item("name", user, user);
+        Assert.assertEquals(new Item("name", user, user), item);
+
+        item.buy(new Money(1, 1));
+
+        Item mock = new Item("name", user, user);
+
+        Assert.assertEquals(mock, item);
+    }
+
+    @Test
     public void testBuy() {
-        Random random = new Random();
+        for(int i = 0; i < 101; i++){
+            User requestedFor = new User("1", "me");
 
-        float price = random.nextFloat() * 2 - 1;
-        String date = DataContainer.Items.getDateFormat().format(Calendar.getInstance().getTime());
+            Item item = new Item("name", Mockito.mock(User.class), requestedFor);
 
-        Item item = new Item("Milch", new User("1", "Arne"), new User("1", "Arne"));
+            item.buy(new Money(1, i));
 
-        boolean success = item.buy(price);
-
-        if (price > 0) {
-            Assert.assertEquals(price, item.getPrice(), 0.01f);
-            Assert.assertEquals(date, item.getBougthOn());
-
-        } else {
-            Assert.assertEquals(false, success);
-            Assert.assertEquals(null, item.getBougthOn());
+            Assert.assertTrue(item.equals(new Item("name", Mockito.mock(User.class), requestedFor)));
         }
     }
 
@@ -56,5 +60,22 @@ public class ItemsUnitTest {
         Assert.assertEquals(false, item3.equals(item4));
         Assert.assertEquals(false, item5.equals(item6));
         Assert.assertEquals(item3.equals(item6), item6.equals(item3));
+    }
+
+    @Test
+    public void testClone(){
+        User requestedFor = new User("1", "me");
+        Item item = new Item("name", requestedFor, requestedFor);
+        Item clone = null;
+        try {
+            clone = item.clone();
+        }
+        catch (CloneNotSupportedException e){
+            Assert.assertTrue(false);
+        }
+
+        Assert.assertEquals(item, clone);
+        clone.buy(new Money(1,1));
+        Assert.assertEquals(item, clone);
     }
 }
