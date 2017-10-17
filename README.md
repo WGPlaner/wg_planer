@@ -6,9 +6,15 @@
 ### Code Style
 We use [Artistic Style](http://astyle.sourceforge.net/) to format the source code. Before committing files, please run:
 
+**Linux** (with pre-compiled version)
 ```bash
 cd wg_planer
-astyle --options=./Client/.astylerc ./Client/*.java # Linux
+./astyle/astyle_linux_x86-64 --options=.astylerc *.java
 ```
 
-You can find pre-compiled version in `astyle`.
+**Windows** (with pre-compiled version)
+```
+.\astyle\AStyle.exe --options=.\.astylerc *.java 
+```
+
+You can find pre-compiled version in the folder `astyle`.
