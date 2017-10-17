@@ -29,6 +29,7 @@ public class HomeInstrumentedTest {
     @Test
     public void testNavigation() throws Exception{
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.close()); // will fail
         onView(withId(R.id.drawer_layout)).check(matches(isDisplayed()));
 
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_dashboard));
