@@ -15,21 +15,22 @@ import android.view.ViewGroup;
 public abstract class PinboardChildFragment extends Fragment {
     private String title;
 
-    public PinboardChildFragment(){
+    public PinboardChildFragment() {
         this.title = "";
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    public void setTitle(@NonNull String title){
+    public void setTitle(@NonNull String title) {
         this.title = title;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 }

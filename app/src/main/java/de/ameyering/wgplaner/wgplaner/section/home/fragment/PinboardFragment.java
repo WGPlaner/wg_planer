@@ -19,16 +19,19 @@ public class PinboardFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_pinboard, container, false);
 
-        if(tabLayout == null){
+        if (tabLayout == null) {
             tabLayout = view.findViewById(R.id.pinboard_tab_layout);
         }
-        if(pager == null){
+
+        if (pager == null) {
             pager = view.findViewById(R.id.pinboard_view_pager);
         }
-        if(adapter == null){
+
+        if (adapter == null) {
             adapter = new PinboardPagerAdapter(getChildFragmentManager(), tabLayout, pager);
             initializeChildFragments();
             adapter.initialize();
@@ -37,7 +40,7 @@ public class PinboardFragment extends Fragment {
         return view;
     }
 
-    private void initializeChildFragments(){
+    private void initializeChildFragments() {
         PinboardChatFragment chatFragment = new PinboardChatFragment();
         chatFragment.setTitle("CHAT");
         adapter.addFragment(chatFragment);

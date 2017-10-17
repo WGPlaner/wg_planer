@@ -17,7 +17,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 public class ItemsUnitTest {
 
     @Test
-    public void testConstructor(){
+    public void testConstructor() {
         User user = Mockito.mock(User.class);
 
         Item item = new Item("name", user, user);
@@ -32,14 +32,14 @@ public class ItemsUnitTest {
 
     @Test
     public void testBuy() {
-            User requestedFor = new User("1", "me");
+        User requestedFor = new User("1", "me");
 
-            Item item = new Item("name", Mockito.mock(User.class), requestedFor);
-            item.buy(new Money(1, 1));
-            Assert.assertTrue(item.equals(new Item("name", Mockito.mock(User.class), requestedFor)));
+        Item item = new Item("name", Mockito.mock(User.class), requestedFor);
+        item.buy(new Money(1, 1));
+        Assert.assertTrue(item.equals(new Item("name", Mockito.mock(User.class), requestedFor)));
 
-            item.buy(new Money(1, 101));
-            Assert.assertEquals(item, new Item("name", Mockito.mock(User.class), requestedFor));
+        item.buy(new Money(1, 101));
+        Assert.assertEquals(item, new Item("name", Mockito.mock(User.class), requestedFor));
     }
 
     @Test
@@ -65,33 +65,35 @@ public class ItemsUnitTest {
     }
 
     @Test
-    public void testClone(){
+    public void testClone() {
         User requestedFor = new User("1", "me");
         Item item = new Item("name", requestedFor, requestedFor);
         Item clone = null;
+
         try {
             clone = item.clone();
-        }
-        catch (CloneNotSupportedException e){
+
+        } catch (CloneNotSupportedException e) {
             Assert.assertTrue(false);
         }
 
         Assert.assertEquals(item, clone);
-        clone.buy(new Money(1,1));
+        clone.buy(new Money(1, 1));
         Assert.assertEquals(item, clone);
     }
 
     @Test
-    public void testGetBougthOn(){
+    public void testGetBougthOn() {
         Item item = new Item("name", Mockito.mock(User.class), Mockito.mock(User.class));
         Money price = new Money(1, 1);
         item.buy(price);
 
-        Assert.assertEquals(DataContainer.Items.getDateFormat().format(Calendar.getInstance().getTime()), item.getBougthOn());
+        Assert.assertEquals(DataContainer.Items.getDateFormat().format(Calendar.getInstance().getTime()),
+            item.getBougthOn());
     }
 
     @Test
-    public void testGetPrice(){
+    public void testGetPrice() {
         Item item = new Item("name", Mockito.mock(User.class), Mockito.mock(User.class));
         Money price = new Money(1, 1);
         item.buy(price);

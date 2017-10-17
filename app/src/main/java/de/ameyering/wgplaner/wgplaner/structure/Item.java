@@ -24,9 +24,9 @@ public class Item {
     }
 
     public void buy(Money price) {
-            this.price = price;
-            this.bougthOn = DataContainer.Items.getDateFormat().format(
-                    Calendar.getInstance().getTime()); //Formats actual Time to String
+        this.price = price;
+        this.bougthOn = DataContainer.Items.getDateFormat().format(
+                Calendar.getInstance().getTime()); //Formats actual Time to String
     }
 
     @Override

@@ -12,11 +12,12 @@ import de.ameyering.wgplaner.wgplaner.R;
  * Created by D067867 on 17.10.2017.
  */
 
-public class PinboardIssuesFragment extends PinboardChildFragment{
+public class PinboardIssuesFragment extends PinboardChildFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.section_pinboard_issues, container, false);
     }
 }

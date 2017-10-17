@@ -14,23 +14,23 @@ public class MoneyUnitTest {
 
 
     @Test
-    public void testInitialize(){
+    public void testInitialize() {
         Money.initialize(new Locale("de", "DE"));
     }
 
     @Test
-    public void testConstructor(){
+    public void testConstructor() {
         Assert.assertEquals(new Money(-1, -1), new Money(1, 100));
         Assert.assertEquals(new Money(-1, -1), new Money(1, -1));
         Assert.assertEquals(new Money(1, 50), new Money(1, 50));
         Assert.assertNotEquals(new Money(2, 50), new Money(1, 50));
-        Assert.assertNotEquals(new Money(1,50), new Money(1, 49));
+        Assert.assertNotEquals(new Money(1, 50), new Money(1, 49));
     }
     @Test
     public void testToString() {
         int i = 0;
 
-        while(i <= 18){
+        while (i <= 18) {
             int preDecimal = 1;
             int decimal = i;
             Money test = new Money(preDecimal, decimal);
@@ -50,11 +50,12 @@ public class MoneyUnitTest {
 
             i = i + 9;
         }
+
         Locale locale = new Locale("de", "DE");
         Money.initialize(locale);
         i = 0;
 
-        while(i <= 18){
+        while (i <= 18) {
             int preDecimal = 1;
             int decimal = i;
             Money test = new Money(preDecimal, decimal);

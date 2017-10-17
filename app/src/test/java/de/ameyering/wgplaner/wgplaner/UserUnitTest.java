@@ -16,7 +16,7 @@ import de.ameyering.wgplaner.wgplaner.structure.User;
 public class UserUnitTest {
 
     @Test
-    public void testEquals(){
+    public void testEquals() {
         String uid = "1";
         String name = "2";
         String fail = "3";
@@ -28,16 +28,16 @@ public class UserUnitTest {
     }
 
     @Test
-    public void testGetUid(){
+    public void testGetUid() {
         String uid = "1";
 
-        User user = new User(uid,"");
+        User user = new User(uid, "");
 
         Assert.assertEquals(uid, user.getUid());
     }
 
     @Test
-    public void testGetDisplayName(){
+    public void testGetDisplayName() {
         String name = "1";
 
         User user = new User("", name);

@@ -21,11 +21,11 @@ public class PinboardPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<PinboardChildFragment> childFragments = new ArrayList<>();
 
 
-    public PinboardPagerAdapter(FragmentManager manager){
+    public PinboardPagerAdapter(FragmentManager manager) {
         super(manager);
     }
 
-    public PinboardPagerAdapter(FragmentManager manager, TabLayout tabLayout, ViewPager pager){
+    public PinboardPagerAdapter(FragmentManager manager, TabLayout tabLayout, ViewPager pager) {
         this(manager);
         this.tabLayout = tabLayout;
         this.pager = pager;
@@ -41,22 +41,22 @@ public class PinboardPagerAdapter extends FragmentPagerAdapter {
         return childFragments.size();
     }
 
-    public void setViewPager(ViewPager pager){
+    public void setViewPager(ViewPager pager) {
         this.pager = pager;
     }
 
-    public void setTabLayout(TabLayout tabLayout){
+    public void setTabLayout(TabLayout tabLayout) {
         this.tabLayout = tabLayout;
     }
 
-    public void addFragment(PinboardChildFragment fragment){
+    public void addFragment(PinboardChildFragment fragment) {
         childFragments.add(fragment);
     }
 
-    public void initialize(){
+    public void initialize() {
 
         //Adds tab for each Fragment to TabLayout
-        for(PinboardChildFragment fragment: childFragments){
+        for (PinboardChildFragment fragment : childFragments) {
             tabLayout.addTab(tabLayout.newTab().setText(fragment.getTitle()));
         }
 
