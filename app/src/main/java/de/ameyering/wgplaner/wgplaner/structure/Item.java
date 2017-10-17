@@ -8,7 +8,7 @@ public class Item {
     public String name;
     public User requestedBy;
     public User requestedFor;
-    private float price;
+    private Money price;
     private String bougthOn;
 
     public Item(String name, User requestedBy, User requestedFor) {
@@ -17,22 +17,16 @@ public class Item {
         this.requestedFor = requestedFor;
     }
 
-    private Item(String name, User requestedBy, User requestedFor, float price, String bougthOn) {
-        new Item(name, requestedBy, requestedFor);
+    private Item(String name, User requestedBy, User requestedFor, Money price, String bougthOn) {
+        this(name, requestedBy, requestedFor);
         this.price = price;
         this.bougthOn = bougthOn;
     }
 
-    public boolean buy(float price) {
-        if (price > 0) {
+    public void buy(Money price) {
             this.price = price;
             this.bougthOn = DataContainer.Items.getDateFormat().format(
                     Calendar.getInstance().getTime()); //Formats actual Time to String
-            return true;
-
-        } else {
-            return false;
-        }
     }
 
     @Override
@@ -41,7 +35,7 @@ public class Item {
             this.requestedFor.equals(((Item) obj).requestedFor);
     }
 
-    public float getPrice() {
+    public Money getPrice() {
         return price;
     }
 
@@ -51,6 +45,12 @@ public class Item {
 
     @Override
     public Item clone() throws CloneNotSupportedException {
-        return new Item(this.name, this.requestedBy, this.requestedFor, this.price, this.bougthOn);
+        String name = this.name;
+        User requestedBy = this.requestedBy;
+        User requestedFor = this.requestedFor;
+        Money price = this.price;
+        String bougthOn = this.bougthOn;
+
+        return new Item(name, requestedBy, requestedFor, price, bougthOn);
     }
 }

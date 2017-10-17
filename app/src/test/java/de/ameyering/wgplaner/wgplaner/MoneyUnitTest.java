@@ -5,19 +5,33 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MoneyUnitTest {
 
+
+    @Test
+    public void testInitialize(){
+        Money.initialize(new Locale("de", "DE"));
+    }
+
+    @Test
+    public void testConstructor(){
+        Assert.assertEquals(new Money(-1, -1), new Money(1, 100));
+        Assert.assertEquals(new Money(-1, -1), new Money(1, -1));
+        Assert.assertEquals(new Money(1, 50), new Money(1, 50));
+        Assert.assertNotEquals(new Money(2, 50), new Money(1, 50));
+        Assert.assertNotEquals(new Money(1,50), new Money(1, 49));
+    }
     @Test
     public void testToString() {
-        Random random = new Random();
+        int i = 0;
 
-        for (int i = 0; i < 100; i++) {
-            int preDecimal = random.nextInt(11);
+        while(i <= 18){
+            int preDecimal = 1;
             int decimal = i;
             Money test = new Money(preDecimal, decimal);
 
@@ -33,6 +47,32 @@ public class MoneyUnitTest {
                 String expected = preDecimal + "," + decimal;
                 Assert.assertEquals(expected, test.toString());
             }
+
+            i = i + 9;
+        }
+        Locale locale = new Locale("de", "DE");
+        Money.initialize(locale);
+        i = 0;
+
+        while(i <= 18){
+            int preDecimal = 1;
+            int decimal = i;
+            Money test = new Money(preDecimal, decimal);
+
+            if (decimal == 0) {
+                String expected = preDecimal + ",-" + "EUR";
+                Assert.assertEquals(expected, test.toString());
+
+            } else if (decimal < 10) {
+                String expected = preDecimal + "," + "0" + decimal + "EUR";
+                Assert.assertEquals(expected, test.toString());
+
+            } else {
+                String expected = preDecimal + "," + decimal + "EUR";
+                Assert.assertEquals(expected, test.toString());
+            }
+
+            i = i + 9;
         }
     }
 
@@ -43,11 +83,9 @@ public class MoneyUnitTest {
         int expectedPreDecimal = 0;
         int expectedDecimal = 0;
 
-        Random random = new Random();
-
-        for (int i = 0; i < 20; i++) {
-            int preDecimal = random.nextInt(11);
-            int decimal = random.nextInt(100);
+        for (int i = 0; i < 100; i++) {
+            int preDecimal = 1;
+            int decimal = i;
             Money money = new Money(preDecimal, decimal);
             test.add(money);
 
