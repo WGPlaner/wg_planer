@@ -3,6 +3,7 @@ package de.ameyering.wgplaner.wgplaner.section.home;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 public class Home extends AppCompatActivity
@@ -102,6 +104,13 @@ public class Home extends AppCompatActivity
         } else if (id == R.id.nav_calendar) {
 
         } else if (id == R.id.nav_pinboard) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+            PinboardFragment pinboard = new PinboardFragment();
+
+            transaction.replace(R.id.container, pinboard);
+            transaction.commit();
 
         } else if (id == R.id.nav_share) {
 
