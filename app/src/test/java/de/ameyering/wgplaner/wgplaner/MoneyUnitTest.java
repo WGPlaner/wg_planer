@@ -20,20 +20,17 @@ public class MoneyUnitTest {
 
     @Test
     public void testConstructor(){
-        for(int i = -2; i < 101; i++){
-            Money money = new Money(1, i);
-
-            if(i < 0 || i >= 100){
-                Assert.assertEquals(new Money(-1, -1), money);
-            }
-            else{
-                Assert.assertEquals(new Money(1, i), new Money(1, i));
-            }
-        }
+        Assert.assertEquals(new Money(-1, -1), new Money(1, 100));
+        Assert.assertEquals(new Money(-1, -1), new Money(1, -1));
+        Assert.assertEquals(new Money(1, 50), new Money(1, 50));
+        Assert.assertNotEquals(new Money(2, 50), new Money(1, 50));
+        Assert.assertNotEquals(new Money(1,50), new Money(1, 49));
     }
     @Test
     public void testToString() {
-        for (int i = 0; i < 100; i++) {
+        int i = 0;
+
+        while(i <= 18){
             int preDecimal = 1;
             int decimal = i;
             Money test = new Money(preDecimal, decimal);
@@ -50,11 +47,14 @@ public class MoneyUnitTest {
                 String expected = preDecimal + "," + decimal;
                 Assert.assertEquals(expected, test.toString());
             }
+
+            i = i + 9;
         }
         Locale locale = new Locale("de", "DE");
         Money.initialize(locale);
+        i = 0;
 
-        for (int i = 0; i < 100; i++) {
+        while(i <= 18){
             int preDecimal = 1;
             int decimal = i;
             Money test = new Money(preDecimal, decimal);
@@ -71,6 +71,8 @@ public class MoneyUnitTest {
                 String expected = preDecimal + "," + decimal + "EUR";
                 Assert.assertEquals(expected, test.toString());
             }
+
+            i = i + 9;
         }
     }
 

@@ -32,15 +32,14 @@ public class ItemsUnitTest {
 
     @Test
     public void testBuy() {
-        for(int i = 0; i < 101; i++){
             User requestedFor = new User("1", "me");
 
             Item item = new Item("name", Mockito.mock(User.class), requestedFor);
-
-            item.buy(new Money(1, i));
-
+            item.buy(new Money(1, 1));
             Assert.assertTrue(item.equals(new Item("name", Mockito.mock(User.class), requestedFor)));
-        }
+
+            item.buy(new Money(1, 101));
+            Assert.assertEquals(item, new Item("name", Mockito.mock(User.class), requestedFor));
     }
 
     @Test
