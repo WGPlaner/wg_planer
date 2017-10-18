@@ -8,10 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by D067867 on 17.10.2017.
- */
-
 public abstract class PinboardChildFragment extends Fragment {
     private String title;
 

@@ -11,10 +11,6 @@ import java.util.ArrayList;
 
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardChildFragment;
 
-/**
- * Created by D067867 on 17.10.2017.
- */
-
 public class PinboardPagerAdapter extends FragmentPagerAdapter {
     private TabLayout tabLayout;
     private ViewPager pager;

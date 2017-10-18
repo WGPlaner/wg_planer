@@ -8,10 +8,6 @@ import android.view.ViewGroup;
 
 import de.ameyering.wgplaner.wgplaner.R;
 
-/**
- * Created by D067867 on 17.10.2017.
- */
-
 public class PinboardChatFragment extends PinboardChildFragment {
 
     @Nullable
