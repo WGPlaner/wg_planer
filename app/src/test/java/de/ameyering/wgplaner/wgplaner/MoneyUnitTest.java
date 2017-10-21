@@ -101,4 +101,13 @@ public class MoneyUnitTest {
 
         Assert.assertEquals(new Money(expectedPreDecimal, expectedDecimal), Money.sum(test));
     }
+
+    @Test
+    public void testIsValid() {
+        Money money = new Money(-1, -1);
+        Assert.assertFalse(money.isValid());
+
+        money = new Money(1, 2);
+        Assert.assertTrue(money.isValid());
+    }
 }

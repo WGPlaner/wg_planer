@@ -73,4 +73,8 @@ public class Money {
         return obj.getClass() == this.getClass() && ((Money) obj).preDecimal == this.preDecimal &&
             ((Money) obj).decimal ==  this.decimal;
     }
+
+    public boolean isValid() {
+        return !(preDecimal == -1 || decimal == -1);
+    }
 }
