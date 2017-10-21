@@ -1,9 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.exception;
 
-/**
- * Created by D067867 on 21.10.2017.
- */
-
 public class MalformedItemException extends Exception {
     private String message = null;
     private Throwable cause = null;

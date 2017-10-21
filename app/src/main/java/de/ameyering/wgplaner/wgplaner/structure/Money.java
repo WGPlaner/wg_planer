@@ -75,10 +75,6 @@ public class Money {
     }
 
     public boolean isValid() {
-        if (preDecimal == -1 && decimal == -1) {
-            return false;
-        }
-
-        return true;
+        return !(preDecimal == -1 || decimal == -1);
     }
 }

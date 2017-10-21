@@ -7,9 +7,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import de.ameyering.wgplaner.wgplaner.exception.MalformedItemException;
 
-/**
- * Created by D067867 on 21.10.2017.
- */
 @RunWith(MockitoJUnitRunner.class)
 public class MalformedItemExceptionUnitTest {
 
