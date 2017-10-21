@@ -18,22 +18,23 @@ SUBSYSTEMS:
 
 ### 1.3 Definitions, Acronyms and Abbreviations
 
-#### Abbrevations
-|       |                                        |
-| ----- |:--------------------------------------:|
-| SRS   | Software Requirements Specification    |
-| UC    | Use Case                               |
-| n/a   | not applicable                         |
-| tbd   | to be determined                       |
-| MTTR  | Mean Time To Repair                    |
-| FAQ   | Frequently asked Questions             |
+| Abbrevation |                                        |
+| ----------- | -------------------------------------- |
+| SRS         | Software Requirements Specification    |
+| UC          | Use Case                               |
+| n/a         | not applicable                         |
+| tbd         | to be determined                       |
+| MTTR        | Mean Time To Repair                    |
+| FAQ         | Frequently asked Questions             |
 
-#### Definitions
-**Software Requirements Specification** - a document, which captures the complete software requirements for the system, or a portion of the system.  
-**Use Case** - a list of actions or event steps, typically defining the interactions between a role (known in the Unified Modeling Language as an actor) and a system, to achieve a goal.  
-**Mean Time to Repair** - How long is the system allowed to be out of operation after it has failed?
+| Definition                          |     |
+| ----------------------------------- | --- |
+| Software Requirements Specification | a document, which captures the complete software requirements for the system, or a portion of the system. |
+| Use Case                            | a list of actions or event steps, typically defining the interactions between a role (known in the Unified Modeling Language as an actor) and a system, to achieve a goal. |
+| Mean Time to Repair                 | How long is the system allowed to be out of operation after it has failed? |
 
 ### 1.4 References
+
 | Title                      | Date       | Publishing organization   |
 | -------------------------- |:----------:| ------------------------- |
 | *coming soon...*           |            | WGPlaner Team             |
@@ -44,7 +45,8 @@ The remainder of this document is structured in the following way: In the next c
 ## 2. Overall Description
 
 ### 2.1 Vision
-Studying often means living in a shared flat. Costs of groceries and other purchases are shared between each other and cleaning becomes a group task. But managing all of this has been a hassle for years. Whose turn is it to clean the bathroom? How much money do I owe the others?  
+Studying often means living in a shared flat. Costs of groceries and other purchases are shared between each other and cleaning becomes a group task. But managing all of this has been a hassle for years. Whose turn is it to clean the bathroom? How much money do I owe the others?
+
 Our android application "WGPlaner" takes care of this. Shopping lists can be created, costs are shared, overviews on how much each person owes each other help to avoid stress and living in a shared flat becomes just more pleasant.
 
 ### 2.2 Use Case Diagram
@@ -125,7 +127,7 @@ The workflow should reflect the real life and not work against it. If a specific
 ### 3.3 Reliability
 
 #### 3.3.1 Availability and MTTR
-The server shall be available at least 95% of the time which is equivalent to ~1 hour downtime a day. Downtime is tolerable during nighttime as it is very unlikely that users upload or change data at night. The server must be available during "rush hours" when most people go shopping. The time to repair bugs should be as low as possible.
+The server shall be available at least 95% of the time which is equivalent to ~1 hour downtime a day. Downtime is tolerable during nighttime as it is very unlikely that users upload or change data at night. But the server must be available during "rush hours" when most people go shopping. The time to repair bugs should be as low as possible.
 
 #### 3.3.2 Defect Rate
  - There must be no bugs regarding the accounting section as it is crucial that shared flat members don’t pay each other more or less than is actually correct.
@@ -152,7 +154,8 @@ In order to maintain supportability and readability of our code, we will try to 
 In order to test language and platform versions, a continuous integration service is required which runs tests on combinations of platform and language versions.
 
 ### 3.6 Design Constraints
-We are focused on providing a modern design regarding both code and application.  
+We are focused on providing a modern design regarding both code and application.
+
 As "WGPlaner" is an android application, the chosen programming language is Java. The MVC architecture shall be used to differentiate between UI and the actual logic.
 
 The server's operating system must support MySQL and programs compiled using Go. A RESTful API shall be used to communicate between client and server.
@@ -209,6 +212,6 @@ The following Clean Code standards are going to be applied to the code as far as
  - Arne Schulze
  - Nina Wieland
 
-[UseCaseDiagram]:   img/use_case_diagram.png
+[UseCaseDiagram]:   use_case_diagram.png
 [GoogleGuidelines]: https://google.github.io/styleguide/javaguide.html
 [license]:          ../../LICENSE
