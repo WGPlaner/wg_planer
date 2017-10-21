@@ -1,5 +1,31 @@
 # Software Requirements Specification 
 
+## Table of contents
+- [Table of contents](#table-of-contents)
+- [Introduction](#1-introduction)
+    - [Purpose](#11-purpose)
+    - [Scope](#12-scope)
+    - [Definitions, Acronyms and Abbreviations](#13-definitions-acronyms-and-abbreviations)
+    - [References](#14-references)
+    - [Overview](#15-overview)
+- [Overall Description](#2-overall-description)
+    - [Vision](#21-vision)
+    - [Use Case Diagram](#22-use-case-diagram)
+- [Specific Requirements](#3-specific-requirements)
+    - [Functionality](#31-functionality)
+    - [Usability](#32-usability)
+    - [Reliability](#33-reliability)
+    - [Performance](#34-performance)
+    - [Supportability](#35-supportability)
+    - [Design Constraints](#36-design-constraints)
+    - [Online User Documentation and Help System Requirements](#37-on-line-user-documentation-and-help-system-requirements)
+    - [Purchased Components](#purchased-components)
+    - [Interfaces](#39-interfaces)
+    - [Licensing Requirements](#310-licensing-requirements)
+    - [Legal, Copyright And Other Notices](#311-legal-copyright-and-other-notices)
+    - [Applicable Standards](#312-applicable-standards)
+- [Supporting Information](#4-supporting-information)
+
 ## 1. Introduction
 
 ### 1.1 Purpose
