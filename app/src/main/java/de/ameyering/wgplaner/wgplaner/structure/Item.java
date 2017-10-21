@@ -2,6 +2,7 @@ package de.ameyering.wgplaner.wgplaner.structure;
 
 import java.util.Calendar;
 
+import de.ameyering.wgplaner.wgplaner.exception.MalformedItemException;
 import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
 public class Item {
@@ -9,23 +10,46 @@ public class Item {
     public User requestedBy;
     public User requestedFor;
     private Money price;
-    private String bougthOn;
+    private String boughtOn;
 
-    public Item(String name, User requestedBy, User requestedFor) {
+    public Item(String name, User requestedBy, User requestedFor) throws MalformedItemException {
+
+        if (name == null) {
+            throw new MalformedItemException("name should not be null");
+        }
+
+        if (requestedBy == null) {
+            throw new MalformedItemException("requestedBy should not be null");
+        }
+
+        if (requestedFor == null) {
+            throw new MalformedItemException("requestedFor should not be null");
+        }
+
+        if (name.equals("")) {
+            throw new MalformedItemException("name should not be empty");
+        }
+
         this.name = name;
         this.requestedBy = requestedBy;
         this.requestedFor = requestedFor;
     }
 
-    private Item(String name, User requestedBy, User requestedFor, Money price, String bougthOn) {
+    private Item(String name, User requestedBy, User requestedFor, Money price,
+        String boughtOn) throws MalformedItemException {
         this(name, requestedBy, requestedFor);
+
+        if (!price.isValid()) {
+            throw new MalformedItemException("price should be valid");
+        }
+
         this.price = price;
-        this.bougthOn = bougthOn;
+        this.boughtOn = boughtOn;
     }
 
     public void buy(Money price) {
         this.price = price;
-        this.bougthOn = DataContainer.Items.getDateFormat().format(
+        this.boughtOn = DataContainer.Items.getDateFormat().format(
                 Calendar.getInstance().getTime()); //Formats actual Time to String
     }
 
@@ -39,8 +63,8 @@ public class Item {
         return price;
     }
 
-    public String getBougthOn() {
-        return bougthOn;
+    public String getBoughtOn() {
+        return boughtOn;
     }
 
     @Override
@@ -49,8 +73,25 @@ public class Item {
         User requestedBy = this.requestedBy;
         User requestedFor = this.requestedFor;
         Money price = this.price;
-        String bougthOn = this.bougthOn;
+        String bougthOn = this.boughtOn;
 
-        return new Item(name, requestedBy, requestedFor, price, bougthOn);
+        if (price != null && bougthOn != null) {
+            try {
+                Item item = new Item(name, requestedBy, requestedFor, price, bougthOn);
+                return item;
+
+            } catch (MalformedItemException e) {
+                throw new CloneNotSupportedException();
+            }
+
+        } else {
+            try {
+                Item item = new Item(name, requestedBy, requestedFor);
+                return  item;
+
+            } catch (MalformedItemException e) {
+                throw new CloneNotSupportedException();
+            }
+        }
     }
 }

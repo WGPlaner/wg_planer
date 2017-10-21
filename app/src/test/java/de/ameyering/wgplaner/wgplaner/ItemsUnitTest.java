@@ -8,6 +8,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Calendar;
 
+import de.ameyering.wgplaner.wgplaner.exception.MalformedItemException;
 import de.ameyering.wgplaner.wgplaner.structure.Item;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.structure.User;
@@ -17,7 +18,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 public class ItemsUnitTest {
 
     @Test
-    public void testConstructor() {
+    public void testConstructor() throws MalformedItemException {
         User user = Mockito.mock(User.class);
 
         Item item = new Item("name", user, user);
@@ -28,10 +29,56 @@ public class ItemsUnitTest {
         Item mock = new Item("name", user, user);
 
         Assert.assertEquals(mock, item);
+
+        try {
+            new Item(null, new User("1", "2"), new User("1", "2"));
+            Assert.assertTrue(false);
+
+        } catch (MalformedItemException e) {
+            String message = e.getMessage();
+            Assert.assertEquals("name should not be null", message);
+        }
+
+        try {
+            new Item("name", null, new User("1", "2"));
+            Assert.assertTrue(false);
+
+        } catch (MalformedItemException e) {
+            String message = e.getMessage();
+            Assert.assertEquals("requestedBy should not be null", message);
+        }
+
+        try {
+            new Item("name", new User("1", "2"), null);
+            Assert.assertTrue(false);
+
+        } catch (MalformedItemException e) {
+            String message = e.getMessage();
+            Assert.assertEquals("requestedFor should not be null", message);
+        }
+
+        try {
+            new Item("", new User("1", "2"), new User("1", "2"));
+            Assert.assertTrue(false);
+
+        } catch (MalformedItemException e) {
+            String message = e.getMessage();
+            Assert.assertEquals("name should not be empty", message);
+        }
+
+        try {
+            item = new Item("name", new User("1", "2"), new User("1", "2"));
+            item.buy(new Money(-1, -1));
+            item.clone();
+            Assert.assertTrue(false);
+
+        } catch (CloneNotSupportedException e) {
+            Assert.assertTrue(true);
+        }
     }
 
     @Test
-    public void testBuy() {
+    public void testBuy() throws MalformedItemException {
         User requestedFor = new User("1", "me");
 
         Item item = new Item("name", Mockito.mock(User.class), requestedFor);
@@ -43,7 +90,7 @@ public class ItemsUnitTest {
     }
 
     @Test
-    public void testEquals() {
+    public void testEquals() throws MalformedItemException {
         String nameEq = "Milch";
         User userEq = new User("1", "Arne");
         String nameUeq = "Schoki";
@@ -65,7 +112,7 @@ public class ItemsUnitTest {
     }
 
     @Test
-    public void testClone() {
+    public void testClone() throws MalformedItemException {
         User requestedFor = new User("1", "me");
         Item item = new Item("name", requestedFor, requestedFor);
         Item clone = null;
@@ -80,20 +127,53 @@ public class ItemsUnitTest {
         Assert.assertEquals(item, clone);
         clone.buy(new Money(1, 1));
         Assert.assertEquals(item, clone);
+
+        item.buy(new Money(-1, -1));
+
+        try {
+            item.clone();
+            Assert.assertTrue(false);
+
+        } catch (CloneNotSupportedException e) {
+            Assert.assertTrue(true);
+        }
+
+        try {
+            item = new Item("", null, null);
+            item.clone();
+            Assert.assertTrue(false);
+
+        } catch (CloneNotSupportedException e) {
+            Assert.assertTrue(true);
+
+        } catch (MalformedItemException e) {
+            Assert.assertTrue(true);
+        }
+
+        item = new Item("name", new User("1", "2"), new User("1", "2"));
+        item.buy(new Money(2, 4));
+
+        try {
+            item.clone();
+            Assert.assertTrue(true);
+
+        } catch (CloneNotSupportedException e) {
+            Assert.assertTrue(false);
+        }
     }
 
     @Test
-    public void testGetBougthOn() {
+    public void testGetBoughtOn() throws MalformedItemException {
         Item item = new Item("name", Mockito.mock(User.class), Mockito.mock(User.class));
         Money price = new Money(1, 1);
         item.buy(price);
 
         Assert.assertEquals(DataContainer.Items.getDateFormat().format(Calendar.getInstance().getTime()),
-            item.getBougthOn());
+            item.getBoughtOn());
     }
 
     @Test
-    public void testGetPrice() {
+    public void testGetPrice() throws MalformedItemException {
         Item item = new Item("name", Mockito.mock(User.class), Mockito.mock(User.class));
         Money price = new Money(1, 1);
         item.buy(price);

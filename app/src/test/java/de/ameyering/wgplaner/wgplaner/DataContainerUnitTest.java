@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import de.ameyering.wgplaner.wgplaner.exception.MalformedItemException;
 import de.ameyering.wgplaner.wgplaner.structure.Item;
 import de.ameyering.wgplaner.wgplaner.structure.User;
 import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
@@ -14,7 +15,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 public class DataContainerUnitTest {
 
     @Test
-    public void testAdd() {
+    public void testAdd() throws MalformedItemException {
         Item item = new Item("Milch", Mockito.mock(User.class), Mockito.mock(User.class));
 
         DataContainer.Items.addItem(item);
@@ -26,7 +27,7 @@ public class DataContainerUnitTest {
     }
 
     @Test
-    public void testRemove() {
+    public void testRemove() throws MalformedItemException {
         Item item = new Item("Milch", new User("1", "Arne"), Mockito.mock(User.class));
 
         int size = DataContainer.Items.getSize();
