@@ -40,7 +40,15 @@ ACTORS: There are two types of actors: **users** and **admins**
  - Admin: User that also manages the shared flat.
 
 SUBSYSTEMS:
- - *TODO*
+ - *Registration / User system*: Allows the actors to be identified as users/admins and store personal information relevant to the application.
+ - *Dashboard*: Gives users an overview of their shared flats data.
+ - *Shopping list*: Allows user to create and manage lists with needed products.
+ - *Accounting*: Allows users to create and split bills.
+ - *Tasks*: Allows users to create tasks such as cleaning.
+ - *Pinboard*: Short notes that users want to share with the flat.
+ - *Calendar*: Gives users and overview of events and gives reminders.
+ - *Gamification*: Makes finishing tasks more fun.
+ - *Settings*: Allows users to update their profile and notification settings.
 
 ### 1.3 Definitions, Acronyms and Abbreviations
 
@@ -235,7 +243,17 @@ Currently there are no other purchased components.
 
 #### 3.9.1 User Interfaces
 There will be the following user interfaces implemented which will solely be available in the android application:
- - *TODO*
+ - **Registration screen** showing input fields to create an account
+ - **Set-Up screen** showing input fields to create a group or join one
+ - **Dashboard screen**
+    - shows active access key if available
+    - shows overviews for each main section
+ - **Shopping List screen** shows lists with items ordered by a given key (e.g. category)
+ - **Accounting screen** to manage bills, show bought items, fixed costs, etc.
+ - **Tasks screen** to list active tasks and whose turn it is
+ - **Pinboard screen** to shows note and comments
+ - **Calendar screen** to manage tasks, events, etc.
+ - **Settings screen** to manage the user's or shared flat's settings
 
 #### 3.9.2 Hardware Interfaces
 n/a
