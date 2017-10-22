@@ -93,7 +93,7 @@ Our android application "WGPlaner" takes care of this. Shopping lists can be cre
 This section will list all functional requirements for "WGPlaner" and explain their functionality. Each of the following subsections represents a subsystem of our application.
 
 #### 3.1.1 Ŕegistration
-As soon as our app is installed and opened, the user gets to choose from two options. He can either create a shared flat if his doesn't exist already, or he can join one. In the first case the user becomes the admin and can create a code that is valid for 24h. This code allows other shared flat members to join the newly created shared flat. The admin may create a new code at any time and the old one gets invalidated. By joining a shared flat, users create a new profile and can set their username, profile image, etc.
+As soon as our app is installed and opened, the user gets to choose from two options. He can either create a shared flat if his doesn't exist already, or he can join one. In the first case the user becomes the admin and can create an access code that is valid for 24h. This code can be shared through WhatsApp, e-mail and other channels and allows other shared flat members to join the newly created shared flat. The admin may create a new code at any time and the old one gets invalidated. By joining a shared flat, users create a new profile and can set their username, profile image, etc.
 If all members joined the shared flat, then the following functionality comes into play.
 
 <!--
@@ -110,9 +110,9 @@ Das Dashboard ist die Startseite der App. Hier werden in verschiedenen Kacheln d
 -->
 
 #### 3.1.3 Shopping List
-The shopping list gives an overview on products that need to be bought. It's possible to add new products to the list to update or remove old ones and to set the number of items needed. Because not every item should be shared equally between everyone, it's possible to select the members that the item is bought for.
+The shopping list gives an overview on products that need to be bought. It's possible to add new products to the list, to update or remove old ones that the user created and to set the number of items needed. Because not every item should be shared equally between everyone, it's possible to select the members that the item is bought for.
 
-When an item is bought, the one shopping marks the product as bought and all other members of the shared flat can see the checkmarks. This way we avoid that another person buys the item simultaneously. After shoping, the user confirms that he has bought the checked items and they get transferred from the shopping list to the accounting page. The shopping list can be sorted by "customer" to get a better grasp of who needs what.
+When an item is bought, the user shopping marks the product as bought and all other members of the shared flat see that the user is currently shopping. This way we avoid that another person buys the item simultaneously. After shoping, the user confirms that he has bought the checked items and they get transferred from the shopping list to the accounting page. The shopping list can be sorted by "customer" to get a better grasp of who needs what.
 
 <!--
 Die Shoppingliste dient der besseren Übersicht für alle WG Mitglieder. Es ist möglich ein neues Produkt der Liste hinzuzufügen, als auch eine Menge anzugeben. Da in einer WG nicht immer alle Produkte für jeden gekauft werden, sondern auch einzelne Mitglieder spezielle Produkte wollen, gibt es die Möglichkeit zwischen der kompletten WG und einzelnen als auch mehreren WG Mitgliedern zu wählen. Natürlich können die verschiedenen Positionen auch bearbeitet werden, um zum Beispiel die Menge zu ändern oder auch ein Produkt von der Liste zu löschen.
@@ -126,7 +126,7 @@ The accounting page allows the user to bill the costs of each shared flat member
 
 It's also possible to set fixed costs such as rent or electricity costs.
 
-The data is used to either manually or automatically create bills. It's possible to specify a date, e.g. the end of each month, to create the bill automatically. Each member get's a listing on how much he ows whom since the last bill. He can also set a deadline to when he expects the others to pay their dept. The app reminds one if the deadline is near.
+The data is used to create bills either manually or automatically. It's possible to specify a date, e.g. the end of each month, to create the bill automatically. Each member get's a listing on how much he ows whom since the last bill. He can also set a deadline to when he expects the others to pay their dept. The app reminds one if the deadline is near.
 
 A confirmation by both parties is required if the depts are paid and after that the bill gets archived.
 
@@ -161,7 +161,7 @@ Der Kalender zeigt jeder Person individuell, welche Aufgaben sie wann zu erledig
 -->
 
 #### 3.1.8 Gamification
-Each tasks gets a number of points that the user can define. A user earns these points by finishing a task. A ranking motivates the user to finish more tasks and the members of the shared flat may deicide on a bonus that the user with the most points gets at the end of a month.
+Each task gets a number of points that the user can define. A user earns these points by finishing a task. A ranking motivates the user to finish more tasks and the members of the shared flat may decide on a bonus that the user with the most points gets at the end of a month.
 
 <!--
 In der Kategorie Aufgaben, kann zu jeder Aufgabe ein bestimmter Punktewert vergeben werden, den die WG frei wählen kann. Diese Punkte können sich die Nutzer durch erledigen dieser Aufgaben erspielen. In einer Übersicht wird dann Rangliste angezeigt. Die WG kann beispielsweise für den Gewinner des Monats eine Belohnung festlegen, was die Motivation, zum Beispiel zum Putzen, steigert.
