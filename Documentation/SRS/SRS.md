@@ -96,30 +96,14 @@ This section will list all functional requirements for "WGPlaner" and explain th
 As soon as our app is installed and opened, the user gets to choose from two options. He can either create a shared flat if his doesn't exist already, or he can join one. In the first case the user becomes the admin and can create an access code that is valid for 24h. This code can be shared through WhatsApp, e-mail and other channels and allows other shared flat members to join the newly created shared flat. The admin may create a new code at any time and the old one gets invalidated. By joining a shared flat, users create a new profile and can set their username, profile image, etc.
 If all members joined the shared flat, then the following functionality comes into play.
 
-<!--
-Sobald die App heruntergeladen und gestartet wurde, hat der User zwei unterschiedliche Optionen. Zum einen kann er, wenn es noch keine existierende WG gibt, selbst eine WG gründen. In diesem Fall erhält der Gründer (Admin) einen Code, welcher 24 Stunden gültig ist. Nach dem Ablaufen des Codes kann sich der Admin einen neuen generieren lassen. Den besagten Code kann er nun an seine anderen WG Mitglieder weiterleiten. Die anderen Mitglieder können nun die zweite Option wählen. Hierbei erstellen sie einen Account, in dem sie ein Profilbild hochladen und einen Usernamen eingeben können. Mit der Hilfe des Codes können sie einer bereits bestehenden Gruppe beitreten.
-Wenn die WG nun komplett ist, gibt es mehrere verschiedene Funktionalitäten. Diese sind im Folgenden aufgelistet.
--->
-
 #### 3.1.2 Dashboard
 The dashboard is the starting point of our application. With different tiles  that contain important information, the user gets a quick overview of his shared flat. The user can navigate through the app with a click on these tiles.
 An example would be a tile "Shopping List" that shows how many different products the list contains.
-
-<!--
-Das Dashboard ist die Startseite der App. Hier werden in verschiedenen Kacheln die unterschiedlichen Optionen angezeigt. Mit einem Klick auf die Überschrift dieser, kann man sich in diese Kategorie navigieren. Ebenfalls enthält die Kachel wichtige Informationen dazu. Beispielsweise enthält die Kachel der Kategorie "Shoppingliste" die gleichnamige Überschrift und in den Informationen wird angezeigt, wie viele unterschiedliche Produkte diese enthält.
--->
 
 #### 3.1.3 Shopping List
 The shopping list gives an overview on products that need to be bought. It's possible to add new products to the list, to update or remove old ones that the user created and to set the number of items needed. Because not every item should be shared equally between everyone, it's possible to select the members that the item is bought for.
 
 When an item is bought, the user shopping marks the product as bought and all other members of the shared flat see that the user is currently shopping. This way we avoid that another person buys the item simultaneously. After shoping, the user confirms that he has bought the checked items and they get transferred from the shopping list to the accounting page. The shopping list can be sorted by "customer" to get a better grasp of who needs what.
-
-<!--
-Die Shoppingliste dient der besseren Übersicht für alle WG Mitglieder. Es ist möglich ein neues Produkt der Liste hinzuzufügen, als auch eine Menge anzugeben. Da in einer WG nicht immer alle Produkte für jeden gekauft werden, sondern auch einzelne Mitglieder spezielle Produkte wollen, gibt es die Möglichkeit zwischen der kompletten WG und einzelnen als auch mehreren WG Mitgliedern zu wählen. Natürlich können die verschiedenen Positionen auch bearbeitet werden, um zum Beispiel die Menge zu ändern oder auch ein Produkt von der Liste zu löschen.
-Wenn nun eine Person der WG einkaufen ist, kann diese die Produkte während des einkaufs abhaken. Alle anderen Mitglieder können dann ebenfalls die gesetzten Haken sehen. Dadurch wird vermieden, dass mehrere Mitglieder das gleiche Produkt kaufen. 
-Zum Schluss muss man den Kauf bestätigen und damit werden auch die gekauften Produkte von der Liste gelöscht. Die App merkt sich, wer den Kauf für wen getätigt hat.
-Die Liste kann auch nach den verschiedenen "Bestellern" sortiert werden. Damit hat man auf einen Blick die Übersicht darüber, was für die WG gekauft werden muss als auch welche Person ein spezielles Produkt möchte.
--->
 
 #### 3.1.4 Accounting
 The accounting page allows the user to bill the costs of each shared flat member. The functionality gets its data from the shopping list. Each user can see what was bought for whom and can set the price of the items he has bought so that the app can sum up the costs and create the bill.
@@ -130,53 +114,24 @@ The data is used to create bills either manually or automatically. It's possible
 
 A confirmation by both parties is required if the depts are paid and after that the bill gets archived.
 
-<!--
-Diese Option ermöglicht es den Nutzern die Kosten abzurechnen. Hierbei bezieht sich diese Funktionalität auf die gespeicherten Daten der Shoppingliste, wer was für wen gekauft hat. Jeder Nutzer kann hier die von ihm gekauften Produkte sehen und muss die Preise für die einzelnen Produkte angeben, damit die App diese Kosten verrechnen kann. 
-Zudem können auch die Fixkosten in der Abrechnung angegeben werden, das Löschen ist ebenfalls möglich.
-Diese Daten werden dazu verwendet eine Abrechnung automatisch zu erstellen. Es ist möglich diese Verrechnung entweder auf Buttonklick oder auch automatisch, zum Beispiel zu Ende eines Monats, erstellen zu lassen. Jeder Nutzer erhält dann eine Aufstellung, wem aus der WG er wie viel Geld für die vergangene Periode schuldet. Ebenfalls kann eine Frist gesetzt werden, bis wann das Geld an die andere Person übergeben sein muss. Ist diese Frist gesetzt, erinnert die App drei Tage vor Ablauf an das bezahlen. 
-Wenn der Nutzer seine Schulden beglichen hat, muss er dies auch bestätigen in dem er "Schulden beglichen" wählt. Der "Geldgeber" erhält darauf eine Benachrichtigung und ist ebenfalls dazu angehalten die Aussage des "Schuldners" zu bestätigen. Nachdem beide Seiten den Schuldenausgleich bestätigt haben, wird der Betrag gelöscht.
--->
-
 #### 3.1.5 Tasks
 The tasks page allows users to create tasks. A list of TODOs is shown and each user may add, update or remove a task. This option is perfect for cleaning plans as it is possible to create repeating tasks that occur weekly, monthly or each N days and to set the user that should do the task.
 
 The dashboards shows the user's tasks that are close. An example would be "It's your turn to clean the bathroom.".
 
-<!--
-Diese Funktionalität ermöglicht es den Nutzern Aufgaben zu erstellen. Die Mitglieder der WG haben die Möglichkeit sich alle erstellten Aufgaben anzusehen, eine Aufgabe hinzuzufügen, zu bearbeiten oder zu löschen. Diese Option eignet sich besonders gut für den Putzplan. Es gibt auch die Funktion die Aufgaben wöchentlich oder monatlich zu erstellen und der Reihe nach den Mitgliedern zuzuweisen. Auf dem Dashboard würde dann beispielsweise angezeigt werden "Du hast diese Woche den Putzdienst im Badezimmer".
--->
-
 #### 3.1.6 Pinboard
 The user can create notes on the pinboard. A note can contain hastags and a date. If a date is given, then all members of the flat can either accept or reject the appointment/event. A user can comment on a note to exchange information. The pinboard informs the user about new or changed information.
-
-<!--
-In der Kategorie Pinboard können verschiedenste Themen erstellt werden. Bei jedem erstellten Thema kann ein Hashtag darunter geschrieben oder auch ein Datum erstellt werden. Wenn ein Datum zu einem Thema erstellt wurde, ist es möglich diesen Termin anzunehmen. Will nun jemand auf ein Thema antworten, kann dies in dem Chat gemacht werden. Der Chat dient zum austauschen von Informationen und dem Antworten auf die Beiträge. Es ist somit möglich Nachrichten zu sehen und zu schreiben. Wenn in einer Nachricht der Hashtag eines Themas erwähnt wird, wird automatisch eine Verlinkung zum Thema erstellt. Dadurch wird es einfacher die verschiedenen Chatnachrichten einem Thema zuzuordnen. Das Pinboard kann den Nutzer über neu eingestellte Themen als auch Nachrichten informieren.
--->
 
 #### 3.1.7 Calendar
 The calendar page shows each user his own tasks and their deadlines. Also included in the calendar are notes with dates from the pinboard that the user has acceptet. The calendar notifies the user of close events.
 
-<!--
-Der Kalender zeigt jeder Person individuell, welche Aufgaben sie wann zu erledigen hat. Ebenfalls in den Kalender integriert sind die Daten aus dem Pinboard. Wenn jemand einen dort eingestellten Termin angenommen hat, wird dieser automatisch in seinem Kalender vermerkt. Der Kalender kann den Nutzer auch über anstehende Termine informieren.
--->
-
 #### 3.1.8 Gamification
 Each task gets a number of points that the user can define. A user earns these points by finishing a task. A ranking motivates the user to finish more tasks and the members of the shared flat may decide on a bonus that the user with the most points gets at the end of a month.
-
-<!--
-In der Kategorie Aufgaben, kann zu jeder Aufgabe ein bestimmter Punktewert vergeben werden, den die WG frei wählen kann. Diese Punkte können sich die Nutzer durch erledigen dieser Aufgaben erspielen. In einer Übersicht wird dann Rangliste angezeigt. Die WG kann beispielsweise für den Gewinner des Monats eine Belohnung festlegen, was die Motivation, zum Beispiel zum Putzen, steigert.
--->
 
 #### 3.1.9 Settings
 This page contains settings for the user's profile and notifications. The user can change his username, profile image and e-mail address or delete his account.
 
 The shared flat's administrator can change the flat's image and name, can create a new access code or delete the WG. If he deletes his account, one of the remaining members becomes the new admin.
-
-<!--
-Unter der Rubrik Einstellungen kann ein Nutzer seine privaten Profileinstellungen, als auch seine Benachrichtigungseinstellungen ändern.
-Unter den Profileinstellungen ist es Möglich den Benutzernamen, das Profilfoto und die E-Mail-Adresse neben dem ändern auch anzusehen. Ebenfalls kann der Nutzer seinen Account löschen oder die WG, im Falle eines Auszugs, auch verlassen. Die Benachrichtigungseinstellungen lassen sich entweder komplett oder auch einzeln ausschalten.
-Der Administrator der App hat zudem auch andere Einstellungsmöglichkeiten, die die WG betreffen. Er kann das WG-Profilbild und die Währung ändern als auch einen neuen Zugangscode für neue WG Mitglieder generieren lassen. Ebenfalls hat er die Übersicht über alle Nutzer, die in seiner WG sind. Er besitzt als einziger die Möglichkeit, die komplette WG zu löschen.
--->
 
 ### 3.2 Usability
 We plan on designing the user interface as intuitive and self-explanatory as possible to make the user feel as comfortable as possible using the app. Though help documents will be available, it should not be necessary to use them.
