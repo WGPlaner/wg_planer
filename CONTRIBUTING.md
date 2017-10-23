@@ -98,7 +98,22 @@ On top of that:
      * Load your data during the SplashScreen Activity (if possible)
      * Avoid intensive Client-Server communications (Reduce the network usage to a minimum)
      * Use official APIs or libraries instead of own or third party implementations (if possible)
-  3. Design
+  3. Style
      * Avoid designing methods larger than 50 lines
      * Write Unit Tests for your classes. Your code coverage should be > 80%
-     * __Use AStyle before pushing to github (look at: https://github.com/WGPlaner/wg_planer/blob/master/README.md)__
+
+### Artistic Style
+We use [Artistic Style](http://astyle.sourceforge.net/) to format the source code. Before committing files, please run:
+
+**Linux** (with pre-compiled version)
+```bash
+cd wg_planer
+./astyle/astyle_linux_x86-64 --options=.astylerc *.java
+```
+
+**Windows** (with pre-compiled version)
+```
+.\astyle\AStyle.exe --options=.\.astylerc *.java 
+```
+
+You can find pre-compiled version in the folder `astyle`.
