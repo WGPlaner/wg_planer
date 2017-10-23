@@ -14,6 +14,6 @@ public class PinboardIssuesFragment extends PinboardChildFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.section_pinboard_issues, container, false);
+        return inflater.inflate(R.layout.fragment_pinboard_issues, container, false);
     }
 }
