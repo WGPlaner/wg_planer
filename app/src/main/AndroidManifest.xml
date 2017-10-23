@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".section.splashScreen.SplashScreen"
+            android:name=".section.splashscreen.SplashScreenActivity"
             android:label="@string/app_name"
             android:theme="@style/SplashScreen">
             <intent-filter>
@@ -28,9 +28,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".section.home.Home"
+            android:name=".section.home.HomeActivity"
             android:label="@string/title_activity_home"
-            android:parentActivityName=".section.splashScreen.SplashScreen"
+            android:parentActivityName=".section.splashscreen.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

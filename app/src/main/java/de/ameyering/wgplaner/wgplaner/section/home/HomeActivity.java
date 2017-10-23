@@ -17,9 +17,8 @@ import android.widget.FrameLayout;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
-import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
-public class Home extends AppCompatActivity
+public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
     FrameLayout container;
@@ -68,14 +67,14 @@ public class Home extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
+        // automatically handle clicks on the HomeActivity/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 

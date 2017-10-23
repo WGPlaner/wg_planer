@@ -1,4 +1,4 @@
-package de.ameyering.wgplaner.wgplaner.section.splashScreen;
+package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +9,11 @@ import android.widget.ProgressBar;
 import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.section.home.Home;
+import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class SplashScreen extends AppCompatActivity {
                 initialize();
                 getData();
 
-                Intent intent = new Intent(SplashScreen.this, Home.class);
+                Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
             }
