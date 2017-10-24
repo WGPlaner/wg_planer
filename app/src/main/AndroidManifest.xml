@@ -31,7 +31,12 @@
             android:name=".section.home.HomeActivity"
             android:label="@string/title_activity_home"
             android:parentActivityName=".section.splashscreen.SplashScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".section.registration.RegistrationActivity"
+            android:label="Registration"
+            android:parentActivityName=".section.splashscreen.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 
