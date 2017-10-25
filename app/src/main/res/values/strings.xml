@@ -19,7 +19,7 @@
 
     <!-- String related to NavView -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigati_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_shopping_list">Shopping List</string>
     <string name="nav_accounting">Accounting</string>

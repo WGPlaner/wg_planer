@@ -3,7 +3,6 @@ package de.ameyering.wgplaner.wgplaner.section.registration.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 
 import de.ameyering.wgplaner.wgplaner.R;
 
-public class PickDisplayNameFragment extends Fragment {
+public class PickDisplayNameFragment extends NavigationFragment {
     private Button btnContinue;
     private EditText inputName;
 
@@ -32,6 +31,9 @@ public class PickDisplayNameFragment extends Fragment {
                 String displayName = inputName.getText().toString();
 
                 if (displayName != null && !displayName.equals("")) {
+                    if (mNavigationEventListener != null) {
+                        mNavigationEventListener.onForward();
+                    }
 
                 } else {
                     Toast.makeText(getContext(), PickDisplayNameFragment.this.getActivity().getString(

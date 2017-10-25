@@ -2,7 +2,6 @@ package de.ameyering.wgplaner.wgplaner.section.registration.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.Button;
 import de.ameyering.wgplaner.wgplaner.R;
 
 
-public class WelcomeFragment extends Fragment {
+public class WelcomeFragment extends NavigationFragment {
 
     @Nullable
     @Override
@@ -23,7 +22,9 @@ public class WelcomeFragment extends Fragment {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (mNavigationEventListener != null) {
+                    mNavigationEventListener.onForward();
+                }
             }
         });
 

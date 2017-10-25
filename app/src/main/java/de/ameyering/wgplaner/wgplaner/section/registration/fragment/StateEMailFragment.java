@@ -1,5 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.section.registration.fragment;
 
 
-public class StateEMailFragment {
+public class StateEMailFragment extends NavigationFragment {
 }
