@@ -19,7 +19,6 @@ import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
-import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
@@ -27,6 +26,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";
     private String uid = null;
+    private FirebaseUser currentUser;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,9 +40,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:success");
-                    FirebaseUser currentUser = mAuth.getCurrentUser();
-                    onUser(currentUser);
+                    if(currentUser == null) {
+                        Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:success");
+                        FirebaseUser currentUser = mAuth.getCurrentUser();
+                        onUser(currentUser);
+                    }
 
                 } else {
                     Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:failure");
@@ -57,7 +59,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         onUser(currentUser);
     }
 
@@ -71,7 +73,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     initialize();
                     getData(uid);
 
-                    Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 }
