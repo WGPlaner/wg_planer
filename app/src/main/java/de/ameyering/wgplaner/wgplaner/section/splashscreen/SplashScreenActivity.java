@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
+import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
@@ -28,7 +29,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 initialize();
                 getData();
 
-                Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
                 startActivity(intent);
                 finish();
             }
