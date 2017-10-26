@@ -33,7 +33,7 @@
             android:parentActivityName=".section.splashscreen.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".section.registration.RegistrationActivity"
-            android:label="Registration"
+            android:label=""
             android:parentActivityName=".section.splashscreen.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
 

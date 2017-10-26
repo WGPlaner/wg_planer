@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;

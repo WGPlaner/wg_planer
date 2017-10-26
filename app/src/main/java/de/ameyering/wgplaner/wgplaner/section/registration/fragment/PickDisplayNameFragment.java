@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 public class PickDisplayNameFragment extends NavigationFragment {
     private Button btnContinue;
@@ -25,12 +26,19 @@ public class PickDisplayNameFragment extends NavigationFragment {
         btnContinue = view.findViewById(R.id.btn_continue_pick_display_name);
         inputName = view.findViewById(R.id.input_username);
 
+        String displayName = Configuration.singleton.getConfig(Configuration.Type.NAME);
+
+        if(displayName != null){
+            inputName.setText(displayName);
+        }
+
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String displayName = inputName.getText().toString();
 
                 if (displayName != null && !displayName.equals("")) {
+                    Configuration.singleton.addConfig(Configuration.Type.NAME, displayName);
                     if (mNavigationEventListener != null) {
                         mNavigationEventListener.onForward();
                     }

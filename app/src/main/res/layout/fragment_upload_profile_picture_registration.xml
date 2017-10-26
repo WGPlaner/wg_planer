@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="30dp"
     android:layout_marginRight="30dp"
-    android:layout_marginTop="40dp"
     android:orientation="vertical">
 
     <TextView
@@ -15,4 +15,41 @@
         android:text="@string/header_profile_picture"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="30sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/registration_profile_picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.46"
+            android:elevation="0dp"
+            app:srcCompat="@drawable/profile_picture_dummy" />
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_continue_upload_prfoile_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/colorButtonDark"
+        android:text="@string/btn_continue" />
+
+    <Button
+        android:id="@+id/btn_skip_upload_profile_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/colorButtonLight"
+        android:text="@string/btn_skip" />
+
 </LinearLayout>
