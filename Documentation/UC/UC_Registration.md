@@ -21,7 +21,8 @@
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-*TODO*
+
+![uc_registration_activity_diagram.png](../ActivityDiagrams/uc_registration_activity_diagram.png "Activity Diagram for use case Registration")
 
 ## 2.2 Alternative Flows
 
