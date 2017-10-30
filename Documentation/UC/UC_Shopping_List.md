@@ -6,12 +6,14 @@
 *TODO*
 
 ## 1.2 Mockup
-*TODO*
+![Mockup CheckedList](../Mockups/uc_shopping_list_CheckedList.PNG)
+![Mockup DialogWindow](../Mockups/uc_shopping_list_DialogWindow.PNG)
+![Mockup FirstPage](../Mockups/uc_shopping_list_FirstPage.PNG)
 
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-*TODO*
+![Activity Diagram](../ActivityDiagrams/uc_shopping_list_activity_diagramm.png)
 
 ## 2.2 Alternative Flows
 
