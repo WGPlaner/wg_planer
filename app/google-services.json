@@ -1,55 +1,55 @@
 {
   "project_info": {
-    "project_number": "<key>",
-    "firebase_url": "<key>",
-    "project_id": "<key>",
-    "storage_bucket": "<key>"
+    "project_number": "",
+    "firebase_url": "https://wgplaner-se.firebaseio.com",
+    "project_id": "",
+    "storage_bucket": ""
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "<key>",
+        "mobilesdk_app_id": "1:906158966278:android:e921258266df9e4c",
         "android_client_info": {
-          "package_name": "<key>"
+          "package_name": "de.ameyering.wgplaner.wgplaner"
         }
       },
       "oauth_client": [
         {
-          "client_id": "<key>",
-          "client_type": 0,
+          "client_id": "",
+          "client_type": 1,
           "android_info": {
-            "package_name": "<key>",
-            "certificate_hash": "<key>"
+            "package_name": "de.ameyering.wgplaner.wgplaner",
+            "certificate_hash": ""
           }
         },
         {
-          "client_id": "<key>",
-          "client_type": 0
+          "client_id": "",
+          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "<key>"
+          "current_key": ""
         }
       ],
       "services": {
         "analytics_service": {
-          "status": 0
+          "status": 1
         },
         "appinvite_service": {
-          "status": 0,
+          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "<key>",
-              "client_type": 0
+              "client_id": "",
+              "client_type": 3
             }
           ]
         },
         "ads_service": {
-          "status": 0
+          "status": 2
         }
       }
     }
   ],
-  "configuration_version": "<key>"
+  "configuration_version": "1"
 }
