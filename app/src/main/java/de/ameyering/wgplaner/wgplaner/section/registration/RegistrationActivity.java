@@ -113,8 +113,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 this.actualFragment = uploadProfilePictureFragment;
 
                 registrationFlow.push(stateEmailFragment);
-                backStack.push(pickDisplayNameFragment);
                 backStack.push(welcomeFragment);
+                backStack.push(pickDisplayNameFragment);
 
                 break;
             case STATE_EMAIL_SCREEN:
@@ -122,9 +122,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 this.actualFragment = stateEmailFragment;
 
-                backStack.push(uploadProfilePictureFragment);
-                backStack.push(pickDisplayNameFragment);
                 backStack.push(welcomeFragment);
+                backStack.push(pickDisplayNameFragment);
+                backStack.push(uploadProfilePictureFragment);
 
                 break;
             default:
