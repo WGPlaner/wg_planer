@@ -1,0 +1,36 @@
+{
+  "project_info": {
+  },
+  "client": [
+    {
+      "client_info": {
+        "android_client_info": {
+        }
+      },
+      "oauth_client": [
+        {
+          "android_info": {
+          }
+        },
+        {
+        }
+      ],
+      "api_key": [
+        {
+        }
+      ],
+      "services": {
+        "analytics_service": {
+        },
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+            }
+          ]
+        },
+        "ads_service": {
+        }
+      }
+    }
+  ],
+}
