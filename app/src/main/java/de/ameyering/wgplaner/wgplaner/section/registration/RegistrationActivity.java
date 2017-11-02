@@ -59,7 +59,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         actualFragment = registrationFlow.pop();
 
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left);
 
                         transaction.replace(R.id.container_registration, actualFragment);
                         transaction.commit();
@@ -163,7 +163,7 @@ public class RegistrationActivity extends AppCompatActivity {
             actualFragment = backStack.pop();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+            transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
 
             transaction.replace(R.id.container_registration, actualFragment);
             transaction.commit();

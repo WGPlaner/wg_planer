@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -34,17 +33,20 @@ public class UploadProfilePictureFragment extends NavigationFragment {
     public static final int REQ_CODE_PICK_IMAGE = 55434;
     private ImageView image;
     private Bitmap bitmap;
+    private CardView imageContainer;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_upload_profile_picture_registration, container, false);
 
+        imageContainer = view.findViewById(R.id.circular_image_container);
+
         image = view.findViewById(R.id.registration_profile_picture);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_profile_picture_click));
+                //view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_profile_picture_click));
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);

@@ -26,7 +26,7 @@ public class PickDisplayNameFragment extends NavigationFragment {
         btnContinue = view.findViewById(R.id.btn_continue_pick_display_name);
         inputName = view.findViewById(R.id.input_username);
 
-        String displayName = Configuration.singleton.getConfig(Configuration.Type.NAME);
+        String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
 
         if(displayName != null){
             inputName.setText(displayName);
@@ -38,7 +38,7 @@ public class PickDisplayNameFragment extends NavigationFragment {
                 String displayName = inputName.getText().toString();
 
                 if (displayName != null && !displayName.equals("")) {
-                    Configuration.singleton.addConfig(Configuration.Type.NAME, displayName);
+                    Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
                     if (mNavigationEventListener != null) {
                         mNavigationEventListener.onForward();
                     }

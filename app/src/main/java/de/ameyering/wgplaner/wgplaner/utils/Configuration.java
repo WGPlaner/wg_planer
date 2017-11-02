@@ -71,7 +71,11 @@ public class Configuration implements Serializable {
 
     public enum Type {
         //Declare Config-Tye here
-        NAME, EMAIL;
+        USER_UID,
+        USER_DISPLAY_NAME,
+        USER_PHOTO_URL,
+        USER_GROUP_ID,
+        USER_EMAIL_ADDRESS;
     }
 
     /*

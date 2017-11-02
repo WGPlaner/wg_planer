@@ -23,7 +23,7 @@ public class StateEMailFragment extends NavigationFragment {
 
         inputEmail = view.findViewById(R.id.input_email);
 
-        String mEmail = Configuration.singleton.getConfig(Configuration.Type.EMAIL);
+        String mEmail = Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS);
 
         if(mEmail != null){
             inputEmail.setText(mEmail);
@@ -39,7 +39,7 @@ public class StateEMailFragment extends NavigationFragment {
 
                 if(emailAdress != null){
                     //TODO: Check if email is valid
-                    Configuration.singleton.addConfig(Configuration.Type.EMAIL, emailAdress);
+                    Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, emailAdress);
 
                     if(mNavigationEventListener != null){
                         mNavigationEventListener.onForward();
