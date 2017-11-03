@@ -24,27 +24,15 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/circular_image_container"
-            android:layout_width="160dp"
+        <de.ameyering.wgplaner.wgplaner.customview.CircularImageView
+            android:id="@+id/registration_profile_picture"
+            android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_margin="5dp"
             android:clickable="true"
+            android:elevation="5dp"
             android:stateListAnimator="@animator/circular_image_view_click"
-            app:cardCornerRadius="80dp"
-            app:cardElevation="5dp">
-
-            <ImageView
-                android:id="@+id/registration_profile_picture"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/profile_picture_dummy" />
-        </android.support.v7.widget.CardView>
+            app:srcCompat="@drawable/profile_picture_dummy" />
     </LinearLayout>
 
     <Button

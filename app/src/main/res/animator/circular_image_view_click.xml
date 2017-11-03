@@ -5,7 +5,7 @@
         android:state_pressed="true">
         <objectAnimator
             android:duration="@android:integer/config_shortAnimTime"
-            android:propertyName="cardElevation"
+            android:propertyName="elevation"
             android:valueFrom="5dp"
             android:valueTo="10dp"
             android:valueType="floatType" />
@@ -13,7 +13,7 @@
     <item>
         <objectAnimator
             android:duration="@android:integer/config_shortAnimTime"
-            android:propertyName="cardElevation"
+            android:propertyName="elevation"
             android:valueFrom="10dp"
             android:valueTo="5dp"
             android:valueType="floatType" />

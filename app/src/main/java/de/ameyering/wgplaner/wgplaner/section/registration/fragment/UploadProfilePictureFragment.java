@@ -1,57 +1,48 @@
 package de.ameyering.wgplaner.wgplaner.section.registration.fragment;
 
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 public class UploadProfilePictureFragment extends NavigationFragment {
-    public static final int REQ_CODE_PICK_IMAGE = 55434;
-    private ImageView image;
+    public static final int REQ_CODE_PICK_IMAGE = 0;
+    public static final int REQ_CODE_CROP_IMAGE = 1;
+    private CircularImageView image;
     private Bitmap bitmap;
-    private CardView imageContainer;
+    private Uri selectedImage;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_upload_profile_picture_registration, container, false);
 
-        imageContainer = view.findViewById(R.id.circular_image_container);
-
         image = view.findViewById(R.id.registration_profile_picture);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_profile_picture_click));
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
-
             }
         });
 
@@ -92,50 +83,60 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         switch(requestCode) {
             case REQ_CODE_PICK_IMAGE:
                 if(resultCode == getActivity().RESULT_OK){
-                    Uri selectedImage = data.getData();
-                    try {
-                        Bitmap profilePicture = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
-                        bitmap = getCroppedBitmap(profilePicture, profilePicture.getWidth());
+
+                    selectedImage = data.getData();
+
+                    Intent intent = new Intent("com.android.camera.action.CROP");
+                    intent.setType("image/*");
+
+                    List<ResolveInfo> activities = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+
+                    if(activities.size() == 0){
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+
+                            image.setImageBitmap(bitmap);
+                            image.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_load_new_profile_picture));
+                        } catch (IOException e){
+                            Toast.makeText(getContext(), "Failed to load Picture", Toast.LENGTH_LONG).show();
+                        }
+                        return;
+                    } else {
+                        intent.setData(selectedImage);
+                        intent.putExtra("outputX", 200);
+                        intent.putExtra("outputY", 200);
+                        intent.putExtra("aspectX", 1);
+                        intent.putExtra("aspectY", 1);
+                        intent.putExtra("scale", true);
+                        intent.putExtra("return-data", true);
+
+                        startActivityForResult(intent, REQ_CODE_CROP_IMAGE);
+                    }
+                }
+                break;
+            case REQ_CODE_CROP_IMAGE:
+                if(resultCode == getActivity().RESULT_OK){
+                    Bundle extras = data.getExtras();
+
+                    if(extras != null){
+                        bitmap = extras.getParcelable("data");
 
                         image.setImageBitmap(bitmap);
                         image.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_load_new_profile_picture));
-                    } catch (IOException e){
-                        Toast.makeText(getContext(), "Failed to load Picture", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    if(selectedImage != null){
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+
+                            image.setImageBitmap(bitmap);
+                            image.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_load_new_profile_picture));
+                        } catch (IOException e){
+                            Toast.makeText(getContext(), "Failed to load Picture", Toast.LENGTH_LONG).show();
+                        }
+                        return;
                     }
                 }
         }
-    }
-
-    private Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
-        Bitmap sbmp;
-
-        if (bmp.getWidth() != radius || bmp.getHeight() != radius) {
-            float smallest = Math.min(bmp.getWidth(), bmp.getHeight());
-            float factor = smallest / radius;
-            sbmp = Bitmap.createScaledBitmap(bmp,
-                (int) (bmp.getWidth() / factor),
-                (int) (bmp.getHeight() / factor), false);
-        } else {
-            sbmp = bmp;
-        }
-
-        Bitmap output = Bitmap.createBitmap(radius, radius, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final String color = "#BAB399";
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, radius, radius);
-
-        paint.setAntiAlias(true);
-        paint.setFilterBitmap(true);
-        paint.setDither(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(Color.parseColor(color));
-        canvas.drawCircle(radius / 2 + 0.7f, radius / 2 + 0.7f,
-            radius / 2 + 0.1f, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(sbmp, rect, rect, paint);
-
-        return output;
     }
 }
