@@ -106,7 +106,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
 
                     List<ResolveInfo> activities = getActivity().getPackageManager().queryIntentActivities(intent, 0);
 
-                    if (activities.size() == 0) {
+                    if (activities.isEmpty()) {
                         try {
                             bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
                             bitmap = scaleBitmap(bitmap);

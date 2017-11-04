@@ -183,12 +183,7 @@ public class CircularImageView extends AppCompatImageView {
                 float rectangularTriangleC = (float) Math.sqrt(Math.pow(rectangularTriangleA,
                             2) + Math.pow(rectangularTriangleB, 2));
 
-                if (rectangularTriangleC <= mDrawableRadius) {
-                    return true;
-
-                } else {
-                    return false;
-                }
+                return (rectangularTriangleC <= mDrawableRadius);
             }
         }
     }

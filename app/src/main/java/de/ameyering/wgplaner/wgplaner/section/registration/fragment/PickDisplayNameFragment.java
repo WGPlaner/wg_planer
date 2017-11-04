@@ -37,7 +37,7 @@ public class PickDisplayNameFragment extends NavigationFragment {
             public void onClick(View view) {
                 String displayName = inputName.getText().toString();
 
-                if (displayName != null && !displayName.equals("")) {
+                if (displayName != null && !displayName.isEmpty()) {
                     Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
 
                     if (mNavigationEventListener != null) {
