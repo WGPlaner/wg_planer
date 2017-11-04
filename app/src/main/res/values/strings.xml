@@ -15,17 +15,29 @@
     </string>
     <string name="title_activity_home">Home</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Settings</string>on
 
     <!-- String related to NavView -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_shopping_list">Shopping List</string>
     <string name="nav_accounting">Accounting</string>
     <string name="nav_rosters">Rosters</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_pinboard">Pinboard</string>
+
+    <!-- Registration Strings -->
+    <string name="nav_back">Navigate back</string>
+    <string name="header_welcome">Welcome!</string>
+    <string name="header_username">Please pick a descriptive Username so that your friends recognize you</string>
+    <string name="header_profile_picture">You can upload a profile picture, if you want to</string>
+    <string name="header_email_address">You can state an email address, if you want to</string>
+    <string name="text_welcome">You\'re about to register for the WGPlaner Android Application.\n\nWe will guide you through the Registration progress...</string>
+    <string name="btn_continue">Continue</string>
+    <string name="btn_skip">Skip</string>
+    <string name="input_username_hint">Username</string>
+    <string name="input_email_hint">EMail</string>
+    <string name="warning_input_username_empty">Please pick a Username!</string>
 
 </resources>

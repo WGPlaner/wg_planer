@@ -1,6 +1,8 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +13,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.jar.Manifest;
+
+import de.ameyering.wgplaner.wgplaner.R;
 
 public class Configuration implements Serializable {
     public static Configuration singleton;
@@ -19,6 +24,7 @@ public class Configuration implements Serializable {
     private static ConfigFileHandler handler;
 
     private HashMap<Type, String> configs; //Stores configurations
+    private byte[] profilePicture;
 
 
     public static void initConfig(Context context) {
@@ -44,6 +50,20 @@ public class Configuration implements Serializable {
 
     public String getConfig(Type type) {
         return configs.get(type);
+    }
+
+    public void setProfilePicture(byte[] byteArray) {
+        this.profilePicture = byteArray;
+        handler.writeConfig(singleton);
+    }
+
+    public Bitmap getProfilePicture(Context context) {
+        if (profilePicture != null) {
+            return BitmapFactory.decodeByteArray(profilePicture, 0, profilePicture.length);
+
+        } else {
+            return BitmapFactory.decodeResource(context.getResources(), R.drawable.profile_picture_dummy);
+        }
     }
 
     /*
