@@ -17,7 +17,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginTop="30dp">
 
         <EditText
@@ -33,11 +33,22 @@
         android:id="@+id/btn_continue_state_email_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorButtonDark"
         android:text="@string/btn_continue" />
+
+    <Button
+        android:id="@+id/btn_skip_state_email_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/colorButtonLight"
+        android:text="@string/btn_skip" />
 
 </LinearLayout>

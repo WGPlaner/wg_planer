@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.jar.Manifest;
 
 import de.ameyering.wgplaner.wgplaner.R;
 
@@ -51,14 +52,15 @@ public class Configuration implements Serializable {
         return configs.get(type);
     }
 
-    public void setProfilePicture(byte[] byteArray){
+    public void setProfilePicture(byte[] byteArray) {
         this.profilePicture = byteArray;
         handler.writeConfig(singleton);
     }
 
-    public Bitmap getProfilePicture(Context context){
-        if(profilePicture != null){
+    public Bitmap getProfilePicture(Context context) {
+        if (profilePicture != null) {
             return BitmapFactory.decodeByteArray(profilePicture, 0, profilePicture.length);
+
         } else {
             return BitmapFactory.decodeResource(context.getResources(), R.drawable.profile_picture_dummy);
         }

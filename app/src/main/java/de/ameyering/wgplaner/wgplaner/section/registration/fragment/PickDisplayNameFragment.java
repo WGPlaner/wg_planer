@@ -28,7 +28,7 @@ public class PickDisplayNameFragment extends NavigationFragment {
 
         String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
 
-        if(displayName != null){
+        if (displayName != null) {
             inputName.setText(displayName);
         }
 
@@ -39,6 +39,7 @@ public class PickDisplayNameFragment extends NavigationFragment {
 
                 if (displayName != null && !displayName.equals("")) {
                     Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
+
                     if (mNavigationEventListener != null) {
                         mNavigationEventListener.onForward();
                     }

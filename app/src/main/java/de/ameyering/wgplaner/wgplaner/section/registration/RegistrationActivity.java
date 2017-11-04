@@ -51,35 +51,37 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         NavigationFragment.OnNavigationEventListener navigationEventListener = new
-            NavigationFragment.OnNavigationEventListener() {
-                @Override
-                public void onForward() {
-                    if (registrationFlow.size() > 0) {
-                        backStack.push(actualFragment);
-                        actualFragment = registrationFlow.pop();
+        NavigationFragment.OnNavigationEventListener() {
+            @Override
+            public void onForward() {
+                if (registrationFlow.size() > 0) {
+                    backStack.push(actualFragment);
+                    actualFragment = registrationFlow.pop();
 
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left);
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+                        R.anim.anim_fragment_exit_to_left);
 
-                        transaction.replace(R.id.container_registration, actualFragment);
-                        transaction.commit();
+                    transaction.replace(R.id.container_registration, actualFragment);
+                    transaction.commit();
 
-                        if (backStack.size() > 0) {
-                            toolbar.setVisibility(View.VISIBLE);
-                        }
-
-                    } else {
-                        //TODO: handle Registration end
+                    if (backStack.size() > 0) {
+                        toolbar.setVisibility(View.VISIBLE);
                     }
-                }
 
-                @Override
-                public void onBack() {
-                    handleBackNavigation();
+                } else {
+                    //TODO: handle Registration end
                 }
-            };
+            }
+
+            @Override
+            public void onBack() {
+                handleBackNavigation();
+            }
+        };
 
         int actualFragment = WELCOME_SCREEN;
+
         if (savedInstanceState != null) {
             actualFragment = savedInstanceState.getInt(ACTUAL_FRAGMENT_TAG);
         }
@@ -107,6 +109,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 backStack.push(welcomeFragment);
 
                 break;
+
             case UPLOAD_PROFILE_PICTURE_SCREEN:
                 toolbar.setVisibility(View.VISIBLE);
 
@@ -117,6 +120,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 backStack.push(pickDisplayNameFragment);
 
                 break;
+
             case STATE_EMAIL_SCREEN:
                 toolbar.setVisibility(View.VISIBLE);
 
@@ -127,6 +131,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 backStack.push(uploadProfilePictureFragment);
 
                 break;
+
             default:
                 toolbar.setVisibility(View.INVISIBLE);
 
@@ -163,7 +168,8 @@ public class RegistrationActivity extends AppCompatActivity {
             actualFragment = backStack.pop();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
+            transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_left,
+                R.anim.anim_fragment_exit_to_right);
 
             transaction.replace(R.id.container_registration, actualFragment);
             transaction.commit();
@@ -182,15 +188,19 @@ public class RegistrationActivity extends AppCompatActivity {
                 case 3:
                     outState.putInt(ACTUAL_FRAGMENT_TAG, WELCOME_SCREEN);
                     break;
+
                 case 2:
                     outState.putInt(ACTUAL_FRAGMENT_TAG, PICK_DISPLAY_NAME_SCREEN);
                     break;
+
                 case 1:
                     outState.putInt(ACTUAL_FRAGMENT_TAG, UPLOAD_PROFILE_PICTURE_SCREEN);
                     break;
+
                 case 0:
                     outState.putInt(ACTUAL_FRAGMENT_TAG, STATE_EMAIL_SCREEN);
                     break;
+
                 default:
                     outState.putInt(ACTUAL_FRAGMENT_TAG, -1);
             }
