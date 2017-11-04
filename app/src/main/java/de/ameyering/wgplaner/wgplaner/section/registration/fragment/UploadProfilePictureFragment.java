@@ -67,9 +67,6 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         Button buttonContinue = view.findViewById(R.id.btn_continue_upload_prfoile_picture);
         Button buttonSkip = view.findViewById(R.id.btn_skip_upload_profile_picture);
 
-        ImageButton rotateLeft = view.findViewById(R.id.registration_profile_picture_rotate_left);
-        ImageButton rotateRight = view.findViewById(R.id.registration_profile_picture_rotate_right);
-
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
