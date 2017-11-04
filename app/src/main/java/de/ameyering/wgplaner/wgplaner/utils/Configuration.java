@@ -72,7 +72,6 @@ public class Configuration implements Serializable {
      */
 
     public enum Type {
-        //Declare Config-Tye here
         USER_UID,
         USER_DISPLAY_NAME,
         USER_PHOTO_URL,
