@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import de.ameyering.wgplaner.wgplaner.structure.User;
 
 public abstract class Server {
-    private static final String baseUrl = "https://api.wgplaner.ameyering.de";
+    private static final String baseUrl = "https://api.wgplaner.ameyerfdsing.de";
 
     @Nullable
     public static User getUser(String uid) {
