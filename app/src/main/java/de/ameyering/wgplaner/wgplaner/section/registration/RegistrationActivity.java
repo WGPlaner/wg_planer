@@ -1,19 +1,31 @@
 package de.ameyering.wgplaner.wgplaner.section.registration;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import java.util.Stack;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.NavigationFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.PickDisplayNameFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.StateEMailFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.UploadProfilePictureFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
+import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import io.swagger.client.ApiException;
+import io.swagger.client.api.UserApi;
+import io.swagger.client.model.User;
 
 public class RegistrationActivity extends AppCompatActivity {
     private static String ACTUAL_FRAGMENT_TAG = "ActualFragment";
@@ -70,7 +82,33 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    //TODO: handle Registration end
+                    UserApi api = new UserApi();
+
+                    User user = new User();
+                    user.setUid(Configuration.singleton.getConfig(Configuration.Type.USER_UID));
+                    user.setDisplayName(Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME));
+                    user.setEmail(Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS));
+
+                    api.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
+
+                    api.createUser(user, new Response.Listener<User>() {
+                        @Override
+                        public void onResponse(User response) {
+                            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    });
                 }
             }
 

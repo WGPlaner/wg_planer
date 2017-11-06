@@ -49,7 +49,10 @@ public class Configuration implements Serializable {
     }
 
     public String getConfig(Type type) {
-        return configs.get(type);
+        if(configs.containsKey(type)) {
+            return configs.get(type);
+        }
+        return null;
     }
 
     public void setProfilePicture(byte[] byteArray) {
