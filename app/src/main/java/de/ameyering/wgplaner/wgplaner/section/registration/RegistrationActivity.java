@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import java.util.Stack;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -88,8 +89,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     user.setUid(Configuration.singleton.getConfig(Configuration.Type.USER_UID));
                     user.setDisplayName(Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME));
                     user.setEmail(Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS));
-
-                    api.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
 
                     api.createUser(user, new Response.Listener<User>() {
                         @Override

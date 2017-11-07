@@ -84,7 +84,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (uid != null) {
 
             UserApi api = new UserApi();
-            api.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
 
             api.getUser(uid, new Response.Listener<User>() {
                 @Override
