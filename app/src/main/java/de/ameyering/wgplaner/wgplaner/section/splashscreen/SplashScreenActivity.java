@@ -1,13 +1,9 @@
 package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -22,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
@@ -76,7 +73,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     initialize();
                     getData(uid);
 
-                    Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 }
