@@ -1,6 +1,7 @@
 package de.ameyering.wgplaner.wgplaner.section.registration;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,14 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.Stack;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.NavigationFragment;
@@ -24,6 +26,7 @@ import de.ameyering.wgplaner.wgplaner.section.registration.fragment.StateEMailFr
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.UploadProfilePictureFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.model.User;
@@ -90,24 +93,38 @@ public class RegistrationActivity extends AppCompatActivity {
                     user.setDisplayName(Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME));
                     user.setEmail(Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS));
 
-                    api.createUser(user, new Response.Listener<User>() {
-                        @Override
-                        public void onResponse(User response) {
-                            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                    });
+                    try {
+                        api.createUserAsync(user, new ApiCallback<User>() {
+                            @Override
+                            public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
+                                Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+
+                            }
+
+                            @Override
+                            public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
+
+                            }
+                        });
+                    } catch (ApiException e){
+
+                    }
                 }
             }
 
@@ -241,6 +258,63 @@ public class RegistrationActivity extends AppCompatActivity {
                 default:
                     outState.putInt(ACTUAL_FRAGMENT_TAG, -1);
             }
+        }
+    }
+
+    private class UpdateUser extends AsyncTask<User, Void, Void>{
+
+        @Override
+        protected Void doInBackground(User... users) {
+            if(users != null && users.length > 0){
+                User user = users[0];
+                URL url;
+                HttpURLConnection connection = null;
+                try{
+                    url = new URL("https://api.wgplaner.ameyering.de/v0.1/users");
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                    connection.setRequestProperty("User-Agent", "Swagger-Codegen/1.0.0/android");
+                    connection.setUseCaches(false);
+                    connection.setDoOutput(true);
+                    String body = "{\"uid\": \"" + user.getUid() + "\", \"displayName\": \"" + user.getDisplayName();
+
+                    if(user.getEmail() != null){
+                        body = body + "\", \"email\": \"" + user.getEmail();
+                    }
+
+                    body = body + "\"}";
+
+                    OutputStream out = new BufferedOutputStream(connection.getOutputStream());
+                    out.write(body.getBytes("UTF-8"));
+
+                    int responseCode = connection.getResponseCode();
+                    String response = connection.getResponseMessage();
+
+                    switch(responseCode){
+                        case 200:
+                            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        default:
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                    }
+                } catch (MalformedURLException u){
+
+                } catch (IOException e){
+
+                } finally {
+                    connection.disconnect();
+                }
+            }
+
+            return null;
         }
     }
 }
