@@ -16,6 +16,5 @@
         android:indeterminateBehavior="cycle"
         android:indeterminateDuration="@android:integer/config_longAnimTime"
         android:indeterminateTint="@color/colorBackground"
-        android:progressTint="@color/colorBackground"
         android:visibility="visible" />
 </RelativeLayout>

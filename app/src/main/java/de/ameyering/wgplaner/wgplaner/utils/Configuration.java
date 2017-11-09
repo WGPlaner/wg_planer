@@ -80,7 +80,7 @@ public class Configuration implements Serializable {
         USER_DISPLAY_NAME,
         USER_PHOTO_URL,
         USER_GROUP_ID,
-        USER_EMAIL_ADDRESS;
+        USER_EMAIL_ADDRESS
     }
 
     /*

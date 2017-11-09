@@ -86,7 +86,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void initializeUser(String uid) {
         if (uid != null) {
-
             UserApi api = new UserApi();
 
             ApiKeyAuth firebaseAuth = (ApiKeyAuth) api.getApiClient().getAuthentication("FirebaseIDAuth");
@@ -129,13 +128,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
                         if (result != null) {
-                            if (result.getGroupUid() == null) {
-                                //TODO: Handle User not assigned to group
-                            } else {
-                                Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                            Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
                     }
 

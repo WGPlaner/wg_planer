@@ -1,7 +1,6 @@
 package de.ameyering.wgplaner.wgplaner.section.registration;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,12 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -264,67 +257,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 default:
                     outState.putInt(ACTUAL_FRAGMENT_TAG, -1);
             }
-        }
-    }
-
-    private class UpdateUser extends AsyncTask<User, Void, Void> {
-
-        @Override
-        protected Void doInBackground(User... users) {
-            if (users != null && users.length > 0) {
-                User user = users[0];
-                URL url;
-                HttpURLConnection connection = null;
-
-                try {
-                    url = new URL("https://api.wgplaner.ameyering.de/v0.1/users");
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("POST");
-                    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                    connection.setRequestProperty("User-Agent", "Swagger-Codegen/1.0.0/android");
-                    connection.setUseCaches(false);
-                    connection.setDoOutput(true);
-                    String body = "{\"uid\": \"" + user.getUid() + "\", \"displayName\": \"" + user.getDisplayName();
-
-                    if (user.getEmail() != null) {
-                        body = body + "\", \"email\": \"" + user.getEmail();
-                    }
-
-                    body = body + "\"}";
-
-                    OutputStream out = new BufferedOutputStream(connection.getOutputStream());
-                    out.write(body.getBytes("UTF-8"));
-
-                    int responseCode = connection.getResponseCode();
-                    String response = connection.getResponseMessage();
-
-                    switch (responseCode) {
-                        case 200:
-                            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                            break;
-
-                        default:
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed),
-                                        Toast.LENGTH_LONG).show();
-                                }
-                            });
-                    }
-
-                } catch (MalformedURLException u) {
-
-                } catch (IOException e) {
-
-                } finally {
-                    connection.disconnect();
-                }
-            }
-
-            return null;
         }
     }
 }
