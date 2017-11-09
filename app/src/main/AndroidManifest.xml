@@ -4,10 +4,10 @@
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- Read and Write App-internal Storage -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -27,30 +27,49 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="api.wgplaner.ameyering.de" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="api.wgplaner.ameyering.de" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".section.home.HomeActivity"
             android:label="@string/title_activity_home"
             android:parentActivityName=".section.splashscreen.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".section.registration.RegistrationActivity"
+        <activity
+            android:name=".section.registration.RegistrationActivity"
             android:label=""
             android:parentActivityName=".section.splashscreen.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
 
-        <service
-            android:name=".utils.NotificationService">
+        <service android:name=".utils.NotificationService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <service
-            android:name=".utils.WGPlanerInstanceIdService">
+        <service android:name=".utils.WGPlanerInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

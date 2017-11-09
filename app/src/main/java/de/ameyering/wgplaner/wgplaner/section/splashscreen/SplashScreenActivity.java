@@ -26,6 +26,7 @@ import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.UserApi;
+import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.User;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -86,6 +87,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             UserApi api = new UserApi();
 
+            ApiKeyAuth firebaseAuth = (ApiKeyAuth) api.getApiClient().getAuthentication("FirebaseIDAuth");
+            firebaseAuth.setApiKey(uid);
+
             try {
                 api.getUserAsync(uid, new ApiCallback<User>() {
                     @Override
@@ -119,9 +123,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
                         if (result != null) {
-                            Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
+                            if(result.getGroupUid() == null){
+                                //TODO: Handle User not assigned to group
+                            } else {
+                                Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
                     }
 

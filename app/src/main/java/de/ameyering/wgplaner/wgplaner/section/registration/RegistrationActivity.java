@@ -29,6 +29,7 @@ import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.UserApi;
+import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.User;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -92,6 +93,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     user.setUid(Configuration.singleton.getConfig(Configuration.Type.USER_UID));
                     user.setDisplayName(Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME));
                     user.setEmail(Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS));
+
+                    ApiKeyAuth firebaseAuth = (ApiKeyAuth) api.getApiClient().getAuthentication("FirebaseIDAuth");
+                    firebaseAuth.setApiKey(user.getUid());
 
                     try {
                         api.createUserAsync(user, new ApiCallback<User>() {
