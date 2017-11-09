@@ -28,7 +28,8 @@ public class SetUpFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_set_up, container, false);
 
         key = view.findViewById(R.id.set_up_input_group_access_key);
@@ -59,8 +60,8 @@ public class SetUpFragment extends Fragment {
         return view;
     }
 
-    public void setOnReadyListener(OnReadyListener listener){
-        if(listener != null){
+    public void setOnReadyListener(OnReadyListener listener) {
+        if (listener != null) {
             this.listener = listener;
         }
     }
@@ -72,9 +73,9 @@ public class SetUpFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-            case REQ_CODE_CREATE_GROUP:{
-                if(resultCode == Activity.RESULT_OK){
+        switch (requestCode) {
+            case REQ_CODE_CREATE_GROUP: {
+                if (resultCode == Activity.RESULT_OK) {
                     listener.onReady();
                 }
             }

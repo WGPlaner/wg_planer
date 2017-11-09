@@ -95,14 +95,14 @@ public class SetUpGroupActivity extends AppCompatActivity {
         Currency currency = Currency.getInstance(Locale.getDefault());
         int pos = -1;
 
-        for(int i = 0; i < currencies.size(); i++){
-            if(currencies.get(i).equals(currency)){
+        for (int i = 0; i < currencies.size(); i++) {
+            if (currencies.get(i).equals(currency)) {
                 pos = i;
                 break;
             }
         }
 
-        if(pos != -1){
+        if (pos != -1) {
             currencySpinner.setSelection(pos);
         }
 
@@ -130,24 +130,26 @@ public class SetUpGroupActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch(id){
+        switch (id) {
             case R.id.add_item_save:
-                if(checkInputsAndReturn()){
+                if (checkInputsAndReturn()) {
                     Intent data = new Intent();
                     setResult(RESULT_OK, data);
                     finish();
                 }
+
                 return true;
         }
 
         return false;
     }
 
-    private boolean checkInputsAndReturn(){
+    private boolean checkInputsAndReturn() {
         groupName = editGroupName.getText().toString();
 
-        if(groupName.isEmpty()){
-            Toast.makeText(SetUpGroupActivity.this, getString(R.string.set_up_group_name_error), Toast.LENGTH_LONG).show();
+        if (groupName.isEmpty()) {
+            Toast.makeText(SetUpGroupActivity.this, getString(R.string.set_up_group_name_error),
+                Toast.LENGTH_LONG).show();
         }
 
         return false;
@@ -155,9 +157,9 @@ public class SetUpGroupActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(requestCode){
-            case REQ_CODE_PICK_IMAGE:{
-                if(resultCode == RESULT_OK){
+        switch (requestCode) {
+            case REQ_CODE_PICK_IMAGE: {
+                if (resultCode == RESULT_OK) {
                     try {
                         selectedImage = data.getData();
 
@@ -166,8 +168,9 @@ public class SetUpGroupActivity extends AppCompatActivity {
 
                         groupPicture.setImageBitmap(bitmap);
                         groupPicture.startAnimation(AnimationUtils.loadAnimation(this,
-                            R.anim.anim_load_new_profile_picture));
-                    } catch (IOException e){
+                                R.anim.anim_load_new_profile_picture));
+
+                    } catch (IOException e) {
                         Toast.makeText(this, "Failed to load picture", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -186,16 +189,18 @@ public class SetUpGroupActivity extends AppCompatActivity {
         return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
     }
 
-    private ArrayList<Currency> transformLocale(Locale[] locales){
+    private ArrayList<Currency> transformLocale(Locale[] locales) {
         ArrayList<Currency> currencies = new ArrayList<>();
 
-        for(Locale locale: locales){
-            try{
+        for (Locale locale : locales) {
+            try {
                 Currency currency = Currency.getInstance(locale);
-                if(!currencies.contains(currency)) {
+
+                if (!currencies.contains(currency)) {
                     currencies.add(currency);
                 }
-            } catch (IllegalArgumentException e){
+
+            } catch (IllegalArgumentException e) {
 
             }
         }

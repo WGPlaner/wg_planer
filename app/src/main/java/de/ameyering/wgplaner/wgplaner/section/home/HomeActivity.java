@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if(Configuration.singleton.getConfig(Configuration.Type.USER_GROUP_ID) == null){
+        if (Configuration.singleton.getConfig(Configuration.Type.USER_GROUP_ID) == null) {
             isInSetUp = true;
             SetUpFragment setUpFragment = new SetUpFragment();
             setUpFragment.setOnReadyListener(new SetUpFragment.OnReadyListener() {
@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity
             transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
             transaction.replace(R.id.container, setUpFragment);
             transaction.commit();
+
         } else {
             navigationView.setCheckedItem(R.id.nav_dashboard);
         }
@@ -98,12 +99,12 @@ public class HomeActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the HomeActivity/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
+        int id = item.getItemId();
 
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
-            }
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
         return false;
     }
@@ -113,7 +114,7 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
 
-        if(!isInSetUp) {
+        if (!isInSetUp) {
             int id = item.getItemId();
 
             if (id == R.id.nav_dashboard) {
@@ -147,6 +148,7 @@ public class HomeActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             return true;
         }
+
         return false;
     }
 }

@@ -18,7 +18,8 @@ public class LocaleSpinnerAdapter extends ArrayAdapter {
     private Context context;
     private ArrayList<Currency> currencies = new ArrayList<>();
 
-    public LocaleSpinnerAdapter(Context context, int textViewRessourceId, ArrayList<Currency> currencies){
+    public LocaleSpinnerAdapter(Context context, int textViewRessourceId,
+        ArrayList<Currency> currencies) {
         super(context, textViewRessourceId);
         this.context = context;
         this.currencies = currencies;
@@ -32,7 +33,8 @@ public class LocaleSpinnerAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view =  LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
+        View view =  LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_item,
+                parent, false);
         TextView text = view.findViewById(android.R.id.text1);
 
         text.setText(currencies.get(position).getSymbol());
@@ -41,7 +43,8 @@ public class LocaleSpinnerAdapter extends ArrayAdapter {
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
+        convertView = LayoutInflater.from(parent.getContext()).inflate(
+                android.R.layout.simple_spinner_dropdown_item, parent, false);
         TextView text = convertView.findViewById(android.R.id.text1);
 
         text.setText(currencies.get(position).getSymbol());
