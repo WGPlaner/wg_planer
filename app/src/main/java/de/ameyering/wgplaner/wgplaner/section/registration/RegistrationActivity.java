@@ -104,7 +104,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed),
+                                            Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -126,7 +127,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
                             }
                         });
-                    } catch (ApiException e){
+
+                    } catch (ApiException e) {
 
                     }
                 }
@@ -265,15 +267,16 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
-    private class UpdateUser extends AsyncTask<User, Void, Void>{
+    private class UpdateUser extends AsyncTask<User, Void, Void> {
 
         @Override
         protected Void doInBackground(User... users) {
-            if(users != null && users.length > 0){
+            if (users != null && users.length > 0) {
                 User user = users[0];
                 URL url;
                 HttpURLConnection connection = null;
-                try{
+
+                try {
                     url = new URL("https://api.wgplaner.ameyering.de/v0.1/users");
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
@@ -283,7 +286,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     connection.setDoOutput(true);
                     String body = "{\"uid\": \"" + user.getUid() + "\", \"displayName\": \"" + user.getDisplayName();
 
-                    if(user.getEmail() != null){
+                    if (user.getEmail() != null) {
                         body = body + "\", \"email\": \"" + user.getEmail();
                     }
 
@@ -295,23 +298,26 @@ public class RegistrationActivity extends AppCompatActivity {
                     int responseCode = connection.getResponseCode();
                     String response = connection.getResponseMessage();
 
-                    switch(responseCode){
+                    switch (responseCode) {
                         case 200:
                             Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
                             startActivity(intent);
                             finish();
                             break;
+
                         default:
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed),
+                                        Toast.LENGTH_LONG).show();
                                 }
                             });
                     }
-                } catch (MalformedURLException u){
 
-                } catch (IOException e){
+                } catch (MalformedURLException u) {
+
+                } catch (IOException e) {
 
                 } finally {
                     connection.disconnect();

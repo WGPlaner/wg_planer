@@ -49,9 +49,10 @@ public class Configuration implements Serializable {
     }
 
     public String getConfig(Type type) {
-        if(configs.containsKey(type)) {
+        if (configs.containsKey(type)) {
             return configs.get(type);
         }
+
         return null;
     }
 

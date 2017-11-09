@@ -18,17 +18,19 @@ public class NotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-            .setSmallIcon(R.drawable.ic_nav_dashboard)
-            .setContentTitle("WGPlaner")
-            .setContentText("Hallo User!");
+        .setSmallIcon(R.drawable.ic_nav_dashboard)
+        .setContentTitle("WGPlaner")
+        .setContentText("Hallo User!");
 
         Intent intent = new Intent(this, SplashScreenActivity.class);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(
+                NOTIFICATION_SERVICE);
         notificationManager.notify(1, mBuilder.build());
 
         Log.d("Messaging", "Messaging:success");

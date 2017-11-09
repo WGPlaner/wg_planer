@@ -52,6 +52,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         FirebaseUser currentUser = mAuth.getCurrentUser();
                         onUser(currentUser);
                     }
+
                 } else {
                     Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:failure");
                     Toast.makeText(SplashScreenActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
@@ -71,6 +72,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void onUser(FirebaseUser user) {
         initialize();
+
         if (user != null) {
             uid = user.getUid();
 
@@ -99,20 +101,24 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(SplashScreenActivity.this, getString(R.string.user_unauthorized), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SplashScreenActivity.this, getString(R.string.user_unauthorized),
+                                            Toast.LENGTH_LONG).show();
                                     }
                                 });
                                 break;
+
                             case 404:
                                 Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
                                 startActivity(intent);
                                 finish();
                                 break;
+
                             default:
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(SplashScreenActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SplashScreenActivity.this, getString(R.string.server_connection_failed),
+                                            Toast.LENGTH_LONG).show();
                                         //finish();
                                     }
                                 });
@@ -123,7 +129,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
                         if (result != null) {
-                            if(result.getGroupUid() == null){
+                            if (result.getGroupUid() == null) {
                                 //TODO: Handle User not assigned to group
                             } else {
                                 Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
@@ -143,7 +149,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     }
                 });
-            } catch (ApiException e){
+
+            } catch (ApiException e) {
 
             }
         }
