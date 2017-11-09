@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    android:backgroundTint="@color/colorBackground"
+    android:background="@color/colorBackground"
     android:orientation="vertical">
 
     <de.ameyering.wgplaner.wgplaner.customview.CircularImageView
@@ -16,6 +16,7 @@
         app:srcCompat="@color/colorBackground" />
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/set_up_group_name_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"

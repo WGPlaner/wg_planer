@@ -87,7 +87,7 @@
                                 android:backgroundTint="@color/cardview_light_background"
                                 android:elevation="0dp"
                                 android:scaleType="fitCenter"
-                                app:srcCompat="@drawable/ic_input" />
+                                android:src="@drawable/ic_input"/>
 
                         </LinearLayout>
 
