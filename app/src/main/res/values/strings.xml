@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">WGPlaner</string>
+    <string name="set_up_group_activity">Create Group</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -40,6 +41,23 @@
     <string name="input_email_hint">EMail</string>
     <string name="warning_input_username_empty">Please pick a Username!</string>
 
+    <!-- SetUp Strings -->
+    <string name="set_up_group_name_hint">Group name</string>
+    <string name="set_up_group_name_error">Please enter a group name</string>
+    <string name="set_up_group_currency_hint">Group currency</string>
+    <string name="set_up_group_title">SetUp group</string>
+    <string name="set_up_group_header">Hi!</string>
+    <string name="set_up_group_body_key">To use all available features of the WGPlaner Application you have to be member of a group.\n\nTherefore you can join a group by copying the key...</string>
+    <string name="set_up_group_body_create">...or create a group</string>
+    <string name="set_up_key_hint">Key</string>
+    <string name="set_up_btn_create">Create</string>
+
+    <string name="full_screen_add_save_item">SAVE</string>
+
+    <string name="dialog_discard_message">Discard draft?</string>
+    <string name="dialog_discard_positive">Discard</string>
+    <string name="dialog_discard_negative">Cancel</string>
+  
     <!-- Server-Result Strings -->
     <string name="user_unauthorized">Unauthorized</string>
     <string name="server_connection_failed">Connection to Server failed</string>

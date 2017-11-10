@@ -79,7 +79,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             if (Configuration.singleton.getConfig(Configuration.Type.USER_UID) != uid) {
                 Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
             }
-
             initializeUser(uid);
         }
     }
