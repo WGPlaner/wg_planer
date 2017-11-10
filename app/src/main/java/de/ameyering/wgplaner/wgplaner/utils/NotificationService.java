@@ -10,7 +10,11 @@ public class NotificationService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
         Log.d("Messaging", "Messaging:success");
+    }
+
+    @Override
+    public void onDeletedMessages() {
+        super.onDeletedMessages();
     }
 }

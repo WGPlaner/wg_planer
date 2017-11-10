@@ -1,55 +1,56 @@
 {
-  "project_info": {
-    "project_number": "",
-    "firebase_url": "https://wgplaner-se.firebaseio.com",
-    "project_id": "",
-    "storage_bucket": ""
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:906158966278:android:e921258266df9e4c",
-        "android_client_info": {
-          "package_name": "de.ameyering.wgplaner.wgplaner"
-        }
-      },
-      "oauth_client": [
+    "project_info": {
+        "project_number": "906158966278",
+        "firebase_url": "https://wgplaner-se.firebaseio.com",
+        "project_id": "wgplaner-se",
+        "storage_bucket": "wgplaner-se.appspot.com"
+    },
+    "client": [
         {
-          "client_id": "",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "de.ameyering.wgplaner.wgplaner",
-            "certificate_hash": ""
-          }
-        },
-        {
-          "client_id": "",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": ""
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "",
-              "client_type": 3
+            "client_info": {
+                "mobilesdk_app_id": "1:906158966278:android:e921258266df9e4c",
+                "android_client_info": {
+                    "package_name": "de.ameyering.wgplaner.wgplaner"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "906158966278-eqiehtcsrp8kv7t2o9pc1gr2m2fn1huv.apps.googleusercontent.com",
+                    "client_type": 1,
+                    "android_info": {
+                        "package_name": "de.ameyering.wgplaner.wgplaner",
+                        "certificate_hash": "df13ef41244732c90d88a6a240aa1ad97313f268"
+                    }
+                },
+                {
+                    "client_id": "906158966278-6s4kcuooeegvasip9j4ls8fsg87esc20.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyDt9mK8f9rZMd9NOztj702rmaieFcGXdiA"
+                }
+            ],
+            "services": {
+                "analytics_service": {
+                    "status": 1
+                },
+                "appinvite_service": {
+                    "status": 2,
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "906158966278-6s4kcuooeegvasip9j4ls8fsg87esc20.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                },
+                "ads_service": {
+                    "status": 2
+                }
             }
-          ]
-        },
-        "ads_service": {
-          "status": 2
         }
-      }
-    }
-  ],
-  "configuration_version": "1"
+    ],
+    "configuration_version": "1"
 }
+
