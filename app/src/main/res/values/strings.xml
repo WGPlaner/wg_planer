@@ -40,7 +40,7 @@
     <string name="input_email_hint">EMail</string>
     <string name="warning_input_username_empty">Please pick a Username!</string>
 
-    <!-- Server Result Strings -->
+    <!-- Server-Result Strings -->
     <string name="user_unauthorized">Unauthorized</string>
     <string name="server_connection_failed">Connection to Server failed</string>
 

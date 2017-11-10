@@ -146,7 +146,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 });
 
             } catch (ApiException e) {
-
+                Toast.makeText(this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
             }
         }
     }
