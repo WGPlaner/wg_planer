@@ -34,7 +34,7 @@
     <string name="header_username">Please pick a descriptive Username so that your friends recognize you</string>
     <string name="header_profile_picture">You can upload a profile picture, if you want to</string>
     <string name="header_email_address">You can state an email address, if you want to</string>
-    <string name="text_welcome">You\'re about to register for the WGPlaner Android Application.\n\nWe will guide you through the Registration progress...</string>
+    <string name="text_welcome">You\'re about to register for the WGPlaner Android Application.\n\nWe will guide you through the Registration progress&#8230;</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_skip">Skip</string>
     <string name="input_username_hint">Username</string>
@@ -57,4 +57,12 @@
     <string name="dialog_discard_message">Discard draft?</string>
     <string name="dialog_discard_positive">Discard</string>
     <string name="dialog_discard_negative">Cancel</string>
+  
+    <!-- Server-Result Strings -->
+    <string name="user_unauthorized">Unauthorized</string>
+    <string name="server_connection_failed">Connection to Server failed</string>
+
+    <!-- Firebase Auth Strings -->
+    <string name="firebase_auth_failed">Authentication failed</string>
+
 </resources>

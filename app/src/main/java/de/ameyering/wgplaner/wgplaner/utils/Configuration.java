@@ -49,7 +49,11 @@ public class Configuration implements Serializable {
     }
 
     public String getConfig(Type type) {
-        return configs.get(type);
+        if (configs.containsKey(type)) {
+            return configs.get(type);
+        }
+
+        return null;
     }
 
     public void setProfilePicture(byte[] byteArray) {
@@ -76,7 +80,7 @@ public class Configuration implements Serializable {
         USER_DISPLAY_NAME,
         USER_PHOTO_URL,
         USER_GROUP_ID,
-        USER_EMAIL_ADDRESS;
+        USER_EMAIL_ADDRESS
     }
 
     /*

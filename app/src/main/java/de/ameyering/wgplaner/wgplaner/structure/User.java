@@ -7,7 +7,7 @@ public class User {
     private String photoUrl = null;
     private String emailAddress = null;
 
-    public User() {};
+    public User() {}
 
     public User(String uid, String displayName) {
         this.uid = uid;
