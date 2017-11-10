@@ -93,14 +93,7 @@ public class SetUpGroupActivity extends AppCompatActivity {
         });
 
         Currency currency = Currency.getInstance(Locale.getDefault());
-        int pos = -1;
-
-        for (int i = 0; i < currencies.size(); i++) {
-            if (currencies.get(i).equals(currency)) {
-                pos = i;
-                break;
-            }
-        }
+        int pos = currencies.indexOf(currency);
 
         if (pos != -1) {
             currencySpinner.setSelection(pos);
@@ -201,7 +194,7 @@ public class SetUpGroupActivity extends AppCompatActivity {
                 }
 
             } catch (IllegalArgumentException e) {
-
+                continue;
             }
         }
 
