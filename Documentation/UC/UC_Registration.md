@@ -17,11 +17,13 @@ This use case allows users to register for the WGPlaner Android Application. To 
 
 ## 1.2 Screenshot
 ### "Welcome" Screen
-![uc_registration_welcome.png](../Screenshots/uc_registration_welcome.png "Welcome-Screen") 
+[![UC Welcome Screen](../Screenshots/uc_registration_welcome_200px.png)](../Screenshots/uc_registration_welcome.png)
+
 ### "Pick Display Name" Screen
-![uc_registration_pick_display_name.png](../Screenshots/uc_registration_pick_display_name.png "Pick-Display-Name-Screen")
+[![Pick-Display-Name-Screen](../Screenshots/uc_registration_pick_display_name_200px.png)](../Screenshots/uc_registration_pick_display_name.png)
+
 ### "Upload Profile Picture" Screen
-![uc_registration_upload_profile_picture.png](../Screenshots/uc_registration_upload_profile_picture.png "Upload-Profile-Picture-Screen")
+[![Upload-Profile-Picture-Screen](../Screenshots/uc_registration_upload_profile_picture_200px.png)](../Screenshots/uc_registration_upload_profile_picture.png)
 
 # 2. Flow of Events
 
