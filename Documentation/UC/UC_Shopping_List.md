@@ -19,9 +19,7 @@ This use case allows users to add products/items to a shopping list and manage t
 n/a
 
 # 3. Special Requirements
-
-## 3.1 Material Design
-Since "WGPlaner" is an Android application, the Material Design Style Guide should be used. Our style guide is available [here](https://github.com/WGPlaner/wg_planer/blob/master/CONTRIBUTING.md#styling-guidelines).
+n/a
 
 # 4. Preconditions
 The main preconditions for this use case are:
