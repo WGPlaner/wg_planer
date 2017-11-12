@@ -4,7 +4,7 @@
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- Read and Write App-internal Storage -->
@@ -32,28 +32,29 @@
             android:name=".section.home.HomeActivity"
             android:label="@string/title_activity_home"
             android:parentActivityName=".section.splashscreen.SplashScreenActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".section.registration.RegistrationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".section.registration.RegistrationActivity"
             android:label=""
             android:parentActivityName=".section.splashscreen.SplashScreenActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        </activity>
-
-        <service
-            android:name=".utils.WGPlanerInstanceIdService">
+        <service android:name=".utils.WGPlanerInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".utils.NotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <service
-            android:name=".utils.NotificationService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-
+        <activity
+            android:name=".section.home.AddItemActivity"
+            android:label="@string/add_item_activity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".section.home.HomeActivity" />
     </application>
 
 </manifest>
