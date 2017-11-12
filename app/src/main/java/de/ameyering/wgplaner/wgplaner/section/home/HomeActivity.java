@@ -135,6 +135,7 @@ public class HomeActivity extends AppCompatActivity
 
                 transaction.replace(R.id.container, pinboard);
                 transaction.commit();
+
             } else {
                 return false;
             }
