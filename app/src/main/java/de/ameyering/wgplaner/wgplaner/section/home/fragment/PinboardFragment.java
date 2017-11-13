@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.PinboardPagerAdapter;
 
-public class PinboardFragment extends Fragment {
+public class PinboardFragment extends SectionFragment {
     private TabLayout tabLayout;
     private ViewPager pager;
     private PinboardPagerAdapter adapter;
