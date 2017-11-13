@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import de.ameyering.wgplaner.wgplaner.R;
 
-public class ShoppingListFragment extends Fragment {
+public class ShoppingListFragment extends SectionFragment {
     private RecyclerView categories;
 
     @Nullable
@@ -20,7 +20,6 @@ public class ShoppingListFragment extends Fragment {
         View view = inflater.inflate(R.layout.section_shopping_list, null, false);
 
         categories = view.findViewById(R.id.section_shopping_list_recycler_view);
-        categories.setItemAnimator(new DefaultItemAnimator());
 
         return view;
     }

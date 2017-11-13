@@ -14,8 +14,9 @@ import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
 
 public class AddItemAddUserDialogFragment extends DialogFragment {
-    private ArrayList<User> mSelectedItems;
+    private ArrayList<User> mSelectedItems = new ArrayList<>();
     private OnResultListener mOnResultListener;
+    private User[] list;
 
     public interface OnResultListener{
 
@@ -24,24 +25,36 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mSelectedItems = new ArrayList<>();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.add_item_add_requested_for_pick_users));
 
-        String[] users = new String[DataContainer.Users.getAll().size()];
+        list = new User[2];
 
-        for(int i = 0; i < DataContainer.Users.getAll().size(); i++){
-            users[i] = DataContainer.Users.getUser(i).getDisplayName();
+        list[0] = new User("1", "Arne");
+        list[1] = new User("2", "Chris");
+
+        String[] users = new String[list.length];
+        boolean[] selected = new boolean[list.length];
+
+        for(int i = 0; i < list.length; i++){
+            users[i] = list[i].getDisplayName();
+
+            if(mSelectedItems.contains(list[i])){
+                selected[i] = true;
+            } else {
+                selected[i] = false;
+            }
         }
 
-        builder.setMultiChoiceItems(users, null, new DialogInterface.OnMultiChoiceClickListener() {
+
+        builder.setMultiChoiceItems(users, selected, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                 if(b){
-                    mSelectedItems.add(DataContainer.Users.getUser(i));
-                } else if (mSelectedItems.contains(DataContainer.Users.getUser(i))){
-                    mSelectedItems.remove(DataContainer.Users.getUser(i));
+                    mSelectedItems.add(list[i]);
+                } else if (mSelectedItems.contains(list[i])){
+                    mSelectedItems.remove(list[i]);
                 }
             }
         });
@@ -68,5 +81,12 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
 
     public void setOnResultListener(OnResultListener mOnResultListener){
         this.mOnResultListener = mOnResultListener;
+    }
+
+    public void setSelectedItems(ArrayList<User> users){
+        if(users != null){
+            mSelectedItems.clear();
+            mSelectedItems.addAll(users);
+        }
     }
 }

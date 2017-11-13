@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,9 @@ public class AddItemActivity extends AppCompatActivity {
     public RecyclerView requestedFor;
     public AddItemRequestedForAdapter adapter;
 
+    public EditText nameInput;
+    public EditText numberInput;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +35,7 @@ public class AddItemActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.add_item_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_close);
+        toolbar.setNavigationIcon(R.drawable.ic_close_white);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +59,10 @@ public class AddItemActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        nameInput = (EditText) findViewById(R.id.add_item_name_input);
+        numberInput = (EditText) findViewById(R.id.add_item_number_input) ;
+
         requestedFor = (RecyclerView) findViewById(R.id.add_item_requested_for_list);
         adapter = new AddItemRequestedForAdapter();
         requestedFor.setLayoutManager(new LinearLayoutManager(this));
@@ -66,6 +74,7 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AddItemAddUserDialogFragment dialog = new AddItemAddUserDialogFragment();
+                dialog.setSelectedItems(adapter.getSelection());
                 dialog.setOnResultListener(new AddItemAddUserDialogFragment.OnResultListener() {
                     @Override
                     public void onResult(ArrayList<User> selected) {
@@ -80,7 +89,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_full_screen_actvity, menu);
+        getMenuInflater().inflate(R.menu.menu_add_full_screen_activity, menu);
         return true;
     }
 
@@ -88,7 +97,7 @@ public class AddItemActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_item_save: {
-                if(checkInpustAndReturn()){
+                if(checkInputAndReturn()){
                     Intent data = new Intent();
                     setResult(RESULT_OK, data);
                     finish();
@@ -100,7 +109,22 @@ public class AddItemActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean checkInpustAndReturn() {
+    private boolean checkInputAndReturn() {
+        String name = nameInput.getText().toString();
+        String number = numberInput.getText().toString();
+
+        if(name != null && number != null && !name.isEmpty() && !number.isEmpty()){
+            int num = 0;
+
+            try{
+                num = Integer.parseInt(number);
+            } catch (Exception e){
+                return false;
+            }
+
+            return true;
+        }
+
         return false;
     }
 }

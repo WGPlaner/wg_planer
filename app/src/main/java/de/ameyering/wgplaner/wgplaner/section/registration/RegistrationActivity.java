@@ -1,5 +1,6 @@
 package de.ameyering.wgplaner.wgplaner.section.registration;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import java.util.Stack;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.NavigationFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.PickDisplayNameFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.StateEMailFragment;
@@ -70,7 +72,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    //TODO: handle Registration end
+                    Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
 

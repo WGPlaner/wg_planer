@@ -25,7 +25,7 @@ public class AddItemRequestedForAdapter extends RecyclerView.Adapter<AddItemRequ
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_item_requested_for_item, parent, false);
 
         return new ViewHolder(view, viewType);
     }
@@ -69,5 +69,9 @@ public class AddItemRequestedForAdapter extends RecyclerView.Adapter<AddItemRequ
             this.selected.clear();
             this.selected.addAll(selected);
         }
+    }
+
+    public ArrayList<User> getSelection(){
+        return selected;
     }
 }
