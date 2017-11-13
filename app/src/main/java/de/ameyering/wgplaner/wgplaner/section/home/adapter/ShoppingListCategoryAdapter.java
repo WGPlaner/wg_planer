@@ -15,14 +15,15 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.structure.Item;
 
 
-public class ShoppingListCategoryAdapter extends RecyclerView.Adapter<ShoppingListCategoryAdapter.ViewHolder> {
+public class ShoppingListCategoryAdapter extends
+    RecyclerView.Adapter<ShoppingListCategoryAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public RecyclerView itemRecycler;
         public TextView categoryName;
         public CardView category;
 
-        public ViewHolder(View item){
+        public ViewHolder(View item) {
             super(item);
 
             itemRecycler = item.findViewById(R.id.section_shopping_list_recycler_view);
@@ -30,7 +31,7 @@ public class ShoppingListCategoryAdapter extends RecyclerView.Adapter<ShoppingLi
             category = item.findViewById(R.id.shopping_list_category_container);
         }
 
-        public void initialize(ArrayList<Item> items, String header){
+        public void initialize(ArrayList<Item> items, String header) {
 
         }
     }
@@ -39,12 +40,12 @@ public class ShoppingListCategoryAdapter extends RecyclerView.Adapter<ShoppingLi
 
     private HashMap<String, ArrayList<Item>> items = new HashMap<>();
 
-    public ShoppingListCategoryAdapter(HashMap<String, ArrayList<Item>> items, Context context){
-        if(items != null){
+    public ShoppingListCategoryAdapter(HashMap<String, ArrayList<Item>> items, Context context) {
+        if (items != null) {
             this.items = items;
         }
 
-        if(context != null){
+        if (context != null) {
             this.context = context;
         }
     }
@@ -56,7 +57,8 @@ public class ShoppingListCategoryAdapter extends RecyclerView.Adapter<ShoppingLi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_shopping_list_category_layout, null, false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.section_shopping_list_category_layout, null, false);
         ViewHolder holder = new ViewHolder(item);
 
         return holder;
@@ -67,7 +69,7 @@ public class ShoppingListCategoryAdapter extends RecyclerView.Adapter<ShoppingLi
         //TODO: Implement type ShoppingList
     }
 
-    public void updateItems(ArrayList<Item> items){
+    public void updateItems(ArrayList<Item> items) {
         //TODO: Implement DiffCallback
     }
 }

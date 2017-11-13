@@ -14,7 +14,8 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.structure.User;
 
-public class AddItemRequestedForAdapter extends RecyclerView.Adapter<AddItemRequestedForAdapter.ViewHolder> {
+public class AddItemRequestedForAdapter extends
+    RecyclerView.Adapter<AddItemRequestedForAdapter.ViewHolder> {
 
     private ArrayList<User> selected = new ArrayList<>();
 
@@ -25,7 +26,8 @@ public class AddItemRequestedForAdapter extends RecyclerView.Adapter<AddItemRequ
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_item_requested_for_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_item_requested_for_item,
+                parent, false);
 
         return new ViewHolder(view, viewType);
     }
@@ -64,14 +66,14 @@ public class AddItemRequestedForAdapter extends RecyclerView.Adapter<AddItemRequ
         }
     }
 
-    public void updateSelection(ArrayList<User> selected){
-        if(selected != null){
+    public void updateSelection(ArrayList<User> selected) {
+        if (selected != null) {
             this.selected.clear();
             this.selected.addAll(selected);
         }
     }
 
-    public ArrayList<User> getSelection(){
+    public ArrayList<User> getSelection() {
         return selected;
     }
 }

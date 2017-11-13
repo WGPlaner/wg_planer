@@ -95,9 +95,9 @@ public class AddItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.add_item_save: {
-                if(checkInputAndReturn()){
+                if (checkInputAndReturn()) {
                     Intent data = new Intent();
                     setResult(RESULT_OK, data);
                     finish();
@@ -113,12 +113,13 @@ public class AddItemActivity extends AppCompatActivity {
         String name = nameInput.getText().toString();
         String number = numberInput.getText().toString();
 
-        if(name != null && number != null && !name.isEmpty() && !number.isEmpty()){
+        if (name != null && number != null && !name.isEmpty() && !number.isEmpty()) {
             int num = 0;
 
-            try{
+            try {
                 num = Integer.parseInt(number);
-            } catch (Exception e){
+
+            } catch (Exception e) {
                 return false;
             }
 

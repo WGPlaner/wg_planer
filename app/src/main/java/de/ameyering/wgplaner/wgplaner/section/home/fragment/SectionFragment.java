@@ -10,28 +10,29 @@ public abstract class SectionFragment extends Fragment {
     public FloatingActionButton floatingActionButton;
     public String title;
 
-    public void setToolbar(Toolbar toolbar){
-        if(toolbar != null){
+    public void setToolbar(Toolbar toolbar) {
+        if (toolbar != null) {
             this.toolbar = toolbar;
         }
     }
 
-    public void setFloatingActionButton(FloatingActionButton floatingActionButton){
-        if(floatingActionButton != null){
+    public void setFloatingActionButton(FloatingActionButton floatingActionButton) {
+        if (floatingActionButton != null) {
             this.floatingActionButton = floatingActionButton;
         }
     }
 
-    public void setTitle(String title){
-        if(title != null){
+    public void setTitle(String title) {
+        if (title != null) {
             this.title = title;
-            if(toolbar != null){
+
+            if (toolbar != null) {
                 toolbar.setSubtitle(title);
             }
         }
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 }

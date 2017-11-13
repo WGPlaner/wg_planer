@@ -44,11 +44,12 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    if(currentUser == null) {
+                    if (currentUser == null) {
                         Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:success");
                         FirebaseUser currentUser = mAuth.getCurrentUser();
                         onUser(currentUser);
                     }
+
                 } else {
                     Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:failure");
                     Toast.makeText(SplashScreenActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();

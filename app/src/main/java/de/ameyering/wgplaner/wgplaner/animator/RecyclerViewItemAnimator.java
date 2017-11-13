@@ -50,7 +50,8 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
         public int fromY;
         public int toY;
 
-        public ChangeInfo(ViewHolder oldHolder, ViewHolder newHolder, int fromX, int toX, int fromY, int toY) {
+        public ChangeInfo(ViewHolder oldHolder, ViewHolder newHolder, int fromX, int toX, int fromY,
+            int toY) {
             this.oldHolder = oldHolder;
             this.newHolder = newHolder;
             this.fromX = fromX;
@@ -78,7 +79,8 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
     }
 
     @Override
-    public boolean animateChange(ViewHolder oldHolder, ViewHolder newHolder, int fromLeft, int fromTop, int toLeft, int toTop) {
+    public boolean animateChange(ViewHolder oldHolder, ViewHolder newHolder, int fromLeft, int fromTop,
+        int toLeft, int toTop) {
         return false;
     }
 
@@ -94,16 +96,17 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
         boolean pendingMoves = !mPendingMoves.isEmpty();
         boolean pendingChanges = !mPendingChanges.isEmpty();
 
-        if(!pendingAdditions && !pendingChanges && !pendingMoves && !pendingRemovals){
+        if (!pendingAdditions && !pendingChanges && !pendingMoves && !pendingRemovals) {
             return;
         }
 
-        for(ViewHolder holder: mPendingRemovals){
+        for (ViewHolder holder : mPendingRemovals) {
             runAnimateRemove(holder);
         }
+
         mPendingRemovals.clear();
 
-        if(pendingMoves){
+        if (pendingMoves) {
             final ArrayList<MoveInfo> moves = new ArrayList<>();
             moves.addAll(mPendingMoves);
             mMovesList.add(moves);
@@ -112,23 +115,25 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
             Runnable mover = new Runnable() {
                 @Override
                 public void run() {
-                    for(MoveInfo moveInfo: moves) {
+                    for (MoveInfo moveInfo : moves) {
                         runAnimateMove(moveInfo.holder, moveInfo.fromX, moveInfo.toX, moveInfo.fromY, moveInfo.toY);
                     }
+
                     moves.clear();
                     mMovesList.remove(moves);
                 }
             };
 
-            if(pendingRemovals){
+            if (pendingRemovals) {
                 View view = moves.get(0).holder.itemView;
                 ViewCompat.postOnAnimationDelayed(view, mover, getRemoveDuration());
+
             } else {
                 mover.run();
             }
         }
 
-        if(pendingChanges) {
+        if (pendingChanges) {
 
         }
     }
@@ -148,7 +153,7 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
         return false;
     }
 
-    private void runAnimateAdd(final ViewHolder holder){
+    private void runAnimateAdd(final ViewHolder holder) {
         final View view = holder.itemView;
         mAddAnimations.add(holder);
 
@@ -188,7 +193,7 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
         animatorSet.start();
     }
 
-    private void runAnimateRemove(final ViewHolder holder){
+    private void runAnimateRemove(final ViewHolder holder) {
         final View view = holder.itemView;
         mAddAnimations.add(holder);
 
@@ -228,12 +233,12 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
         animatorSet.start();
     }
 
-    private void runAnimateMove(ViewHolder holder, int fromX, int toX, int fromY, int toY){
+    private void runAnimateMove(ViewHolder holder, int fromX, int toX, int fromY, int toY) {
 
     }
 
-    private void dispatchAnimationsWhenDone(){
-        if(!isRunning()){
+    private void dispatchAnimationsWhenDone() {
+        if (!isRunning()) {
             dispatchAnimationsFinished();
         }
     }

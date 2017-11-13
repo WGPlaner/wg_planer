@@ -18,7 +18,7 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
     private OnResultListener mOnResultListener;
     private User[] list;
 
-    public interface OnResultListener{
+    public interface OnResultListener {
 
         void onResult(ArrayList<User> selected);
     }
@@ -37,11 +37,12 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         String[] users = new String[list.length];
         boolean[] selected = new boolean[list.length];
 
-        for(int i = 0; i < list.length; i++){
+        for (int i = 0; i < list.length; i++) {
             users[i] = list[i].getDisplayName();
 
-            if(mSelectedItems.contains(list[i])){
+            if (mSelectedItems.contains(list[i])) {
                 selected[i] = true;
+
             } else {
                 selected[i] = false;
             }
@@ -51,25 +52,29 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         builder.setMultiChoiceItems(users, selected, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                if(b){
+                if (b) {
                     mSelectedItems.add(list[i]);
-                } else if (mSelectedItems.contains(list[i])){
+
+                } else if (mSelectedItems.contains(list[i])) {
                     mSelectedItems.remove(list[i]);
                 }
             }
         });
 
-        builder.setPositiveButton(R.string.add_item_add_requested_for_positive, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.add_item_add_requested_for_positive,
+        new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(mOnResultListener != null){
+                if (mOnResultListener != null) {
                     mOnResultListener.onResult(mSelectedItems);
                 }
+
                 dialogInterface.cancel();
             }
         });
 
-        builder.setNegativeButton(R.string.add_item_add_requested_for_negative, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.add_item_add_requested_for_negative,
+        new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
@@ -79,12 +84,12 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public void setOnResultListener(OnResultListener mOnResultListener){
+    public void setOnResultListener(OnResultListener mOnResultListener) {
         this.mOnResultListener = mOnResultListener;
     }
 
-    public void setSelectedItems(ArrayList<User> users){
-        if(users != null){
+    public void setSelectedItems(ArrayList<User> users) {
+        if (users != null) {
             mSelectedItems.clear();
             mSelectedItems.addAll(users);
         }

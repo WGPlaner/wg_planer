@@ -16,7 +16,8 @@ public class ShoppingListFragment extends SectionFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_shopping_list, null, false);
 
         categories = view.findViewById(R.id.section_shopping_list_recycler_view);
