@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">WGPlaner</string>
+    <string name="add_item_activity">Add Item</string>
     <string name="set_up_group_activity">Create Group</string>
 
     <!-- Strings related to login -->
@@ -40,6 +41,15 @@
     <string name="input_username_hint">Username</string>
     <string name="input_email_hint">EMail</string>
     <string name="warning_input_username_empty">Please pick a Username!</string>
+
+    <!-- AddItem strings -->
+    <string name="add_item_name_hint">Product name</string>
+    <string name="add_item_number_hint">Number</string>
+    <string name="add_item_requested_for_hint">Requested for</string>
+    <string name="add_item_add_requested_for_label">Add User</string>
+    <string name="add_item_add_requested_for_pick_users">Pick Users</string>
+    <string name="add_item_add_requested_for_positive">Ok</string>
+    <string name="add_item_add_requested_for_negative">Cancel</string>
 
     <!-- SetUp Strings -->
     <string name="set_up_group_name_hint">Group name</string>

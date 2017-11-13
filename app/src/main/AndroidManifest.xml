@@ -71,13 +71,19 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-  
+      
         <service android:name=".utils.NotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".section.home.AddItemActivity"
+            android:label="@string/add_item_activity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".section.home.HomeActivity" />
+      
         <activity
             android:name=".section.home.SetUpGroupActivity"
             android:label="@string/set_up_group_activity"
@@ -91,7 +97,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-  
+      
     </application>
 
 </manifest>

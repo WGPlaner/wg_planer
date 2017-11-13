@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+
+            <de.ameyering.wgplaner.wgplaner.customview.CircularImageView
+                android:id="@+id/add_item_requested_for_user_picture"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.15"
+                android:minHeight="40dp" />
+
+            <TextView
+                android:id="@+id/add_item_requested_for_user_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <ImageButton
+                android:id="@+id/add_item_requested_for_close"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:background="@color/cardview_light_background"
+                android:src="@drawable/ic_close_black" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
