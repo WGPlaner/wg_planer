@@ -29,6 +29,7 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.add_item_add_requested_for_pick_users));
 
+        //TODO: Get real Userdata
         list = new User[2];
 
         list[0] = new User("1", "Arne");
@@ -40,23 +41,18 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         for (int i = 0; i < list.length; i++) {
             users[i] = list[i].getDisplayName();
 
-            if (mSelectedItems.contains(list[i])) {
-                selected[i] = true;
-
-            } else {
-                selected[i] = false;
-            }
+            selected[i] = mSelectedItems.contains(list[i]);
         }
 
 
         builder.setMultiChoiceItems(users, selected, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                if (b) {
-                    mSelectedItems.add(list[i]);
+            public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+                if (isChecked) {
+                    mSelectedItems.add(list[position]);
 
-                } else if (mSelectedItems.contains(list[i])) {
-                    mSelectedItems.remove(list[i]);
+                } else if (mSelectedItems.contains(list[position])) {
+                    mSelectedItems.remove(list[position]);
                 }
             }
         });

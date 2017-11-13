@@ -91,12 +91,12 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
 
     @Override
     public void runPendingAnimations() {
-        boolean pendingRemovals = !mPendingRemovals.isEmpty();
-        boolean pendingAdditions = !mPendingAdditions.isEmpty();
-        boolean pendingMoves = !mPendingMoves.isEmpty();
-        boolean pendingChanges = !mPendingChanges.isEmpty();
+        boolean hasPendingRemovals = !mPendingRemovals.isEmpty();
+        boolean hasPendingAdditions = !mPendingAdditions.isEmpty();
+        boolean hasPendingMoves = !mPendingMoves.isEmpty();
+        boolean hasPendingChanges = !mPendingChanges.isEmpty();
 
-        if (!pendingAdditions && !pendingChanges && !pendingMoves && !pendingRemovals) {
+        if (!hasPendingAdditions && !hasPendingChanges && !hasPendingMoves && !hasPendingRemovals) {
             return;
         }
 
@@ -106,7 +106,7 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
 
         mPendingRemovals.clear();
 
-        if (pendingMoves) {
+        if (hasPendingMoves) {
             final ArrayList<MoveInfo> moves = new ArrayList<>();
             moves.addAll(mPendingMoves);
             mMovesList.add(moves);
@@ -124,7 +124,7 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
                 }
             };
 
-            if (pendingRemovals) {
+            if (hasPendingRemovals) {
                 View view = moves.get(0).holder.itemView;
                 ViewCompat.postOnAnimationDelayed(view, mover, getRemoveDuration());
 
@@ -133,8 +133,8 @@ public class RecyclerViewItemAnimator extends SimpleItemAnimator {
             }
         }
 
-        if (pendingChanges) {
-
+        if (hasPendingChanges) {
+            //TODO: Implement hasPendingChangesFlow
         }
     }
 
