@@ -6,9 +6,9 @@
 This use case allows users to add products/items to a shopping list and manage them. A product has a title and may contain information the number of items and who the product shall be bought for. Bought items shall be removed from the list.
 
 ## 1.2 Mockup
-![Mockup CheckedList](../Mockups/uc_shopping_list_CheckedList.PNG)
-![Mockup DialogWindow](../Mockups/uc_shopping_list_DialogWindow.PNG)
-![Mockup FirstPage](../Mockups/uc_shopping_list_FirstPage.PNG)
+[![Mockup CheckedList](../Mockups/uc_shopping_list_CheckedList_200px.png)](../Mockups/uc_shopping_list_CheckedList.PNG)
+[![Mockup DialogWindow](../Mockups/uc_shopping_list_DialogWindow_200px.png)](../Mockups/uc_shopping_list_DialogWindow.PNG)
+[![Mockup FirstPage](../Mockups/uc_shopping_list_FirstPage_200px.png)](../Mockups/uc_shopping_list_FirstPage.PNG)
 
 # 2. Flow of Events
 
@@ -19,9 +19,7 @@ This use case allows users to add products/items to a shopping list and manage t
 n/a
 
 # 3. Special Requirements
-
-## 3.1 Material Design
-Since "WGPlaner" is an Android application, the Material Design Style Guide should be used. Our style guide is available [here](https://github.com/WGPlaner/wg_planer/blob/master/CONTRIBUTING.md#styling-guidelines).
+n/a
 
 # 4. Preconditions
 The main preconditions for this use case are:

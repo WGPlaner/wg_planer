@@ -17,11 +17,13 @@ This use case allows users to register for the WGPlaner Android Application. To 
 
 ## 1.2 Screenshot
 ### "Welcome" Screen
-![uc_registration_welcome.png](../Screenshots/uc_registration_welcome.png "Welcome-Screen") 
+[![UC Welcome Screen](../Screenshots/uc_registration_welcome_200px.png)](../Screenshots/uc_registration_welcome.png)
+
 ### "Pick Display Name" Screen
-![uc_registration_pick_display_name.png](../Screenshots/uc_registration_pick_display_name.png "Pick-Display-Name-Screen")
+[![Pick-Display-Name-Screen](../Screenshots/uc_registration_pick_display_name_200px.png)](../Screenshots/uc_registration_pick_display_name.png)
+
 ### "Upload Profile Picture" Screen
-![uc_registration_upload_profile_picture.png](../Screenshots/uc_registration_upload_profile_picture.png "Upload-Profile-Picture-Screen")
+[![Upload-Profile-Picture-Screen](../Screenshots/uc_registration_upload_profile_picture_200px.png)](../Screenshots/uc_registration_upload_profile_picture.png)
 
 # 2. Flow of Events
 
@@ -34,9 +36,7 @@ This use case allows users to register for the WGPlaner Android Application. To 
 No specified alternative flows.
 
 # 3. Special Requirements
-
-## 3.1 Material Design
-Since "WGPlaner" is an Android application, the Material Design Style Guide should be used. Our style guide is available [here](https://github.com/WGPlaner/wg_planer/blob/master/CONTRIBUTING.md#styling-guidelines).
+n/a
 
 # 4. Preconditions
 

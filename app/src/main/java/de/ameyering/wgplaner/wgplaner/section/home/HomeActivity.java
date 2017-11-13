@@ -17,11 +17,15 @@ import android.widget.FrameLayout;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
+import de.ameyering.wgplaner.wgplaner.section.home.fragment.SetUpFragment;
+import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
     FrameLayout container;
+
+    private boolean isInSetUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,26 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_dashboard);
+
+        if (Configuration.singleton.getConfig(Configuration.Type.USER_GROUP_ID) == null) {
+            isInSetUp = true;
+            SetUpFragment setUpFragment = new SetUpFragment();
+            setUpFragment.setOnReadyListener(new SetUpFragment.OnReadyListener() {
+                @Override
+                public void onReady() {
+                    isInSetUp = false;
+                    //TODO: Implement normal flow
+                }
+            });
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+            transaction.replace(R.id.container, setUpFragment);
+            transaction.commit();
+
+        } else {
+            navigationView.setCheckedItem(R.id.nav_dashboard);
+        }
     }
 
     @Override
@@ -85,42 +108,45 @@ public class HomeActivity extends AppCompatActivity
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_dashboard) {
+        if (!isInSetUp) {
+            int id = item.getItemId();
 
-        } else if (id == R.id.nav_shopping_list) {
+            if (id == R.id.nav_dashboard) {
 
-        } else if (id == R.id.nav_accounting) {
+            } else if (id == R.id.nav_shopping_list) {
 
-        } else if (id == R.id.nav_rosters) {
+            } else if (id == R.id.nav_accounting) {
 
-        } else if (id == R.id.nav_calendar) {
+            } else if (id == R.id.nav_rosters) {
 
-        } else if (id == R.id.nav_pinboard) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            } else if (id == R.id.nav_calendar) {
 
-            PinboardFragment pinboard = new PinboardFragment();
+            } else if (id == R.id.nav_pinboard) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
-            transaction.replace(R.id.container, pinboard);
-            transaction.commit();
+                PinboardFragment pinboard = new PinboardFragment();
 
-        } else if (id == R.id.nav_share) {
+                transaction.replace(R.id.container, pinboard);
+                transaction.commit();
 
-        } else if (id == R.id.nav_send) {
+            } else {
+                return false;
+            }
 
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return false;
     }
 }
