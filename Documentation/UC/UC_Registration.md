@@ -28,8 +28,11 @@ This use case allows users to register for the WGPlaner Android Application. To 
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-
+Here is the activity diagram for the registration use case:
 ![uc_registration_activity_diagram.png](../ActivityDiagrams/uc_registration_activity_diagram.png "Activity Diagram for use case Registration")
+
+And here is a screenshot of the `.feature` file for this use case:
+![.feature file](./FeatureFiles/feature_file_registration.png)
 
 ## 2.2 Alternative Flows
 
