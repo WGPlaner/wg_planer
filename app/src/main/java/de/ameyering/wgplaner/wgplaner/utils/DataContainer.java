@@ -4,11 +4,65 @@ import android.support.annotation.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.structure.Item;
 import de.ameyering.wgplaner.wgplaner.structure.User;
+import io.swagger.client.model.ListItem;
 
 public abstract class DataContainer {
+
+    public static abstract class ListItems {
+        private static ArrayList<ListItem> shoppingListItems = new ArrayList<>();
+
+        public static ArrayList<ListItem> getShoppingListItems() {
+            ArrayList<ListItem> items = new ArrayList<>();
+            items.addAll(shoppingListItems);
+            return items;
+        }
+
+        public static void addShoppingListItem(String name, int number, List<String> requestedFor,
+            String requestedBy) {
+            ListItem item = new ListItem();
+            item.setTitle(name);
+            item.setRequestedFor(requestedFor);
+            item.setRequestedBy(requestedBy);
+
+            int pos = contains(item);
+
+            if (pos == -1) {
+                shoppingListItems.add(item);
+
+            } else {
+                //TODO: Increment number
+            }
+        }
+
+        private static int contains(ListItem item) {
+            for (int i = 0; i < shoppingListItems.size(); i++) {
+                ListItem listItem = shoppingListItems.get(i);
+
+                if (
+                    listItem.getTitle() != null && item.getTitle() != null &&
+                    listItem.getRequestedFor() != null && item.getRequestedFor() != null) {
+                    if (listItem.getTitle().equals(item.getTitle()) &&
+                        listItem.getRequestedFor().equals(item.getRequestedFor())) {
+                        return i;
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        public static void removeShoppingListItem(ListItem item) {
+            int pos = contains(item);
+
+            if (pos != -1) {
+                shoppingListItems.remove(pos);
+            }
+        }
+    }
 
     /**
      * DataContainer for Item-Instances

@@ -75,4 +75,7 @@
     <!-- Firebase Auth Strings -->
     <string name="firebase_auth_failed">Authentication failed</string>
 
+    <string name="section_title_set_up_group">Group SetUp</string>
+    <string name="section_title_shopping_list">Shopping List</string>
+
 </resources>

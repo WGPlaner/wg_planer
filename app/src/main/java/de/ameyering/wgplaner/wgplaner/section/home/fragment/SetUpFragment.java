@@ -17,7 +17,7 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.SetUpGroupActivity;
 
 
-public class SetUpFragment extends Fragment {
+public class SetUpFragment extends SectionFragment {
     private static final int REQ_CODE_CREATE_GROUP = 0;
 
     private EditText key;
@@ -31,6 +31,14 @@ public class SetUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_set_up, container, false);
+
+        if (toolbar != null && title != null) {
+            toolbar.setSubtitle(title);
+        }
+
+        if (floatingActionButton != null) {
+            floatingActionButton.setVisibility(View.GONE);
+        }
 
         key = view.findViewById(R.id.set_up_input_group_access_key);
         buttonKey = view.findViewById(R.id.set_up_btn_key_continue);
