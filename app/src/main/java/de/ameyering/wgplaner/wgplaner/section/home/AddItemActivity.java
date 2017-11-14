@@ -118,6 +118,7 @@ public class AddItemActivity extends AppCompatActivity {
 
             try {
                 num = Integer.parseInt(number);
+
             } catch (Exception e) {
                 return false;
             }

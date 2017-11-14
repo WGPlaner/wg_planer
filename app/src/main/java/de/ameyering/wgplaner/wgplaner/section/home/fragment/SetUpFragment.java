@@ -32,10 +32,11 @@ public class SetUpFragment extends SectionFragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_set_up, container, false);
 
-        if(toolbar != null && title != null){
+        if (toolbar != null && title != null) {
             toolbar.setSubtitle(title);
         }
-        if(floatingActionButton != null){
+
+        if (floatingActionButton != null) {
             floatingActionButton.setVisibility(View.GONE);
         }
 

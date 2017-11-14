@@ -15,13 +15,14 @@ public abstract class DataContainer {
     public static abstract class ListItems {
         private static ArrayList<ListItem> shoppingListItems = new ArrayList<>();
 
-        public static ArrayList<ListItem> getShoppingListItems(){
+        public static ArrayList<ListItem> getShoppingListItems() {
             ArrayList<ListItem> items = new ArrayList<>();
             items.addAll(shoppingListItems);
             return items;
         }
 
-        public static void addShoppingListItem(String name, int number, List<String> requestedFor, String requestedBy){
+        public static void addShoppingListItem(String name, int number, List<String> requestedFor,
+            String requestedBy) {
             ListItem item = new ListItem();
             item.setTitle(name);
             item.setRequestedFor(requestedFor);
@@ -29,20 +30,23 @@ public abstract class DataContainer {
 
             int pos = contains(item);
 
-            if(pos == -1){
+            if (pos == -1) {
                 shoppingListItems.add(item);
+
             } else {
                 //TODO: Increment number
             }
         }
 
-        private static int contains(ListItem item){
-            for(int i = 0; i < shoppingListItems.size(); i++){
+        private static int contains(ListItem item) {
+            for (int i = 0; i < shoppingListItems.size(); i++) {
                 ListItem listItem = shoppingListItems.get(i);
-                if(
+
+                if (
                     listItem.getTitle() != null && item.getTitle() != null &&
-                    listItem.getRequestedFor() != null && item.getRequestedFor() != null){
-                    if(listItem.getTitle().equals(item.getTitle()) && listItem.getRequestedFor().equals(item.getRequestedFor())){
+                    listItem.getRequestedFor() != null && item.getRequestedFor() != null) {
+                    if (listItem.getTitle().equals(item.getTitle()) &&
+                        listItem.getRequestedFor().equals(item.getRequestedFor())) {
                         return i;
                     }
                 }
@@ -51,10 +55,10 @@ public abstract class DataContainer {
             return -1;
         }
 
-        public static void removeShoppingListItem(ListItem item){
+        public static void removeShoppingListItem(ListItem item) {
             int pos = contains(item);
 
-            if(pos != -1){
+            if (pos != -1) {
                 shoppingListItems.remove(pos);
             }
         }
