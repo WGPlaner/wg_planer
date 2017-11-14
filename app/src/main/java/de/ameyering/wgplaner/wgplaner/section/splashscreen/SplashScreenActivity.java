@@ -24,6 +24,7 @@ import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import io.swagger.client.ApiCallback;
+import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
@@ -76,7 +77,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (user != null) {
             uid = user.getUid();
 
-            if (Configuration.singleton.getConfig(Configuration.Type.USER_UID) != uid) {
+            if (!Configuration.singleton.getConfig(Configuration.Type.USER_UID).equals(uid)) {
                 Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
             }
 
@@ -86,10 +87,14 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void initializeUser(String uid) {
         if (uid != null) {
-            UserApi api = new UserApi();
+            ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
 
-            ApiKeyAuth firebaseAuth = (ApiKeyAuth) api.getApiClient().getAuthentication("FirebaseIDAuth");
+            client.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
+
+            ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication("FirebaseIDAuth");
             firebaseAuth.setApiKey(uid);
+
+            UserApi api = new UserApi();
 
             try {
                 api.getUserAsync(uid, new ApiCallback<User>() {

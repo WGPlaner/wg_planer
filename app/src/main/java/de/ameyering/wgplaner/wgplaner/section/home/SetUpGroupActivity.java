@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.section.home;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -53,7 +52,7 @@ public class SetUpGroupActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.set_up_group_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_close);
+        toolbar.setNavigationIcon(R.drawable.ic_close_white);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

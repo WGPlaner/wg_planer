@@ -34,8 +34,6 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setSubtitle("Shopping List");
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +64,9 @@ public class HomeActivity extends AppCompatActivity
                     //TODO: Implement normal flow
                 }
             });
+            setUpFragment.setToolbar(toolbar);
+            setUpFragment.setFloatingActionButton(fab);
+            setUpFragment.setTitle(getString(R.string.section_title_set_up_group));
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
