@@ -6,11 +6,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.AddItemActivity;
+import de.ameyering.wgplaner.wgplaner.section.registration.fragment.PickDisplayNameFragment;
+import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 public class ProfileSettings extends AppCompatActivity {
+
+    private Button btLeaveGroup;
+    private Button btSaveChanges;
+    private EditText inputName;
+    private EditText inputEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,5 +56,63 @@ public class ProfileSettings extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        btLeaveGroup = findViewById(R.id.bt_delete_group_profile_settings);
+        btSaveChanges = findViewById(R.id.bt_save_changes_profile_settings);
+
+        inputName = findViewById(R.id.tfName_profile_settings);
+        String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
+        if (displayName != null) {
+            inputName.setText(displayName);
+        }
+
+        inputEmail = findViewById(R.id.tfEmail_profile_settings);
+        String mEmail = Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS);
+        if (mEmail != null) {
+            inputEmail.setText(mEmail);
+        }
+
+        btLeaveGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO Delete the connection between the User and the WG
+            }
+        });
+
+        btSaveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Save the new Name
+                String displayName = inputName.getText().toString();
+                if (displayName != null && !displayName.isEmpty()) {
+                    inputName.setText(displayName);
+                    Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
+                }
+
+                //Save the new Email-address
+                String emailAddress = inputEmail.getText().toString();
+                if (emailAddress != null) {
+                    if (isValidEmail(emailAddress)) {
+                        Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, emailAddress);
+                    }
+                    else{
+                        //TODO send notification that the Email is wrong
+                    }
+                }
+                else{
+                    //TODO send notification that the name can not be empty
+                }
+            }
+        });
+
+    }
+
+    private boolean isValidEmail(String email) {
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        Pattern pattern = Pattern.compile(regex);
+
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
     }
 }

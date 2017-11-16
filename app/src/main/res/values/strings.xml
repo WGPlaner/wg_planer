@@ -83,5 +83,6 @@
     <string name="bsp_emailadress">nina.wieland1812@t-online.de</string>
     <string name="name">Name</string>
     <string name="bsp_name">Nina</string>
+    <string name="save_changes">Save Changes</string>
 
 </resources>

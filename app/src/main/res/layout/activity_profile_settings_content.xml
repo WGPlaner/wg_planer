@@ -16,7 +16,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
             <de.ameyering.wgplaner.wgplaner.customview.CircularImageView
                 android:id="@+id/registration_profile_picture"
@@ -28,28 +29,42 @@
                 app:srcCompat="@drawable/profile_picture_dummy" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/lbName_profile_settings"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:layout_weight="0.7">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tfName_profile_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/name" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/lbEmail_profile_settings"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:layout_weight="0.7">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tfEmail_profile_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:hint="@string/prompt_email" />
+
             </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/bt_save_changes_profile_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="0.7"
+                android:text="@string/save_changes" />
 
             <Button
                 android:id="@+id/bt_delete_group_profile_settings"
