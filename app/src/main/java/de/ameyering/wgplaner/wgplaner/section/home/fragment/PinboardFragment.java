@@ -23,6 +23,19 @@ public class PinboardFragment extends SectionFragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_pinboard, container, false);
 
+        if (toolbar != null) {
+            if (title != null) {
+                toolbar.setSubtitle(title);
+
+            } else {
+                toolbar.setSubtitle(getString(R.string.section_title_pinboard));
+            }
+        }
+
+        if (floatingActionButton != null) {
+            floatingActionButton.setVisibility(View.GONE);
+        }
+
         if (tabLayout == null) {
             tabLayout = view.findViewById(R.id.pinboard_tab_layout);
         }

@@ -1,17 +1,13 @@
 package de.ameyering.wgplaner.wgplaner.section.home.fragment;
 
 import android.app.Activity;
-import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.SetUpGroupActivity;
@@ -20,9 +16,8 @@ import de.ameyering.wgplaner.wgplaner.section.home.SetUpGroupActivity;
 public class SetUpFragment extends SectionFragment {
     private static final int REQ_CODE_CREATE_GROUP = 0;
 
-    private EditText key;
-    private ImageButton buttonKey;
     private Button buttonCreate;
+    private Button buttonJoin;
 
     private OnReadyListener listener;
 
@@ -40,20 +35,13 @@ public class SetUpFragment extends SectionFragment {
             floatingActionButton.setVisibility(View.GONE);
         }
 
-        key = view.findViewById(R.id.set_up_input_group_access_key);
-        buttonKey = view.findViewById(R.id.set_up_btn_key_continue);
-        buttonCreate = view.findViewById(R.id.set_up_btn_create_group);
+        buttonCreate = view.findViewById(R.id.set_up_group_btn_create_group);
+        buttonJoin = view.findViewById(R.id.set_up_group_btn_join_group);
 
-        buttonCreate.setOnClickListener(new View.OnClickListener() {
+        buttonJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-            }
-        });
-        buttonKey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
+                //TODO: Implement Join-Group flow
             }
         });
 

@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -24,6 +26,7 @@ import android.support.annotation.Px;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -39,7 +42,6 @@ public class CircularImageView extends AppCompatImageView {
     private float mDrawableRadius = 0f;
     private int mBitmapHeight = 0;
     private int mBitmapWidth = 0;
-    private float mElevation = 5f;
     private boolean isPressed = false;
     private OnRotationListener mOnRotationListener = null;
 
@@ -70,12 +72,6 @@ public class CircularImageView extends AppCompatImageView {
         } else {
             canvas.drawCircle(mBoundsRect.centerX(), mBoundsRect.centerY(), mDrawableRadius, mBitmapPaint);
         }
-    }
-
-    @Override
-    public void setElevation(float elevation) {
-        super.setElevation(elevation);
-        this.mElevation = elevation;
     }
 
     @Override
@@ -118,7 +114,10 @@ public class CircularImageView extends AppCompatImageView {
         switch (eventAction) {
             case MotionEvent.ACTION_DOWN: {
                 if (mBoundsRect.contains(posX, posY) && !isPressed && isInCircleBounds(posX, posY)) {
-                    ObjectAnimator.ofFloat(this, "elevation", 5f, 20f).setDuration(200).start();
+                    Resources r = getResources();
+                    float min = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, r.getDisplayMetrics());
+                    float max = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12f, r.getDisplayMetrics());
+                    ObjectAnimator.ofFloat(this, "elevation", min, max).setDuration(200).start();
                     isPressed = true;
                 }
             }
@@ -126,7 +125,10 @@ public class CircularImageView extends AppCompatImageView {
 
             case MotionEvent.ACTION_UP: {
                 if (isPressed) {
-                    ObjectAnimator.ofFloat(this, "elevation", 20f, 5f).setDuration(200).start();
+                    Resources r = getResources();
+                    float min = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, r.getDisplayMetrics());
+                    float max = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12f, r.getDisplayMetrics());
+                    ObjectAnimator.ofFloat(this, "elevation", max, min).setDuration(200).start();
                     isPressed = false;
 
                     if (mBoundsRect.contains(posX, posY) && isInCircleBounds(posX, posY)) {

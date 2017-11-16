@@ -1,6 +1,7 @@
 package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,20 +15,25 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
+import io.swagger.client.api.GroupApi;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
+import io.swagger.client.model.Group;
 import io.swagger.client.model.User;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -76,11 +82,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         if (user != null) {
             uid = user.getUid();
+            String configUid = Configuration.singleton.getConfig(Configuration.Type.USER_UID);
 
-            if (!Configuration.singleton.getConfig(Configuration.Type.USER_UID).equals(uid)) {
-                Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
-            }
-
+            Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
             initializeUser(uid);
         }
     }
@@ -112,9 +116,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 break;
 
                             case 404:
-                                Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
-                                startActivity(intent);
-                                finish();
+                                loadRegistration();
                                 break;
 
                             default:
@@ -133,9 +135,20 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
                         if (result != null) {
-                            Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
+                            DataContainer.Users.setMe(result);
+                            GetDataTask task = new GetDataTask();
+
+                            try {
+                                task.execute().get();
+
+                            } catch (InterruptedException e) {
+                                loadHome();
+
+                            } catch (ExecutionException e) {
+                                loadHome();
+                            }
+
+                            loadHome();
                         }
                     }
 
@@ -161,7 +174,76 @@ public class SplashScreenActivity extends AppCompatActivity {
         Money.initialize(Locale.getDefault());
     }
 
-    private void getData(String uid) {
-        //TODO: Get Data from AppServer
+    private void loadHome() {
+        Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void loadRegistration() {
+        Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private static class GetDataTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            User user = DataContainer.Users.getMe();
+
+            if (user != null) {
+                GroupApi groupApi = new GroupApi();
+
+                ApiClient groupClient = groupApi.getApiClient();
+
+                ApiKeyAuth userAuth = (ApiKeyAuth) groupClient.getAuthentication("UserIDAuth");
+                userAuth.setApiKey(user.getUid());
+
+                groupClient.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
+
+                try {
+                    Group group = groupApi.getGroup(user.getGroupUid().toString());
+
+                    if (group != null) {
+                        DataContainer.Groups.setGroup(group);
+
+                        List<String> memberUids = group.getMembers();
+                        ArrayList<User> members = new ArrayList<>();
+
+                        ApiClient userClient = io.swagger.client.Configuration.getDefaultApiClient();
+
+                        userClient.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
+
+                        ApiKeyAuth firebaseAuth = (ApiKeyAuth) userClient.getAuthentication("FirebaseIDAuth");
+                        firebaseAuth.setApiKey(user.getUid());
+
+                        UserApi userApi = new UserApi();
+
+                        for (String uid : memberUids) {
+                            try {
+                                User member = userApi.getUser(uid);
+
+                                if (member != null) {
+                                    members.add(member);
+                                }
+
+                            } catch (ApiException e) {
+                                continue;
+                            }
+                        }
+
+                        DataContainer.Groups.setMembers(members);
+                    }
+
+                } catch (ApiException e) {
+                    //TODO: Implement failure
+                }
+
+                //TODO: Implement other Server connections
+            }
+
+            return null;
+        }
     }
 }

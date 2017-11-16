@@ -1,10 +1,8 @@
 package de.ameyering.wgplaner.wgplaner.section.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,12 +16,15 @@ import android.widget.FrameLayout;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.SetUpFragment;
+import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
-    FrameLayout container;
+    private FrameLayout container;
+    private Toolbar toolbar;
+    private FloatingActionButton fab;
 
     private boolean isInSetUp = false;
 
@@ -31,27 +32,20 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, AddItemActivity.class);
-                startActivity(intent);
-            }
-        });
+        fab = findViewById(R.id.fab);
 
-        container = (FrameLayout) findViewById(R.id.container);
+        container = findViewById(R.id.container);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
             this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         if (Configuration.singleton.getConfig(Configuration.Type.USER_GROUP_ID) == null) {
@@ -74,13 +68,23 @@ public class HomeActivity extends AppCompatActivity
             transaction.commit();
 
         } else {
-            navigationView.setCheckedItem(R.id.nav_dashboard);
+            navigationView.setCheckedItem(R.id.nav_shopping_list);
+
+            ShoppingListFragment fragment = new ShoppingListFragment();
+            fragment.setToolbar(toolbar);
+            fragment.setTitle(getString(R.string.section_title_shopping_list));
+            fragment.setFloatingActionButton(fab);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+            transaction.replace(R.id.container, fragment);
+            transaction.commit();
         }
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -135,6 +139,9 @@ public class HomeActivity extends AppCompatActivity
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
                 PinboardFragment pinboard = new PinboardFragment();
+                pinboard.setToolbar(toolbar);
+                pinboard.setTitle(getString(R.string.section_title_pinboard));
+                pinboard.setFloatingActionButton(fab);
 
                 transaction.replace(R.id.container, pinboard);
                 transaction.commit();
@@ -143,7 +150,7 @@ public class HomeActivity extends AppCompatActivity
                 return false;
             }
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return true;
         }

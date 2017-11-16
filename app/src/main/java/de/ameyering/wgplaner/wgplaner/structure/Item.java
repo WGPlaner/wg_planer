@@ -47,11 +47,13 @@ public class Item {
         this.boughtOn = boughtOn;
     }
 
+    /*
     public void buy(Money price) {
         this.price = price;
         this.boughtOn = DataContainer.Items.getDateFormat().format(
                 Calendar.getInstance().getTime()); //Formats actual Time to String
     }
+    */
 
     @Override
     public boolean equals(Object obj) {

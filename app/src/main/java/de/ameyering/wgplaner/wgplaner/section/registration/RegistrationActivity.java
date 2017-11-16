@@ -21,6 +21,7 @@ import de.ameyering.wgplaner.wgplaner.section.registration.fragment.UploadProfil
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import io.swagger.client.ApiCallback;
+import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
@@ -88,8 +89,12 @@ public class RegistrationActivity extends AppCompatActivity {
                     user.setDisplayName(Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME));
                     user.setEmail(Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS));
 
-                    ApiKeyAuth firebaseAuth = (ApiKeyAuth) api.getApiClient().getAuthentication("FirebaseIDAuth");
+                    ApiClient client = api.getApiClient();
+
+                    ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication("FirebaseIDAuth");
                     firebaseAuth.setApiKey(user.getUid());
+
+                    client.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
 
                     try {
                         api.createUserAsync(user, new ApiCallback<User>() {

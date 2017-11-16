@@ -41,6 +41,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.10.0'
     compile 'com.android.support:cardview-v7:26.+'
+    androidTestCompile 'io.cucumber:cucumber-android:2.1.0'
+    androidTestCompile 'io.cucumber:cucumber-picocontainer:2.1.0'
     compile files('libs/gson-2.8.1.jar')
     compile files('libs/hamcrest-core-1.3.jar')
     compile files('libs/joda-time-2.9.9.jar')

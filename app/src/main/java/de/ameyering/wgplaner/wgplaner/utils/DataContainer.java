@@ -2,17 +2,18 @@ package de.ameyering.wgplaner.wgplaner.utils;
 
 import android.support.annotation.Nullable;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ameyering.wgplaner.wgplaner.structure.Item;
-import de.ameyering.wgplaner.wgplaner.structure.User;
-import io.swagger.client.model.ListItem;
+import io.swagger.client.model.*;
 
 public abstract class DataContainer {
 
-    public static abstract class ListItems {
+    /**
+     * DataContainer for ShoppingListItems
+     */
+
+    public static abstract class ShoppingListItems {
         private static ArrayList<ListItem> shoppingListItems = new ArrayList<>();
 
         public static ArrayList<ListItem> getShoppingListItems() {
@@ -65,63 +66,34 @@ public abstract class DataContainer {
     }
 
     /**
-     * DataContainer for Item-Instances
-     **/
-
-    public static abstract class Items {
-        private static ArrayList<Item> items = new ArrayList<>();
-        private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        public static ArrayList<Item> getItems() {
-            return (ArrayList<Item>) items.clone();
-        }
-
-        public static void addItem(Item item) {
-            items.add(item);
-        }
-
-        @Nullable
-        public static Item getItem(int index) {
-            if (index < items.size()) {
-                return items.get(index);
-            }
-
-            return null;
-        }
-
-        public static void removeItem(Item item) {
-            items.remove(item);
-        }
-
-        public static int getSize() {
-            return items.size();
-        }
-
-        public static SimpleDateFormat getDateFormat() {
-            return dateFormat;
-        }
-    }
-
-    /**
      * DataContainer for User-Instances
      **/
 
     public static abstract class Users {
+        private static User me = new User();
         private static ArrayList<User> users = new ArrayList<>();
+
+        public static User getMe() {
+            return me;
+        }
+
+        public static void setMe(User me) {
+            Users.me = me;
+        }
 
         protected static void addAllUsers(ArrayList<User> users) {
             if (users != null) {
                 Users.users.addAll(users);
+
             }
         }
 
         @Nullable
         public static String getDisplayNameByUid(String uid) {
-            User user = new User(uid, "");
-
-            if (users.contains(user)) {
-                int index = users.indexOf(user);
-                return users.get(index).getDisplayName();
+            for (User user : users) {
+                if (user.getUid().equals(uid)) {
+                    return user.getDisplayName();
+                }
             }
 
             return null;
@@ -142,6 +114,35 @@ public abstract class DataContainer {
 
         protected static void removeUser(User user) {
             users.remove(user);
+        }
+    }
+
+    /**
+     * DataContainer for the group
+     */
+
+    public static abstract class Groups {
+        private static Group group;
+        private static List<User> members;
+
+        public static void setMembers(List<User> members) {
+            Groups.members = members;
+        }
+
+        public static Group getGroup() {
+            return group;
+        }
+
+        public static void setGroup(Group group) {
+            Groups.group = group;
+        }
+
+        public static List<User> getMembers() {
+            if (members != null) {
+                return members;
+            }
+
+            return new ArrayList<>();
         }
     }
 }
