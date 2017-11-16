@@ -2,6 +2,7 @@
     <string name="app_name">WGPlaner</string>
     <string name="add_item_activity">Add Item</string>
     <string name="set_up_group_activity">Create Group</string>
+    <string name="profile_settings_activity">Your Profile</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -67,7 +68,7 @@
     <string name="dialog_discard_message">Discard draft?</string>
     <string name="dialog_discard_positive">Discard</string>
     <string name="dialog_discard_negative">Cancel</string>
-  
+
     <!-- Server-Result Strings -->
     <string name="user_unauthorized">Unauthorized</string>
     <string name="server_connection_failed">Connection to Server failed</string>
