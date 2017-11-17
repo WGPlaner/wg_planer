@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.LauncherActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,25 +46,67 @@ public class ShoppingListFragment extends SectionFragment {
         }
 
         if (floatingActionButton != null) {
-            floatingActionButton.setVisibility(View.VISIBLE);
-            floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+            if(DataContainer.SelectedShoppingListItems.getSelectedShoppingListItemsCount() == 0) {
+                floatingActionButton.setVisibility(View.VISIBLE);
+                floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                     R.drawable.ic_add_white));
-            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), AddItemActivity.class);
+                        startActivityForResult(intent, REQ_CODE_ADD_ITEM);
+                    }
+                });
+            } else {
+                floatingActionButton.setVisibility(View.VISIBLE);
+                floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                    R.drawable.ic_check_white));
+                floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DataContainer.SelectedShoppingListItems.removeSelection();
+                        onNewData(DataContainer.ShoppingListItems.getShoppingListItems());
+                    }
+                });
+            }
+
+            DataContainer.SelectedShoppingListItems.addOnDataChangeListener(new DataContainer.OnDataChangeListener() {
                 @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), AddItemActivity.class);
-                    startActivityForResult(intent, REQ_CODE_ADD_ITEM);
+                public void onDataChange() {
+                    if(DataContainer.SelectedShoppingListItems.getSelectedShoppingListItemsCount() == 0){
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                        floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                            R.drawable.ic_add_white));
+                        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getActivity(), AddItemActivity.class);
+                                startActivityForResult(intent, REQ_CODE_ADD_ITEM);
+                            }
+                        });
+                    } else {
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                        floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                            R.drawable.ic_check_white));
+                        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                DataContainer.SelectedShoppingListItems.removeSelection();
+                                onNewData(DataContainer.ShoppingListItems.getShoppingListItems());
+                            }
+                        });
+                    }
                 }
             });
         }
 
-        if (categories != null) {
+        if (categories == null) {
             categories = view.findViewById(R.id.section_shopping_list_recycler_view);
             categories.setLayoutManager(new LinearLayoutManager(getContext()));
             categories.setHasFixedSize(false);
         }
 
-        if (adapter != null) {
+        if (adapter == null) {
             items.clear();
             items.addAll(DataContainer.ShoppingListItems.getShoppingListItems());
             ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(
@@ -93,7 +136,7 @@ public class ShoppingListFragment extends SectionFragment {
         switch (requestCode) {
             case REQ_CODE_ADD_ITEM: {
                 if (resultCode == Activity.RESULT_OK) {
-                    //TODO: Implement Result okay flow
+                    onNewData(DataContainer.ShoppingListItems.getShoppingListItems());
                 }
             }
             break;

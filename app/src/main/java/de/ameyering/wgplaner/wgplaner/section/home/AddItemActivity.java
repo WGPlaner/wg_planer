@@ -15,11 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.AddItemRequestedForAdapter;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.AddItemAddUserDialogFragment;
-import de.ameyering.wgplaner.wgplaner.structure.User;
+import io.swagger.client.model.User;
+import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import io.swagger.client.model.ListItem;
 
 public class AddItemActivity extends AppCompatActivity {
     public RecyclerView requestedFor;
@@ -27,6 +30,8 @@ public class AddItemActivity extends AppCompatActivity {
 
     public EditText nameInput;
     public EditText numberInput;
+
+    private ArrayList<User> selected = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +83,10 @@ public class AddItemActivity extends AppCompatActivity {
                 dialog.setOnResultListener(new AddItemAddUserDialogFragment.OnResultListener() {
                     @Override
                     public void onResult(ArrayList<User> selected) {
-                        adapter.updateSelection(selected);
+                        AddItemActivity.this.selected.clear();
+                        AddItemActivity.this.selected.addAll(selected);
+
+                        adapter.updateSelection(AddItemActivity.this.selected);
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -113,7 +121,7 @@ public class AddItemActivity extends AppCompatActivity {
         String name = nameInput.getText().toString();
         String number = numberInput.getText().toString();
 
-        if (name != null && number != null && !name.isEmpty() && !number.isEmpty()) {
+        if (name != null && number != null && !name.isEmpty() && !number.isEmpty() && !selected.isEmpty()) {
             int num = 0;
 
             try {
@@ -123,7 +131,19 @@ public class AddItemActivity extends AppCompatActivity {
                 return false;
             }
 
-            //TODO: Parse inputs into Item instance
+            ListItem item = new ListItem();
+            item.setTitle(name);
+            item.setRequestedBy(DataContainer.Me.getMe().getUid());
+
+            List<String> users = new ArrayList<>();
+
+            for(User user: selected){
+                users.add(user.getUid());
+            }
+
+            item.setRequestedFor(users);
+
+            DataContainer.ShoppingListItems.addShoppingListItem(name, num, users);
 
             return true;
         }

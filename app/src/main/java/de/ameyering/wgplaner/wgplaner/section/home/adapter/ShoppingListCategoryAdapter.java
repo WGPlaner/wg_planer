@@ -3,6 +3,9 @@ package de.ameyering.wgplaner.wgplaner.section.home.adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.transition.ChangeBounds;
+import android.support.transition.TransitionManager;
+import android.support.transition.TransitionSet;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,15 +33,19 @@ public class ShoppingListCategoryAdapter extends
 
         ShoppingListItemAdapter adapter;
 
+        CategoryHolder holder;
+
         public ViewHolder(View item) {
             super(item);
 
-            itemRecycler = item.findViewById(R.id.section_shopping_list_recycler_view);
+            itemRecycler = item.findViewById(R.id.shopping_list_category_recycler);
             categoryName = item.findViewById(R.id.shopping_list_category_header);
             category = item.findViewById(R.id.shopping_list_category_container);
         }
 
         public void initialize(CategoryHolder categoryHolder) {
+            this.holder = categoryHolder;
+
             categoryName.setText(categoryHolder.getHeader());
 
             itemRecycler.setLayoutManager(new LinearLayoutManager(context));
@@ -62,8 +69,15 @@ public class ShoppingListCategoryAdapter extends
             }
 
             if (items == CategoryDiffCallback.TRUE) {
+                if(holder.getItems().size() != categoryHolder.getItems().size()){
+                    TransitionManager.beginDelayedTransition(category, new TransitionSet()
+                        .addTransition(new ChangeBounds()));
+                }
+
                 adapter.onNewData(categoryHolder.getItems());
             }
+
+            this.holder = categoryHolder;
         }
     }
 

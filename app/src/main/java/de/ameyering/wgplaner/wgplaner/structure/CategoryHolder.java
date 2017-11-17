@@ -4,6 +4,7 @@ package de.ameyering.wgplaner.wgplaner.structure;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 import io.swagger.client.model.ListItem;
 
 public class CategoryHolder {
@@ -97,13 +98,19 @@ public class CategoryHolder {
                 }
 
             } else {
-                if (!headers.contains(item.getRequestedFor())) {
-                    List<String> requestedFor = item.getRequestedFor();
-                    String header = "";
+                List<String> requestedFor = item.getRequestedFor();
+                String header = "";
 
-                    for (String uid : requestedFor) {
-                        header = header + " || " + uid;
+                for (int i = 0; i < requestedFor.size(); i++) {
+                    if(i == 0){
+                        header = DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                    } else {
+                        header = header + " || " + DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
                     }
+                }
+
+                if (!headers.contains(header)) {
+                    headers.add(header);
                 }
             }
         }
@@ -118,8 +125,12 @@ public class CategoryHolder {
             List<String> requestedFor = item.getRequestedFor();
             String header = "";
 
-            for (String uid : requestedFor) {
-                header = header + " || " + uid;
+            for (int i = 0; i < requestedFor.size(); i++) {
+                if(i == 0){
+                    header = DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                } else {
+                    header = header + " || " + DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                }
             }
 
             int position = headers.indexOf(header);

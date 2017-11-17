@@ -82,8 +82,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         if (user != null) {
             uid = user.getUid();
-            String configUid = Configuration.singleton.getConfig(Configuration.Type.USER_UID);
-
             Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
             initializeUser(uid);
         }
@@ -135,7 +133,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
                         if (result != null) {
-                            DataContainer.Users.setMe(result);
+                            DataContainer.Me.setMe(result);
                             GetDataTask task = new GetDataTask();
 
                             try {
@@ -190,7 +188,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            User user = DataContainer.Users.getMe();
+            User user = DataContainer.Me.getMe();
 
             if (user != null) {
                 GroupApi groupApi = new GroupApi();
@@ -233,7 +231,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             }
                         }
 
-                        DataContainer.Groups.setMembers(members);
+                        DataContainer.GroupMembers.setMembers(members);
                     }
 
                 } catch (ApiException e) {

@@ -37,6 +37,8 @@ public class ShoppingListItemAdapter extends
 
         CheckBox checkbox;
 
+        ListItem item;
+
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -54,9 +56,30 @@ public class ShoppingListItemAdapter extends
             displayRequestedFor = itemView.findViewById(R.id.shopping_list_item_product_requested_for);
 
             checkbox = itemView.findViewById(R.id.shopping_list_item_checked);
+
+            checkbox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(checkbox.isChecked()){
+                        DataContainer.SelectedShoppingListItems.addSelectedShoppingListItem(item);
+                    } else {
+                        DataContainer.SelectedShoppingListItems.removeSelectedShoppingListItem(item);
+                    }
+                }
+            });
         }
 
         public void initialize(ListItem item) {
+            if(this.item == null){
+                this.item = item;
+            } else if(!this.item.equals(item)) {
+                this.item = item;
+                checkbox.setChecked(false);
+            } else if (this.item.equals(item)){
+                checkbox.setChecked(false);
+                return;
+            }
+
             String title = item.getTitle();
 
             if (title != null) {
@@ -84,6 +107,8 @@ public class ShoppingListItemAdapter extends
         }
 
         public void updateContent(ListItem item, Bundle args) {
+            this.item = item;
+
             if (args == null) {
                 return;
             }
