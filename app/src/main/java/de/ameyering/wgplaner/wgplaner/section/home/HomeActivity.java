@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.SetUpFragment;
+import de.ameyering.wgplaner.wgplaner.section.settings.ProfileSettings;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 public class HomeActivity extends AppCompatActivity
@@ -38,7 +39,7 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, AddItemActivity.class);
+                Intent intent = new Intent(HomeActivity.this, ProfileSettings.class);
                 startActivity(intent);
             }
         });
@@ -65,7 +66,7 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
             setUpFragment.setToolbar(toolbar);
-            setUpFragment.setFloatingActionButton(fab);
+            //setUpFragment.setFloatingActionButton(fab);
             setUpFragment.setTitle(getString(R.string.section_title_set_up_group));
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
