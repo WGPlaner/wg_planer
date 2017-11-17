@@ -78,11 +78,11 @@
 
     <string name="section_title_set_up_group">Group SetUp</string>
     <string name="section_title_shopping_list">Shopping List</string>
-    <string name="header_profile_settings">Your Profile</string>
-    <string name="bt_delete_group">Leave Group</string>
-    <string name="bsp_emailadress">nina.wieland1812@t-online.de</string>
-    <string name="name">Name</string>
-    <string name="bsp_name">Nina</string>
-    <string name="save_changes">Save Changes</string>
+
+    <!-- Profile Settings strings -->
+    <string name="profile_settings_btn_leave_group">Leave Group</string>
+    <string name="profile_settings_username_hint">Name</string>
+    <string name="profile_settings_btn_save_changes">Save Changes</string>
+    <string name="delete_display_name_error">You can not delete your Name</string>
 
 </resources>

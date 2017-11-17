@@ -78,17 +78,6 @@ public class ProfileSettings extends AppCompatActivity {
 
         //Choose image
         image = findViewById(R.id.profile_settings_profile_picture);
-        image.addOnRotationListener(new CircularImageView.OnRotationListener() {
-            @Override
-            public void onRotateLeft(Bitmap bitmap) {
-                image.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onRotateRight(Bitmap bitmap) {
-                image.setImageBitmap(bitmap);
-            }
-        });
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,9 +100,9 @@ public class ProfileSettings extends AppCompatActivity {
         }
 
         inputEmail = findViewById(R.id.tfEmail_profile_settings);
-        String mEmail = Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS);
-        if (mEmail != null) {
-            inputEmail.setText(mEmail);
+        String email = Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS);
+        if (email != null) {
+            inputEmail.setText(email);
         }
 
         btLeaveGroup.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +130,6 @@ public class ProfileSettings extends AppCompatActivity {
         switch (requestCode) {
             case REQ_CODE_PICK_IMAGE:
                 if (resultCode == RESULT_OK) {
-
                     selectedImage = data.getData();
 
                     Intent intent = new Intent("com.android.camera.action.CROP");
@@ -223,7 +211,6 @@ public class ProfileSettings extends AppCompatActivity {
     }
 
     private class LoadBitmap extends AsyncTask<Void, Void, Void> {
-        private Bitmap bitmap;
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -274,30 +261,22 @@ public class ProfileSettings extends AppCompatActivity {
 
     private boolean checkInputAndReturn() {
         String displayName = inputName.getText().toString();
-        if (displayName != null && !displayName.isEmpty()) {
-            inputName.setText(displayName);
-            Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
 
-            String emailAddress = inputEmail.getText().toString();
-            if (emailAddress != null) {
-                if (isValidEmail(emailAddress)) {
-                    Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, emailAddress);
-
-                    SaveBitmap saveTask = new SaveBitmap();
-                    saveTask.execute(bitmap);
-
-                    return true;
-                } else {
-                    //TODO send notification that the Email is wrong
-                    return false;
-                }
-            } else {
-                //TODO send notification that the Email is wrong
-                return false;
-            }
-        } else {
-            //TODO send notification that the name can not be empty
+        if(displayName == null || displayName.isEmpty()){
+            Toast.makeText(this, getString(R.string.delete_display_name_error), Toast.LENGTH_LONG).show();
             return false;
         }
+
+        String email = inputEmail.getText().toString();
+
+        Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, email);
+        Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
+
+        //TODO: Send updateUser
+
+        SaveBitmap task = new SaveBitmap();
+        task.execute(bitmap);
+
+        return true;
     }
 }

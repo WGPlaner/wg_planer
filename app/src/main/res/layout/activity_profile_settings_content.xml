@@ -39,7 +39,7 @@
                     android:id="@+id/tfName_profile_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/name" />
+                    android:hint="@string/profile_settings_username_hint" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -65,7 +65,7 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/holo_red_dark"
-                android:text="@string/bt_delete_group"
+                android:text="@string/profile_settings_btn_leave_group"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
