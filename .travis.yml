@@ -35,8 +35,6 @@ android:
   - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
 
 before_install:
-# https://github.com/JakeWharton/pidcat | Logcat color output
-- wget https://raw.githubusercontent.com/JakeWharton/pidcat/master/pidcat.py
 - mkdir "$ANDROID_HOME/licenses" || true
 - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
@@ -68,9 +66,3 @@ script:
 - adb shell input keyevent 82 &
 - adb logcat -c
 - echo -en 'travis_fold:end:script.uitest\\r'
-
-after_failure:
-- >
-  adb logcat -d 2>&1 | python pidcat.py de.ameyering.wgplaner.wgplaner.debug | tee logcat.log &&
-  cd app/build/reports/androidTests/connected/flavors/REGULAR/ &&
-  mv ../../../../../../../logcat.log logcat.log
