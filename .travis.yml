@@ -1,0 +1,73 @@
+language: android
+
+sudo: false
+jdk:
+- oraclejdk8
+os:
+- linux
+
+env:
+  global:
+  - ADB_INSTALL_TIMEOUT=8
+  - ANDROID_API_LEVEL=26
+  - ANDROID_BUILD_TOOLS_VERSION=26.0.2
+  - EMULATOR_API_LEVEL=19
+  - ANDROID_ABI=armeabi-v7a
+  - JAVA7_HOME=/usr/lib/jvm/java-7-oracle
+  - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+  - JAVA_HOME=$JAVA8_HOME
+  - PWD=`pwd`
+
+android:
+  components:
+  - tools
+  - platform-tools
+  - tools
+  - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+  - android-$ANDROID_API_LEVEL
+  - android-$EMULATOR_API_LEVEL
+  # Support library
+  - extra-android-support
+  # Latest artifacts in local repository
+  - extra-google-m2repository
+  - extra-android-m2repository
+  # Specify at least one system image
+  - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
+
+before_install:
+# https://github.com/JakeWharton/pidcat | Logcat color output
+- wget https://raw.githubusercontent.com/JakeWharton/pidcat/master/pidcat.py
+
+install:
+# Converts the shallow clone to a full clone
+# This is necessary in order to determine the current app version code
+- git fetch --unshallow --tags
+
+before_script:
+- echo no | android create avd -f -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI -s WVGA800 -c 128M
+- emulator -avd test -no-audio -no-window &
+- ./gradlew clean
+
+script:
+- echo -e '\033[0;33mBuilding...\033[0m' && echo -en 'travis_fold:start:script.build\\r'
+- ./gradlew assembleRegularRelease -PdisablePreDex
+- echo -en 'travis_fold:end:script.build\\r'
+
+- echo -e '\033[0;33mUnit tests...\033[0m' && echo -en 'travis_fold:start:script.unittest\\r'
+- ./gradlew testRelease jacocoTestReport -PdisablePreDex
+- echo -en 'travis_fold:end:script.unittest\\r'
+
+- echo -e '\033[0;33mUI tests...\033[0m' && echo -en 'travis_fold:start:script.uitest\\r'
+- android-wait-for-emulator
+- adb shell settings put global window_animation_scale 0
+- adb shell settings put global transition_animation_scale 0
+- adb shell settings put global animator_duration_scale 0
+- adb shell input keyevent 82 &
+- adb logcat -c
+- echo -en 'travis_fold:end:script.uitest\\r'
+
+after_failure:
+- >
+  adb logcat -d 2>&1 | python pidcat.py de.ameyering.wgplaner.wgplaner.debug | tee logcat.log &&
+  cd app/build/reports/androidTests/connected/flavors/REGULAR/ &&
+  mv ../../../../../../../logcat.log logcat.log
