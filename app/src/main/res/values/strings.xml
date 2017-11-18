@@ -4,18 +4,6 @@
     <string name="set_up_group_activity">Create Group</string>
     <string name="join_group_activity">Join Group</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
     <string name="title_activity_home">Home</string>
 
     <string name="action_settings">Settings</string>on
@@ -42,6 +30,7 @@
     <string name="input_username_hint">Username</string>
     <string name="input_email_hint">EMail</string>
     <string name="warning_input_username_empty">Please pick a Username!</string>
+    <string name="logo_content_description">WGPlaner Logo</string>
 
     <!-- AddItem strings -->
     <string name="add_item_name_hint">Product name</string>
@@ -49,18 +38,17 @@
     <string name="add_item_requested_for_hint">Requested for</string>
     <string name="add_item_add_requested_for_label">Add User</string>
     <string name="add_item_add_requested_for_pick_users">Pick Users</string>
-    <string name="add_item_add_requested_for_positive">Ok</string>
+    <string name="add_item_add_requested_for_positive">OK</string>
     <string name="add_item_add_requested_for_negative">Cancel</string>
+    <string name="add_item_requested_for_close_content_description">Remove user</string>
 
     <!-- SetUp Strings -->
     <string name="set_up_group_name_hint">Group name</string>
     <string name="set_up_group_name_error">Please enter a group name</string>
     <string name="set_up_group_currency_error">Please pick a currency</string>
     <string name="set_up_group_currency_hint">Group currency</string>
-    <string name="set_up_group_title">SetUp group</string>
     <string name="set_up_group_header">Dear user</string>
     <string name="set_up_group_body_key">In order to use all available features of the WGPlaner Application you have to be member of a group.\n\nTherefore you can either join an existing group by entering the corresponding access key or create a new group</string>
-    <string name="set_up_group_body_create">...or create a group</string>
     <string name="set_up_key_hint">Key</string>
     <string name="set_up_btn_create_group">Create group</string>
     <string name="set_up_btn_join_group">Join group</string>
@@ -75,9 +63,6 @@
     <string name="user_unauthorized">Unauthorized</string>
     <string name="server_connection_failed">Connection to Server failed</string>
 
-    <!-- Firebase Auth Strings -->
-    <string name="firebase_auth_failed">Authentication failed</string>
-
     <string name="section_title_set_up_group">Group SetUp</string>
     <string name="section_title_shopping_list">Shopping List</string>
     <string name="section_title_pinboard">Pinboard</string>
@@ -87,6 +72,8 @@
     <string name="product_attribute_requested_by">Requested by</string>
     <string name="product_attribute_requested_for">Requested for</string>
 
-    <string name="group_label">group</string>
+    <string name="group_label">Group</string>
+    <string name="asset_statements" translatable="false">[{\n  \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n  \"target\": {\n    \"namespace\": \"web\",\n    \"site\": \"https://api.wgplaner.ameyering.de\",\n  }\n}]</string>
 
+    <!-- NavHeader Strings -->
 </resources>

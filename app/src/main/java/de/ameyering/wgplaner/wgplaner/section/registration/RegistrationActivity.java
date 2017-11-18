@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -20,6 +19,7 @@ import de.ameyering.wgplaner.wgplaner.section.registration.fragment.StateEMailFr
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.UploadProfilePictureFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
@@ -43,7 +43,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setVisibility(View.INVISIBLE);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -84,20 +84,15 @@ public class RegistrationActivity extends AppCompatActivity {
                 } else {
                     UserApi api = new UserApi();
 
-                    User user = new User();
-                    user.setUid(Configuration.singleton.getConfig(Configuration.Type.USER_UID));
-                    user.setDisplayName(Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME));
-                    user.setEmail(Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS));
-
                     ApiClient client = api.getApiClient();
 
-                    ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication("FirebaseIDAuth");
-                    firebaseAuth.setApiKey(user.getUid());
+                    ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication("UserIDAuth");
+                    firebaseAuth.setApiKey(DataContainer.Me.getMe().getUid());
 
                     client.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
 
                     try {
-                        api.createUserAsync(user, new ApiCallback<User>() {
+                        api.createUserAsync(DataContainer.Me.getMe(), new ApiCallback<User>() {
                             @Override
                             public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
                                 runOnUiThread(new Runnable() {

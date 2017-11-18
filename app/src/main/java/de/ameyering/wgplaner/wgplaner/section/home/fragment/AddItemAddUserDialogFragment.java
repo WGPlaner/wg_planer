@@ -3,6 +3,7 @@ package de.ameyering.wgplaner.wgplaner.section.home.fragment;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
@@ -23,6 +24,7 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         void onResult(ArrayList<User> selected);
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

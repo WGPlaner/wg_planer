@@ -1,6 +1,7 @@
 package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
+import de.ameyering.wgplaner.wgplaner.section.home.JoinGroupActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
@@ -39,15 +41,17 @@ import io.swagger.client.model.User;
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";
     private FirebaseAuth mAuth;
-    private String uid = null;
     private FirebaseUser currentUser;
+
+    private boolean loadJoinGroup = false;
+    private String joinGroupKey = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -67,6 +71,24 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Intent appLinkIntent = getIntent();
+        Uri appLinkData = appLinkIntent.getData();
+
+        if(appLinkData != null){
+            List<String> path = appLinkData.getPathSegments();
+            if(path.size() != 0) {
+                if(path.get(0).equals("v0.1")) {
+                    if (path.get(1).equals("groups")) {
+                        if (path.get(2).equals("join")) {
+
+                            joinGroupKey = path.get(3);
+                            loadJoinGroup = true;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -81,8 +103,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         initialize();
 
         if (user != null) {
-            uid = user.getUid();
-            Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
+            String uid = user.getUid();
+            DataContainer.Me.updateUid(uid);
             initializeUser(uid);
         }
     }
@@ -140,13 +162,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 task.execute().get();
 
                             } catch (InterruptedException e) {
-                                loadHome();
+                                loadNext();
 
                             } catch (ExecutionException e) {
-                                loadHome();
+                                loadNext();
                             }
 
-                            loadHome();
+                            loadNext();
                         }
                     }
 
@@ -191,51 +213,53 @@ public class SplashScreenActivity extends AppCompatActivity {
             User user = DataContainer.Me.getMe();
 
             if (user != null) {
-                GroupApi groupApi = new GroupApi();
+                if(user.getGroupUid() != null) {
+                    GroupApi groupApi = new GroupApi();
 
-                ApiClient groupClient = groupApi.getApiClient();
+                    ApiClient groupClient = groupApi.getApiClient();
 
-                ApiKeyAuth userAuth = (ApiKeyAuth) groupClient.getAuthentication("UserIDAuth");
-                userAuth.setApiKey(user.getUid());
+                    ApiKeyAuth userAuth = (ApiKeyAuth) groupClient.getAuthentication("UserIDAuth");
+                    userAuth.setApiKey(user.getUid());
 
-                groupClient.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
+                    groupClient.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
 
-                try {
-                    Group group = groupApi.getGroup(user.getGroupUid().toString());
+                    try {
+                        Group group = groupApi.getGroup(user.getGroupUid().toString());
 
-                    if (group != null) {
-                        DataContainer.Groups.setGroup(group);
+                        if (group != null) {
+                            DataContainer.Groups.setGroup(group);
 
-                        List<String> memberUids = group.getMembers();
-                        ArrayList<User> members = new ArrayList<>();
+                            List<String> memberUids = group.getMembers();
+                            ArrayList<User> members = new ArrayList<>();
 
-                        ApiClient userClient = io.swagger.client.Configuration.getDefaultApiClient();
+                            ApiClient userClient = io.swagger.client.Configuration.getDefaultApiClient();
 
-                        userClient.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
+                            userClient.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
 
-                        ApiKeyAuth firebaseAuth = (ApiKeyAuth) userClient.getAuthentication("FirebaseIDAuth");
-                        firebaseAuth.setApiKey(user.getUid());
+                            ApiKeyAuth firebaseAuth = (ApiKeyAuth) userClient.getAuthentication("FirebaseIDAuth");
+                            firebaseAuth.setApiKey(user.getUid());
 
-                        UserApi userApi = new UserApi();
+                            UserApi userApi = new UserApi();
 
-                        for (String uid : memberUids) {
-                            try {
-                                User member = userApi.getUser(uid);
+                            for (String uid : memberUids) {
+                                try {
+                                    User member = userApi.getUser(uid);
 
-                                if (member != null) {
-                                    members.add(member);
+                                    if (member != null) {
+                                        members.add(member);
+                                    }
+
+                                } catch (ApiException e) {
+                                    continue;
                                 }
-
-                            } catch (ApiException e) {
-                                continue;
                             }
+
+                            DataContainer.GroupMembers.setMembers(members);
                         }
 
-                        DataContainer.GroupMembers.setMembers(members);
+                    } catch (ApiException e) {
+                        //TODO: Implement failure
                     }
-
-                } catch (ApiException e) {
-                    //TODO: Implement failure
                 }
 
                 //TODO: Implement other Server connections
@@ -243,5 +267,21 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             return null;
         }
+    }
+
+    private void loadNext(){
+        if(loadJoinGroup){
+            onLoadJoinGroup();
+        } else {
+            loadHome();
+        }
+    }
+
+    private void onLoadJoinGroup(){
+        Intent intent = new Intent(this, JoinGroupActivity.class);
+        intent.putExtra("ACCESS_KEY", joinGroupKey);
+        intent.setAction(Intent.ACTION_QUICK_VIEW);
+        startActivity(intent);
+        finish();
     }
 }

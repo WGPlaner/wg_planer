@@ -3,14 +3,9 @@ package de.ameyering.wgplaner.wgplaner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import de.ameyering.wgplaner.wgplaner.structure.User;
-
-/**
- * Created by D067867 on 15.10.2017.
- */
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserUnitTest {

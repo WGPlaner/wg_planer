@@ -10,14 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.section.home.JoinGroupActivity;
 import de.ameyering.wgplaner.wgplaner.section.home.SetUpGroupActivity;
 
 
 public class SetUpFragment extends SectionFragment {
     private static final int REQ_CODE_CREATE_GROUP = 0;
-
-    private Button buttonCreate;
-    private Button buttonJoin;
+    private static final int REQ_CODE_JOIN_GROUP = 1;
 
     private OnReadyListener listener;
 
@@ -35,13 +34,14 @@ public class SetUpFragment extends SectionFragment {
             floatingActionButton.setVisibility(View.GONE);
         }
 
-        buttonCreate = view.findViewById(R.id.set_up_group_btn_create_group);
-        buttonJoin = view.findViewById(R.id.set_up_group_btn_join_group);
+        Button buttonCreate = view.findViewById(R.id.set_up_group_btn_create_group);
+        Button buttonJoin = view.findViewById(R.id.set_up_group_btn_join_group);
 
         buttonJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Implement Join-Group flow
+                Intent intent = new Intent(getActivity(), JoinGroupActivity.class);
+                startActivityForResult(intent, REQ_CODE_JOIN_GROUP);
             }
         });
 
@@ -76,6 +76,11 @@ public class SetUpFragment extends SectionFragment {
                 }
             }
             break;
+            case REQ_CODE_JOIN_GROUP: {
+                if(resultCode == getActivity().RESULT_OK){
+                    listener.onReady();
+                }
+            }
         }
     }
 }

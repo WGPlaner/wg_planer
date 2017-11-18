@@ -139,11 +139,8 @@ public class ShoppingListItemAdapter extends
     }
 
     private ArrayList<ListItem> items = new ArrayList<>();
-    private Context context;
 
     public ShoppingListItemAdapter(ArrayList<ListItem> items, Context context) {
-        this.context = context;
-
         this.items.clear();
         this.items.addAll(items);
     }
@@ -158,8 +155,7 @@ public class ShoppingListItemAdapter extends
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.section_shopping_list_item_layout, parent, false);
 
-        ViewHolder holder = new ViewHolder(itemView);
-        return holder;
+        return new ViewHolder(itemView);
     }
 
     @Override

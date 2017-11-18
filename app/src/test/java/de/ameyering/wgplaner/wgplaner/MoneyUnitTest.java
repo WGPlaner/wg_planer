@@ -86,12 +86,11 @@ public class MoneyUnitTest {
 
         for (int i = 0; i < 100; i++) {
             int preDecimal = 1;
-            int decimal = i;
-            Money money = new Money(preDecimal, decimal);
+            Money money = new Money(preDecimal, i);
             test.add(money);
 
             expectedPreDecimal = expectedPreDecimal + preDecimal;
-            expectedDecimal = expectedDecimal + decimal;
+            expectedDecimal = expectedDecimal + i;
 
             if (expectedDecimal >= 100) {
                 expectedDecimal = expectedDecimal - 100;

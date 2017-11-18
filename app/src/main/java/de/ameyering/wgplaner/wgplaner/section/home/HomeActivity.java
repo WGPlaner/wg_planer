@@ -1,6 +1,7 @@
 package de.ameyering.wgplaner.wgplaner.section.home;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -22,7 +23,6 @@ import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FrameLayout container;
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity
 
         fab = findViewById(R.id.fab);
 
-        container = findViewById(R.id.container);
+        FrameLayout container = findViewById(R.id.container);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -118,7 +118,7 @@ public class HomeActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
 
         if (!isInSetUp) {

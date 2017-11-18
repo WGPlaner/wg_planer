@@ -3,9 +3,6 @@ package de.ameyering.wgplaner.wgplaner.section.home.adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.transition.ChangeBounds;
-import android.support.transition.TransitionManager;
-import android.support.transition.TransitionSet;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,7 +47,6 @@ public class ShoppingListCategoryAdapter extends
 
             itemRecycler.setLayoutManager(new LinearLayoutManager(context));
             itemRecycler.setHasFixedSize(false);
-
             adapter = new ShoppingListItemAdapter(categoryHolder.getItems(), context);
 
             itemRecycler.setAdapter(adapter);
@@ -69,11 +65,6 @@ public class ShoppingListCategoryAdapter extends
             }
 
             if (items == CategoryDiffCallback.TRUE) {
-                if(holder.getItems().size() != categoryHolder.getItems().size()){
-                    TransitionManager.beginDelayedTransition(category, new TransitionSet()
-                        .addTransition(new ChangeBounds()));
-                }
-
                 adapter.onNewData(categoryHolder.getItems());
             }
 
@@ -104,9 +95,8 @@ public class ShoppingListCategoryAdapter extends
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.section_shopping_list_category_layout, parent, false);
-        ViewHolder holder = new ViewHolder(item);
 
-        return holder;
+        return new ViewHolder(item);
     }
 
     @Override
@@ -188,11 +178,7 @@ public class ShoppingListCategoryAdapter extends
             CategoryHolder oldHolder = oldList.get(oldItemPosition);
             CategoryHolder newHolder = newList.get(newItemPosition);
 
-            if (oldHolder.getHeader().equals(newHolder.getHeader())) {
-                return true;
-            }
-
-            return false;
+            return oldHolder.getHeader().equals(newHolder.getHeader());
         }
 
         @Nullable

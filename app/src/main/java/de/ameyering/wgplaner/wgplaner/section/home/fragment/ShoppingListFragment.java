@@ -1,10 +1,8 @@
 package de.ameyering.wgplaner.wgplaner.section.home.fragment;
 
 import android.app.Activity;
-import android.app.LauncherActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -109,7 +107,7 @@ public class ShoppingListFragment extends SectionFragment {
         if (adapter == null) {
             items.clear();
             items.addAll(DataContainer.ShoppingListItems.getShoppingListItems());
-            ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(
+            ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
                     CategoryHolder.Category.REQUESTED_FOR, items);
             adapter = new ShoppingListCategoryAdapter(holders, getContext());
 
@@ -123,7 +121,7 @@ public class ShoppingListFragment extends SectionFragment {
         this.items.clear();
         this.items.addAll(items);
 
-        ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(
+        ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
                 CategoryHolder.Category.REQUESTED_FOR, this.items);
 
         if (adapter != null) {

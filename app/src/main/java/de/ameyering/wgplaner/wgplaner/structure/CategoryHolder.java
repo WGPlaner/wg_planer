@@ -1,9 +1,12 @@
 package de.ameyering.wgplaner.wgplaner.structure;
 
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 import io.swagger.client.model.ListItem;
 
@@ -12,7 +15,7 @@ public class CategoryHolder {
     private ArrayList<ListItem> items = new ArrayList<>();
 
     public enum Category {
-        REQUESTED_BY, REQUESTED_FOR;
+        REQUESTED_BY, REQUESTED_FOR
     }
 
     private CategoryHolder(String header) {
@@ -41,12 +44,12 @@ public class CategoryHolder {
         this.items = items;
     }
 
-    public static ArrayList<CategoryHolder> orderByCategory(Category category, List<ListItem> items) {
+    public static ArrayList<CategoryHolder> orderByCategory(Context context, Category category, List<ListItem> items) {
         ArrayList<CategoryHolder> categoryHolders = new ArrayList<>();
 
         switch (category) {
             case REQUESTED_FOR:
-                categoryHolders.addAll(orderByRequestedFor(items));
+                categoryHolders.addAll(orderByRequestedFor(context, items));
                 break;
 
             case REQUESTED_BY:
@@ -88,7 +91,7 @@ public class CategoryHolder {
         return categoryHolders;
     }
 
-    private static ArrayList<CategoryHolder> orderByRequestedFor(List<ListItem> items) {
+    private static ArrayList<CategoryHolder> orderByRequestedFor(Context context, List<ListItem> items) {
         ArrayList<String> headers = new ArrayList<>();
 
         for (ListItem item : items) {
@@ -101,11 +104,15 @@ public class CategoryHolder {
                 List<String> requestedFor = item.getRequestedFor();
                 String header = "";
 
-                for (int i = 0; i < requestedFor.size(); i++) {
-                    if(i == 0){
-                        header = DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
-                    } else {
-                        header = header + " || " + DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                if(requestedFor.size() == DataContainer.GroupMembers.getMembers().size()){
+                    header = context.getString(R.string.group_label);
+                } else {
+                    for (int i = 0; i < requestedFor.size(); i++) {
+                        if (i == 0) {
+                            header = DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                        } else {
+                            header = header + " || " + DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                        }
                     }
                 }
 
@@ -125,11 +132,15 @@ public class CategoryHolder {
             List<String> requestedFor = item.getRequestedFor();
             String header = "";
 
-            for (int i = 0; i < requestedFor.size(); i++) {
-                if(i == 0){
-                    header = DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
-                } else {
-                    header = header + " || " + DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+            if(requestedFor.size() == DataContainer.GroupMembers.getMembers().size()){
+                header = context.getString(R.string.group_label);
+            } else {
+                for (int i = 0; i < requestedFor.size(); i++) {
+                    if (i == 0) {
+                        header = DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                    } else {
+                        header = header + " || " + DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                    }
                 }
             }
 

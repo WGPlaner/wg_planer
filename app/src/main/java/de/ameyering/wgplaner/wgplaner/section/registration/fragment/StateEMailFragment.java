@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
 public class StateEMailFragment extends NavigationFragment {
     private EditText inputEmail;
@@ -41,16 +42,11 @@ public class StateEMailFragment extends NavigationFragment {
             public void onClick(View view) {
                 String emailAddress = inputEmail.getText().toString();
 
-                if (emailAddress != null) {
-                    if (isValidEmail(emailAddress)) {
-                        Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, emailAddress);
+                if (isValidEmail(emailAddress)) {
+                    DataContainer.Me.updateEmailAddress(emailAddress);
 
-                        if (mNavigationEventListener != null) {
-                            mNavigationEventListener.onForward();
-                        }
-
-                    } else {
-                        Toast.makeText(getContext(), "Email is invalid", Toast.LENGTH_LONG).show();
+                    if (mNavigationEventListener != null) {
+                        mNavigationEventListener.onForward();
                     }
 
                 } else {

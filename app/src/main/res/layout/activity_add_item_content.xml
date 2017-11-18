@@ -63,6 +63,7 @@
                     android:layout_margin="5dp"
                     android:backgroundTint="@color/cardview_light_background"
                     android:drawableLeft="@drawable/ic_add_black"
+                    android:drawableStart="@drawable/ic_add_black"
                     android:text="@string/add_item_add_requested_for_label" />
 
                 <android.support.v7.widget.RecyclerView

@@ -38,7 +38,7 @@ public class AddItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.add_item_toolbar);
+        Toolbar toolbar = findViewById(R.id.add_item_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -65,16 +65,16 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
-        nameInput = (EditText) findViewById(R.id.add_item_name_input);
-        numberInput = (EditText) findViewById(R.id.add_item_number_input) ;
+        nameInput = findViewById(R.id.add_item_name_input);
+        numberInput = findViewById(R.id.add_item_number_input) ;
 
-        requestedFor = (RecyclerView) findViewById(R.id.add_item_requested_for_list);
+        requestedFor = findViewById(R.id.add_item_requested_for_list);
         adapter = new AddItemRequestedForAdapter();
         requestedFor.setLayoutManager(new LinearLayoutManager(this));
         requestedFor.setHasFixedSize(false);
         requestedFor.setAdapter(adapter);
 
-        Button buttonAddUser = (Button) findViewById(R.id.add_item_add_user_btn);
+        Button buttonAddUser = findViewById(R.id.add_item_add_user_btn);
         buttonAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,8 +121,8 @@ public class AddItemActivity extends AppCompatActivity {
         String name = nameInput.getText().toString();
         String number = numberInput.getText().toString();
 
-        if (name != null && number != null && !name.isEmpty() && !number.isEmpty() && !selected.isEmpty()) {
-            int num = 0;
+        if (!name.isEmpty() && !number.isEmpty() && !selected.isEmpty()) {
+            int num;
 
             try {
                 num = Integer.parseInt(number);

@@ -23,6 +23,7 @@
         android:layout_height="130dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
+        android:contentDescription="@string/logo_content_description"
         app:srcCompat="@drawable/web_hi_res_512" />
 
     <TextView
@@ -44,5 +45,5 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorButtonDark"
         android:text="@string/btn_continue"
-        android:tooltipText="@string/btn_continue" />
+        android:contentDescription="@string/btn_continue" />
 </LinearLayout>

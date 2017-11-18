@@ -9,17 +9,33 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import io.swagger.client.ApiCallback;
+import io.swagger.client.ApiClient;
+import io.swagger.client.ApiException;
+import io.swagger.client.Configuration;
+import io.swagger.client.api.GroupApi;
+import io.swagger.client.auth.ApiKeyAuth;
+import io.swagger.client.model.Group;
 
 public class JoinGroupActivity extends AppCompatActivity {
+    EditText key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_group);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.join_group_toolbar);
+        Toolbar toolbar = findViewById(R.id.join_group_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -45,6 +61,22 @@ public class JoinGroupActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        key = findViewById(R.id.join_group_input_access_key);
+
+        Intent sentIntent = getIntent();
+        if(sentIntent.getAction() != null && sentIntent.getAction().equals(Intent.ACTION_QUICK_VIEW)){
+            String key = sentIntent.getStringExtra("ACCESS_KEY");
+
+            if(checkInputAndReturn(key)){
+                this.key.setText(key);
+                joinGroup(key);
+
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
     }
 
     @Override
@@ -57,7 +89,9 @@ public class JoinGroupActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_item_save: {
-                if (checkInputAndReturn()) {
+                if (checkInputAndReturn(this.key.getText().toString())) {
+                    joinGroup(key.getText().toString());
+
                     Intent data = new Intent();
                     setResult(RESULT_OK, data);
                     finish();
@@ -69,7 +103,57 @@ public class JoinGroupActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean checkInputAndReturn() {
+    private boolean checkInputAndReturn(String key) {
+        if(key != null && !key.isEmpty()) {
+            Pattern pattern = Pattern.compile("^[A-Z0-9]{12}$");
+            Matcher matcher = pattern.matcher(key);
+
+            return matcher.matches();
+        }
+
         return false;
+    }
+
+    private void joinGroup(String key){
+        ApiClient client = Configuration.getDefaultApiClient();
+
+        client.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
+
+        ApiKeyAuth UserIDAuth = (ApiKeyAuth) client.getAuthentication("UserIDAuth");
+        UserIDAuth.setApiKey(DataContainer.Me.getMe().getUid());
+
+        GroupApi api = new GroupApi();
+        try{
+            api.joinGroupAsync(key, new ApiCallback<Group>() {
+                @Override
+                public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(JoinGroupActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onSuccess(Group result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    if(result != null) {
+                        DataContainer.Groups.setGroup(result);
+                    }
+                }
+
+                @Override
+                public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+
+                }
+
+                @Override
+                public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
+
+                }
+            });
+        } catch (ApiException e){
+            //TODO: Implement failure
+        }
     }
 }

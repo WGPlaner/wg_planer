@@ -27,34 +27,34 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    api fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support:design:26.+'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
-    compile 'com.google.firebase:firebase-auth:11.6.0'
-    compile 'com.google.firebase:firebase-core:11.6.0'
-    compile 'com.google.firebase:firebase-messaging:11.6.0'
-    compile 'com.android.support:cardview-v7:26.+'
+    implementation 'com.android.support:appcompat-v7:26.+'
+    implementation 'com.android.support:design:26.+'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    api 'com.google.firebase:firebase-auth:11.6.0'
+    api 'com.google.firebase:firebase-core:11.6.0'
+    api 'com.google.firebase:firebase-messaging:11.6.0'
+    implementation 'com.android.support:cardview-v7:26.+'
+    implementation 'com.android.support:recyclerview-v7:26.+'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.10.0'
-    compile 'com.android.support:cardview-v7:26.+'
     androidTestCompile 'io.cucumber:cucumber-android:2.1.0'
     androidTestCompile 'io.cucumber:cucumber-picocontainer:2.1.0'
-    compile files('libs/gson-2.8.1.jar')
-    compile files('libs/hamcrest-core-1.3.jar')
-    compile files('libs/joda-time-2.9.9.jar')
-    compile files('libs/junit-4.12.jar')
-    compile files('libs/logging-interceptor-2.7.5.jar')
-    compile files('libs/okhttp-2.7.5.jar')
-    compile files('libs/okio-1.6.0.jar')
-    compile files('libs/swagger-annotations-1.5.15.jar')
-    compile files('libs/swagger-java-client-1.0.0-javadoc.jar')
-    compile files('libs/swagger-java-client-1.0.0-sources.jar')
-    compile files('libs/swagger-java-client-1.0.0-tests.jar')
-    compile files('libs/swagger-java-client-1.0.0.jar')
+    api files('libs/gson-2.8.1.jar')
+    api files('libs/hamcrest-core-1.3.jar')
+    api files('libs/joda-time-2.9.9.jar')
+    api files('libs/junit-4.12.jar')
+    api files('libs/logging-interceptor-2.7.5.jar')
+    api files('libs/okhttp-2.7.5.jar')
+    api files('libs/okio-1.6.0.jar')
+    api files('libs/swagger-annotations-1.5.15.jar')
+    api files('libs/swagger-java-client-1.0.0-javadoc.jar')
+    api files('libs/swagger-java-client-1.0.0-sources.jar')
+    api files('libs/swagger-java-client-1.0.0-tests.jar')
+    api files('libs/swagger-java-client-1.0.0.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'

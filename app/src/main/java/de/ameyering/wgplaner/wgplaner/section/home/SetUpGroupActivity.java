@@ -49,11 +49,9 @@ public class SetUpGroupActivity extends AppCompatActivity {
 
     private EditText editGroupName;
     private CircularImageView groupPicture;
-    private Spinner currencySpinner;
 
     private Locale[] locales = Locale.getAvailableLocales();
     private ArrayList<Currency> currencies = new ArrayList<>();
-    private Uri selectedImage;
     private LocaleSpinnerAdapter adapter;
 
     @Override
@@ -63,7 +61,7 @@ public class SetUpGroupActivity extends AppCompatActivity {
 
         currencies = transformLocale(locales);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.set_up_group_toolbar);
+        Toolbar toolbar = findViewById(R.id.set_up_group_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -89,7 +87,7 @@ public class SetUpGroupActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-        currencySpinner = (Spinner) findViewById(R.id.set_up_spinner_currency);
+        Spinner currencySpinner = findViewById(R.id.set_up_spinner_currency);
         adapter = new LocaleSpinnerAdapter(this, android.R.layout.simple_spinner_item, currencies);
         currencySpinner.setAdapter(adapter);
         currencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -111,8 +109,8 @@ public class SetUpGroupActivity extends AppCompatActivity {
             currencySpinner.setSelection(pos);
         }
 
-        editGroupName = (EditText) findViewById(R.id.set_up_input_group_name);
-        groupPicture = (CircularImageView) findViewById(R.id.set_up_group_picture);
+        editGroupName = findViewById(R.id.set_up_input_group_name);
+        groupPicture = findViewById(R.id.set_up_group_picture);
 
         groupPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,7 +228,7 @@ public class SetUpGroupActivity extends AppCompatActivity {
             case REQ_CODE_PICK_IMAGE: {
                 if (resultCode == RESULT_OK) {
                     try {
-                        selectedImage = data.getData();
+                        Uri selectedImage = data.getData();
 
                         bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                         bitmap = scaleBitmap(bitmap);

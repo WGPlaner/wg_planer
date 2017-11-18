@@ -12,9 +12,9 @@ import android.widget.Toast;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
 public class PickDisplayNameFragment extends NavigationFragment {
-    private Button btnContinue;
     private EditText inputName;
 
     @Nullable
@@ -23,7 +23,7 @@ public class PickDisplayNameFragment extends NavigationFragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pick_display_name_registration, container, false);
 
-        btnContinue = view.findViewById(R.id.btn_continue_pick_display_name);
+        Button btnContinue = view.findViewById(R.id.btn_continue_pick_display_name);
         inputName = view.findViewById(R.id.input_username);
 
         String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
@@ -37,8 +37,8 @@ public class PickDisplayNameFragment extends NavigationFragment {
             public void onClick(View view) {
                 String displayName = inputName.getText().toString();
 
-                if (displayName != null && !displayName.isEmpty()) {
-                    Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
+                if (!displayName.isEmpty()) {
+                    DataContainer.Me.updateDisplayName(displayName);
 
                     if (mNavigationEventListener != null) {
                         mNavigationEventListener.onForward();

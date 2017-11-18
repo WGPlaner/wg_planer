@@ -1,5 +1,6 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
+import android.content.res.Resources;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -8,7 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.swagger.client.model.*;
-import io.swagger.client.model.User;
 
 public abstract class DataContainer {
 
@@ -119,9 +119,7 @@ public abstract class DataContainer {
         }
 
         public static void removeSelection(){
-            for(ListItem item: selectedShoppingListItems){
-                ShoppingListItems.shoppingListItems.remove(item);
-            }
+            ShoppingListItems.shoppingListItems.removeAll(selectedShoppingListItems);
 
             selectedShoppingListItems.clear();
             callAllListeners();
@@ -164,7 +162,7 @@ public abstract class DataContainer {
         private static ArrayList<OnDataChangeListener> mListeners = new ArrayList<>();
 
         private static void addUser(User user){
-            if(user != null) {
+            if(user != null && !users.contains(user)) {
                 users.add(user);
                 callAllListeners();
             }
@@ -275,7 +273,7 @@ public abstract class DataContainer {
      */
 
     public static abstract class Me {
-        private static User me;
+        private static User me = new User();
 
         private static ArrayList<OnDataChangeListener> mListeners = new ArrayList<>();
 
@@ -286,8 +284,55 @@ public abstract class DataContainer {
         public static void setMe(User me) {
             Me.me = me;
 
-            if(!Users.users.contains(me)){
+            if(me != null && me.getDisplayName() != null){
                 Users.addUser(me);
+
+                Configuration.singleton.addConfig(Configuration.Type.USER_UID, me.getUid());
+
+                if(me.getDisplayName() != null){
+                    Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, me.getDisplayName());
+                }
+
+                if(me.getEmail() != null) {
+                    Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, me.getEmail());
+                } else {
+                    Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, null);
+                }
+
+                if(me.getGroupUid() != null) {
+                    Configuration.singleton.addConfig(Configuration.Type.USER_GROUP_ID, me.getGroupUid().toString());
+                } else {
+                    Configuration.singleton.addConfig(Configuration.Type.USER_GROUP_ID, null);
+                }
+
+                callAllListeners();
+            }
+        }
+
+        public static void updateUid(String uid){
+            if(uid != null && !uid.isEmpty()){
+                me.setUid(uid);
+            }
+        }
+
+        public static void updateDisplayName(String displayName){
+            if(displayName != null && !displayName.isEmpty()){
+                if(me.getDisplayName() == null ){
+                    me.setDisplayName(displayName);
+                    Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
+                    callAllListeners();
+                } else if(!me.getDisplayName().equals(displayName)){
+                    me.setDisplayName(displayName);
+                    Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
+                    callAllListeners();
+                }
+            }
+        }
+
+        public static void updateEmailAddress(String email){
+            if(!email.equals(me.getEmail())){
+                me.setEmail(email);
+                Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, email);
                 callAllListeners();
             }
         }
@@ -330,6 +375,10 @@ public abstract class DataContainer {
 
         public static void setGroup(Group group) {
             Groups.group = group;
+            if(group != null) {
+                Me.me.setGroupUid(group.getUid());
+                Me.callAllListeners();
+            }
             callAllListeners();
         }
 
@@ -368,6 +417,13 @@ public abstract class DataContainer {
         public static void setMembers(List<User> members) {
             GroupMembers.members.clear();
             GroupMembers.members.addAll(members);
+
+            if(members != null){
+                for(User user: members){
+                    Users.addUser(user);
+                }
+            }
+
             callAllListeners();
         }
 
