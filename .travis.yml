@@ -1,3 +1,4 @@
+# Travis CI for WGPlaner. Not final, yet.
 language: android
 
 sudo: false
