@@ -61,15 +61,15 @@ public class MoneyUnitTest {
             Money test = new Money(preDecimal, decimal);
 
             if (decimal == 0) {
-                String expected = preDecimal + ",-" + "€";
+                String expected = preDecimal + ",-" + "EUR";
                 Assert.assertEquals(expected, test.toString());
 
             } else if (decimal < 10) {
-                String expected = preDecimal + "," + "0" + decimal + "€";
+                String expected = preDecimal + "," + "0" + decimal + "EUR";
                 Assert.assertEquals(expected, test.toString());
 
             } else {
-                String expected = preDecimal + "," + decimal + "€";
+                String expected = preDecimal + "," + decimal + "EUR";
                 Assert.assertEquals(expected, test.toString());
             }
 
