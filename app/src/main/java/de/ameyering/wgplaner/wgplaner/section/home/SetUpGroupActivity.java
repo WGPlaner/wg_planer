@@ -31,6 +31,8 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.LocaleSpinnerAdapter;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
@@ -146,63 +148,38 @@ public class SetUpGroupActivity extends AppCompatActivity {
     }
 
     private void createGroup() {
-        GroupApi api = new GroupApi();
-
-        ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
-
-        String uid = Configuration.singleton.getConfig(Configuration.Type.USER_UID);
-        ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication("UserIDAuth");
-        firebaseAuth.setApiKey(uid);
-
-        client.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
-
         Group group = new Group();
         group.setDisplayName(groupName);
         group.setCurrency(currency.getCurrencyCode());
         ArrayList<String> members = new ArrayList<>();
-        members.add(uid);
+        members.add(DataContainer.Me.getMe().getUid());
         group.setMembers(members);
         group.setAdmins(members);
 
-        try {
-            api.createGroupAsync(group, new ApiCallback<Group>() {
-                @Override
-                public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(SetUpGroupActivity.this, getString(R.string.server_connection_failed),
-                                Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
+        DataContainer.Groups.createGroup(group, new ServerCalls.OnAsyncCallListener<Group>() {
+            @Override
+            public void onFailure(ApiException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(SetUpGroupActivity.this, getString(R.string.server_connection_failed),
+                                    Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                });
+            }
 
-                @Override
-                public void onSuccess(Group result, int statusCode, Map<String, List<String>> responseHeaders) {
-                    Configuration.singleton.addConfig(Configuration.Type.USER_GROUP_ID, result.getUid().toString());
-
-                    updateUser();
-
-                    Intent data = new Intent();
-                    setResult(RESULT_OK, data);
-                    finish();
-                }
-
-                @Override
-                public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
-                }
-
-                @Override
-                public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
-                }
-            });
-
-        } catch (ApiException e) {
-            Toast.makeText(SetUpGroupActivity.this, getString(R.string.server_connection_failed),
-                Toast.LENGTH_LONG).show();
-        }
+            @Override
+            public void onSuccess(Group result) {
+                Intent data = new Intent();
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        });
     }
 
     private boolean checkInputsAndReturn() {
@@ -273,50 +250,5 @@ public class SetUpGroupActivity extends AppCompatActivity {
         }
 
         return currencies;
-    }
-
-    private void updateUser() {
-        try {
-            UserApi api = new UserApi();
-
-            User user = new User();
-            user.setUid(Configuration.singleton.getConfig(Configuration.Type.USER_UID));
-            user.setDisplayName(Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME));
-            user.setEmail(Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS));
-            user.setGroupUid(UUID.fromString(Configuration.singleton.getConfig(
-                        Configuration.Type.USER_GROUP_ID)));
-
-            ApiClient client = api.getApiClient();
-
-            ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication("FirebaseIDAuth");
-            firebaseAuth.setApiKey(user.getUid());
-
-            client.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
-
-            api.updateUserAsync(user, new ApiCallback<User>() {
-                @Override
-                public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                    Log.d("Server", ":updateUserFailed");
-                }
-
-                @Override
-                public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
-                    Log.d("Server", ":updateUserSucceeded");
-                }
-
-                @Override
-                public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
-                }
-
-                @Override
-                public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
-                }
-            });
-
-        } catch (ApiException e) {
-            Log.d("Server", ":updateUserFailed");
-        }
     }
 }

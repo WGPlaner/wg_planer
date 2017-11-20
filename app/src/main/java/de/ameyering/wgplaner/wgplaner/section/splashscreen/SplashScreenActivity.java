@@ -29,13 +29,16 @@ import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.GroupApi;
+import io.swagger.client.api.ShoppinglistApi;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.Group;
+import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.User;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -111,81 +114,42 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void initializeUser(String uid) {
         if (uid != null) {
-            ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
+            DataContainer.Me.initializeMe(new ServerCalls.OnAsyncCallListener<User>() {
+                @Override
+                public void onFailure(ApiException e) {
+                    switch(e.getCode()){
+                        case 401:
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SplashScreenActivity.this, getString(R.string.user_unauthorized),
+                                        Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            break;
 
-            client.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
+                        case 404:
+                            loadRegistration();
+                            break;
 
-            ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication("FirebaseIDAuth");
-            firebaseAuth.setApiKey(uid);
-
-            UserApi api = new UserApi();
-
-            try {
-                api.getUserAsync(uid, new ApiCallback<User>() {
-                    @Override
-                    public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                        switch (statusCode) {
-                            case 401:
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(SplashScreenActivity.this, getString(R.string.user_unauthorized),
-                                            Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                                break;
-
-                            case 404:
-                                loadRegistration();
-                                break;
-
-                            default:
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(SplashScreenActivity.this, getString(R.string.server_connection_failed),
-                                            Toast.LENGTH_LONG).show();
-                                        //finish();
-                                    }
-                                });
-                                break;
-                        }
+                        default:
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SplashScreenActivity.this, getString(R.string.server_connection_failed),
+                                        Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            break;
                     }
+                }
 
-                    @Override
-                    public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if (result != null) {
-                            DataContainer.Me.setMe(result);
-                            GetDataTask task = new GetDataTask();
-
-                            try {
-                                task.execute().get();
-
-                            } catch (InterruptedException e) {
-                                loadNext();
-
-                            } catch (ExecutionException e) {
-                                loadNext();
-                            }
-
-                            loadNext();
-                        }
-                    }
-
-                    @Override
-                    public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
-                    }
-
-                    @Override
-                    public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
-                    }
-                });
-
-            } catch (ApiException e) {
-                Toast.makeText(this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
-            }
+                @Override
+                public void onSuccess(User result) {
+                    getData();
+                    loadNext();
+                }
+            });
         }
     }
 
@@ -206,69 +170,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         finish();
     }
 
-    private static class GetDataTask extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            User user = DataContainer.Me.getMe();
-
-            if (user != null) {
-                if(user.getGroupUid() != null) {
-                    GroupApi groupApi = new GroupApi();
-
-                    ApiClient groupClient = groupApi.getApiClient();
-
-                    ApiKeyAuth userAuth = (ApiKeyAuth) groupClient.getAuthentication("UserIDAuth");
-                    userAuth.setApiKey(user.getUid());
-
-                    groupClient.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
-
-                    try {
-                        Group group = groupApi.getGroup(user.getGroupUid().toString());
-
-                        if (group != null) {
-                            DataContainer.Groups.setGroup(group);
-
-                            List<String> memberUids = group.getMembers();
-                            ArrayList<User> members = new ArrayList<>();
-
-                            ApiClient userClient = io.swagger.client.Configuration.getDefaultApiClient();
-
-                            userClient.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
-
-                            ApiKeyAuth firebaseAuth = (ApiKeyAuth) userClient.getAuthentication("FirebaseIDAuth");
-                            firebaseAuth.setApiKey(user.getUid());
-
-                            UserApi userApi = new UserApi();
-
-                            for (String uid : memberUids) {
-                                try {
-                                    User member = userApi.getUser(uid);
-
-                                    if (member != null) {
-                                        members.add(member);
-                                    }
-
-                                } catch (ApiException e) {
-                                    continue;
-                                }
-                            }
-
-                            DataContainer.GroupMembers.setMembers(members);
-                        }
-
-                    } catch (ApiException e) {
-                        //TODO: Implement failure
-                    }
-                }
-
-                //TODO: Implement other Server connections
-            }
-
-            return null;
-        }
-    }
-
     private void loadNext(){
         if(loadJoinGroup){
             onLoadJoinGroup();
@@ -283,5 +184,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_QUICK_VIEW);
         startActivity(intent);
         finish();
+    }
+
+    private void getData(){
+        DataContainer.Groups.getGroupFromServer(DataContainer.CallBehavior.WAIT_FOR_RETURN);
+
+        if(DataContainer.Groups.getGroup().getUid() != null){
+            DataContainer.GroupMembers.initializeGroupMembers(DataContainer.CallBehavior.WAIT_FOR_RETURN);
+            DataContainer.ShoppingListItems.updateShoppingList(DataContainer.CallBehavior.WAIT_FOR_RETURN);
+        }
     }
 }

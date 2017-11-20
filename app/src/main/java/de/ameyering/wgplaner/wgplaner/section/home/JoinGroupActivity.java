@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
@@ -91,10 +92,6 @@ public class JoinGroupActivity extends AppCompatActivity {
             case R.id.add_item_save: {
                 if (checkInputAndReturn(this.key.getText().toString())) {
                     joinGroup(key.getText().toString());
-
-                    Intent data = new Intent();
-                    setResult(RESULT_OK, data);
-                    finish();
                     return true;
                 }
             }
@@ -114,46 +111,24 @@ public class JoinGroupActivity extends AppCompatActivity {
         return false;
     }
 
-    private void joinGroup(String key){
-        ApiClient client = Configuration.getDefaultApiClient();
-
-        client.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
-
-        ApiKeyAuth UserIDAuth = (ApiKeyAuth) client.getAuthentication("UserIDAuth");
-        UserIDAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-        GroupApi api = new GroupApi();
-        try{
-            api.joinGroupAsync(key, new ApiCallback<Group>() {
-                @Override
-                public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(JoinGroupActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-
-                @Override
-                public void onSuccess(Group result, int statusCode, Map<String, List<String>> responseHeaders) {
-                    if(result != null) {
-                        DataContainer.Groups.setGroup(result);
+    private void joinGroup(String key) {
+        DataContainer.Groups.joinGroup(key, new ServerCalls.OnAsyncCallListener<Group>() {
+            @Override
+            public void onFailure(ApiException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(JoinGroupActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
                     }
-                }
+                });
+            }
 
-                @Override
-                public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
-                }
-
-                @Override
-                public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
-                }
-            });
-        } catch (ApiException e){
-            //TODO: Implement failure
-        }
+            @Override
+            public void onSuccess(Group result) {
+                Intent data = new Intent();
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        });
     }
 }

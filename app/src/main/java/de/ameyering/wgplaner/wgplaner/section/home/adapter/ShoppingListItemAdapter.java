@@ -96,6 +96,8 @@ public class ShoppingListItemAdapter extends
                 }
             }
 
+            displayNumber.setText(item.getCount());
+
             List<String> uids = item.getRequestedFor();
             String concatNames = "";
 
@@ -116,6 +118,7 @@ public class ShoppingListItemAdapter extends
             int title = args.getInt(ItemDiffCallback.NAME);
             int requestedFor = args.getInt(ItemDiffCallback.REQUESTED_FOR);
             int requestedBy = args.getInt(ItemDiffCallback.REQUESTED_BY);
+            int number = args.getInt(ItemDiffCallback.NUMBER);
 
             if (title == ItemDiffCallback.TRUE) {
                 name.setText(item.getTitle());
@@ -134,6 +137,10 @@ public class ShoppingListItemAdapter extends
                 }
 
                 displayRequestedFor.setText(concatNames);
+            }
+
+            if(number == ItemDiffCallback.TRUE){
+                displayNumber.setText(item.getCount());
             }
         }
     }
@@ -258,6 +265,7 @@ public class ShoppingListItemAdapter extends
             int title = TRUE;
             int requestedBy = TRUE;
             int requestedFor = TRUE;
+            int number = TRUE;
 
             Bundle args = new Bundle();
 
@@ -285,7 +293,14 @@ public class ShoppingListItemAdapter extends
                 args.putInt(REQUESTED_FOR, FALSE);
             }
 
-            if (title == FALSE && requestedBy == FALSE && requestedFor == FALSE) {
+            if(!isNumberEquals(newItem.getCount(), oldItem.getCount())){
+                args.putInt(NUMBER, TRUE);
+            } else {
+                number = FALSE;
+                args.putInt(NUMBER, FALSE);
+            }
+
+            if (title == FALSE && requestedBy == FALSE && requestedFor == FALSE && number == FALSE) {
                 return null;
             }
 

@@ -13,13 +13,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.AddItemRequestedForAdapter;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.AddItemAddUserDialogFragment;
+import io.swagger.client.ApiCallback;
+import io.swagger.client.ApiClient;
+import io.swagger.client.ApiException;
+import io.swagger.client.Configuration;
+import io.swagger.client.api.ShoppinglistApi;
+import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.User;
 import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 import io.swagger.client.model.ListItem;
@@ -32,6 +40,7 @@ public class AddItemActivity extends AppCompatActivity {
     public EditText numberInput;
 
     private ArrayList<User> selected = new ArrayList<>();
+    private ListItem newItem = new ListItem();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +115,7 @@ public class AddItemActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_item_save: {
                 if (checkInputAndReturn()) {
-                    Intent data = new Intent();
-                    setResult(RESULT_OK, data);
-                    finish();
+                    DataContainer.ShoppingListItems.createShoppingListItem(DataContainer.CallBehavior.PARALLEL, newItem);
                     return true;
                 }
             }
@@ -131,9 +138,9 @@ public class AddItemActivity extends AppCompatActivity {
                 return false;
             }
 
-            ListItem item = new ListItem();
-            item.setTitle(name);
-            item.setRequestedBy(DataContainer.Me.getMe().getUid());
+            newItem = new ListItem();
+            newItem.setTitle(name);
+            newItem.setCount(num);
 
             List<String> users = new ArrayList<>();
 
@@ -141,9 +148,7 @@ public class AddItemActivity extends AppCompatActivity {
                 users.add(user.getUid());
             }
 
-            item.setRequestedFor(users);
-
-            DataContainer.ShoppingListItems.addShoppingListItem(name, num, users);
+            newItem.setRequestedFor(users);
 
             return true;
         }
