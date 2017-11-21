@@ -31,6 +31,11 @@ import de.ameyering.wgplaner.wgplaner.section.home.AddItemActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.PickDisplayNameFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.UploadProfilePictureFragment;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import io.swagger.client.ApiClient;
+import io.swagger.client.ApiException;
+import io.swagger.client.api.GroupApi;
+import io.swagger.client.auth.ApiKeyAuth;
+import io.swagger.client.model.SuccessResponse;
 
 public class ProfileSettings extends AppCompatActivity {
 
@@ -108,7 +113,23 @@ public class ProfileSettings extends AppCompatActivity {
         btLeaveGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Delete the connection between the User and the WG
+                //ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+                // Configure API key authorization: UserIDAuth
+                //ApiKeyAuth UserIDAuth = (ApiKeyAuth) defaultClient.getAuthentication("UserIDAuth");
+                //UserIDAuth.setApiKey("YOUR API KEY");
+                // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+                //UserIDAuth.setApiKeyPrefix("Token");
+
+                //GroupApi apiInstance = new GroupApi();
+                //try {
+                 //   SuccessResponse result = apiInstance.leaveGroup();
+                    //System.out.println(result);
+                //} catch (ApiException e) {
+               //     System.err.println("Exception when calling GroupApi#leaveGroup");
+                  //  e.printStackTrace();
+                //}
+                //TODO Delete the connection between the User and the WG (check if the implementation is right)
             }
         });
     }
@@ -124,7 +145,6 @@ public class ProfileSettings extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //TODO: Implement Intent result
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
