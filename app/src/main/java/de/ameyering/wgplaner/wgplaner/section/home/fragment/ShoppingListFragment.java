@@ -25,6 +25,7 @@ public class ShoppingListFragment extends SectionFragment {
 
     private RecyclerView categories;
     private ShoppingListCategoryAdapter adapter;
+    private DataContainer.OnDataChangeListener shoppingListListener = null;
 
     private ArrayList<ListItem> items = new ArrayList<>();
 
@@ -112,6 +113,16 @@ public class ShoppingListFragment extends SectionFragment {
             adapter = new ShoppingListCategoryAdapter(holders, getContext());
 
             categories.setAdapter(adapter);
+        }
+
+        if(shoppingListListener == null){
+            shoppingListListener = new DataContainer.OnDataChangeListener() {
+                @Override
+                public void onDataChange() {
+                    onNewData(DataContainer.ShoppingListItems.getShoppingListItems());
+                }
+            };
+            DataContainer.ShoppingListItems.addOnDataChangeListener(shoppingListListener);
         }
 
         return view;

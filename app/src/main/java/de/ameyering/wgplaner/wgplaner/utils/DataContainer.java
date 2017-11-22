@@ -22,6 +22,15 @@ public abstract class DataContainer {
         WAIT_FOR_RETURN, PARALLEL
     }
 
+    public static void initialize(){
+        Me.initialize();
+        Groups.initialize();
+        GroupMembers.initialize();
+        Users.initialize();
+        ShoppingListItems.initialize();
+        SelectedShoppingListItems.initialize();
+    }
+
     /**
      * DataContainer for ShoppingListItems
      * <p>
@@ -31,9 +40,23 @@ public abstract class DataContainer {
      */
 
     public static abstract class ShoppingListItems {
-        private static ArrayList<ListItem> shoppingListItems = new ArrayList<>();
+        private static ArrayList<ListItem> shoppingListItems;
 
-        private static ArrayList<OnDataChangeListener> mListeners = new ArrayList<>();
+        private static ArrayList<OnDataChangeListener> mListeners;
+
+        private static void initialize(){
+            shoppingListItems = new ArrayList<>();
+            mListeners = new ArrayList<>();
+
+            Groups.addOnDataChangeListener(new OnDataChangeListener() {
+                @Override
+                public void onDataChange() {
+                    if(Groups.group.getUid() != null){
+                        updateShoppingList(CallBehavior.PARALLEL);
+                    }
+                }
+            });
+        }
 
         /**
          * @return Returns the current ShoppingList (can not be null)
@@ -164,6 +187,24 @@ public abstract class DataContainer {
             }
         }
 
+        public static void updateShoppingList(final ServerCalls.OnAsyncCallListener<ShoppingList> listener){
+            if(listener != null){
+                ServerCalls.getShoppingListAsync(new ServerCalls.OnAsyncCallListener<ShoppingList>() {
+                    @Override
+                    public void onFailure(ApiException e) {
+                        listener.onFailure(e);
+                    }
+
+                    @Override
+                    public void onSuccess(ShoppingList result) {
+                        shoppingListItems.clear();
+                        listener.onSuccess(result);
+                        addAllShoppingListItems(result);
+                    }
+                });
+            }
+        }
+
         public static void createShoppingListItem(CallBehavior behavior, ListItem item){
             if(item != null) {
                 switch (behavior) {
@@ -194,6 +235,24 @@ public abstract class DataContainer {
                 }
             }
         }
+
+        public static void createShoppingListItem(ListItem item, final ServerCalls.OnAsyncCallListener<ListItem> listener){
+            if(item != null && listener != null){
+                ServerCalls.createShoppingListItemAsync(item, new ServerCalls.OnAsyncCallListener<ListItem>() {
+                    @Override
+                    public void onFailure(ApiException e) {
+                        listener.onFailure(e);
+                    }
+
+                    @Override
+                    public void onSuccess(ListItem result) {
+                        shoppingListItems.add(result);
+                        listener.onSuccess(result);
+                        callAllListeners();
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -204,9 +263,14 @@ public abstract class DataContainer {
      */
 
     public static abstract class SelectedShoppingListItems {
-        private static ArrayList<ListItem> selectedShoppingListItems = new ArrayList<>();
+        private static ArrayList<ListItem> selectedShoppingListItems;
 
-        private static ArrayList<OnDataChangeListener> mListeners = new ArrayList<>();
+        private static ArrayList<OnDataChangeListener> mListeners;
+
+        private static void initialize(){
+         selectedShoppingListItems = new ArrayList<>();
+         mListeners = new ArrayList<>();
+        }
 
         /**
          * Adds an instance of ListItem to SelectedShoppingListItems
@@ -306,9 +370,20 @@ public abstract class DataContainer {
      **/
 
     public static abstract class Users {
-        private static ArrayList<User> users = new ArrayList<>();
+        private static ArrayList<User> users;
 
-        private static ArrayList<OnDataChangeListener> mListeners = new ArrayList<>();
+        private static ArrayList<OnDataChangeListener> mListeners;
+
+        private static void initialize(){
+            users = new ArrayList<>();
+            mListeners = new ArrayList<>();
+            GroupMembers.addOnDataChangeListener(new OnDataChangeListener() {
+                @Override
+                public void onDataChange() {
+                    addAllUsers((ArrayList<User>) GroupMembers.members);
+                }
+            });
+        }
 
         private static void addUser(User user){
             if(user != null && !users.contains(user)) {
@@ -325,6 +400,7 @@ public abstract class DataContainer {
 
         protected static void addAllUsers(ArrayList<User> users) {
             if (users != null) {
+                Users.users.clear();
                 Users.users.addAll(users);
                 callAllListeners();
             }
@@ -479,9 +555,14 @@ public abstract class DataContainer {
      */
 
     public static abstract class Me {
-        private static User me = new User();
+        private static User me;
 
-        private static ArrayList<OnDataChangeListener> mListeners = new ArrayList<>();
+        private static ArrayList<OnDataChangeListener> mListeners;
+
+        private static void initialize(){
+            me = new User();
+            mListeners = new ArrayList<>();
+        }
 
         /**
          * Returns the user instance assigned to the phone owner
@@ -499,32 +580,20 @@ public abstract class DataContainer {
          * @param me An Instance of user which will be assigned to the phone owner
          */
 
-        public static void setMe(User me) {
-            Me.me = me;
-
-            if(me != null && me.getDisplayName() != null){
-                Users.addUser(me);
-
-                Configuration.singleton.addConfig(Configuration.Type.USER_UID, me.getUid());
-
-                if(me.getDisplayName() != null){
-                    Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, me.getDisplayName());
-                }
-
-                if(me.getEmail() != null) {
-                    Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, me.getEmail());
-                } else {
-                    Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, null);
-                }
-
-                if(me.getGroupUid() != null) {
-                    Configuration.singleton.addConfig(Configuration.Type.USER_GROUP_ID, me.getGroupUid().toString());
-                } else {
-                    Configuration.singleton.addConfig(Configuration.Type.USER_GROUP_ID, null);
-                }
+        protected static void setMe(User me) {
+            if(me != null && !Me.me.equals(me)){
+                storeMe(me);
                 updateMe(CallBehavior.PARALLEL, me);
 
                 callAllListeners();
+            }
+        }
+
+        protected static void updateFirebaseInstanceIdToken(String token){
+            me.setFirebaseInstanceId(token);
+            Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
+            if(me.getUid() != null){
+                updateMe(me, null);
             }
         }
 
@@ -583,7 +652,7 @@ public abstract class DataContainer {
                     ApiResponse<User> userResponse = ServerCalls.updateUser(user);
                     if(userResponse != null){
                         if(userResponse.getData() != null){
-                            me = userResponse.getData();
+                            setMe(userResponse.getData());
                             callAllListeners();
                         }
                     }
@@ -598,12 +667,31 @@ public abstract class DataContainer {
 
                         @Override
                         public void onSuccess(User result) {
-                            me = result;
+                            setMe(result);
                             callAllListeners();
                         }
                     });
                     break;
                 }
+            }
+        }
+
+        public static void updateMe(User user, final ServerCalls.OnAsyncCallListener<User> listener){
+            if(user != null){
+                ServerCalls.getUserAsync(me.getUid(), new ServerCalls.OnAsyncCallListener<User>() {
+                    @Override
+                    public void onFailure(ApiException e) {
+                        listener.onFailure(e);
+                    }
+
+                    @Override
+                    public void onSuccess(User result) {
+                        if(listener != null) {
+                            listener.onSuccess(result);
+                            callAllListeners();
+                        }
+                    }
+                });
             }
         }
 
@@ -617,7 +705,7 @@ public abstract class DataContainer {
 
                     @Override
                     public void onSuccess(User result) {
-                        me = result;
+                        setMe(result);
                         listener.onSuccess(result);
                         callAllListeners();
                     }
@@ -635,10 +723,34 @@ public abstract class DataContainer {
 
                     @Override
                     public void onSuccess(User result) {
-                        me = result;
+                        setMe(result);
                         listener.onSuccess(result);
                     }
                 });
+            }
+        }
+
+        private static void storeMe(User user){
+            if(user != null){
+                Me.me = user;
+
+                Configuration config = Configuration.singleton;
+
+                if(user.getUid() != null){
+                    config.addConfig(Configuration.Type.USER_UID, user.getUid());
+                }
+
+                if(user.getDisplayName() != null){
+                    config.addConfig(Configuration.Type.USER_DISPLAY_NAME, user.getDisplayName());
+                }
+
+                if(user.getEmail() != null){
+                    config.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, user.getEmail());
+                }
+
+                if(user.getGroupUid() != null){
+                    config.addConfig(Configuration.Type.USER_GROUP_ID, user.getGroupUid().toString());
+                }
             }
         }
 
@@ -688,9 +800,26 @@ public abstract class DataContainer {
      */
 
     public static abstract class Groups {
-        private static Group group = new Group();
+        private static Group group;
 
-        private static ArrayList<OnDataChangeListener> mListeners = new ArrayList<>();
+        private static ArrayList<OnDataChangeListener> mListeners;
+
+        private static void initialize(){
+            group = new Group();
+            mListeners = new ArrayList<>();
+            Me.addOnDataChangeListener(new OnDataChangeListener() {
+                @Override
+                public void onDataChange() {
+                    if(Me.me.getGroupUid() != null){
+                        if(group.getUid() != null && !Me.me.getGroupUid().equals(group.getUid())){
+                            getGroupFromServer(CallBehavior.PARALLEL);
+                        } else if(group.getUid() == null){
+                            getGroupFromServer(CallBehavior.PARALLEL);
+                        }
+                    }
+                }
+            });
+        }
 
         /**
          * Returns the group assigned to the current user
@@ -744,6 +873,23 @@ public abstract class DataContainer {
                         break;
                     }
                 }
+            }
+        }
+
+        public static void getGroupFromServer(final ServerCalls.OnAsyncCallListener<Group> listener){
+            if(listener != null){
+                ServerCalls.getGroupAsync(Me.me.getGroupUid().toString(), new ServerCalls.OnAsyncCallListener<Group>() {
+                    @Override
+                    public void onFailure(ApiException e) {
+                        listener.onFailure(e);
+                    }
+
+                    @Override
+                    public void onSuccess(Group result) {
+                        listener.onSuccess(result);
+                        callAllListeners();
+                    }
+                });
             }
         }
 
@@ -832,9 +978,20 @@ public abstract class DataContainer {
      */
 
     public static abstract class GroupMembers {
-        private static List<User> members = new ArrayList<>();
+        private static List<User> members;
 
-        private static ArrayList<OnDataChangeListener> mListeners = new ArrayList<>();
+        private static ArrayList<OnDataChangeListener> mListeners;
+
+        private static void initialize(){
+            members = new ArrayList<>();
+            mListeners = new ArrayList<>();
+            Groups.addOnDataChangeListener(new OnDataChangeListener() {
+                @Override
+                public void onDataChange() {
+                    initializeGroupMembers(CallBehavior.PARALLEL);
+                }
+            });
+        }
 
         /**
          * Sets the list of group members of the group which is currently attached to the phone owner

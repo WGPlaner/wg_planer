@@ -154,6 +154,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        DataContainer.initialize();
         Configuration.initConfig(this);
         Money.initialize(Locale.getDefault());
     }
@@ -188,10 +189,5 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void getData(){
         DataContainer.Groups.getGroupFromServer(DataContainer.CallBehavior.WAIT_FOR_RETURN);
-
-        if(DataContainer.Groups.getGroup().getUid() != null){
-            DataContainer.GroupMembers.initializeGroupMembers(DataContainer.CallBehavior.WAIT_FOR_RETURN);
-            DataContainer.ShoppingListItems.updateShoppingList(DataContainer.CallBehavior.WAIT_FOR_RETURN);
-        }
     }
 }

@@ -116,6 +116,8 @@ public class AddItemActivity extends AppCompatActivity {
             case R.id.add_item_save: {
                 if (checkInputAndReturn()) {
                     DataContainer.ShoppingListItems.createShoppingListItem(DataContainer.CallBehavior.PARALLEL, newItem);
+                    setResult(RESULT_OK, new Intent());
+                    finish();
                     return true;
                 }
             }
@@ -141,6 +143,7 @@ public class AddItemActivity extends AppCompatActivity {
             newItem = new ListItem();
             newItem.setTitle(name);
             newItem.setCount(num);
+            newItem.setCategory("");
 
             List<String> users = new ArrayList<>();
 

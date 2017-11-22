@@ -17,6 +17,8 @@ public class WGPlanerInstanceIdService extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(String refreshedToken) {
-
+        if(refreshedToken != null){
+            DataContainer.Me.updateFirebaseInstanceIdToken(refreshedToken);
+        }
     }
 }

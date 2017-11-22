@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class ShoppingListCategoryAdapter extends
 
             itemRecycler.setLayoutManager(new LinearLayoutManager(context));
             itemRecycler.setHasFixedSize(false);
+            itemRecycler.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
             adapter = new ShoppingListItemAdapter(categoryHolder.getItems(), context);
 
             itemRecycler.setAdapter(adapter);

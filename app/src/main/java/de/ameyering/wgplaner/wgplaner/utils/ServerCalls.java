@@ -3,6 +3,7 @@ package de.ameyering.wgplaner.wgplaner.utils;
 
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,22 @@ public abstract class ServerCalls {
     private static final String USER_ID_AUTH_LABEL = "UserIDAuth";
     private static final String FIREBASE_ID_AUTH_LABEL = "FirebaseIDAuth";
 
-    private static final String BASE_URL = "https://api.wgplaner.ameyering.de/v0.1";
+    private static final String BASE_URL = "https://api.wgplaner.ameyering.de";
+
+    private static final String SERVER_CONNECTION_SUCCEEDED_TAG = "ServerConnectionSucceeded";
+    private static final String SERVER_CONNECTION_FAILED_TAG = "ServerConnectionFailed";
+
+    private static final String ASYNCHRONOUS_FLAG = ":Asynchronous";
+    private static final String WAIT_FOR_RESULT_FLAG = ":WaitForResult";
+
+    private static final String CREATE_USER_NAME = "CreateUser";
+    private static final String UPDATE_USER_NAME = "UpdateUser";
+    private static final String GET_USER_NAME = "GetUser";
+    private static final String CREATE_GROUP_NAME = "CreateGroup";
+    private static final String GET_GROUP_NAME = "GetGroup";
+    private static final String JOIN_GROUP_NAME = "JoinGroup";
+    private static final String GET_SHOPPING_LIST_NAME = "GetShoppingList";
+    private static final String CREATE_SHOPPING_LIST_ITEM_NAME = "CreateShoppingListItem";
 
     public interface OnAsyncCallListener<T> {
         void onFailure(ApiException e);
@@ -41,6 +57,7 @@ public abstract class ServerCalls {
             api.createUserAsync(user, new ApiCallback<User>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logError(CREATE_USER_NAME, ASYNCHRONOUS_FLAG);
                     if(listener != null){
                         listener.onFailure(e);
                     }
@@ -48,6 +65,7 @@ public abstract class ServerCalls {
 
                 @Override
                 public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logSuccess(CREATE_USER_NAME, ASYNCHRONOUS_FLAG);
                     if (result != null) {
                         DataContainer.Me.setMe(result);
 
@@ -69,6 +87,7 @@ public abstract class ServerCalls {
             });
         } catch (ApiException e){
             if(listener != null){
+                logError(CREATE_USER_NAME, ASYNCHRONOUS_FLAG);
                 listener.onFailure(e);
             }
         }
@@ -80,8 +99,10 @@ public abstract class ServerCalls {
             try {
                 return task.execute(user).get();
             } catch (ExecutionException e) {
+                logError(CREATE_USER_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             } catch (InterruptedException e) {
+                logError(CREATE_USER_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             }
         }
@@ -102,6 +123,7 @@ public abstract class ServerCalls {
             api.getUserAsync(uid, new ApiCallback<User>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logError(GET_USER_NAME, ASYNCHRONOUS_FLAG);
                     if(listener !=  null){
                         listener.onFailure(e);
                     }
@@ -109,6 +131,7 @@ public abstract class ServerCalls {
 
                 @Override
                 public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logSuccess(GET_USER_NAME, ASYNCHRONOUS_FLAG);
                     if(result != null && listener != null){
                         listener.onSuccess(result);
                     }
@@ -126,6 +149,7 @@ public abstract class ServerCalls {
             });
         } catch (ApiException e){
             if(listener != null){
+                logError(GET_USER_NAME, ASYNCHRONOUS_FLAG);
                 listener.onFailure(e);
             }
         }
@@ -137,8 +161,10 @@ public abstract class ServerCalls {
             try {
                 return task.execute(uid).get();
             } catch (ExecutionException e) {
+                logError(GET_USER_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             } catch (InterruptedException e) {
+                logError(GET_USER_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             }
         }
@@ -159,6 +185,7 @@ public abstract class ServerCalls {
             api.updateUserAsync(user, new ApiCallback<User>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logError(UPDATE_USER_NAME, ASYNCHRONOUS_FLAG);
                     if(listener != null){
                         listener.onFailure(e);
                     }
@@ -166,6 +193,7 @@ public abstract class ServerCalls {
 
                 @Override
                 public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logError(UPDATE_USER_NAME, ASYNCHRONOUS_FLAG);
                     if(result != null && listener !=  null){
                         listener.onSuccess(result);
                     }
@@ -183,6 +211,7 @@ public abstract class ServerCalls {
             });
         } catch (ApiException e){
             if(listener != null){
+                logError(UPDATE_USER_NAME, ASYNCHRONOUS_FLAG);
                 listener.onFailure(e);
             }
         }
@@ -194,8 +223,10 @@ public abstract class ServerCalls {
             try{
                 return task.execute(user).get();
             } catch (ExecutionException e){
+                logError(UPDATE_USER_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             } catch (InterruptedException e){
+                logError(UPDATE_USER_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             }
         }
@@ -216,6 +247,7 @@ public abstract class ServerCalls {
             api.getGroupAsync(groupUid, new ApiCallback<Group>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logError(GET_GROUP_NAME, ASYNCHRONOUS_FLAG);
                     if(listener != null){
                         listener.onFailure(e);
                     }
@@ -223,6 +255,7 @@ public abstract class ServerCalls {
 
                 @Override
                 public void onSuccess(Group result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logSuccess(GET_GROUP_NAME, ASYNCHRONOUS_FLAG);
                     if(result != null && listener != null){
                         listener.onSuccess(result);
                     }
@@ -239,6 +272,7 @@ public abstract class ServerCalls {
                 }
             });
         } catch (ApiException e){
+            logError(GET_GROUP_NAME, ASYNCHRONOUS_FLAG);
             if(listener != null){
                 listener.onFailure(e);
             }
@@ -251,8 +285,10 @@ public abstract class ServerCalls {
             try{
                 return task.execute(groupUid).get();
             } catch (ExecutionException e){
+                logError(GET_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             } catch (InterruptedException e){
+                logError(GET_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             }
         }
@@ -273,6 +309,7 @@ public abstract class ServerCalls {
             api.createGroupAsync(group, new ApiCallback<Group>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logError(CREATE_GROUP_NAME, ASYNCHRONOUS_FLAG);
                     if(listener != null){
                         listener.onFailure(e);
                     }
@@ -280,6 +317,7 @@ public abstract class ServerCalls {
 
                 @Override
                 public void onSuccess(Group result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logSuccess(CREATE_GROUP_NAME, ASYNCHRONOUS_FLAG);
                     if(result != null && listener != null){
                         listener.onSuccess(result);
                     }
@@ -296,6 +334,7 @@ public abstract class ServerCalls {
                 }
             });
         } catch(ApiException e){
+            logError(CREATE_GROUP_NAME, ASYNCHRONOUS_FLAG);
             if(listener != null){
                 listener.onFailure(e);
             }
@@ -308,8 +347,10 @@ public abstract class ServerCalls {
             try {
                 return task.execute(group).get();
             } catch (ExecutionException e){
+                logError(CREATE_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             } catch (InterruptedException e){
+                logError(CREATE_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             }
         }
@@ -330,6 +371,7 @@ public abstract class ServerCalls {
             api.joinGroupAsync(accessKey, new ApiCallback<Group>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logError(JOIN_GROUP_NAME, ASYNCHRONOUS_FLAG);
                     if(listener != null){
                         listener.onFailure(e);
                     }
@@ -337,6 +379,7 @@ public abstract class ServerCalls {
 
                 @Override
                 public void onSuccess(Group result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logSuccess(JOIN_GROUP_NAME, ASYNCHRONOUS_FLAG);
                     if(result != null && listener != null){
                         listener.onSuccess(result);
                     }
@@ -353,6 +396,7 @@ public abstract class ServerCalls {
                 }
             });
         } catch (ApiException e){
+            logError(JOIN_GROUP_NAME, ASYNCHRONOUS_FLAG);
             if(listener != null){
                 listener.onFailure(e);
             }
@@ -365,8 +409,10 @@ public abstract class ServerCalls {
             try{
                 return task.execute(accessKey).get();
             } catch (ExecutionException e){
+                logError(JOIN_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             } catch (InterruptedException e){
+                logError(JOIN_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             }
         }
@@ -387,6 +433,7 @@ public abstract class ServerCalls {
             api.getListItemsAsync(DataContainer.Me.getMe().getGroupUid().toString(), new ApiCallback<ShoppingList>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logError(GET_SHOPPING_LIST_NAME, ASYNCHRONOUS_FLAG);
                     if(listener != null){
                         listener.onFailure(e);
                     }
@@ -394,6 +441,7 @@ public abstract class ServerCalls {
 
                 @Override
                 public void onSuccess(ShoppingList result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logSuccess(GET_SHOPPING_LIST_NAME, ASYNCHRONOUS_FLAG);
                     if(result != null && listener != null){
                         listener.onSuccess(result);
                     }
@@ -410,6 +458,7 @@ public abstract class ServerCalls {
                 }
             });
         } catch (ApiException e){
+            logError(GET_SHOPPING_LIST_NAME, ASYNCHRONOUS_FLAG);
             if(listener != null){
                 listener.onFailure(e);
             }
@@ -422,8 +471,10 @@ public abstract class ServerCalls {
             try{
                 return task.execute(DataContainer.Me.getMe().getGroupUid().toString()).get();
             } catch (ExecutionException e){
+                logError(GET_SHOPPING_LIST_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             } catch (InterruptedException e){
+                logError(GET_SHOPPING_LIST_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             }
         }
@@ -444,6 +495,7 @@ public abstract class ServerCalls {
             api.createListItemAsync(DataContainer.Me.getMe().getGroupUid().toString(), item, new ApiCallback<ListItem>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logError(CREATE_SHOPPING_LIST_ITEM_NAME, ASYNCHRONOUS_FLAG);
                     if(listener != null){
                         listener.onFailure(e);
                     }
@@ -451,6 +503,7 @@ public abstract class ServerCalls {
 
                 @Override
                 public void onSuccess(ListItem result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    logSuccess(CREATE_SHOPPING_LIST_ITEM_NAME, ASYNCHRONOUS_FLAG);
                     if(result != null && listener != null){
                         listener.onSuccess(result);
                     }
@@ -467,6 +520,7 @@ public abstract class ServerCalls {
                 }
             });
         } catch (ApiException e){
+            logError(CREATE_SHOPPING_LIST_ITEM_NAME, ASYNCHRONOUS_FLAG);
             if(listener != null){
                 listener.onFailure(e);
             }
@@ -479,12 +533,26 @@ public abstract class ServerCalls {
             try{
                 return task.execute(item).get();
             } catch (ExecutionException e){
+                logError(CREATE_SHOPPING_LIST_ITEM_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             } catch (InterruptedException e){
+                logError(CREATE_SHOPPING_LIST_ITEM_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
             }
         }
         return null;
+    }
+
+    private static void logError(String name, String method){
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(name).append(method);
+        Log.e(SERVER_CONNECTION_FAILED_TAG, buffer.toString());
+    }
+
+    private static void logSuccess(String name, String method){
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(name).append(method);
+        Log.i(SERVER_CONNECTION_FAILED_TAG, buffer.toString());
     }
 
     private static class CreateUser extends AsyncTask<User, Void, ApiResponse<User>>{
@@ -504,6 +572,7 @@ public abstract class ServerCalls {
 
                     return api.createUserWithHttpInfo(users[0]);
                 } catch (ApiException e){
+                    logError(CREATE_USER_NAME, WAIT_FOR_RESULT_FLAG);
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
@@ -528,6 +597,7 @@ public abstract class ServerCalls {
                 try {
                     return api.getUserWithHttpInfo(strings[0]);
                 } catch (ApiException e){
+                    logError(GET_USER_NAME, WAIT_FOR_RESULT_FLAG);
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
@@ -552,6 +622,7 @@ public abstract class ServerCalls {
                 try {
                     return api.updateUserWithHttpInfo(users[0]);
                 } catch (ApiException e){
+                    logError(UPDATE_USER_NAME, WAIT_FOR_RESULT_FLAG);
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
@@ -576,6 +647,7 @@ public abstract class ServerCalls {
                 try{
                     return api.getGroupWithHttpInfo(strings[0]);
                 } catch (ApiException e){
+                    logError(GET_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
@@ -600,6 +672,7 @@ public abstract class ServerCalls {
                 try{
                     return api.createGroupWithHttpInfo(groups[0]);
                 } catch (ApiException e){
+                    logError(CREATE_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
@@ -624,6 +697,7 @@ public abstract class ServerCalls {
                 try{
                     return api.joinGroupWithHttpInfo(strings[0]);
                 } catch (ApiException e){
+                    logError(JOIN_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
@@ -647,6 +721,7 @@ public abstract class ServerCalls {
                 try{
                     return api.getListItemsWithHttpInfo(strings[0]);
                 } catch (ApiException e){
+                    logError(GET_SHOPPING_LIST_NAME, WAIT_FOR_RESULT_FLAG);
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
@@ -671,6 +746,7 @@ public abstract class ServerCalls {
                 try {
                     return api.createListItemWithHttpInfo(DataContainer.Me.getMe().getGroupUid().toString(), listItems[0]);
                 } catch (ApiException e){
+                    logError(CREATE_SHOPPING_LIST_ITEM_NAME, WAIT_FOR_RESULT_FLAG);
                     return new ApiResponse<ListItem>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }

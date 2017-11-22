@@ -96,7 +96,7 @@ public class ShoppingListItemAdapter extends
                 }
             }
 
-            displayNumber.setText(item.getCount());
+            displayNumber.setText(item.getCount().toString());
 
             List<String> uids = item.getRequestedFor();
             String concatNames = "";
