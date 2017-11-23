@@ -80,4 +80,8 @@
     <string name="profile_settings_username_hint">Name</string>
     <string name="profile_settings_btn_save_changes">Save Changes</string>
     <string name="delete_display_name_error">You can not delete your Name</string>
+    <string name="currency">Currency</string>
+    <string name="euro">Euro</string>
+    <string name="dollar">Dollar</string>
+    <string name="members">Groupmembers</string>
 </resources>
