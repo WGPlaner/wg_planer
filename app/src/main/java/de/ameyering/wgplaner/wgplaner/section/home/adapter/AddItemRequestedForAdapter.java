@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
-import de.ameyering.wgplaner.wgplaner.structure.User;
+import io.swagger.client.model.User;
 
 public class AddItemRequestedForAdapter extends
     RecyclerView.Adapter<AddItemRequestedForAdapter.ViewHolder> {

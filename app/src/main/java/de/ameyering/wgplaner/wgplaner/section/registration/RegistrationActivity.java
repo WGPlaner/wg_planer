@@ -8,9 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
@@ -19,11 +16,9 @@ import de.ameyering.wgplaner.wgplaner.section.registration.fragment.PickDisplayN
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.StateEMailFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.UploadProfilePictureFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
-import de.ameyering.wgplaner.wgplaner.utils.Configuration;
-import io.swagger.client.ApiCallback;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 import io.swagger.client.ApiException;
-import io.swagger.client.api.UserApi;
-import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.User;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -42,7 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setVisibility(View.INVISIBLE);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -81,51 +76,25 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    UserApi api = new UserApi();
+                    DataProvider.Users.createCurrentUser(new ServerCalls.OnAsyncCallListener<User>() {
+                        @Override
+                        public void onFailure(ApiException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed),
+                                        Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
 
-                    User user = new User();
-                    user.setUid(Configuration.singleton.getConfig(Configuration.Type.USER_UID));
-                    user.setDisplayName(Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME));
-                    user.setEmail(Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS));
-
-                    ApiKeyAuth firebaseAuth = (ApiKeyAuth) api.getApiClient().getAuthentication("FirebaseIDAuth");
-                    firebaseAuth.setApiKey(user.getUid());
-
-                    try {
-                        api.createUserAsync(user, new ApiCallback<User>() {
-                            @Override
-                            public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed),
-                                            Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
-                                Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-
-                            @Override
-                            public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
-                            }
-
-                            @Override
-                            public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
-                            }
-                        });
-
-                    } catch (ApiException e) {
-                        Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed),
-                            Toast.LENGTH_LONG).show();
-                    }
+                        @Override
+                        public void onSuccess(User result) {
+                            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
                 }
             }
 

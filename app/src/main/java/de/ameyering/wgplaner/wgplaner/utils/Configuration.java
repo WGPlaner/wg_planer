@@ -13,7 +13,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.jar.Manifest;
 
 import de.ameyering.wgplaner.wgplaner.R;
 
@@ -44,8 +43,13 @@ public class Configuration implements Serializable {
     }
 
     public void addConfig(Type type, String value) {
-        configs.put(type, value);
-        handler.writeConfig(singleton);
+        if (value != null) {
+            configs.put(type, value);
+            handler.writeConfig(singleton);
+
+        } else {
+            configs.remove(type);
+        }
     }
 
     public String getConfig(Type type) {
@@ -80,7 +84,8 @@ public class Configuration implements Serializable {
         USER_DISPLAY_NAME,
         USER_PHOTO_URL,
         USER_GROUP_ID,
-        USER_EMAIL_ADDRESS
+        USER_EMAIL_ADDRESS,
+        FIREBASE_INSTANCE_ID
     }
 
     /*
@@ -136,9 +141,9 @@ public class Configuration implements Serializable {
 
                     } catch (IOException e) {}
                 }
-
-                return configuration;
             }
+
+            return configuration;
         }
 
         private void writeConfig(Configuration configuration) {

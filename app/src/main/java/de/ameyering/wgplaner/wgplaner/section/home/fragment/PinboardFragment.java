@@ -3,7 +3,6 @@ package de.ameyering.wgplaner.wgplaner.section.home.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,19 @@ public class PinboardFragment extends SectionFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_pinboard, container, false);
+
+        if (toolbar != null) {
+            if (title != null) {
+                toolbar.setSubtitle(title);
+
+            } else {
+                toolbar.setSubtitle(getString(R.string.section_title_pinboard));
+            }
+        }
+
+        if (floatingActionButton != null) {
+            floatingActionButton.setVisibility(View.GONE);
+        }
 
         if (tabLayout == null) {
             tabLayout = view.findViewById(R.id.pinboard_tab_layout);

@@ -15,11 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.AddItemRequestedForAdapter;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.AddItemAddUserDialogFragment;
-import de.ameyering.wgplaner.wgplaner.structure.User;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import io.swagger.client.model.User;
+import io.swagger.client.model.ListItem;
 
 public class AddItemActivity extends AppCompatActivity {
     public RecyclerView requestedFor;
@@ -28,12 +31,15 @@ public class AddItemActivity extends AppCompatActivity {
     public EditText nameInput;
     public EditText numberInput;
 
+    private ArrayList<User> selected = new ArrayList<>();
+    private ListItem newItem = new ListItem();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.add_item_toolbar);
+        Toolbar toolbar = findViewById(R.id.add_item_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -60,16 +66,16 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
-        nameInput = (EditText) findViewById(R.id.add_item_name_input);
-        numberInput = (EditText) findViewById(R.id.add_item_number_input) ;
+        nameInput = findViewById(R.id.add_item_name_input);
+        numberInput = findViewById(R.id.add_item_number_input) ;
 
-        requestedFor = (RecyclerView) findViewById(R.id.add_item_requested_for_list);
+        requestedFor = findViewById(R.id.add_item_requested_for_list);
         adapter = new AddItemRequestedForAdapter();
         requestedFor.setLayoutManager(new LinearLayoutManager(this));
         requestedFor.setHasFixedSize(false);
         requestedFor.setAdapter(adapter);
 
-        Button buttonAddUser = (Button) findViewById(R.id.add_item_add_user_btn);
+        Button buttonAddUser = findViewById(R.id.add_item_add_user_btn);
         buttonAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +84,10 @@ public class AddItemActivity extends AppCompatActivity {
                 dialog.setOnResultListener(new AddItemAddUserDialogFragment.OnResultListener() {
                     @Override
                     public void onResult(ArrayList<User> selected) {
-                        adapter.updateSelection(selected);
+                        AddItemActivity.this.selected.clear();
+                        AddItemActivity.this.selected.addAll(selected);
+
+                        adapter.updateSelection(AddItemActivity.this.selected);
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -98,8 +107,8 @@ public class AddItemActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_item_save: {
                 if (checkInputAndReturn()) {
-                    Intent data = new Intent();
-                    setResult(RESULT_OK, data);
+                    DataProvider.ShoppingList.addItem(newItem, null);
+                    setResult(RESULT_OK, new Intent());
                     finish();
                     return true;
                 }
@@ -113,8 +122,8 @@ public class AddItemActivity extends AppCompatActivity {
         String name = nameInput.getText().toString();
         String number = numberInput.getText().toString();
 
-        if (name != null && number != null && !name.isEmpty() && !number.isEmpty()) {
-            int num = 0;
+        if (!name.isEmpty() && !number.isEmpty() && !selected.isEmpty()) {
+            int num;
 
             try {
                 num = Integer.parseInt(number);
@@ -123,7 +132,18 @@ public class AddItemActivity extends AppCompatActivity {
                 return false;
             }
 
-            //TODO: Parse inputs into Item instance
+            newItem = new ListItem();
+            newItem.setTitle(name);
+            newItem.setCount(num);
+            newItem.setCategory("");
+
+            List<String> users = new ArrayList<>();
+
+            for (User user : selected) {
+                users.add(user.getUid());
+            }
+
+            newItem.setRequestedFor(users);
 
             return true;
         }

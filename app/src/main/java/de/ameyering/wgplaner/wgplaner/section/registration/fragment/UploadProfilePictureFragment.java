@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -64,7 +63,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         LoadBitmap loadTask = new LoadBitmap();
         loadTask.execute();
 
-        Button buttonContinue = view.findViewById(R.id.btn_continue_upload_prfoile_picture);
+        Button buttonContinue = view.findViewById(R.id.btn_continue_upload_profile_picture);
         Button buttonSkip = view.findViewById(R.id.btn_skip_upload_profile_picture);
 
         buttonContinue.setOnClickListener(new View.OnClickListener() {
@@ -162,8 +161,6 @@ public class UploadProfilePictureFragment extends NavigationFragment {
                         } catch (IOException e) {
                             Toast.makeText(getContext(), "Failed to load Picture", Toast.LENGTH_LONG).show();
                         }
-
-                        return;
                     }
                 }
         }

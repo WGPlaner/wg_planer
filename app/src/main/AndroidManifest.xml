@@ -20,6 +20,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+      
+        <meta-data
+            android:name="asset_statements"
+            android:resource="@string/asset_statements" />
+      
         <activity
             android:name=".section.splashscreen.SplashScreenActivity"
             android:label="@string/app_name"
@@ -29,16 +34,19 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
+          
+            <intent-filter android:autoVerify="true">          
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
+                    android:scheme="http"
                     android:host="api.wgplaner.ameyering.de"
-                    android:scheme="http" />
+                    android:pathPattern="/groups/join/.*" />
             </intent-filter>
+          
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -46,27 +54,33 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
+                    android:scheme="https"
                     android:host="api.wgplaner.ameyering.de"
-                    android:scheme="https" />
+                    android:pathPattern="/groups/join/.*" />
             </intent-filter>
         </activity>
+      
         <activity
             android:name=".section.home.HomeActivity"
             android:label="@string/title_activity_home"
-            android:parentActivityName=".section.splashscreen.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+      
         <activity
             android:name=".section.registration.RegistrationActivity"
             android:label=""
-            android:parentActivityName=".section.splashscreen.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".utils.WGPlanerInstanceIdService">
+        <service
+            android:name=".utils.WGPlanerInstanceIdService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".utils.NotificationService">
+      
+        <service
+            android:name=".utils.NotificationService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -75,12 +89,11 @@
         <activity
             android:name=".section.home.AddItemActivity"
             android:label="@string/add_item_activity"
-            android:parentActivityName=".section.home.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+      
         <activity
             android:name=".section.home.SetUpGroupActivity"
             android:label="@string/set_up_group_activity"
-            android:parentActivityName=".section.home.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
@@ -90,6 +103,11 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
+        <activity
+            android:name=".section.home.JoinGroupActivity"
+            android:label="@string/join_group_activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+      
         <activity
             android:name=".section.settings.ProfileSettings"
             android:label="@string/profile_settings_activity"

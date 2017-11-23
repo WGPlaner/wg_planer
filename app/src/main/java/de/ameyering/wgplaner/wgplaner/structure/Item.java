@@ -1,9 +1,6 @@
 package de.ameyering.wgplaner.wgplaner.structure;
 
-import java.util.Calendar;
-
 import de.ameyering.wgplaner.wgplaner.exception.MalformedItemException;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 
 public class Item {
     public String name;
@@ -49,8 +46,6 @@ public class Item {
 
     public void buy(Money price) {
         this.price = price;
-        this.boughtOn = DataContainer.Items.getDateFormat().format(
-                Calendar.getInstance().getTime()); //Formats actual Time to String
     }
 
     @Override
@@ -73,12 +68,11 @@ public class Item {
         User requestedBy = this.requestedBy;
         User requestedFor = this.requestedFor;
         Money price = this.price;
-        String bougthOn = this.boughtOn;
+        String boughtOn = this.boughtOn;
 
-        if (price != null && bougthOn != null) {
+        if (price != null && boughtOn != null) {
             try {
-                Item item = new Item(name, requestedBy, requestedFor, price, bougthOn);
-                return item;
+                return new Item(name, requestedBy, requestedFor, price, boughtOn);
 
             } catch (MalformedItemException e) {
                 throw new CloneNotSupportedException();
@@ -86,8 +80,7 @@ public class Item {
 
         } else {
             try {
-                Item item = new Item(name, requestedBy, requestedFor);
-                return  item;
+                return  new Item(name, requestedBy, requestedFor);
 
             } catch (MalformedItemException e) {
                 throw new CloneNotSupportedException();

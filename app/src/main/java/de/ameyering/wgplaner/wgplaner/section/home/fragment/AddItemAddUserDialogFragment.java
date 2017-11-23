@@ -3,14 +3,16 @@ package de.ameyering.wgplaner.wgplaner.section.home.fragment;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.structure.User;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import io.swagger.client.model.User;
 
 
 public class AddItemAddUserDialogFragment extends DialogFragment {
@@ -23,17 +25,19 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         void onResult(ArrayList<User> selected);
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.add_item_add_requested_for_pick_users));
 
-        //TODO: Get real Userdata
-        list = new User[2];
+        List<User> all = DataProvider.Users.getUsers();
+        list = new User[all.size()];
 
-        list[0] = new User("1", "Arne");
-        list[1] = new User("2", "Chris");
+        for (int i = 0; i < all.size(); i++) {
+            list[i] = all.get(i);
+        }
 
         String[] users = new String[list.length];
         boolean[] selected = new boolean[list.length];

@@ -1,6 +1,7 @@
 package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,32 +17,32 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
+import de.ameyering.wgplaner.wgplaner.section.home.JoinGroupActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
-import io.swagger.client.ApiCallback;
-import io.swagger.client.ApiClient;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 import io.swagger.client.ApiException;
-import io.swagger.client.api.UserApi;
-import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.User;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";
     private FirebaseAuth mAuth;
-    private String uid = null;
     private FirebaseUser currentUser;
+
+    private boolean loadJoinGroup = false;
+    private String joinGroupKey = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -61,6 +62,18 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Intent appLinkIntent = getIntent();
+        Uri appLinkData = appLinkIntent.getData();
+
+        if (appLinkData != null) {
+            List<String> path = appLinkData.getPathSegments();
+
+            if (path.size() != 0 && path.get(0).equals("groups") && path.get(1).equals("join")) {
+                joinGroupKey = path.get(3);
+                loadJoinGroup = true;
+            }
+        }
     }
 
     @Override
@@ -75,80 +88,50 @@ public class SplashScreenActivity extends AppCompatActivity {
         initialize();
 
         if (user != null) {
-            uid = user.getUid();
-            Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
+            String uid = user.getUid();
+            DataProvider.initialize(uid);
             initializeUser(uid);
         }
     }
 
     private void initializeUser(String uid) {
         if (uid != null) {
-            ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
+            DataProvider.Users.initializeCurrentUser(new ServerCalls.OnAsyncCallListener<User>() {
+                @Override
+                public void onFailure(ApiException e) {
+                    switch (e.getCode()) {
+                        case 401:
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SplashScreenActivity.this, getString(R.string.user_unauthorized),
+                                        Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            break;
 
-            client.setBasePath("https://api.wgplaner.ameyering.de/v0.1");
+                        case 404:
+                            loadRegistration();
+                            break;
 
-            ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication("FirebaseIDAuth");
-            firebaseAuth.setApiKey(uid);
-
-            UserApi api = new UserApi();
-
-            try {
-                api.getUserAsync(uid, new ApiCallback<User>() {
-                    @Override
-                    public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                        switch (statusCode) {
-                            case 401:
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(SplashScreenActivity.this, getString(R.string.user_unauthorized),
-                                            Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                                break;
-
-                            case 404:
-                                Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
-                                startActivity(intent);
-                                finish();
-                                break;
-
-                            default:
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(SplashScreenActivity.this, getString(R.string.server_connection_failed),
-                                            Toast.LENGTH_LONG).show();
-                                        //finish();
-                                    }
-                                });
-                                break;
-                        }
+                        default:
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SplashScreenActivity.this, getString(R.string.server_connection_failed),
+                                        Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            break;
                     }
+                }
 
-                    @Override
-                    public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if (result != null) {
-                            Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-
-                    @Override
-                    public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
-                    }
-
-                    @Override
-                    public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
-                    }
-                });
-
-            } catch (ApiException e) {
-                Toast.makeText(this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
-            }
+                @Override
+                public void onSuccess(User result) {
+                    getData();
+                    loadNext();
+                }
+            });
         }
     }
 
@@ -157,7 +140,40 @@ public class SplashScreenActivity extends AppCompatActivity {
         Money.initialize(Locale.getDefault());
     }
 
-    private void getData(String uid) {
-        //TODO: Get Data from AppServer
+    private void loadHome() {
+        Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void loadRegistration() {
+        Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void loadNext() {
+        if (loadJoinGroup) {
+            onLoadJoinGroup();
+
+        } else {
+            loadHome();
+        }
+    }
+
+    private void onLoadJoinGroup() {
+        Intent intent = new Intent(this, JoinGroupActivity.class);
+        intent.putExtra("ACCESS_KEY", joinGroupKey);
+        intent.setAction(Intent.ACTION_QUICK_VIEW);
+        startActivity(intent);
+        finish();
+    }
+
+    private void getData() {
+        DataProvider.CurrentGroup.updateGroup();
+
+        if (DataProvider.CurrentGroup.getGroup().getUid() != null) {
+            DataProvider.ShoppingList.updateShoppingList();
+        }
     }
 }
