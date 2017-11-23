@@ -13,7 +13,12 @@ This use case allows users to add products/items to a shopping list and manage t
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
+Here is the activity diagram for managing the shopping list.
 ![Activity Diagram](../ActivityDiagrams/uc_shopping_list_activity_diagramm.png)
+
+And here is a screenshot of the `.feature` file for this use case:
+![.feature file](./FeatureFiles/feature_file_manage_shopping_list.png)
+
 
 ## 2.2 Alternative Flows
 n/a

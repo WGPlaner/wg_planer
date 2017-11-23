@@ -18,6 +18,7 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.SetUpFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
+import de.ameyering.wgplaner.wgplaner.section.settings.ProfileSettings;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 
 public class HomeActivity extends AppCompatActivity

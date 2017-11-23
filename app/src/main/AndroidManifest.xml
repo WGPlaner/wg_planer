@@ -11,6 +11,7 @@
     <!-- Read and Write App-internal Storage -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
 
     <application
         android:allowBackup="true"
@@ -19,10 +20,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+      
         <meta-data
             android:name="asset_statements"
             android:resource="@string/asset_statements" />
-
+      
         <activity
             android:name=".section.splashscreen.SplashScreenActivity"
             android:label="@string/app_name"
@@ -32,7 +34,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:autoVerify="true">
+          
+            <intent-filter android:autoVerify="true">          
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -43,6 +46,7 @@
                     android:host="api.wgplaner.ameyering.de"
                     android:pathPattern="/groups/join/.*" />
             </intent-filter>
+          
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -55,11 +59,12 @@
                     android:pathPattern="/groups/join/.*" />
             </intent-filter>
         </activity>
+      
         <activity
             android:name=".section.home.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-
+      
         <activity
             android:name=".section.registration.RegistrationActivity"
             android:label=""
@@ -72,6 +77,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+      
         <service
             android:name=".utils.NotificationService"
             android:exported="false">
@@ -84,6 +90,7 @@
             android:name=".section.home.AddItemActivity"
             android:label="@string/add_item_activity"
             android:theme="@style/AppTheme.NoActionBar" />
+      
         <activity
             android:name=".section.home.SetUpGroupActivity"
             android:label="@string/set_up_group_activity"
@@ -100,6 +107,11 @@
             android:name=".section.home.JoinGroupActivity"
             android:label="@string/join_group_activity"
             android:theme="@style/AppTheme.NoActionBar" />
+      
+        <activity
+            android:name=".section.settings.ProfileSettings"
+            android:label="@string/profile_settings_activity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

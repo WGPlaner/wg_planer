@@ -3,7 +3,7 @@
     <string name="add_item_activity">Add Item</string>
     <string name="set_up_group_activity">Create Group</string>
     <string name="join_group_activity">Join Group</string>
-
+    <string name="profile_settings_activity">Your Profile</string>
     <string name="title_activity_home">Home</string>
 
     <string name="action_settings">Settings</string>on
@@ -75,5 +75,9 @@
     <string name="group_label">Group</string>
     <string name="asset_statements" translatable="false">[{\n  \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n  \"target\": {\n    \"namespace\": \"web\",\n    \"site\": \"https://api.wgplaner.ameyering.de\",\n  }\n}]</string>
 
-    <!-- NavHeader Strings -->
+    <!-- Profile Settings strings -->
+    <string name="profile_settings_btn_leave_group">Leave Group</string>
+    <string name="profile_settings_username_hint">Name</string>
+    <string name="profile_settings_btn_save_changes">Save Changes</string>
+    <string name="delete_display_name_error">You can not delete your Name</string>
 </resources>
