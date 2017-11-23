@@ -101,12 +101,14 @@ public class ProfileSettings extends AppCompatActivity {
 
         inputName = findViewById(R.id.tfName_profile_settings);
         String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
+
         if (displayName != null) {
             inputName.setText(displayName);
         }
 
         inputEmail = findViewById(R.id.tfEmail_profile_settings);
         String email = Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS);
+
         if (email != null) {
             inputEmail.setText(email);
         }
@@ -124,9 +126,11 @@ public class ProfileSettings extends AppCompatActivity {
                 //UserIDAuth.setApiKeyPrefix("Token");
 
                 GroupApi apiInstance = new GroupApi();
+
                 try {
                     SuccessResponse result = apiInstance.leaveGroup();
                     System.out.println(result);
+
                 } catch (ApiException e) {
                     System.err.println("Exception when calling GroupApi#leaveGroup");
                     e.printStackTrace();
@@ -165,7 +169,7 @@ public class ProfileSettings extends AppCompatActivity {
 
                             image.setImageBitmap(bitmap);
                             image.startAnimation(AnimationUtils.loadAnimation(this,
-                                R.anim.anim_load_new_profile_picture));
+                                    R.anim.anim_load_new_profile_picture));
 
                         } catch (IOException e) {
                             Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
@@ -198,7 +202,7 @@ public class ProfileSettings extends AppCompatActivity {
 
                         image.setImageBitmap(bitmap);
                         image.startAnimation(AnimationUtils.loadAnimation(this,
-                            R.anim.anim_load_new_profile_picture));
+                                R.anim.anim_load_new_profile_picture));
                     }
 
                 } else {
@@ -209,7 +213,7 @@ public class ProfileSettings extends AppCompatActivity {
 
                             image.setImageBitmap(bitmap);
                             image.startAnimation(AnimationUtils.loadAnimation(this,
-                                R.anim.anim_load_new_profile_picture));
+                                    R.anim.anim_load_new_profile_picture));
 
                         } catch (IOException e) {
                             Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
@@ -250,11 +254,12 @@ public class ProfileSettings extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Bitmap... bitmaps) {
-            if(bitmaps.length > 0) {
+            if (bitmaps.length > 0) {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmaps[0].compress(Bitmap.CompressFormat.PNG, 100, stream);
                 Configuration.singleton.setProfilePicture(stream.toByteArray());
             }
+
             return null;
         }
     }
@@ -277,13 +282,14 @@ public class ProfileSettings extends AppCompatActivity {
                 }
             }
         }
+
         return false;
     }
 
     private boolean checkInputAndReturn() {
         String displayName = inputName.getText().toString();
 
-        if(displayName == null || displayName.isEmpty()){
+        if (displayName == null || displayName.isEmpty()) {
             Toast.makeText(this, getString(R.string.delete_display_name_error), Toast.LENGTH_LONG).show();
             return false;
         }
