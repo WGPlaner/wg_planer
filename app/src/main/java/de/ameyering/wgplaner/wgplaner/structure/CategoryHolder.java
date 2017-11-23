@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.ListItem;
 
 public class CategoryHolder {
@@ -104,14 +104,14 @@ public class CategoryHolder {
                 List<String> requestedFor = item.getRequestedFor();
                 String header = "";
 
-                if(requestedFor.size() == DataContainer.GroupMembers.getMembers().size()){
+                if(requestedFor.size() == DataProvider.Users.getUserCount()){
                     header = context.getString(R.string.group_label);
                 } else {
                     for (int i = 0; i < requestedFor.size(); i++) {
                         if (i == 0) {
-                            header = DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                            header = DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
                         } else {
-                            header = header + " || " + DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                            header = header + " || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
                         }
                     }
                 }
@@ -132,14 +132,14 @@ public class CategoryHolder {
             List<String> requestedFor = item.getRequestedFor();
             String header = "";
 
-            if(requestedFor.size() == DataContainer.GroupMembers.getMembers().size()){
+            if(requestedFor.size() == DataProvider.Users.getUserCount()){
                 header = context.getString(R.string.group_label);
             } else {
                 for (int i = 0; i < requestedFor.size(); i++) {
                     if (i == 0) {
-                        header = DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                        header = DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
                     } else {
-                        header = header + " || " + DataContainer.Users.getDisplayNameByUid(requestedFor.get(i));
+                        header = header + " || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
                     }
                 }
             }

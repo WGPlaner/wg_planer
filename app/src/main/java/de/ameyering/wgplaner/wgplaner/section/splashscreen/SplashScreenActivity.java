@@ -2,7 +2,6 @@ package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,11 +15,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
@@ -28,17 +24,9 @@ import de.ameyering.wgplaner.wgplaner.section.home.JoinGroupActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
-import io.swagger.client.ApiCallback;
-import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
-import io.swagger.client.api.GroupApi;
-import io.swagger.client.api.ShoppinglistApi;
-import io.swagger.client.api.UserApi;
-import io.swagger.client.auth.ApiKeyAuth;
-import io.swagger.client.model.Group;
-import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.User;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -107,14 +95,14 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         if (user != null) {
             String uid = user.getUid();
-            DataContainer.Me.updateUid(uid);
+            DataProvider.initialize(uid);
             initializeUser(uid);
         }
     }
 
     private void initializeUser(String uid) {
         if (uid != null) {
-            DataContainer.Me.initializeMe(new ServerCalls.OnAsyncCallListener<User>() {
+            DataProvider.Users.initializeCurrentUser(new ServerCalls.OnAsyncCallListener<User>() {
                 @Override
                 public void onFailure(ApiException e) {
                     switch(e.getCode()){
@@ -154,7 +142,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        DataContainer.initialize();
         Configuration.initConfig(this);
         Money.initialize(Locale.getDefault());
     }
@@ -188,6 +175,10 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void getData(){
-        DataContainer.Groups.getGroupFromServer(DataContainer.CallBehavior.WAIT_FOR_RETURN);
+        DataProvider.CurrentGroup.updateGroup();
+
+        if(DataProvider.CurrentGroup.getGroup().getUid() != null){
+            DataProvider.ShoppingList.updateShoppingList();
+        }
     }
 }

@@ -5,16 +5,19 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import io.swagger.client.*;
+import io.swagger.client.Configuration;
 import io.swagger.client.api.GroupApi;
 import io.swagger.client.api.ShoppinglistApi;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.*;
+import io.swagger.client.model.User;
 
 public abstract class ServerCalls {
     private static final String USER_ID_AUTH_LABEL = "UserIDAuth";
@@ -22,8 +25,8 @@ public abstract class ServerCalls {
 
     private static final String BASE_URL = "https://api.wgplaner.ameyering.de";
 
-    private static final String SERVER_CONNECTION_SUCCEEDED_TAG = "ServerConnectionSucceeded";
-    private static final String SERVER_CONNECTION_FAILED_TAG = "ServerConnectionFailed";
+    private static final String SERVER_CONNECTION_SUCCEEDED_TAG = "ServerConnectionSuccess";
+    private static final String SERVER_CONNECTION_FAILED_TAG = "ServerConnectionFail";
 
     private static final String ASYNCHRONOUS_FLAG = ":Asynchronous";
     private static final String WAIT_FOR_RESULT_FLAG = ":WaitForResult";
@@ -43,17 +46,27 @@ public abstract class ServerCalls {
         void onSuccess(T result);
     }
 
-    public static void createUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener){
-        UserApi api = new UserApi();
+    private static ApiClient client;
 
-        ApiClient client = api.getApiClient();
-
-        ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-        firebaseAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
+    static {
+        client = Configuration.getDefaultApiClient();
         client.setBasePath(BASE_URL);
+    }
+
+    private static boolean setAuth(String method){
+        if(method != null && !method.isEmpty()){
+            ApiKeyAuth auth = (ApiKeyAuth) client.getAuthentication(method);
+            auth.setApiKey(DataProvider.Users.getCurrentUsersUid());
+            return true;
+        }
+        return false;
+    }
+
+    public static void createUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener){
+        setAuth(USER_ID_AUTH_LABEL);
 
         try {
+            UserApi api = new UserApi();
             api.createUserAsync(user, new ApiCallback<User>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -67,7 +80,7 @@ public abstract class ServerCalls {
                 public void onSuccess(User result, int statusCode, Map<String, List<String>> responseHeaders) {
                     logSuccess(CREATE_USER_NAME, ASYNCHRONOUS_FLAG);
                     if (result != null) {
-                        DataContainer.Me.setMe(result);
+                        DataProvider.Users.setCurrentUser(result);
 
                         if(listener != null){
                             listener.onSuccess(result);
@@ -110,16 +123,10 @@ public abstract class ServerCalls {
     }
 
     public static void getUserAsync(String uid, @Nullable final OnAsyncCallListener<User> listener){
-        ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
-
-        client.setBasePath(BASE_URL);
-
-        ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication(FIREBASE_ID_AUTH_LABEL);
-        firebaseAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-        UserApi api = new UserApi();
+        setAuth(FIREBASE_ID_AUTH_LABEL);
 
         try{
+            UserApi api = new UserApi();
             api.getUserAsync(uid, new ApiCallback<User>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -172,16 +179,10 @@ public abstract class ServerCalls {
     }
 
     public static void updateUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener){
-        ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
-
-        client.setBasePath(BASE_URL);
-
-        ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-        firebaseAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-        UserApi api = new UserApi();
+        setAuth(USER_ID_AUTH_LABEL);
 
         try {
+            UserApi api = new UserApi();
             api.updateUserAsync(user, new ApiCallback<User>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -233,17 +234,112 @@ public abstract class ServerCalls {
         return null;
     }
 
-    public static void getGroupAsync(String groupUid, @Nullable final OnAsyncCallListener<Group> listener){
-        GroupApi api = new GroupApi();
+    public static void updateUserImageAsync(File image, @Nullable final OnAsyncCallListener<SuccessResponse> listener){
+        if(image != null) {
+            setAuth(USER_ID_AUTH_LABEL);
 
-        ApiClient client = api.getApiClient();
+            try {
+                UserApi api = new UserApi();
+                api.updateUserImageAsync(DataProvider.Users.getCurrentUsersUid(), image, new ApiCallback<SuccessResponse>() {
+                    @Override
+                    public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                        if(listener != null){
+                            listener.onFailure(e);
+                        }
+                    }
 
-        ApiKeyAuth userAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-        userAuth.setApiKey(DataContainer.Me.getMe().getUid());
+                    @Override
+                    public void onSuccess(SuccessResponse result, int statusCode, Map<String, List<String>> responseHeaders) {
+                        if(listener != null){
+                            listener.onSuccess(result);
+                        }
+                    }
 
-        client.setBasePath(BASE_URL);
+                    @Override
+                    public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+
+                    }
+
+                    @Override
+                    public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
+
+                    }
+                });
+            } catch (ApiException e) {
+                if (listener != null) {
+                    listener.onFailure(e);
+                }
+            }
+        }
+    }
+
+    public static ApiResponse<SuccessResponse> updateUserImage(File image){
+        if(image != null){
+            UpdateUserImage task = new UpdateUserImage();
+            try{
+                return task.execute(image).get();
+            } catch (ExecutionException e){
+                return null;
+            } catch (InterruptedException e){
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public static void leaveGroupAsync(@Nullable final OnAsyncCallListener<SuccessResponse> listener){
+        setAuth(USER_ID_AUTH_LABEL);
 
         try{
+            GroupApi api = new GroupApi();
+            api.leaveGroupAsync(new ApiCallback<SuccessResponse>() {
+                @Override
+                public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    if(listener != null){
+                        listener.onFailure(e);
+                    }
+                }
+
+                @Override
+                public void onSuccess(SuccessResponse result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    if(listener != null){
+                        listener.onSuccess(result);
+                    }
+                }
+
+                @Override
+                public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+
+                }
+
+                @Override
+                public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
+
+                }
+            });
+        } catch (ApiException e){
+            if(listener != null){
+                listener.onFailure(e);
+            }
+        }
+    }
+
+    public static ApiResponse<SuccessResponse> leaveGroup(){
+        LeaveGroup task = new LeaveGroup();
+        try{
+            return task.execute().get();
+        } catch (ExecutionException e){
+            return null;
+        } catch (InterruptedException e){
+            return null;
+        }
+    }
+
+    public static void getGroupAsync(String groupUid, @Nullable final OnAsyncCallListener<Group> listener){
+        setAuth(USER_ID_AUTH_LABEL);
+
+        try{
+            GroupApi api = new GroupApi();
             api.getGroupAsync(groupUid, new ApiCallback<Group>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -296,16 +392,10 @@ public abstract class ServerCalls {
     }
 
     public static void createGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener){
-        GroupApi api = new GroupApi();
-
-        ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
-
-        ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-        firebaseAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-        client.setBasePath(BASE_URL);
+        setAuth(USER_ID_AUTH_LABEL);
 
         try{
+            GroupApi api = new GroupApi();
             api.createGroupAsync(group, new ApiCallback<Group>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -358,16 +448,10 @@ public abstract class ServerCalls {
     }
 
     public static void joinGroupAsync(String accessKey, @Nullable final OnAsyncCallListener<Group> listener){
-        ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
-
-        client.setBasePath(BASE_URL);
-
-        ApiKeyAuth UserIDAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-        UserIDAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-        GroupApi api = new GroupApi();
+        setAuth(USER_ID_AUTH_LABEL);
 
         try{
+            GroupApi api = new GroupApi();
             api.joinGroupAsync(accessKey, new ApiCallback<Group>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -420,17 +504,11 @@ public abstract class ServerCalls {
     }
 
     public static void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList> listener){
-        ShoppinglistApi api = new ShoppinglistApi();
-
-        ApiClient client = api.getApiClient();
-
-        ApiKeyAuth userAuth = (ApiKeyAuth) client.getAuthentication(FIREBASE_ID_AUTH_LABEL);
-        userAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-        client.setBasePath(BASE_URL);
+        setAuth(FIREBASE_ID_AUTH_LABEL);
 
         try {
-            api.getListItemsAsync(DataContainer.Me.getMe().getGroupUid().toString(), new ApiCallback<ShoppingList>() {
+            ShoppinglistApi api = new ShoppinglistApi();
+            api.getListItemsAsync(DataProvider.Users.getCurrentUser().getGroupUid().toString(), new ApiCallback<ShoppingList>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
                     logError(GET_SHOPPING_LIST_NAME, ASYNCHRONOUS_FLAG);
@@ -466,10 +544,10 @@ public abstract class ServerCalls {
     }
 
     public static ApiResponse<ShoppingList> getShoppingList(){
-        if(DataContainer.Me.getMe().getGroupUid() != null){
+        if(DataProvider.Users.getCurrentUser().getGroupUid() != null){
             GetShoppingList task = new GetShoppingList();
             try{
-                return task.execute(DataContainer.Me.getMe().getGroupUid().toString()).get();
+                return task.execute(DataProvider.Users.getCurrentUser().getGroupUid().toString()).get();
             } catch (ExecutionException e){
                 logError(GET_SHOPPING_LIST_NAME, WAIT_FOR_RESULT_FLAG);
                 return null;
@@ -482,17 +560,11 @@ public abstract class ServerCalls {
     }
 
     public static void createShoppingListItemAsync(ListItem item, @Nullable final OnAsyncCallListener<ListItem> listener){
-        ShoppinglistApi api = new ShoppinglistApi();
-
-        ApiClient client = api.getApiClient();
-
-        ApiKeyAuth userAuth = (ApiKeyAuth) client.getAuthentication(FIREBASE_ID_AUTH_LABEL);
-        userAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-        client.setBasePath(BASE_URL);
+        setAuth(FIREBASE_ID_AUTH_LABEL);
 
         try{
-            api.createListItemAsync(DataContainer.Me.getMe().getGroupUid().toString(), item, new ApiCallback<ListItem>() {
+            ShoppinglistApi api = new ShoppinglistApi();
+            api.createListItemAsync(DataProvider.Users.getCurrentUser().getGroupUid().toString(), item, new ApiCallback<ListItem>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
                     logError(CREATE_SHOPPING_LIST_ITEM_NAME, ASYNCHRONOUS_FLAG);
@@ -552,7 +624,7 @@ public abstract class ServerCalls {
     private static void logSuccess(String name, String method){
         StringBuffer buffer = new StringBuffer();
         buffer.append(name).append(method);
-        Log.i(SERVER_CONNECTION_FAILED_TAG, buffer.toString());
+        Log.i(SERVER_CONNECTION_SUCCEEDED_TAG, buffer.toString());
     }
 
     private static class CreateUser extends AsyncTask<User, Void, ApiResponse<User>>{
@@ -561,14 +633,8 @@ public abstract class ServerCalls {
         protected ApiResponse<User> doInBackground(User... users) {
             if(users != null && users.length > 0) {
                 try {
+                    setAuth(USER_ID_AUTH_LABEL);
                     UserApi api = new UserApi();
-
-                    ApiClient client = api.getApiClient();
-
-                    ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-                    firebaseAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-                    client.setBasePath(BASE_URL);
 
                     return api.createUserWithHttpInfo(users[0]);
                 } catch (ApiException e){
@@ -585,13 +651,7 @@ public abstract class ServerCalls {
         @Override
         protected ApiResponse<User> doInBackground(String... strings) {
             if(strings != null && strings.length > 0){
-                ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
-
-                client.setBasePath(BASE_URL);
-
-                ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication(FIREBASE_ID_AUTH_LABEL);
-                firebaseAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
+                setAuth(FIREBASE_ID_AUTH_LABEL);
                 UserApi api = new UserApi();
 
                 try {
@@ -610,13 +670,7 @@ public abstract class ServerCalls {
         @Override
         protected ApiResponse<User> doInBackground(User... users) {
             if(users != null && users.length > 0){
-                ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
-
-                client.setBasePath(BASE_URL);
-
-                ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-                firebaseAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
+                setAuth(USER_ID_AUTH_LABEL);
                 UserApi api = new UserApi();
 
                 try {
@@ -630,19 +684,46 @@ public abstract class ServerCalls {
         }
     }
 
+    private static class UpdateUserImage extends AsyncTask<File, Void, ApiResponse<SuccessResponse>>{
+
+        @Override
+        protected ApiResponse<SuccessResponse> doInBackground(File... files) {
+            if(files != null && files.length > 0 && files[0] != null){
+                setAuth(USER_ID_AUTH_LABEL);
+                UserApi api = new UserApi();
+
+                try{
+                    return api.updateUserImageWithHttpInfo(DataProvider.Users.getCurrentUsersUid(), files[0]);
+                } catch (ApiException e){
+                    return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
+                }
+            }
+            return null;
+        }
+    }
+
+    private static class LeaveGroup extends AsyncTask<Void, Void, ApiResponse<SuccessResponse>>{
+
+        @Override
+        protected ApiResponse<SuccessResponse> doInBackground(Void... voids) {
+            setAuth(USER_ID_AUTH_LABEL);
+            GroupApi api = new GroupApi();
+
+            try{
+                return api.leaveGroupWithHttpInfo();
+            } catch (ApiException e){
+                return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
+            }
+        }
+    }
+
     private static class GetGroup extends AsyncTask<String, Void, ApiResponse<Group>>{
 
         @Override
         protected ApiResponse<Group> doInBackground(String... strings) {
             if(strings != null && strings.length > 0){
+                setAuth(USER_ID_AUTH_LABEL);
                 GroupApi api = new GroupApi();
-
-                ApiClient client = api.getApiClient();
-
-                ApiKeyAuth userAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-                userAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-                client.setBasePath(BASE_URL);
 
                 try{
                     return api.getGroupWithHttpInfo(strings[0]);
@@ -660,14 +741,8 @@ public abstract class ServerCalls {
         @Override
         protected ApiResponse<Group> doInBackground(Group... groups) {
             if(groups != null && groups.length > 0){
+                setAuth(USER_ID_AUTH_LABEL);
                 GroupApi api = new GroupApi();
-
-                ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
-
-                ApiKeyAuth firebaseAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-                firebaseAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-                client.setBasePath(BASE_URL);
 
                 try{
                     return api.createGroupWithHttpInfo(groups[0]);
@@ -685,13 +760,7 @@ public abstract class ServerCalls {
         @Override
         protected ApiResponse<Group> doInBackground(String... strings) {
             if(strings != null && strings.length > 0){
-                ApiClient client = io.swagger.client.Configuration.getDefaultApiClient();
-
-                client.setBasePath(BASE_URL);
-
-                ApiKeyAuth UserIDAuth = (ApiKeyAuth) client.getAuthentication(USER_ID_AUTH_LABEL);
-                UserIDAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
+                setAuth(USER_ID_AUTH_LABEL);
                 GroupApi api = new GroupApi();
 
                 try{
@@ -710,14 +779,9 @@ public abstract class ServerCalls {
         @Override
         protected ApiResponse<ShoppingList> doInBackground(String... strings) {
             if(strings != null && strings.length > 0){
+                setAuth(FIREBASE_ID_AUTH_LABEL);
                 ShoppinglistApi api = new ShoppinglistApi();
 
-                ApiClient client = api.getApiClient();
-
-                ApiKeyAuth userAuth = (ApiKeyAuth) client.getAuthentication(FIREBASE_ID_AUTH_LABEL);
-                userAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-                client.setBasePath(BASE_URL);
                 try{
                     return api.getListItemsWithHttpInfo(strings[0]);
                 } catch (ApiException e){
@@ -734,17 +798,11 @@ public abstract class ServerCalls {
         @Override
         protected ApiResponse<ListItem> doInBackground(ListItem... listItems) {
             if(listItems != null && listItems.length > 0){
+                setAuth(FIREBASE_ID_AUTH_LABEL);
                 ShoppinglistApi api = new ShoppinglistApi();
 
-                ApiClient client = api.getApiClient();
-
-                ApiKeyAuth userAuth = (ApiKeyAuth) client.getAuthentication(FIREBASE_ID_AUTH_LABEL);
-                userAuth.setApiKey(DataContainer.Me.getMe().getUid());
-
-                client.setBasePath(BASE_URL);
-
                 try {
-                    return api.createListItemWithHttpInfo(DataContainer.Me.getMe().getGroupUid().toString(), listItems[0]);
+                    return api.createListItemWithHttpInfo(DataProvider.Users.getCurrentUser().getGroupUid().toString(), listItems[0]);
                 } catch (ApiException e){
                     logError(CREATE_SHOPPING_LIST_ITEM_NAME, WAIT_FOR_RESULT_FLAG);
                     return new ApiResponse<ListItem>(e.getCode(), e.getResponseHeaders(), null);

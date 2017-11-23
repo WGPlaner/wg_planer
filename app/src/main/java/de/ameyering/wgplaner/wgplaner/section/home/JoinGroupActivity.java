@@ -12,20 +12,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
-import io.swagger.client.ApiCallback;
-import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
-import io.swagger.client.Configuration;
-import io.swagger.client.api.GroupApi;
-import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.Group;
 
 public class JoinGroupActivity extends AppCompatActivity {
@@ -112,7 +105,7 @@ public class JoinGroupActivity extends AppCompatActivity {
     }
 
     private void joinGroup(String key) {
-        DataContainer.Groups.joinGroup(key, new ServerCalls.OnAsyncCallListener<Group>() {
+        DataProvider.CurrentGroup.joinGroup(key, new ServerCalls.OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
                 runOnUiThread(new Runnable() {

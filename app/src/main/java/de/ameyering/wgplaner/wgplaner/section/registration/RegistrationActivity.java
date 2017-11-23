@@ -16,7 +16,7 @@ import de.ameyering.wgplaner.wgplaner.section.registration.fragment.PickDisplayN
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.StateEMailFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.UploadProfilePictureFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.User;
@@ -76,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    DataContainer.Me.registerMe(new ServerCalls.OnAsyncCallListener<User>() {
+                    DataProvider.Users.createCurrentUser(new ServerCalls.OnAsyncCallListener<User>() {
                         @Override
                         public void onFailure(ApiException e) {
                             runOnUiThread(new Runnable() {

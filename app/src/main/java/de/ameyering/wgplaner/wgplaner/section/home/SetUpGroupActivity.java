@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,25 +21,15 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Currency;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.LocaleSpinnerAdapter;
-import de.ameyering.wgplaner.wgplaner.utils.Configuration;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
-import io.swagger.client.ApiCallback;
-import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
-import io.swagger.client.api.GroupApi;
-import io.swagger.client.api.UserApi;
-import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.Group;
-import io.swagger.client.model.User;
 
 public class SetUpGroupActivity extends AppCompatActivity {
     private static final int REQ_CODE_PICK_IMAGE = 0;
@@ -152,11 +141,11 @@ public class SetUpGroupActivity extends AppCompatActivity {
         group.setDisplayName(groupName);
         group.setCurrency(currency.getCurrencyCode());
         ArrayList<String> members = new ArrayList<>();
-        members.add(DataContainer.Me.getMe().getUid());
+        members.add(DataProvider.Users.getCurrentUsersUid());
         group.setMembers(members);
         group.setAdmins(members);
 
-        DataContainer.Groups.createGroup(group, new ServerCalls.OnAsyncCallListener<Group>() {
+        DataProvider.CurrentGroup.createGroup(group, new ServerCalls.OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
                 runOnUiThread(new Runnable() {

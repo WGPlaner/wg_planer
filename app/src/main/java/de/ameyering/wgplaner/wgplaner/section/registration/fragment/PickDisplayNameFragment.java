@@ -12,7 +12,8 @@ import android.widget.Toast;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import io.swagger.client.model.User;
 
 public class PickDisplayNameFragment extends NavigationFragment {
     private EditText inputName;
@@ -38,7 +39,9 @@ public class PickDisplayNameFragment extends NavigationFragment {
                 String displayName = inputName.getText().toString();
 
                 if (!displayName.isEmpty()) {
-                    DataContainer.Me.updateDisplayName(displayName);
+                    User user = DataProvider.Users.getCurrentUser();
+                    user.setDisplayName(displayName);
+                    DataProvider.Users.setCurrentUser(user);
 
                     if (mNavigationEventListener != null) {
                         mNavigationEventListener.onForward();

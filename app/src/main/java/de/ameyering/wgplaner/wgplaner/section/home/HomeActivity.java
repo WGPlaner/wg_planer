@@ -26,6 +26,11 @@ public class HomeActivity extends AppCompatActivity
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
+    private ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
+    private SetUpFragment setUpFragment = new SetUpFragment();
+
+    private NavigationView navigationView;
+
     private boolean isInSetUp = false;
 
     @Override
@@ -45,17 +50,25 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         if (Configuration.singleton.getConfig(Configuration.Type.USER_GROUP_ID) == null) {
             isInSetUp = true;
-            SetUpFragment setUpFragment = new SetUpFragment();
             setUpFragment.setOnReadyListener(new SetUpFragment.OnReadyListener() {
                 @Override
                 public void onReady() {
                     isInSetUp = false;
-                    //TODO: Implement normal flow
+                    navigationView.setCheckedItem(R.id.nav_shopping_list);
+
+                    shoppingListFragment.setToolbar(toolbar);
+                    shoppingListFragment.setTitle(getString(R.string.section_title_shopping_list));
+                    shoppingListFragment.setFloatingActionButton(fab);
+
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+                    transaction.replace(R.id.container, shoppingListFragment);
+                    transaction.commit();
                 }
             });
             setUpFragment.setToolbar(toolbar);
@@ -70,14 +83,13 @@ public class HomeActivity extends AppCompatActivity
         } else {
             navigationView.setCheckedItem(R.id.nav_shopping_list);
 
-            ShoppingListFragment fragment = new ShoppingListFragment();
-            fragment.setToolbar(toolbar);
-            fragment.setTitle(getString(R.string.section_title_shopping_list));
-            fragment.setFloatingActionButton(fab);
+            shoppingListFragment.setToolbar(toolbar);
+            shoppingListFragment.setTitle(getString(R.string.section_title_shopping_list));
+            shoppingListFragment.setFloatingActionButton(fab);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-            transaction.replace(R.id.container, fragment);
+            transaction.replace(R.id.container, shoppingListFragment);
             transaction.commit();
         }
     }

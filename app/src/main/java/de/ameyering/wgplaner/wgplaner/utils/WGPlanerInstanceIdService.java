@@ -5,6 +5,8 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import io.swagger.client.model.User;
+
 
 public class WGPlanerInstanceIdService extends FirebaseInstanceIdService {
     private static final String TOKEN_TAG = "TOKEN";
@@ -18,7 +20,10 @@ public class WGPlanerInstanceIdService extends FirebaseInstanceIdService {
 
     private void sendRegistrationToServer(String refreshedToken) {
         if(refreshedToken != null){
-            DataContainer.Me.updateFirebaseInstanceIdToken(refreshedToken);
+            User user = DataProvider.Users.getCurrentUser();
+            user.setFirebaseInstanceId(refreshedToken);
+            DataProvider.Users.setCurrentUser(user);
+            DataProvider.Users.synchronizeCurrentUser(null);
         }
     }
 }

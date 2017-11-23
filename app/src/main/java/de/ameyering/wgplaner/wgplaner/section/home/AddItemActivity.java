@@ -13,23 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.AddItemRequestedForAdapter;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.AddItemAddUserDialogFragment;
-import io.swagger.client.ApiCallback;
-import io.swagger.client.ApiClient;
-import io.swagger.client.ApiException;
-import io.swagger.client.Configuration;
-import io.swagger.client.api.ShoppinglistApi;
-import io.swagger.client.auth.ApiKeyAuth;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.User;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
 import io.swagger.client.model.ListItem;
 
 public class AddItemActivity extends AppCompatActivity {
@@ -115,7 +107,7 @@ public class AddItemActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_item_save: {
                 if (checkInputAndReturn()) {
-                    DataContainer.ShoppingListItems.createShoppingListItem(DataContainer.CallBehavior.PARALLEL, newItem);
+                    DataProvider.ShoppingList.addItem(newItem, null);
                     setResult(RESULT_OK, new Intent());
                     finish();
                     return true;

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.ListItem;
 
 
@@ -61,9 +61,9 @@ public class ShoppingListItemAdapter extends
                 @Override
                 public void onClick(View view) {
                     if(checkbox.isChecked()){
-                        DataContainer.SelectedShoppingListItems.addSelectedShoppingListItem(item);
+                        DataProvider.ShoppingList.selectItem(item);
                     } else {
-                        DataContainer.SelectedShoppingListItems.removeSelectedShoppingListItem(item);
+                        DataProvider.ShoppingList.unselectItem(item);
                     }
                 }
             });
@@ -89,7 +89,7 @@ public class ShoppingListItemAdapter extends
             String requestedBy = item.getRequestedBy();
 
             if (requestedBy != null) {
-                String displayName = DataContainer.Users.getDisplayNameByUid(requestedBy);
+                String displayName = DataProvider.Users.getUserByUid(requestedBy).getDisplayName();
 
                 if (displayName != null) {
                     displayRequestedBy.setText(displayName);
@@ -102,7 +102,7 @@ public class ShoppingListItemAdapter extends
             String concatNames = "";
 
             for (String uid : uids) {
-                concatNames = concatNames + DataContainer.Users.getDisplayNameByUid(uid) + ", ";
+                concatNames = concatNames + DataProvider.Users.getUserByUid(uid).getDisplayName() + ", ";
             }
 
             displayRequestedFor.setText(concatNames);
@@ -133,7 +133,7 @@ public class ShoppingListItemAdapter extends
                 String concatNames = "";
 
                 for (String uid : uids) {
-                    concatNames = concatNames + DataContainer.Users.getDisplayNameByUid(uid) + ", ";
+                    concatNames = concatNames + DataProvider.Users.getUserByUid(uid).getDisplayName() + ", ";
                 }
 
                 displayRequestedFor.setText(concatNames);
