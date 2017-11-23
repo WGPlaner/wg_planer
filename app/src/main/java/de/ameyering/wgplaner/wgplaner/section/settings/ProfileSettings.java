@@ -27,15 +27,9 @@ import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
-import de.ameyering.wgplaner.wgplaner.section.home.AddItemActivity;
-import de.ameyering.wgplaner.wgplaner.section.registration.fragment.PickDisplayNameFragment;
-import de.ameyering.wgplaner.wgplaner.section.registration.fragment.UploadProfilePictureFragment;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
-import de.ameyering.wgplaner.wgplaner.utils.DataContainer;
-import io.swagger.client.ApiClient;
-import io.swagger.client.ApiException;
-import io.swagger.client.api.GroupApi;
-import io.swagger.client.auth.ApiKeyAuth;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import io.swagger.client.ApiResponse;
 import io.swagger.client.model.SuccessResponse;
 
 public class ProfileSettings extends AppCompatActivity {
@@ -116,24 +110,13 @@ public class ProfileSettings extends AppCompatActivity {
         btLeaveGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApiClient defaultClient = io.swagger.client.Configuration.getDefaultApiClient();
-                defaultClient.setBasePath("https://api.wgplaner.ameyering.de");
+                ApiResponse<SuccessResponse> response = DataProvider.CurrentGroup.leaveGroup();
 
-                // Configure API key authorization: UserIDAuth
-                ApiKeyAuth UserIDAuth = (ApiKeyAuth) defaultClient.getAuthentication("UserIDAuth");
-                UserIDAuth.setApiKey(Configuration.singleton.getConfig(Configuration.Type.USER_UID));
-                // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-                //UserIDAuth.setApiKeyPrefix("Token");
-
-                GroupApi apiInstance = new GroupApi();
-
-                try {
-                    SuccessResponse result = apiInstance.leaveGroup();
-                    System.out.println(result);
-
-                } catch (ApiException e) {
-                    System.err.println("Exception when calling GroupApi#leaveGroup");
-                    e.printStackTrace();
+                if(response != null && response.getData() != null){
+                    setResult(RESULT_OK);
+                    finish();
+                } else {
+                    Toast.makeText(ProfileSettings.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
                 }
             }
         });
