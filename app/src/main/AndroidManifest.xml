@@ -41,7 +41,7 @@
                 <data
                     android:scheme="http"
                     android:host="api.wgplaner.ameyering.de"
-                    android:pathPattern="/v0.1/groups/join/.*" />
+                    android:pathPattern="/groups/join/.*" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -52,7 +52,7 @@
                 <data
                     android:scheme="https"
                     android:host="api.wgplaner.ameyering.de"
-                    android:pathPattern="/v0.1/groups/join/.*" />
+                    android:pathPattern="/groups/join/.*" />
             </intent-filter>
         </activity>
         <activity

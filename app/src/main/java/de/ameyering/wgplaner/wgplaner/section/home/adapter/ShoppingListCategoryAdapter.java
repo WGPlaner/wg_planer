@@ -62,11 +62,11 @@ public class ShoppingListCategoryAdapter extends
             int header = args.getInt(CategoryDiffCallback.HEADER);
             int items = args.getInt(CategoryDiffCallback.ITEMS);
 
-            if (header == CategoryDiffCallback.TRUE) {
+            if (header == CategoryDiffCallback.TRUE_VALUE) {
                 categoryName.setText(categoryHolder.getHeader());
             }
 
-            if (items == CategoryDiffCallback.TRUE) {
+            if (items == CategoryDiffCallback.TRUE_VALUE) {
                 adapter.onNewData(categoryHolder.getItems());
             }
 
@@ -130,8 +130,8 @@ public class ShoppingListCategoryAdapter extends
     private class CategoryDiffCallback extends DiffUtil.Callback {
         public static final String HEADER = "header";
         public static final String ITEMS = "items";
-        public static final int FALSE = 0;
-        public static final int TRUE = 1;
+        public static final int FALSE_VALUE = 0;
+        public static final int TRUE_VALUE = 1;
 
         private ArrayList<CategoryHolder> newList = new ArrayList<>();
         private ArrayList<CategoryHolder> oldList = new ArrayList<>();
@@ -189,17 +189,17 @@ public class ShoppingListCategoryAdapter extends
             CategoryHolder oldHolder = oldList.get(oldItemPosition);
             CategoryHolder newHolder = newList.get(newItemPosition);
 
-            int header = TRUE;
-            int items = TRUE;
+            int header = TRUE_VALUE;
+            int items = TRUE_VALUE;
 
             Bundle diff = new Bundle();
 
             if (!newHolder.getHeader().equals(oldHolder.getHeader())) {
-                diff.putInt(HEADER, TRUE);
+                diff.putInt(HEADER, TRUE_VALUE);
 
             } else {
-                header = FALSE;
-                diff.putInt(HEADER, FALSE);
+                header = FALSE_VALUE;
+                diff.putInt(HEADER, FALSE_VALUE);
             }
 
             ArrayList<ListItem> oldItems = oldHolder.getItems();
@@ -219,18 +219,18 @@ public class ShoppingListCategoryAdapter extends
                 }
 
                 if (hasToChange) {
-                    diff.putInt(ITEMS, TRUE);
+                    diff.putInt(ITEMS, TRUE_VALUE);
 
                 } else {
-                    items = FALSE;
-                    diff.putInt(ITEMS, FALSE);
+                    items = FALSE_VALUE;
+                    diff.putInt(ITEMS, FALSE_VALUE);
                 }
 
             } else {
-                diff.putInt(ITEMS, TRUE);
+                diff.putInt(ITEMS, TRUE_VALUE);
             }
 
-            if (header == FALSE && items == FALSE) {
+            if (header == FALSE_VALUE && items == FALSE_VALUE) {
                 return null;
             }
 

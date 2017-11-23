@@ -69,16 +69,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (appLinkData != null) {
             List<String> path = appLinkData.getPathSegments();
 
-            if (path.size() != 0) {
-                if (path.get(0).equals("v0.1")) {
-                    if (path.get(1).equals("groups")) {
-                        if (path.get(2).equals("join")) {
-
-                            joinGroupKey = path.get(3);
-                            loadJoinGroup = true;
-                        }
-                    }
-                }
+            if (path.size() != 0 && path.get(0).equals("groups") && path.get(1).equals("join")) {
+                joinGroupKey = path.get(3);
+                loadJoinGroup = true;
             }
         }
     }

@@ -104,24 +104,24 @@ public class CategoryHolder {
 
             } else {
                 List<String> requestedFor = item.getRequestedFor();
-                String header = "";
+                StringBuilder header = new StringBuilder("");
 
                 if (requestedFor.size() == DataProvider.Users.getUserCount()) {
-                    header = context.getString(R.string.group_label);
+                    header.append(context.getString(R.string.group_label));
 
                 } else {
                     for (int i = 0; i < requestedFor.size(); i++) {
                         if (i == 0) {
-                            header = DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
+                            header.append(DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName());
 
                         } else {
-                            header = header + " || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
+                            header.append(" || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName());
                         }
                     }
                 }
 
-                if (!headers.contains(header)) {
-                    headers.add(header);
+                if (!headers.contains(header.toString())) {
+                    headers.add(header.toString());
                 }
             }
         }
@@ -134,23 +134,23 @@ public class CategoryHolder {
 
         for (ListItem item : items) {
             List<String> requestedFor = item.getRequestedFor();
-            String header = "";
+            StringBuilder header = new StringBuilder("");
 
             if (requestedFor.size() == DataProvider.Users.getUserCount()) {
-                header = context.getString(R.string.group_label);
+                header.append(context.getString(R.string.group_label));
 
             } else {
                 for (int i = 0; i < requestedFor.size(); i++) {
                     if (i == 0) {
-                        header = DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
+                        header.append(DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName());
 
                     } else {
-                        header = header + " || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
+                        header.append(" || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName());
                     }
                 }
             }
 
-            int position = headers.indexOf(header);
+            int position = headers.indexOf(header.toString());
 
             categoryHolders.get(position).items.add(item);
         }

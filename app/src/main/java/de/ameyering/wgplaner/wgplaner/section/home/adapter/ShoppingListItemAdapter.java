@@ -123,15 +123,15 @@ public class ShoppingListItemAdapter extends
             int requestedBy = args.getInt(ItemDiffCallback.REQUESTED_BY);
             int number = args.getInt(ItemDiffCallback.NUMBER);
 
-            if (title == ItemDiffCallback.TRUE) {
+            if (title == ItemDiffCallback.TRUE_VALUE) {
                 name.setText(item.getTitle());
             }
 
-            if (requestedBy == ItemDiffCallback.TRUE) {
+            if (requestedBy == ItemDiffCallback.TRUE_VALUE) {
                 displayRequestedBy.setText(item.getRequestedBy());
             }
 
-            if (requestedFor == ItemDiffCallback.TRUE) {
+            if (requestedFor == ItemDiffCallback.TRUE_VALUE) {
                 List<String> uids = item.getRequestedFor();
                 String concatNames = "";
 
@@ -142,7 +142,7 @@ public class ShoppingListItemAdapter extends
                 displayRequestedFor.setText(concatNames);
             }
 
-            if (number == ItemDiffCallback.TRUE) {
+            if (number == ItemDiffCallback.TRUE_VALUE) {
                 displayNumber.setText(item.getCount());
             }
         }
@@ -199,8 +199,8 @@ public class ShoppingListItemAdapter extends
         public static final String REQUESTED_BY = "requestedBy";
         public static final String REQUESTED_FOR = "requestedFor";
 
-        public static final int FALSE = 0;
-        public static final int TRUE = 1;
+        public static final int FALSE_VALUE = 0;
+        public static final int TRUE_VALUE = 1;
 
         private ArrayList<ListItem> newItems = new ArrayList<>();
         private ArrayList<ListItem> oldItems = new ArrayList<>();
@@ -265,46 +265,46 @@ public class ShoppingListItemAdapter extends
             ListItem newItem = newItems.get(newItemPosition);
             ListItem oldItem = oldItems.get(oldItemPosition);
 
-            int title = TRUE;
-            int requestedBy = TRUE;
-            int requestedFor = TRUE;
-            int number = TRUE;
+            int title = TRUE_VALUE;
+            int requestedBy = TRUE_VALUE;
+            int requestedFor = TRUE_VALUE;
+            int number = TRUE_VALUE;
 
             Bundle args = new Bundle();
 
             if (!isTitleEquals(newItem.getTitle(), oldItem.getTitle())) {
-                args.putInt(NAME, TRUE);
+                args.putInt(NAME, TRUE_VALUE);
 
             } else {
-                title = FALSE;
-                args.putInt(NAME, FALSE);
+                title = FALSE_VALUE;
+                args.putInt(NAME, FALSE_VALUE);
             }
 
             if (!isRequestedByEquals(newItem.getRequestedBy(), oldItem.getRequestedBy())) {
-                args.putInt(REQUESTED_BY, TRUE);
+                args.putInt(REQUESTED_BY, TRUE_VALUE);
 
             } else {
-                requestedBy = FALSE;
-                args.putInt(REQUESTED_BY, FALSE);
+                requestedBy = FALSE_VALUE;
+                args.putInt(REQUESTED_BY, FALSE_VALUE);
             }
 
             if (!isRequestedForEquals(newItem.getRequestedFor(), oldItem.getRequestedFor())) {
-                args.putInt(REQUESTED_FOR, TRUE);
+                args.putInt(REQUESTED_FOR, TRUE_VALUE);
 
             } else {
-                requestedFor = FALSE;
-                args.putInt(REQUESTED_FOR, FALSE);
+                requestedFor = FALSE_VALUE;
+                args.putInt(REQUESTED_FOR, FALSE_VALUE);
             }
 
             if (!isNumberEquals(newItem.getCount(), oldItem.getCount())) {
-                args.putInt(NUMBER, TRUE);
+                args.putInt(NUMBER, TRUE_VALUE);
 
             } else {
-                number = FALSE;
-                args.putInt(NUMBER, FALSE);
+                number = FALSE_VALUE;
+                args.putInt(NUMBER, FALSE_VALUE);
             }
 
-            if (title == FALSE && requestedBy == FALSE && requestedFor == FALSE && number == FALSE) {
+            if (title == FALSE_VALUE && requestedBy == FALSE_VALUE && requestedFor == FALSE_VALUE && number == FALSE_VALUE) {
                 return null;
             }
 
