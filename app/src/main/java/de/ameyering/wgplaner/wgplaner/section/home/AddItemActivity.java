@@ -139,7 +139,7 @@ public class AddItemActivity extends AppCompatActivity {
 
             List<String> users = new ArrayList<>();
 
-            for(User user: selected){
+            for (User user : selected) {
                 users.add(user.getUid());
             }
 

@@ -35,7 +35,7 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         List<User> all = DataProvider.Users.getUsers();
         list = new User[all.size()];
 
-        for(int i = 0; i < all.size(); i++){
+        for (int i = 0; i < all.size(); i++) {
             list[i] = all.get(i);
         }
 

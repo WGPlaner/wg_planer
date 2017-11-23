@@ -59,10 +59,11 @@ public class JoinGroupActivity extends AppCompatActivity {
         key = findViewById(R.id.join_group_input_access_key);
 
         Intent sentIntent = getIntent();
-        if(sentIntent.getAction() != null && sentIntent.getAction().equals(Intent.ACTION_QUICK_VIEW)){
+
+        if (sentIntent.getAction() != null && sentIntent.getAction().equals(Intent.ACTION_QUICK_VIEW)) {
             String key = sentIntent.getStringExtra("ACCESS_KEY");
 
-            if(checkInputAndReturn(key)){
+            if (checkInputAndReturn(key)) {
                 this.key.setText(key);
                 joinGroup(key);
 
@@ -94,7 +95,7 @@ public class JoinGroupActivity extends AppCompatActivity {
     }
 
     private boolean checkInputAndReturn(String key) {
-        if(key != null && !key.isEmpty()) {
+        if (key != null && !key.isEmpty()) {
             Pattern pattern = Pattern.compile("^[A-Z0-9]{12}$");
             Matcher matcher = pattern.matcher(key);
 
@@ -111,7 +112,8 @@ public class JoinGroupActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(JoinGroupActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                        Toast.makeText(JoinGroupActivity.this, getString(R.string.server_connection_failed),
+                            Toast.LENGTH_LONG).show();
                     }
                 });
             }

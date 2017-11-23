@@ -19,7 +19,7 @@ public class WGPlanerInstanceIdService extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(String refreshedToken) {
-        if(refreshedToken != null){
+        if (refreshedToken != null) {
             User user = DataProvider.Users.getCurrentUser();
             user.setFirebaseInstanceId(refreshedToken);
             DataProvider.Users.setCurrentUser(user);

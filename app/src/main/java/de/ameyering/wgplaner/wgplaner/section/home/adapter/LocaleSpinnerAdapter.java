@@ -30,10 +30,11 @@ public class LocaleSpinnerAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_item,
-                parent, false);
+                    parent, false);
         }
+
         TextView text = convertView.findViewById(android.R.id.text1);
 
         text.setText(currencies.get(position).getSymbol());

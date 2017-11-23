@@ -43,9 +43,10 @@ public class Configuration implements Serializable {
     }
 
     public void addConfig(Type type, String value) {
-        if(value != null) {
+        if (value != null) {
             configs.put(type, value);
             handler.writeConfig(singleton);
+
         } else {
             configs.remove(type);
         }

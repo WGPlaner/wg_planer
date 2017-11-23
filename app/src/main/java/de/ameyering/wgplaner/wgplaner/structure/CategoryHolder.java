@@ -44,7 +44,8 @@ public class CategoryHolder {
         this.items = items;
     }
 
-    public static ArrayList<CategoryHolder> orderByCategory(Context context, Category category, List<ListItem> items) {
+    public static ArrayList<CategoryHolder> orderByCategory(Context context, Category category,
+        List<ListItem> items) {
         ArrayList<CategoryHolder> categoryHolders = new ArrayList<>();
 
         switch (category) {
@@ -91,7 +92,8 @@ public class CategoryHolder {
         return categoryHolders;
     }
 
-    private static ArrayList<CategoryHolder> orderByRequestedFor(Context context, List<ListItem> items) {
+    private static ArrayList<CategoryHolder> orderByRequestedFor(Context context,
+        List<ListItem> items) {
         ArrayList<String> headers = new ArrayList<>();
 
         for (ListItem item : items) {
@@ -104,12 +106,14 @@ public class CategoryHolder {
                 List<String> requestedFor = item.getRequestedFor();
                 String header = "";
 
-                if(requestedFor.size() == DataProvider.Users.getUserCount()){
+                if (requestedFor.size() == DataProvider.Users.getUserCount()) {
                     header = context.getString(R.string.group_label);
+
                 } else {
                     for (int i = 0; i < requestedFor.size(); i++) {
                         if (i == 0) {
                             header = DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
+
                         } else {
                             header = header + " || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
                         }
@@ -132,12 +136,14 @@ public class CategoryHolder {
             List<String> requestedFor = item.getRequestedFor();
             String header = "";
 
-            if(requestedFor.size() == DataProvider.Users.getUserCount()){
+            if (requestedFor.size() == DataProvider.Users.getUserCount()) {
                 header = context.getString(R.string.group_label);
+
             } else {
                 for (int i = 0; i < requestedFor.size(); i++) {
                     if (i == 0) {
                         header = DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
+
                     } else {
                         header = header + " || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName();
                     }

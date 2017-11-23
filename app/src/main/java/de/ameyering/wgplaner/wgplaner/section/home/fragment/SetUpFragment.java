@@ -76,8 +76,9 @@ public class SetUpFragment extends SectionFragment {
                 }
             }
             break;
+
             case REQ_CODE_JOIN_GROUP: {
-                if(resultCode == getActivity().RESULT_OK){
+                if (resultCode == getActivity().RESULT_OK) {
                     listener.onReady();
                 }
             }

@@ -60,8 +60,9 @@ public class ShoppingListItemAdapter extends
             checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(checkbox.isChecked()){
+                    if (checkbox.isChecked()) {
                         DataProvider.ShoppingList.selectItem(item);
+
                     } else {
                         DataProvider.ShoppingList.unselectItem(item);
                     }
@@ -70,12 +71,14 @@ public class ShoppingListItemAdapter extends
         }
 
         public void initialize(ListItem item) {
-            if(this.item == null){
+            if (this.item == null) {
                 this.item = item;
-            } else if(!this.item.equals(item)) {
+
+            } else if (!this.item.equals(item)) {
                 this.item = item;
                 checkbox.setChecked(false);
-            } else if (this.item.equals(item)){
+
+            } else if (this.item.equals(item)) {
                 checkbox.setChecked(false);
                 return;
             }
@@ -139,7 +142,7 @@ public class ShoppingListItemAdapter extends
                 displayRequestedFor.setText(concatNames);
             }
 
-            if(number == ItemDiffCallback.TRUE){
+            if (number == ItemDiffCallback.TRUE) {
                 displayNumber.setText(item.getCount());
             }
         }
@@ -293,8 +296,9 @@ public class ShoppingListItemAdapter extends
                 args.putInt(REQUESTED_FOR, FALSE);
             }
 
-            if(!isNumberEquals(newItem.getCount(), oldItem.getCount())){
+            if (!isNumberEquals(newItem.getCount(), oldItem.getCount())) {
                 args.putInt(NUMBER, TRUE);
+
             } else {
                 number = FALSE;
                 args.putInt(NUMBER, FALSE);

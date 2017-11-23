@@ -45,10 +45,10 @@ public class ShoppingListFragment extends SectionFragment {
         }
 
         if (floatingActionButton != null) {
-            if(DataProvider.ShoppingList.getSelectedShoppingListCount() == 0) {
+            if (DataProvider.ShoppingList.getSelectedShoppingListCount() == 0) {
                 floatingActionButton.setVisibility(View.VISIBLE);
                 floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                    R.drawable.ic_add_white));
+                        R.drawable.ic_add_white));
                 floatingActionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -56,10 +56,11 @@ public class ShoppingListFragment extends SectionFragment {
                         startActivityForResult(intent, REQ_CODE_ADD_ITEM);
                     }
                 });
+
             } else {
                 floatingActionButton.setVisibility(View.VISIBLE);
                 floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                    R.drawable.ic_check_white));
+                        R.drawable.ic_check_white));
                 floatingActionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -86,7 +87,7 @@ public class ShoppingListFragment extends SectionFragment {
             categories.setAdapter(adapter);
         }
 
-        if(shoppingListListener == null) {
+        if (shoppingListListener == null) {
             shoppingListListener = new DataProvider.OnUpdatedDataListener() {
                 @Override
                 public void onUpdatedData() {
@@ -95,10 +96,10 @@ public class ShoppingListFragment extends SectionFragment {
                         public void run() {
                             onNewData(DataProvider.ShoppingList.getShoppingList());
 
-                            if(DataProvider.ShoppingList.getSelectedShoppingListCount() == 0){
+                            if (DataProvider.ShoppingList.getSelectedShoppingListCount() == 0) {
                                 floatingActionButton.setVisibility(View.VISIBLE);
                                 floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                                    R.drawable.ic_add_white));
+                                        R.drawable.ic_add_white));
                                 floatingActionButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -106,10 +107,11 @@ public class ShoppingListFragment extends SectionFragment {
                                         startActivityForResult(intent, REQ_CODE_ADD_ITEM);
                                     }
                                 });
+
                             } else {
                                 floatingActionButton.setVisibility(View.VISIBLE);
                                 floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                                    R.drawable.ic_check_white));
+                                        R.drawable.ic_check_white));
                                 floatingActionButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

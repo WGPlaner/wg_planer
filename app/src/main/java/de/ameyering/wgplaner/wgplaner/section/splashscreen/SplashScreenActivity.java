@@ -66,10 +66,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         Intent appLinkIntent = getIntent();
         Uri appLinkData = appLinkIntent.getData();
 
-        if(appLinkData != null){
+        if (appLinkData != null) {
             List<String> path = appLinkData.getPathSegments();
-            if(path.size() != 0) {
-                if(path.get(0).equals("v0.1")) {
+
+            if (path.size() != 0) {
+                if (path.get(0).equals("v0.1")) {
                     if (path.get(1).equals("groups")) {
                         if (path.get(2).equals("join")) {
 
@@ -105,7 +106,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             DataProvider.Users.initializeCurrentUser(new ServerCalls.OnAsyncCallListener<User>() {
                 @Override
                 public void onFailure(ApiException e) {
-                    switch(e.getCode()){
+                    switch (e.getCode()) {
                         case 401:
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -158,15 +159,16 @@ public class SplashScreenActivity extends AppCompatActivity {
         finish();
     }
 
-    private void loadNext(){
-        if(loadJoinGroup){
+    private void loadNext() {
+        if (loadJoinGroup) {
             onLoadJoinGroup();
+
         } else {
             loadHome();
         }
     }
 
-    private void onLoadJoinGroup(){
+    private void onLoadJoinGroup() {
         Intent intent = new Intent(this, JoinGroupActivity.class);
         intent.putExtra("ACCESS_KEY", joinGroupKey);
         intent.setAction(Intent.ACTION_QUICK_VIEW);
@@ -174,10 +176,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         finish();
     }
 
-    private void getData(){
+    private void getData() {
         DataProvider.CurrentGroup.updateGroup();
 
-        if(DataProvider.CurrentGroup.getGroup().getUid() != null){
+        if (DataProvider.CurrentGroup.getGroup().getUid() != null) {
             DataProvider.ShoppingList.updateShoppingList();
         }
     }
