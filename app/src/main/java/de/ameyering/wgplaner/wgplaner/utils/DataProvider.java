@@ -9,14 +9,17 @@ import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
 import io.swagger.client.model.*;
 import io.swagger.client.model.User;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface.*;
 
 public abstract class DataProvider {
+    private static ServerCallsInterface instance;
 
     public interface OnUpdatedDataListener {
         void onUpdatedData();
     }
 
-    public static void initialize(String uid) {
+    public static void initialize(String uid, ServerCallsInterface instance) {
+        DataProvider.instance = instance;
         Users.initialize(uid);
         CurrentGroup.initialize();
         ShoppingList.initialize();
@@ -97,9 +100,9 @@ public abstract class DataProvider {
             return users;
         }
 
-        public static void initializeCurrentUser(@Nullable final ServerCalls.OnAsyncCallListener<User>
+        public static void initializeCurrentUser(@Nullable final OnAsyncCallListener<User>
             listener) {
-            ServerCalls.getUserAsync(currentUser.getUid(), new ServerCalls.OnAsyncCallListener<User>() {
+            instance.getUserAsync(currentUser.getUid(), new OnAsyncCallListener<User>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -119,7 +122,7 @@ public abstract class DataProvider {
         }
 
         public static ApiResponse<User> initializeCurrentUser() {
-            ApiResponse<User> response = ServerCalls.getUser(currentUser.getUid());
+            ApiResponse<User> response = instance.getUser(currentUser.getUid());
 
             if (response != null && response.getData() != null) {
                 setCurrentUser(response.getData());
@@ -128,9 +131,9 @@ public abstract class DataProvider {
             return response;
         }
 
-        public static void synchronizeCurrentUser(@Nullable final ServerCalls.OnAsyncCallListener<User>
+        public static void synchronizeCurrentUser(@Nullable final OnAsyncCallListener<User>
             listener) {
-            ServerCalls.updateUserAsync(currentUser, new ServerCalls.OnAsyncCallListener<User>() {
+            instance.updateUserAsync(currentUser, new OnAsyncCallListener<User>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -148,12 +151,12 @@ public abstract class DataProvider {
         }
 
         public static ApiResponse<User> synchronizeCurrentUser() {
-            return ServerCalls.updateUser(currentUser);
+            return instance.updateUser(currentUser);
         }
 
-        public static void createCurrentUser(@Nullable final ServerCalls.OnAsyncCallListener<User>
+        public static void createCurrentUser(@Nullable final OnAsyncCallListener<User>
             listener) {
-            ServerCalls.createUserAsync(currentUser, new ServerCalls.OnAsyncCallListener<User>() {
+            instance.createUserAsync(currentUser, new OnAsyncCallListener<User>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -241,8 +244,8 @@ public abstract class DataProvider {
             return group;
         }
 
-        public static void updateGroup(@Nullable final ServerCalls.OnAsyncCallListener<Group> listener) {
-            ServerCalls.getGroupAsync(Users.getCurrentUsersUid(), new ServerCalls.OnAsyncCallListener<Group>() {
+        public static void updateGroup(@Nullable final OnAsyncCallListener<Group> listener) {
+            instance.getGroupAsync(Users.getCurrentUsersUid(), new OnAsyncCallListener<Group>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -262,7 +265,7 @@ public abstract class DataProvider {
         }
 
         public static ApiResponse<Group> updateGroup() {
-            ApiResponse<Group> response = ServerCalls.getGroup(Users.getCurrentUser().getGroupUid().toString());
+            ApiResponse<Group> response = instance.getGroup(Users.getCurrentUser().getGroupUid().toString());
 
             if (response != null && response.getData() != null) {
                 setGroup(response.getData());
@@ -272,8 +275,8 @@ public abstract class DataProvider {
         }
 
         public static void createGroup(Group group,
-            @Nullable final ServerCalls.OnAsyncCallListener<Group> listener) {
-            ServerCalls.createGroupAsync(group, new ServerCalls.OnAsyncCallListener<Group>() {
+            @Nullable final OnAsyncCallListener<Group> listener) {
+            instance.createGroupAsync(group, new OnAsyncCallListener<Group>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -292,7 +295,7 @@ public abstract class DataProvider {
         }
 
         public static ApiResponse<Group> createGroup(Group group) {
-            ApiResponse<Group> response = ServerCalls.createGroup(group);
+            ApiResponse<Group> response = instance.createGroup(group);
 
             if (response != null && response.getData() != null) {
                 Group result = response.getData();
@@ -304,8 +307,8 @@ public abstract class DataProvider {
         }
 
         public static void joinGroup(String key,
-            @Nullable final ServerCalls.OnAsyncCallListener<Group> listener) {
-            ServerCalls.joinGroupAsync(key, new ServerCalls.OnAsyncCallListener<Group>() {
+            @Nullable final OnAsyncCallListener<Group> listener) {
+            instance.joinGroupAsync(key, new OnAsyncCallListener<Group>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -328,7 +331,7 @@ public abstract class DataProvider {
         }
 
         public static ApiResponse<Group> joinGroup(String key) {
-            ApiResponse<Group> response = ServerCalls.joinGroup(key);
+            ApiResponse<Group> response = instance.joinGroup(key);
 
             if (response != null && response.getData() != null) {
                 setGroup(response.getData());
@@ -337,9 +340,9 @@ public abstract class DataProvider {
             return response;
         }
 
-        public static void leaveGroup(@Nullable final ServerCalls.OnAsyncCallListener<SuccessResponse>
+        public static void leaveGroup(@Nullable final OnAsyncCallListener<SuccessResponse>
             listener) {
-            ServerCalls.leaveGroupAsync(new ServerCalls.OnAsyncCallListener<SuccessResponse>() {
+            instance.leaveGroupAsync(new OnAsyncCallListener<SuccessResponse>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -360,7 +363,7 @@ public abstract class DataProvider {
         }
 
         public static ApiResponse<SuccessResponse> leaveGroup() {
-            ApiResponse<SuccessResponse> response = ServerCalls.leaveGroup();
+            ApiResponse<SuccessResponse> response = instance.leaveGroup();
 
             if (response != null && response.getData() != null) {
                 group = new Group();
@@ -375,7 +378,7 @@ public abstract class DataProvider {
 
             for (String uid : group.getMembers()) {
                 if (uid != null && !uid.isEmpty()) {
-                    ApiResponse<User> response = ServerCalls.getUser(uid);
+                    ApiResponse<User> response = instance.getUser(uid);
 
                     if (response != null && response.getData() != null) {
                         Users.users.add(response.getData());
@@ -458,8 +461,8 @@ public abstract class DataProvider {
         }
 
         public static void addItem(ListItem item,
-            @Nullable final ServerCalls.OnAsyncCallListener<ListItem> listener) {
-            ServerCalls.createShoppingListItemAsync(item, new ServerCalls.OnAsyncCallListener<ListItem>() {
+            @Nullable final OnAsyncCallListener<ListItem> listener) {
+            instance.createShoppingListItemAsync(item, new OnAsyncCallListener<ListItem>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -480,9 +483,9 @@ public abstract class DataProvider {
         }
 
         public static void updateShoppingList(@Nullable final
-            ServerCalls.OnAsyncCallListener<io.swagger.client.model.ShoppingList> listener) {
-            ServerCalls.getShoppingListAsync(new
-            ServerCalls.OnAsyncCallListener<io.swagger.client.model.ShoppingList>() {
+            OnAsyncCallListener<io.swagger.client.model.ShoppingList> listener) {
+            instance.getShoppingListAsync(new
+            OnAsyncCallListener<io.swagger.client.model.ShoppingList>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -511,7 +514,7 @@ public abstract class DataProvider {
         }
 
         public static ApiResponse<io.swagger.client.model.ShoppingList> updateShoppingList() {
-            ApiResponse<io.swagger.client.model.ShoppingList> response = ServerCalls.getShoppingList();
+            ApiResponse<io.swagger.client.model.ShoppingList> response = instance.getShoppingList();
 
             if (response != null && response.getData() != null) {
                 if (response.getData().getListItems() != null) {

@@ -19,7 +19,7 @@ import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.*;
 import io.swagger.client.model.User;
 
-public abstract class ServerCalls {
+public class ServerCalls implements ServerCallsInterface{
     private static final String USER_ID_AUTH_LABEL = "UserIDAuth";
     private static final String FIREBASE_ID_AUTH_LABEL = "FirebaseIDAuth";
 
@@ -40,20 +40,17 @@ public abstract class ServerCalls {
     private static final String GET_SHOPPING_LIST_NAME = "GetShoppingList";
     private static final String CREATE_SHOPPING_LIST_ITEM_NAME = "CreateShoppingListItem";
 
-    public interface OnAsyncCallListener<T> {
-        void onFailure(ApiException e);
-
-        void onSuccess(T result);
-    }
-
     private static ApiClient client;
 
+    private static ServerCalls singleton;
+
     static {
+        singleton = new ServerCalls();
         client = Configuration.getDefaultApiClient();
         client.setBasePath(BASE_URL);
     }
 
-    private static boolean setAuth(String method) {
+    private boolean setAuth(String method) {
         if (method != null && !method.isEmpty()) {
             ApiKeyAuth auth = (ApiKeyAuth) client.getAuthentication(method);
             auth.setApiKey(DataProvider.Users.getCurrentUsersUid());
@@ -63,7 +60,12 @@ public abstract class ServerCalls {
         return false;
     }
 
-    public static void createUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener) {
+    public static ServerCalls getInstance(){
+        return singleton;
+    }
+
+    @Override
+    public void createUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
         try {
@@ -110,7 +112,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<User> createUser(User user) {
+    public ApiResponse<User> createUser(User user) {
         if (user != null) {
             CreateUser task = new CreateUser();
 
@@ -130,7 +132,7 @@ public abstract class ServerCalls {
         return null;
     }
 
-    public static void getUserAsync(String uid, @Nullable final OnAsyncCallListener<User> listener) {
+    public void getUserAsync(String uid, @Nullable final OnAsyncCallListener<User> listener) {
         setAuth(FIREBASE_ID_AUTH_LABEL);
 
         try {
@@ -173,7 +175,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<User> getUser(String uid) {
+    public ApiResponse<User> getUser(String uid) {
         if (uid != null) {
             GetUser task = new GetUser();
 
@@ -193,7 +195,7 @@ public abstract class ServerCalls {
         return null;
     }
 
-    public static void updateUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener) {
+    public void updateUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
         try {
@@ -236,7 +238,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<User> updateUser(User user) {
+    public ApiResponse<User> updateUser(User user) {
         if (user != null) {
             UpdateUser task = new UpdateUser();
 
@@ -256,7 +258,7 @@ public abstract class ServerCalls {
         return null;
     }
 
-    public static void updateUserImageAsync(File image,
+    public void updateUserImageAsync(File image,
         @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
         if (image != null) {
             setAuth(USER_ID_AUTH_LABEL);
@@ -299,7 +301,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<SuccessResponse> updateUserImage(File image) {
+    public ApiResponse<SuccessResponse> updateUserImage(File image) {
         if (image != null) {
             UpdateUserImage task = new UpdateUserImage();
 
@@ -317,7 +319,7 @@ public abstract class ServerCalls {
         return null;
     }
 
-    public static void leaveGroupAsync(@Nullable final OnAsyncCallListener<SuccessResponse> listener) {
+    public void leaveGroupAsync(@Nullable final OnAsyncCallListener<SuccessResponse> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
         try {
@@ -356,7 +358,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<SuccessResponse> leaveGroup() {
+    public ApiResponse<SuccessResponse> leaveGroup() {
         LeaveGroup task = new LeaveGroup();
 
         try {
@@ -370,7 +372,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static void getGroupAsync(String groupUid,
+    public void getGroupAsync(String groupUid,
         @Nullable final OnAsyncCallListener<Group> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
@@ -415,7 +417,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<Group> getGroup(String groupUid) {
+    public ApiResponse<Group> getGroup(String groupUid) {
         if (groupUid != null) {
             GetGroup task = new GetGroup();
 
@@ -435,7 +437,7 @@ public abstract class ServerCalls {
         return null;
     }
 
-    public static void createGroupAsync(Group group,
+    public void createGroupAsync(Group group,
         @Nullable final OnAsyncCallListener<Group> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
@@ -480,7 +482,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<Group> createGroup(Group group) {
+    public ApiResponse<Group> createGroup(Group group) {
         if (group != null) {
             CreateGroup task = new CreateGroup();
 
@@ -500,7 +502,7 @@ public abstract class ServerCalls {
         return null;
     }
 
-    public static void joinGroupAsync(String accessKey,
+    public void joinGroupAsync(String accessKey,
         @Nullable final OnAsyncCallListener<Group> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
@@ -545,7 +547,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<Group> joinGroup(String accessKey) {
+    public ApiResponse<Group> joinGroup(String accessKey) {
         if (accessKey != null) {
             JoinGroup task = new JoinGroup();
 
@@ -565,7 +567,7 @@ public abstract class ServerCalls {
         return null;
     }
 
-    public static void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList>
+    public void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList>
         listener) {
         setAuth(FIREBASE_ID_AUTH_LABEL);
 
@@ -612,7 +614,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<ShoppingList> getShoppingList() {
+    public ApiResponse<ShoppingList> getShoppingList() {
         if (DataProvider.Users.getCurrentUser().getGroupUid() != null) {
             GetShoppingList task = new GetShoppingList();
 
@@ -632,7 +634,7 @@ public abstract class ServerCalls {
         return null;
     }
 
-    public static void createShoppingListItemAsync(ListItem item,
+    public void createShoppingListItemAsync(ListItem item,
         @Nullable final OnAsyncCallListener<ListItem> listener) {
         setAuth(FIREBASE_ID_AUTH_LABEL);
 
@@ -678,7 +680,7 @@ public abstract class ServerCalls {
         }
     }
 
-    public static ApiResponse<ListItem> createShoppingListItem(ListItem item) {
+    public ApiResponse<ListItem> createShoppingListItem(ListItem item) {
         if (item != null) {
             CreateShoppingListItem task = new CreateShoppingListItem();
 
@@ -698,19 +700,19 @@ public abstract class ServerCalls {
         return null;
     }
 
-    private static void logError(String name, String method) {
+    private void logError(String name, String method) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(name).append(method);
         Log.e(SERVER_CONNECTION_FAILED_TAG, buffer.toString());
     }
 
-    private static void logSuccess(String name, String method) {
+    private void logSuccess(String name, String method) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(name).append(method);
         Log.i(SERVER_CONNECTION_SUCCEEDED_TAG, buffer.toString());
     }
 
-    private static class CreateUser extends AsyncTask<User, Void, ApiResponse<User>> {
+    private class CreateUser extends AsyncTask<User, Void, ApiResponse<User>> {
 
         @Override
         protected ApiResponse<User> doInBackground(User... users) {
@@ -731,7 +733,7 @@ public abstract class ServerCalls {
         }
     }
 
-    private static class GetUser extends AsyncTask<String, Void, ApiResponse<User>> {
+    private class GetUser extends AsyncTask<String, Void, ApiResponse<User>> {
 
         @Override
         protected ApiResponse<User> doInBackground(String... strings) {
@@ -752,7 +754,7 @@ public abstract class ServerCalls {
         }
     }
 
-    private static class UpdateUser extends AsyncTask<User, Void, ApiResponse<User>> {
+    private class UpdateUser extends AsyncTask<User, Void, ApiResponse<User>> {
 
         @Override
         protected ApiResponse<User> doInBackground(User... users) {
@@ -773,7 +775,7 @@ public abstract class ServerCalls {
         }
     }
 
-    private static class UpdateUserImage extends AsyncTask<File, Void, ApiResponse<SuccessResponse>> {
+    private class UpdateUserImage extends AsyncTask<File, Void, ApiResponse<SuccessResponse>> {
 
         @Override
         protected ApiResponse<SuccessResponse> doInBackground(File... files) {
@@ -793,7 +795,7 @@ public abstract class ServerCalls {
         }
     }
 
-    private static class LeaveGroup extends AsyncTask<Void, Void, ApiResponse<SuccessResponse>> {
+    private class LeaveGroup extends AsyncTask<Void, Void, ApiResponse<SuccessResponse>> {
 
         @Override
         protected ApiResponse<SuccessResponse> doInBackground(Void... voids) {
@@ -809,7 +811,7 @@ public abstract class ServerCalls {
         }
     }
 
-    private static class GetGroup extends AsyncTask<String, Void, ApiResponse<Group>> {
+    private class GetGroup extends AsyncTask<String, Void, ApiResponse<Group>> {
 
         @Override
         protected ApiResponse<Group> doInBackground(String... strings) {
@@ -830,7 +832,7 @@ public abstract class ServerCalls {
         }
     }
 
-    private static class CreateGroup extends AsyncTask<Group, Void, ApiResponse<Group>> {
+    private class CreateGroup extends AsyncTask<Group, Void, ApiResponse<Group>> {
 
         @Override
         protected ApiResponse<Group> doInBackground(Group... groups) {
@@ -851,7 +853,7 @@ public abstract class ServerCalls {
         }
     }
 
-    private static class JoinGroup extends AsyncTask<String, Void, ApiResponse<Group>> {
+    private class JoinGroup extends AsyncTask<String, Void, ApiResponse<Group>> {
 
         @Override
         protected ApiResponse<Group> doInBackground(String... strings) {
@@ -872,7 +874,7 @@ public abstract class ServerCalls {
         }
     }
 
-    private static class GetShoppingList extends AsyncTask<String, Void, ApiResponse<ShoppingList>> {
+    private class GetShoppingList extends AsyncTask<String, Void, ApiResponse<ShoppingList>> {
 
         @Override
         protected ApiResponse<ShoppingList> doInBackground(String... strings) {
@@ -893,7 +895,7 @@ public abstract class ServerCalls {
         }
     }
 
-    private static class CreateShoppingListItem extends
+    private class CreateShoppingListItem extends
         AsyncTask<ListItem, Void, ApiResponse<ListItem>> {
 
         @Override
