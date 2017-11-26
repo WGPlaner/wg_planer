@@ -107,7 +107,7 @@ public class AddItemActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_item_save: {
                 if (checkInputAndReturn()) {
-                    DataProvider.ShoppingList.addItem(newItem, null);
+                    DataProvider.getInstance().addShoppingListItem(newItem);
                     setResult(RESULT_OK, new Intent());
                     finish();
                     return true;

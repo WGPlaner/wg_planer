@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:padding="10dp">
 
     <android.support.design.widget.TextInputLayout
@@ -12,9 +14,17 @@
         android:layout_marginTop="20dp">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/join_group_input_access_key"
+            android:id="@+id/fragment_setup_join_group_input_access_key"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/set_up_key_hint" />
     </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/fragment_setup_join_group_btn_join"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorButtonLight"
+        android:text="@string/set_up_btn_join_group" />
 </LinearLayout>

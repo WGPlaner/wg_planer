@@ -10,16 +10,13 @@ import android.widget.Toast;
 
 import java.util.Stack;
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.NavigationFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.PickDisplayNameFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.StateEMailFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.UploadProfilePictureFragment;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
+import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
-import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
-import io.swagger.client.ApiException;
-import io.swagger.client.model.User;
 
 public class RegistrationActivity extends AppCompatActivity {
     private static String ACTUAL_FRAGMENT_TAG = "ActualFragment";
@@ -40,7 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setVisibility(View.INVISIBLE);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
         toolbar.setNavigationContentDescription(getString(R.string.nav_back));
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -76,25 +73,13 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    DataProvider.Users.createCurrentUser(new ServerCalls.OnAsyncCallListener<User>() {
-                        @Override
-                        public void onFailure(ApiException e) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed),
-                                        Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onSuccess(User result) {
-                            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
+                    if(DataProvider.getInstance().registerUser()){
+                        Intent intent = new Intent(RegistrationActivity.this, SetUpActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(RegistrationActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 

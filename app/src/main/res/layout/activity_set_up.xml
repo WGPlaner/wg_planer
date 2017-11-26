@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity">
+    android:orientation="vertical"
+    tools:context=".section.setup.SetUpActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/set_up_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorBackground"
         android:elevation="0dp"
-        app:navigationIcon="@drawable/ic_arrow_back_black"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     <ScrollView
@@ -26,10 +26,12 @@
             android:orientation="vertical">
 
             <FrameLayout
-                android:id="@+id/container_registration"
+                android:id="@+id/container_set_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
+
     </ScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

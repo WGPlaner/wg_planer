@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
-import io.swagger.client.model.User;
 
 public class StateEMailFragment extends NavigationFragment {
     private EditText inputEmail;
@@ -44,9 +43,7 @@ public class StateEMailFragment extends NavigationFragment {
                 String emailAddress = inputEmail.getText().toString();
 
                 if (isValidEmail(emailAddress)) {
-                    User user = DataProvider.Users.getCurrentUser();
-                    user.setEmail(emailAddress);
-                    DataProvider.Users.setCurrentUser(user);
+                    DataProvider.getInstance().setCurrentUserEmail(emailAddress);
 
                     if (mNavigationEventListener != null) {
                         mNavigationEventListener.onForward();

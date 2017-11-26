@@ -29,20 +29,22 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
-import io.swagger.client.ApiResponse;
-import io.swagger.client.model.SuccessResponse;
 
-public class ProfileSettings extends AppCompatActivity {
+public class ProfileSettingsActivity extends AppCompatActivity {
+
+    public static final int REQ_CODE_PICK_IMAGE = 0;
+    public static final int REQ_CODE_CROP_IMAGE = 1;
 
     private Button btLeaveGroup;
     private EditText inputName;
     private EditText inputEmail;
-
-    public static final int REQ_CODE_PICK_IMAGE = 0;
-    public static final int REQ_CODE_CROP_IMAGE = 1;
     private CircularImageView image;
+    private Menu menu;
+
     private Bitmap bitmap;
     private Uri selectedImage;
+
+    private boolean isInEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +53,33 @@ public class ProfileSettings extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.profile_settings_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_close_white);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettings.this);
-                builder.setMessage(getString(R.string.dialog_discard_message));
-                builder.setPositiveButton(R.string.dialog_discard_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                        setResult(RESULT_CANCELED);
-                        finish();
-                    }
-                });
-                builder.setNegativeButton(R.string.dialog_discard_negative, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                if(isInEditMode) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
+                    builder.setMessage(getString(R.string.dialog_discard_message));
+                    builder.setPositiveButton(R.string.dialog_discard_positive, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton(R.string.dialog_discard_negative, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
             }
         });
 
@@ -94,14 +101,14 @@ public class ProfileSettings extends AppCompatActivity {
         btLeaveGroup = findViewById(R.id.bt_delete_group_profile_settings);
 
         inputName = findViewById(R.id.tfName_profile_settings);
-        String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
+        String displayName = DataProvider.getInstance().getCurrentUserDisplayName();
 
         if (displayName != null) {
             inputName.setText(displayName);
         }
 
         inputEmail = findViewById(R.id.tfEmail_profile_settings);
-        String email = Configuration.singleton.getConfig(Configuration.Type.USER_EMAIL_ADDRESS);
+        String email = DataProvider.getInstance().getCurrentUserEmail();
 
         if (email != null) {
             inputEmail.setText(email);
@@ -110,13 +117,11 @@ public class ProfileSettings extends AppCompatActivity {
         btLeaveGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApiResponse<SuccessResponse> response = DataProvider.CurrentGroup.leaveGroup();
-
-                if(response != null && response.getData() != null){
+                if(DataProvider.getInstance().leaveCurrentGroup()){
                     setResult(RESULT_OK);
                     finish();
                 } else {
-                    Toast.makeText(ProfileSettings.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -222,7 +227,7 @@ public class ProfileSettings extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            bitmap = Configuration.singleton.getProfilePicture(ProfileSettings.this);
+            bitmap = Configuration.singleton.getProfilePicture(ProfileSettingsActivity.this);
             return null;
         }
 
@@ -249,20 +254,43 @@ public class ProfileSettings extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_full_screen_activity, menu);
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.menu_edit_full_screen_actvity, menu);
+        MenuItem save = menu.findItem(R.id.edit_fullscreen_save);
+        MenuItem edit = menu.findItem(R.id.edit_fullscreen_edit);
+
+        if(isInEditMode){
+            save.setVisible(true);
+            edit.setVisible(false);
+        } else {
+            edit.setVisible(true);
+            save.setVisible(false);
+        }
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_item_save: {
+            case R.id.edit_fullscreen_save: {
                 if (checkInputAndReturn()) {
+                    DataProvider.getInstance().setCurrentUserDisplayName(inputName.getText().toString());
+                    DataProvider.getInstance().setCurrentUserEmail(inputEmail.getText().toString());
                     Intent data = new Intent();
                     setResult(RESULT_OK, data);
                     finish();
                     return true;
                 }
+            }
+            case R.id.edit_fullscreen_edit: {
+                isInEditMode = true;
+                item.setVisible(false);
+                MenuItem save = menu.findItem(R.id.edit_fullscreen_save);
+                save.setVisible(true);
+                this.inputName.setEnabled(true);
+                this.inputEmail.setEnabled(true);
+                return true;
             }
         }
 
@@ -278,11 +306,6 @@ public class ProfileSettings extends AppCompatActivity {
         }
 
         String email = inputEmail.getText().toString();
-
-        Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, email);
-        Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
-
-        //TODO: Send updateUser
 
         SaveBitmap task = new SaveBitmap();
         task.execute(bitmap);

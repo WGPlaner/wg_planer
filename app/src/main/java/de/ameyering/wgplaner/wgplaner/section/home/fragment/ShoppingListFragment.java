@@ -25,7 +25,7 @@ public class ShoppingListFragment extends SectionFragment {
 
     private RecyclerView categories;
     private ShoppingListCategoryAdapter adapter;
-    private DataProvider.OnUpdatedDataListener shoppingListListener = null;
+    private DataProvider.OnDataChangeListener shoppingListListener = null;
 
     private ArrayList<ListItem> items = new ArrayList<>();
 
@@ -45,30 +45,7 @@ public class ShoppingListFragment extends SectionFragment {
         }
 
         if (floatingActionButton != null) {
-            if (DataProvider.ShoppingList.getSelectedShoppingListCount() == 0) {
-                floatingActionButton.setVisibility(View.VISIBLE);
-                floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                        R.drawable.ic_add_white));
-                floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getActivity(), AddItemActivity.class);
-                        startActivityForResult(intent, REQ_CODE_ADD_ITEM);
-                    }
-                });
-
-            } else {
-                floatingActionButton.setVisibility(View.VISIBLE);
-                floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                        R.drawable.ic_check_white));
-                floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        DataProvider.ShoppingList.buySelection();
-                        onNewData(DataProvider.ShoppingList.getShoppingList());
-                    }
-                });
-            }
+            changeFloatingActionButton();
         }
 
         if (categories == null) {
@@ -79,7 +56,7 @@ public class ShoppingListFragment extends SectionFragment {
 
         if (adapter == null) {
             items.clear();
-            items.addAll(DataProvider.ShoppingList.getShoppingList());
+            items.addAll(DataProvider.getInstance().getCurrentShoppingList());
             ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
                     CategoryHolder.Category.REQUESTED_FOR, items);
             adapter = new ShoppingListCategoryAdapter(holders, getContext());
@@ -88,44 +65,27 @@ public class ShoppingListFragment extends SectionFragment {
         }
 
         if (shoppingListListener == null) {
-            shoppingListListener = new DataProvider.OnUpdatedDataListener() {
+
+            shoppingListListener = new DataProvider.OnDataChangeListener() {
+
                 @Override
-                public void onUpdatedData() {
+                public void onDataChanged(final DataProvider.DataType type) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            onNewData(DataProvider.ShoppingList.getShoppingList());
-
-                            if (DataProvider.ShoppingList.getSelectedShoppingListCount() == 0) {
-                                floatingActionButton.setVisibility(View.VISIBLE);
-                                floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                                        R.drawable.ic_add_white));
-                                floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(getActivity(), AddItemActivity.class);
-                                        startActivityForResult(intent, REQ_CODE_ADD_ITEM);
-                                    }
-                                });
-
-                            } else {
-                                floatingActionButton.setVisibility(View.VISIBLE);
-                                floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                                        R.drawable.ic_check_white));
-                                floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        DataProvider.ShoppingList.buySelection();
-                                        onNewData(DataProvider.ShoppingList.getShoppingList());
-                                    }
-                                });
+                            if(type == DataProvider.DataType.SELECTED_ITEMS){
+                                if (floatingActionButton != null) {
+                                    changeFloatingActionButton();
+                                }
+                            } else if(type == DataProvider.DataType.SHOPPING_LIST){
+                                onNewData(DataProvider.getInstance().getCurrentShoppingList());
                             }
                         }
                     });
                 }
             };
 
-            DataProvider.ShoppingList.addOnUpdatedDataListener(shoppingListListener);
+            DataProvider.getInstance().addOnDataChangeListener(shoppingListListener);
         }
 
         return view;
@@ -148,10 +108,36 @@ public class ShoppingListFragment extends SectionFragment {
         switch (requestCode) {
             case REQ_CODE_ADD_ITEM: {
                 if (resultCode == Activity.RESULT_OK) {
-                    onNewData(DataProvider.ShoppingList.getShoppingList());
+                    onNewData(DataProvider.getInstance().getCurrentShoppingList());
                 }
             }
             break;
+        }
+    }
+
+    private void changeFloatingActionButton(){
+        if (!DataProvider.getInstance().isSomethingSelected()) {
+            floatingActionButton.setVisibility(View.VISIBLE);
+            floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                R.drawable.ic_add_white));
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), AddItemActivity.class);
+                    startActivityForResult(intent, REQ_CODE_ADD_ITEM);
+                }
+            });
+
+        } else {
+            floatingActionButton.setVisibility(View.VISIBLE);
+            floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                R.drawable.ic_check_white));
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DataProvider.getInstance().buySelection();
+                }
+            });
         }
     }
 }

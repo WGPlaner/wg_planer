@@ -17,6 +17,11 @@
     <string name="nav_rosters">Rosters</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_pinboard">Pinboard</string>
+    <string name="nav_section_sections">Sections</string>
+    <string name="nav_section_settings">Settings</string>
+    <string name="nav_general_settings">General</string>
+    <string name="nav_profile_settings">Profile</string>
+    <string name="nav_group_settings">Group</string>
 
     <!-- Registration Strings -->
     <string name="nav_back">Navigate back</string>
@@ -80,4 +85,5 @@
     <string name="profile_settings_username_hint">Name</string>
     <string name="profile_settings_btn_save_changes">Save Changes</string>
     <string name="delete_display_name_error">You can not delete your Name</string>
+    <string name="edit_profile_button">EDIT</string>
 </resources>

@@ -1,7 +1,6 @@
 package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,27 +14,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.List;
 import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
-import de.ameyering.wgplaner.wgplaner.section.home.JoinGroupActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
+import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
 import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
-import io.swagger.client.ApiException;
-import io.swagger.client.model.User;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-
-    private boolean loadJoinGroup = false;
-    private String joinGroupKey = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,26 +56,18 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             }
         });
-
-        Intent appLinkIntent = getIntent();
-        Uri appLinkData = appLinkIntent.getData();
-
-        if (appLinkData != null) {
-            List<String> path = appLinkData.getPathSegments();
-
-            if (path.size() != 0 && path.get(0).equals("groups") && path.get(1).equals("join")) {
-                joinGroupKey = path.get(3);
-                loadJoinGroup = true;
-            }
-        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        currentUser = mAuth.getCurrentUser();
-        onUser(currentUser);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                currentUser = mAuth.getCurrentUser();
+                onUser(currentUser);
+            }
+        }).start();
     }
 
     private void onUser(FirebaseUser user) {
@@ -89,49 +75,41 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         if (user != null) {
             String uid = user.getUid();
-            DataProvider.initialize(uid, ServerCalls.getInstance());
+            DataProvider.initialize(ServerCalls.getInstance());
             initializeUser(uid);
         }
     }
 
     private void initializeUser(String uid) {
-        if (uid != null) {
-            DataProvider.Users.initializeCurrentUser(new ServerCalls.OnAsyncCallListener<User>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    switch (e.getCode()) {
-                        case 401:
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(SplashScreenActivity.this, getString(R.string.user_unauthorized),
-                                        Toast.LENGTH_LONG).show();
-                                }
-                            });
-                            break;
+        DataProviderInterface.SetUpState state = DataProvider.getInstance().initialize(uid);
 
-                        case 404:
-                            loadRegistration();
-                            break;
-
-                        default:
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(SplashScreenActivity.this, getString(R.string.server_connection_failed),
-                                        Toast.LENGTH_LONG).show();
-                                }
-                            });
-                            break;
+        switch (state) {
+            case GET_USER_FAILED: {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(SplashScreenActivity.this, getString(R.string.user_unauthorized),
+                            Toast.LENGTH_LONG).show();
                     }
-                }
-
-                @Override
-                public void onSuccess(User result) {
-                    getData();
-                    loadNext();
-                }
-            });
+                });
+            }
+            break;
+            case UNREGISTERED: {
+                loadRegistration();
+            }
+            break;
+            case REGISTERED: {
+                loadSetUp();
+            }
+            break;
+            case SETUP_COMPLETED: {
+                loadHome();
+            }
+            break;
+            case GET_GROUP_FAILED: {
+                //TODO: Implement get group failed
+                loadHome();
+            }
         }
     }
 
@@ -141,39 +119,35 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void loadHome() {
-        Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void loadRegistration() {
-        Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
-        startActivity(intent);
-        finish();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
-    private void loadNext() {
-        if (loadJoinGroup) {
-            onLoadJoinGroup();
-
-        } else {
-            loadHome();
-        }
-    }
-
-    private void onLoadJoinGroup() {
-        Intent intent = new Intent(this, JoinGroupActivity.class);
-        intent.putExtra("ACCESS_KEY", joinGroupKey);
-        intent.setAction(Intent.ACTION_QUICK_VIEW);
-        startActivity(intent);
-        finish();
-    }
-
-    private void getData() {
-        DataProvider.CurrentGroup.updateGroup();
-
-        if (DataProvider.CurrentGroup.getGroup().getUid() != null) {
-            DataProvider.ShoppingList.updateShoppingList();
-        }
+    private void loadSetUp(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashScreenActivity.this, SetUpActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }

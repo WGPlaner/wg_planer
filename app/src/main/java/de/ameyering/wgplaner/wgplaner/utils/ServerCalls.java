@@ -8,6 +8,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import io.swagger.client.*;
@@ -53,7 +54,7 @@ public class ServerCalls implements ServerCallsInterface{
     private boolean setAuth(String method) {
         if (method != null && !method.isEmpty()) {
             ApiKeyAuth auth = (ApiKeyAuth) client.getAuthentication(method);
-            auth.setApiKey(DataProvider.Users.getCurrentUsersUid());
+            auth.setApiKey(DataProvider.getInstance().getCurrentUserUid());
             return true;
         }
 
@@ -85,8 +86,7 @@ public class ServerCalls implements ServerCallsInterface{
                     logSuccess(CREATE_USER_NAME, ASYNCHRONOUS_FLAG);
 
                     if (result != null) {
-                        DataProvider.Users.setCurrentUser(result);
-
+                        
                         if (listener != null) {
                             listener.onSuccess(result);
                         }
@@ -265,7 +265,7 @@ public class ServerCalls implements ServerCallsInterface{
 
             try {
                 UserApi api = new UserApi();
-                api.updateUserImageAsync(DataProvider.Users.getCurrentUsersUid(), image,
+                api.updateUserImageAsync(DataProvider.getInstance().getCurrentUserUid(), image,
                 new ApiCallback<SuccessResponse>() {
                     @Override
                     public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -372,7 +372,7 @@ public class ServerCalls implements ServerCallsInterface{
         }
     }
 
-    public void getGroupAsync(String groupUid,
+    public void getGroupAsync(UUID groupUid,
         @Nullable final OnAsyncCallListener<Group> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
@@ -417,7 +417,7 @@ public class ServerCalls implements ServerCallsInterface{
         }
     }
 
-    public ApiResponse<Group> getGroup(String groupUid) {
+    public ApiResponse<Group> getGroup(UUID groupUid) {
         if (groupUid != null) {
             GetGroup task = new GetGroup();
 
@@ -484,6 +484,7 @@ public class ServerCalls implements ServerCallsInterface{
 
     public ApiResponse<Group> createGroup(Group group) {
         if (group != null) {
+            setAuth(USER_ID_AUTH_LABEL);
             CreateGroup task = new CreateGroup();
 
             try {
@@ -573,7 +574,7 @@ public class ServerCalls implements ServerCallsInterface{
 
         try {
             ShoppinglistApi api = new ShoppinglistApi();
-            api.getListItemsAsync(DataProvider.Users.getCurrentUser().getGroupUid().toString(),
+            api.getListItemsAsync(DataProvider.getInstance().getCurrentGroupUID(),
             new ApiCallback<ShoppingList>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -615,11 +616,11 @@ public class ServerCalls implements ServerCallsInterface{
     }
 
     public ApiResponse<ShoppingList> getShoppingList() {
-        if (DataProvider.Users.getCurrentUser().getGroupUid() != null) {
+        if (DataProvider.getInstance().getCurrentGroupUID() != null) {
             GetShoppingList task = new GetShoppingList();
 
             try {
-                return task.execute(DataProvider.Users.getCurrentUser().getGroupUid().toString()).get();
+                return task.execute(DataProvider.getInstance().getCurrentGroupUID()).get();
 
             } catch (ExecutionException e) {
                 logError(GET_SHOPPING_LIST_NAME, WAIT_FOR_RESULT_FLAG);
@@ -640,7 +641,7 @@ public class ServerCalls implements ServerCallsInterface{
 
         try {
             ShoppinglistApi api = new ShoppinglistApi();
-            api.createListItemAsync(DataProvider.Users.getCurrentUser().getGroupUid().toString(), item,
+            api.createListItemAsync(DataProvider.getInstance().getCurrentGroupUID(), item,
             new ApiCallback<ListItem>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -698,6 +699,62 @@ public class ServerCalls implements ServerCallsInterface{
         }
 
         return null;
+    }
+
+    @Override
+    public void updateShoppingListItemAsync(ListItem item, @Nullable final OnAsyncCallListener<ListItem> listener) {
+        if(item != null){
+            setAuth(FIREBASE_ID_AUTH_LABEL);
+
+            try {
+                ShoppinglistApi api = new ShoppinglistApi();
+                api.createListItemAsync(DataProvider.getInstance().getCurrentGroupUID(), item, new ApiCallback<ListItem>() {
+                    @Override
+                    public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                        if(listener != null){
+                            listener.onFailure(e);
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(ListItem result, int statusCode, Map<String, List<String>> responseHeaders) {
+                        if(listener != null){
+                            listener.onSuccess(result);
+                        }
+                    }
+
+                    @Override
+                    public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+
+                    }
+
+                    @Override
+                    public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
+
+                    }
+                });
+            } catch (ApiException e){
+                if(listener != null){
+                    listener.onFailure(e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public ApiResponse<ListItem> updateShoppingListItem(ListItem item) {
+       if(item != null){
+           UpdateShoppingListItem task = new UpdateShoppingListItem();
+
+           try{
+               return task.execute(item).get();
+           } catch (ExecutionException e){
+               return null;
+           } catch (InterruptedException e){
+               return null;
+           }
+       }
+       return null;
     }
 
     private void logError(String name, String method) {
@@ -784,7 +841,7 @@ public class ServerCalls implements ServerCallsInterface{
                 UserApi api = new UserApi();
 
                 try {
-                    return api.updateUserImageWithHttpInfo(DataProvider.Users.getCurrentUsersUid(), files[0]);
+                    return api.updateUserImageWithHttpInfo(DataProvider.getInstance().getCurrentUserUid(), files[0]);
 
                 } catch (ApiException e) {
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
@@ -811,16 +868,16 @@ public class ServerCalls implements ServerCallsInterface{
         }
     }
 
-    private class GetGroup extends AsyncTask<String, Void, ApiResponse<Group>> {
+    private class GetGroup extends AsyncTask<UUID, Void, ApiResponse<Group>> {
 
         @Override
-        protected ApiResponse<Group> doInBackground(String... strings) {
-            if (strings != null && strings.length > 0) {
+        protected ApiResponse<Group> doInBackground(UUID... uuids) {
+            if (uuids != null && uuids.length > 0) {
                 setAuth(USER_ID_AUTH_LABEL);
                 GroupApi api = new GroupApi();
 
                 try {
-                    return api.getGroupWithHttpInfo(strings[0]);
+                    return api.getGroupWithHttpInfo(uuids[0]);
 
                 } catch (ApiException e) {
                     logError(GET_GROUP_NAME, WAIT_FOR_RESULT_FLAG);
@@ -874,16 +931,16 @@ public class ServerCalls implements ServerCallsInterface{
         }
     }
 
-    private class GetShoppingList extends AsyncTask<String, Void, ApiResponse<ShoppingList>> {
+    private class GetShoppingList extends AsyncTask<UUID, Void, ApiResponse<ShoppingList>> {
 
         @Override
-        protected ApiResponse<ShoppingList> doInBackground(String... strings) {
-            if (strings != null && strings.length > 0) {
+        protected ApiResponse<ShoppingList> doInBackground(UUID... uuids) {
+            if (uuids != null && uuids.length > 0) {
                 setAuth(FIREBASE_ID_AUTH_LABEL);
                 ShoppinglistApi api = new ShoppinglistApi();
 
                 try {
-                    return api.getListItemsWithHttpInfo(strings[0]);
+                    return api.getListItemsWithHttpInfo(uuids[0]);
 
                 } catch (ApiException e) {
                     logError(GET_SHOPPING_LIST_NAME, WAIT_FOR_RESULT_FLAG);
@@ -905,7 +962,7 @@ public class ServerCalls implements ServerCallsInterface{
                 ShoppinglistApi api = new ShoppinglistApi();
 
                 try {
-                    return api.createListItemWithHttpInfo(DataProvider.Users.getCurrentUser().getGroupUid().toString(),
+                    return api.createListItemWithHttpInfo(DataProvider.getInstance().getCurrentGroupUID(),
                             listItems[0]);
 
                 } catch (ApiException e) {
@@ -914,6 +971,24 @@ public class ServerCalls implements ServerCallsInterface{
                 }
             }
 
+            return null;
+        }
+    }
+
+    private class UpdateShoppingListItem extends AsyncTask<ListItem, Void, ApiResponse<ListItem>>{
+
+        @Override
+        protected ApiResponse<ListItem> doInBackground(ListItem... listItems) {
+            if(listItems != null && listItems.length > 0){
+                setAuth(FIREBASE_ID_AUTH_LABEL);
+                ShoppinglistApi api = new ShoppinglistApi();
+
+                try{
+                    return api.updateListItemWithHttpInfo(DataProvider.getInstance().getCurrentGroupUID(), listItems[0]);
+                } catch (ApiException e){
+                    return new ApiResponse<ListItem>(e.getCode(), e.getResponseHeaders(), null);
+                }
+            }
             return null;
         }
     }

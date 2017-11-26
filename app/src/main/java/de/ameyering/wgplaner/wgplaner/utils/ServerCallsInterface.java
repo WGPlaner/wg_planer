@@ -4,6 +4,7 @@ package de.ameyering.wgplaner.wgplaner.utils;
 import android.support.annotation.Nullable;
 
 import java.io.File;
+import java.util.UUID;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
@@ -41,9 +42,9 @@ import io.swagger.client.model.User;
 
      ApiResponse<SuccessResponse> leaveGroup();
 
-     void getGroupAsync(String groupUid, @Nullable final OnAsyncCallListener<Group> listener);
+     void getGroupAsync(UUID groupUid, @Nullable final OnAsyncCallListener<Group> listener);
 
-     ApiResponse<Group> getGroup(String groupUid);
+     ApiResponse<Group> getGroup(UUID groupUid);
 
      void createGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
 
@@ -60,4 +61,8 @@ import io.swagger.client.model.User;
      void createShoppingListItemAsync(ListItem item, @Nullable final OnAsyncCallListener<ListItem> listener);
 
      ApiResponse<ListItem> createShoppingListItem(ListItem item);
+
+     void updateShoppingListItemAsync(ListItem item, @Nullable final OnAsyncCallListener<ListItem> listener);
+
+     ApiResponse<ListItem> updateShoppingListItem(ListItem item);
 }

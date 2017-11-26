@@ -1,10 +1,11 @@
 package de.ameyering.wgplaner.wgplaner.section.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,27 +13,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
-import de.ameyering.wgplaner.wgplaner.section.home.fragment.SetUpFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
-import de.ameyering.wgplaner.wgplaner.section.settings.ProfileSettings;
-import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.section.settings.ProfileSettingsActivity;
+import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
+    private static final int REQ_CODE_PROFILE_SETTINGS = 0;
 
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
     private ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
-    private SetUpFragment setUpFragment = new SetUpFragment();
 
     private NavigationView navigationView;
-
-    private boolean isInSetUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +41,6 @@ public class HomeActivity extends AppCompatActivity
 
         fab = findViewById(R.id.fab);
 
-        FrameLayout container = findViewById(R.id.container);
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
             this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -54,45 +50,20 @@ public class HomeActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (Configuration.singleton.getConfig(Configuration.Type.USER_GROUP_ID) == null) {
-            isInSetUp = true;
-            setUpFragment.setOnReadyListener(new SetUpFragment.OnReadyListener() {
-                @Override
-                public void onReady() {
-                    isInSetUp = false;
-                    navigationView.setCheckedItem(R.id.nav_shopping_list);
-
-                    shoppingListFragment.setToolbar(toolbar);
-                    shoppingListFragment.setTitle(getString(R.string.section_title_shopping_list));
-                    shoppingListFragment.setFloatingActionButton(fab);
-
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-                    transaction.replace(R.id.container, shoppingListFragment);
-                    transaction.commit();
+        DataProvider.getInstance().addOnDataChangeListener(new DataProvider.OnDataChangeListener() {
+            @Override
+            public void onDataChanged(DataProvider.DataType type) {
+                if(type == DataProvider.DataType.CURRENT_GROUP){
+                    if(DataProvider.getInstance().getCurrentGroupUID() == null){
+                        Intent intent = new Intent(HomeActivity.this, SetUpActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
-            });
-            setUpFragment.setToolbar(toolbar);
-            setUpFragment.setFloatingActionButton(fab);
-            setUpFragment.setTitle(getString(R.string.section_title_set_up_group));
+            }
+        });
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-            transaction.replace(R.id.container, setUpFragment);
-            transaction.commit();
-
-        } else {
-            navigationView.setCheckedItem(R.id.nav_shopping_list);
-
-            shoppingListFragment.setToolbar(toolbar);
-            shoppingListFragment.setTitle(getString(R.string.section_title_shopping_list));
-            shoppingListFragment.setFloatingActionButton(fab);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-            transaction.replace(R.id.container, shoppingListFragment);
-            transaction.commit();
-        }
+        loadShoppingList();
     }
 
     @Override
@@ -134,40 +105,55 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
 
-        if (!isInSetUp) {
-            int id = item.getItemId();
+        int id = item.getItemId();
 
-            if (id == R.id.nav_dashboard) {
+        if (id == R.id.nav_dashboard) {
 
-            } else if (id == R.id.nav_shopping_list) {
+        } else if (id == R.id.nav_shopping_list) {
 
-            } else if (id == R.id.nav_accounting) {
+        } else if (id == R.id.nav_accounting) {
 
-            } else if (id == R.id.nav_rosters) {
+        } else if (id == R.id.nav_rosters) {
 
-            } else if (id == R.id.nav_calendar) {
+        } else if (id == R.id.nav_calendar) {
 
-            } else if (id == R.id.nav_pinboard) {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        } else if (id == R.id.nav_pinboard) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
-                PinboardFragment pinboard = new PinboardFragment();
-                pinboard.setToolbar(toolbar);
-                pinboard.setTitle(getString(R.string.section_title_pinboard));
-                pinboard.setFloatingActionButton(fab);
+            PinboardFragment pinboard = new PinboardFragment();
+            pinboard.setToolbar(toolbar);
+            pinboard.setTitle(getString(R.string.section_title_pinboard));
+            pinboard.setFloatingActionButton(fab);
 
-                transaction.replace(R.id.container, pinboard);
-                transaction.commit();
+            transaction.replace(R.id.container, pinboard);
+            transaction.commit();
 
-            } else {
-                return false;
-            }
+        } else if (id == R.id.nav_general_settings) {
 
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-            return true;
+        } else if (id == R.id.nav_profile_settings) {
+            startActivityForResult(new Intent(this, ProfileSettingsActivity.class), REQ_CODE_PROFILE_SETTINGS);
+        } else if (id == R.id.nav_group_settings) {
+
+        } else {
+            return false;
         }
 
-        return false;
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void loadShoppingList() {
+        navigationView.setCheckedItem(R.id.nav_shopping_list);
+
+        shoppingListFragment.setToolbar(toolbar);
+        shoppingListFragment.setTitle(getString(R.string.section_title_shopping_list));
+        shoppingListFragment.setFloatingActionButton(fab);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+        transaction.replace(R.id.container, shoppingListFragment);
+        transaction.commit();
     }
 }
