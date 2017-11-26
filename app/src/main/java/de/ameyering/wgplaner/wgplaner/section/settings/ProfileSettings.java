@@ -95,7 +95,6 @@ public class ProfileSettings extends AppCompatActivity {
 
         inputName = findViewById(R.id.tfName_profile_settings);
         String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
-
         if (displayName != null) {
             inputName.setText(displayName);
         }

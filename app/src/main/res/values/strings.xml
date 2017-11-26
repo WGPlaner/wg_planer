@@ -84,4 +84,5 @@
     <string name="euro">Euro</string>
     <string name="dollar">Dollar</string>
     <string name="members">Groupmembers</string>
+    <string name="addUser">Add User</string>
 </resources>

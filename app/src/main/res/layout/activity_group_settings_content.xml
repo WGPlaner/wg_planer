@@ -44,62 +44,53 @@
 
             </android.support.design.widget.TextInputLayout>
 
-
             <TextView
                 android:id="@+id/tvCurrency_group_settings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="0.7"
-                android:text="@string/currency"
-                android:textSize="18dp" />
-
-            <RadioGroup
-                android:id="@+id/rbgCurrency_group_settings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="0.7">
-
-                <RadioButton
-                    android:id="@+id/rbEuro_group_settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:text="@string/euro" />
-
-                <RadioButton
-                    android:id="@+id/rbDollar_group_settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:text="@string/dollar" />
-
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/tvMembers_group_settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_weight="0.7"
-                android:text="@string/members"
+                android:text="@string/set_up_group_currency_hint"
                 android:textSize="18dp" />
 
-            <ListView
-                android:id="@+id/ltMembers_group_settings"
+            <Spinner
+                android:id="@+id/spCurrency_group_settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="0.7" />
+                android:layout_marginRight="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="9dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvMembers_group_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/members"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <Button
+                    android:id="@+id/bt_add_user_group_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/cardview_light_background"
+                    android:drawableLeft="@drawable/ic_add_black"
+                    android:drawableStart="@drawable/ic_add_black"
+                    android:text="@string/addUser" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvMembers_group_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
         </LinearLayout>
 
