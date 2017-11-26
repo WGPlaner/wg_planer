@@ -26,22 +26,35 @@
 ## 1. Introduction
 
 ### 1.1 Purpose
-tbd
+This document provides an overview of the system architecture. It contains a quick overview of the realization of the MVC-pattern as well as class diagrams which are relevant for the implementaion.
 
 ### 1.2 Scope
-tbd
+This document describes the architecture of the WGPlaner project.
 
 ### 1.3 Definitions, Acronyms and Abbreviations
-n/a
+
+| Abbrevation | Description                            |
+| ----------- | -------------------------------------- |
+| SRS         | Software Requirements Specification    |
+| UC          | Use Case                               |
+| MVC         | Model View Controller                  |
+| n/a         | not applicable                         |
 
 ### 1.4 References
-n/a
+
+| Title                                         | Date       | Publishing organization   |
+| --------------------------------------------- |:----------:| ------------------------- |
+| [SRS](../SRS/SRS.md)                          | 2017-11-26 | WGPlaner Team             |
 
 ### 1.5 Overview
-n/a
+This document contains the Architectural Representation, Goals and Constraints as well 
+as the Logical, Deployment, Implementation and Data Views.
 
 ## 2. Architectural Representation
-tbd
+For our project we have a server and client application. Both are connected to firebase for authorization and push notifications.
+Following diagram shows the connection.
+
+![Server Client Diagram](./ServerClientDiagram.png)
 
 ## 3. Architectural Goals and Constraints
 tbd
