@@ -26,7 +26,8 @@
 ## 1. Introduction
 
 ### 1.1 Purpose
-This document provides an overview of the system architecture. It contains a quick overview of the realization of the MVC-pattern as well as class diagrams which are relevant for the implementaion.
+This document provides a comprehensive architectural overview of the system, using a number of different architectural views to depict different aspects of the system. It is intended to capture and convey the significant architectural decisions which have been made on the system.
+
 
 ### 1.2 Scope
 This document describes the architecture of the WGPlaner project.
@@ -42,9 +43,13 @@ This document describes the architecture of the WGPlaner project.
 
 ### 1.4 References
 
-| Title                                         | Date       | Publishing organization   |
-| --------------------------------------------- |:----------:| ------------------------- |
-| [SRS](../SRS/SRS.md)                          | 2017-11-26 | WGPlaner Team             |
+| Title                                                | Date       | Publishing organization   |
+| ---------------------------------------------------- |:----------:| ------------------------- |
+| [WGPlaner Blog](http://wgplanerblog.wordpress.com/)  | 2017-11-26 | WGPlaner Team             |
+| [SRS](../SRS/SRS.md)                                 | 2017-11-26 | WGPlaner Team             |
+| [UC Pinboard](../UC/UC_Pinboard.md)                  | 2017-11-26 | WGPlaner Team             |
+| [UC Registration](../UC/UC_Registration.md)          | 2017-11-26 | WGPlaner Team             |
+| [UC Shopping List](../UC/UC_Shopping_List.md)        | 2017-11-26 | WGPlaner Team             |
 
 ### 1.5 Overview
 This document contains the Architectural Representation, Goals and Constraints as well 
@@ -56,28 +61,32 @@ Following diagram shows the connection.
 
 ![Server Client Diagram](./ServerClientDiagram.png)
 
-![Overall Class Diagram](../UC/ClassDiagrams/class_diagram_android_new.png)
-
 ## 3. Architectural Goals and Constraints
-tbd
+The main goal of the MVC architecture is to separate the view from the logic. Therefore, the view does not implement the logic, but gets all the precompiled information from the controller.
+Models contain the data that is displayed in the views.
 
 ## 4. Use-Case View
  - [Overall-Use-Case-Diagram](../SRS/use_case_diagram.png)
 
+### 4.1 Use-Case Realizations
+
 ## 5. Logical View
-tbd
 
 ### 5.1 Overview
-tbd
+Models:
+![Models](../UC/ClassDiagrams/class_diagram_models.png)
+
+Class Diagram
+![Overall Class Diagram](../UC/ClassDiagrams/class_diagram_android_new.png)
 
 ### 5.2 Architecturally Significant Design Packages
-tbd
+n/a
 
 ## 6. Process View
 n/a
 
 ## 7. Deployment View
-tbd
+![Deployment View](./DeploymentView.png)
 
 ## 8. Implementation View
 
