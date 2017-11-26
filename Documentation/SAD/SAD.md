@@ -56,13 +56,13 @@ Following diagram shows the connection.
 
 ![Server Client Diagram](./ServerClientDiagram.png)
 
+![Overall Class Diagram](../UC/ClassDiagrams/class_diagram_android_new.png)
+
 ## 3. Architectural Goals and Constraints
 tbd
 
 ## 4. Use-Case View
-
-### 4.1 Use-Case Realizations
-n/a
+ - [Overall-Use-Case-Diagram](../SRS/use_case_diagram.png)
 
 ## 5. Logical View
 tbd
