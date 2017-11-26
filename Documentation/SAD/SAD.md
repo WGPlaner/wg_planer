@@ -97,7 +97,7 @@ n/a
 n/a
 
 ## 9. Data View
-tbd
+![Database Model](./DatabaseModels.png)
 
 ## 10. Size and Performance
 n/a
