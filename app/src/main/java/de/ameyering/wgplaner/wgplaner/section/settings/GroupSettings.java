@@ -7,11 +7,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,13 +31,17 @@ import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
+import de.ameyering.wgplaner.wgplaner.section.home.adapter.AddItemRequestedForAdapter;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.LocaleSpinnerAdapter;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import io.swagger.client.model.User;
 
 public class GroupSettings extends AppCompatActivity {
 
 
     private ArrayList<Currency> currencies = new ArrayList<>();
+    private ArrayList<User> liMembers;
     private Locale[] locales = Locale.getAvailableLocales();
     private LocaleSpinnerAdapter adapter;
     private Currency currency;
@@ -49,6 +53,8 @@ public class GroupSettings extends AppCompatActivity {
     private Uri selectedImage;
 
     private EditText inputName;
+    public RecyclerView members;
+    public AddItemRequestedForAdapter adapterMembers;
 
 
     @Override
@@ -99,12 +105,28 @@ public class GroupSettings extends AppCompatActivity {
         loadTask.execute();
 
         inputName = findViewById(R.id.tfName_profile_settings);
-        String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
+        String displayName = DataProvider.CurrentGroup.getGroup().getDisplayName();
         if (displayName != null) {
             inputName.setText(displayName);
         }
 
-        Spinner currencySpinner = findViewById(R.id.set_up_spinner_currency);
+        members = findViewById(R.id.rvMembers_group_settings);
+        adapterMembers = new AddItemRequestedForAdapter();
+        members.setLayoutManager(new LinearLayoutManager(this));
+        members.setHasFixedSize(false);
+        members.setAdapter(adapterMembers);
+
+        for (int i = 0; i < DataProvider.Users.getUserCount(); i++)
+        {
+            liMembers.add(DataProvider.Users.getUserByUid(DataProvider.CurrentGroup.getGroup().getMembers().get(i)));
+        }
+
+        if (liMembers != null){
+                adapterMembers.updateSelection(liMembers);
+        }
+
+
+        Spinner currencySpinner = findViewById(R.id.spCurrency_group_settings);
         adapter = new LocaleSpinnerAdapter(this, android.R.layout.simple_spinner_item, currencies);
         currencySpinner.setAdapter(adapter);
         currencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -118,7 +140,6 @@ public class GroupSettings extends AppCompatActivity {
 
             }
         });
-
         Currency currency = Currency.getInstance(Locale.getDefault());
         int pos = currencies.indexOf(currency);
 
@@ -126,7 +147,14 @@ public class GroupSettings extends AppCompatActivity {
             currencySpinner.setSelection(pos);
         }
 
+        if(!(DataProvider.Users.getCurrentUser() == DataProvider.CurrentGroup.getGroup().getAdmins()))
+        {
+            inputName.setEnabled(false);
+            image.setEnabled(false);
+            currencySpinner.setEnabled(false);
+            members.setEnabled(false);
 
+        }
     }
 
     private ArrayList<Currency> transformLocale(Locale[] locales) {
@@ -144,7 +172,6 @@ public class GroupSettings extends AppCompatActivity {
                 continue;
             }
         }
-
         return currencies;
     }
 
@@ -152,6 +179,7 @@ public class GroupSettings extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            //todo get wgProfilePicture
             bitmap = Configuration.singleton.getProfilePicture(GroupSettings.this);
             return null;
         }
@@ -252,7 +280,9 @@ public class GroupSettings extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_full_screen_activity, menu);
+        if(!(DataProvider.Users.getCurrentUser() == DataProvider.CurrentGroup.getGroup().getAdmins())) {
+            getMenuInflater().inflate(R.menu.menu_add_full_screen_activity, menu);
+        }
         return true;
     }
 
@@ -276,11 +306,18 @@ public class GroupSettings extends AppCompatActivity {
         String displayName = inputName.getText().toString();
 
         if (displayName == null || displayName.isEmpty()) {
-            Toast.makeText(this, getString(R.string.delete_display_name_error), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.delete_group_name_error), Toast.LENGTH_LONG).show();
             return false;
         }
+        DataProvider.CurrentGroup.getGroup().setDisplayName(displayName);
 
-        Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
+        if (currency == null || currencies.isEmpty())
+        {
+            Toast.makeText(this, getString(R.string.delete_currency_error), Toast.LENGTH_LONG).show();
+            return false;
+        }
+        DataProvider.CurrentGroup.getGroup().setCurrency(currency.getCurrencyCode());
+
 
         //TODO: Send updateUser
 

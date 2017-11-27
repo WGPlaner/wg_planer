@@ -85,4 +85,9 @@
     <string name="dollar">Dollar</string>
     <string name="members">Groupmembers</string>
     <string name="addUser">Add User</string>
+
+    <!-- Group Settings strings -->
+    <string name="delete_group_name_error"> You can not delete the Name</string>
+    <string name="delete_currency_error"> You can not delete the Currency</string>
+
 </resources>

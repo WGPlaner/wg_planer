@@ -76,16 +76,6 @@
                     android:text="@string/members"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                <Button
-                    android:id="@+id/bt_add_user_group_settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:backgroundTint="@color/cardview_light_background"
-                    android:drawableLeft="@drawable/ic_add_black"
-                    android:drawableStart="@drawable/ic_add_black"
-                    android:text="@string/addUser" />
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvMembers_group_settings"
                     android:layout_width="match_parent"
