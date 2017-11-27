@@ -1,8 +1,10 @@
 package de.ameyering.wgplaner.wgplaner.section.registration.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
+import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
@@ -45,10 +49,7 @@ public class StateEMailFragment extends NavigationFragment {
                 if (isValidEmail(emailAddress)) {
                     DataProvider.getInstance().setCurrentUserEmail(emailAddress);
 
-                    if (mNavigationEventListener != null) {
-                        mNavigationEventListener.onForward();
-                    }
-
+                    finish();
                 } else {
                     Toast.makeText(getContext(), "Email is invalid", Toast.LENGTH_LONG).show();
                 }
@@ -58,9 +59,7 @@ public class StateEMailFragment extends NavigationFragment {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mNavigationEventListener != null) {
-                    mNavigationEventListener.onForward();
-                }
+                finish();
             }
         });
 
@@ -75,5 +74,15 @@ public class StateEMailFragment extends NavigationFragment {
         Matcher matcher = pattern.matcher(email);
 
         return matcher.matches();
+    }
+
+    private void finish(){
+        if(DataProvider.getInstance().registerUser()){
+            Intent intent = new Intent(getContext(), SetUpActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        } else {
+            Toast.makeText(getContext(), getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -3,6 +3,8 @@ package de.ameyering.wgplaner.wgplaner.section.registration.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class PickDisplayNameFragment extends NavigationFragment {
     private EditText inputName;
+    private UploadProfilePictureFragment uploadProfilePictureFragment;
 
     @Nullable
     @Override
@@ -27,6 +30,10 @@ public class PickDisplayNameFragment extends NavigationFragment {
         inputName = view.findViewById(R.id.input_username);
 
         String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
+
+        if(uploadProfilePictureFragment == null){
+            uploadProfilePictureFragment = new UploadProfilePictureFragment();
+        }
 
         if (displayName != null) {
             inputName.setText(displayName);
@@ -40,10 +47,12 @@ public class PickDisplayNameFragment extends NavigationFragment {
                 if (!displayName.isEmpty()) {
                     DataProvider.getInstance().setCurrentUserDisplayName(displayName);
 
-                    if (mNavigationEventListener != null) {
-                        mNavigationEventListener.onForward();
-                    }
-
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
+                    transaction.hide(PickDisplayNameFragment.this);
+                    transaction.add(R.id.container_registration, uploadProfilePictureFragment);
+                    transaction.addToBackStack("");
+                    transaction.commit();
                 } else {
                     Toast.makeText(getContext(), PickDisplayNameFragment.this.getActivity().getString(
                             R.string.warning_input_username_empty), Toast.LENGTH_SHORT).show();

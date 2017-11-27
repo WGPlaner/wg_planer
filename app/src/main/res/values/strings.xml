@@ -52,7 +52,7 @@
     <string name="set_up_group_name_error">Please enter a group name</string>
     <string name="set_up_group_currency_error">Please pick a currency</string>
     <string name="set_up_group_currency_hint">Group currency</string>
-    <string name="set_up_group_header">Dear user</string>
+    <string name="set_up_group_header">Dear %s</string>
     <string name="set_up_group_body_key">In order to use all available features of the WGPlaner Application you have to be member of a group.\n\nTherefore you can either join an existing group by entering the corresponding access key or create a new group</string>
     <string name="set_up_key_hint">Key</string>
     <string name="set_up_btn_create_group">Create group</string>

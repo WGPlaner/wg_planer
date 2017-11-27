@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class DescriptionFragment extends Fragment {
     private static final String JOIN_GROUP_FRAGMENT_TAG = "JoinGOrupFrgment";
@@ -26,6 +28,9 @@ public class DescriptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setup_description, container, false);
+
+        TextView header = view.findViewById(R.id.fragment_setup_description_header);
+        header.setText(String.format(getString(R.string.set_up_group_header), DataProvider.getInstance().getCurrentUserDisplayName()));
 
         Button btnCreateGroup = view.findViewById(R.id.fragment_setup_description_btn_create);
         Button btnJoinGroup = view.findViewById(R.id.fragment_setup_description_btn_join);
