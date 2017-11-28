@@ -100,6 +100,7 @@ public class GroupSettings extends AppCompatActivity {
 
         inputName = findViewById(R.id.tfName_profile_settings);
         String displayName = DataProvider.CurrentGroup.getGroup().getDisplayName();
+
         if (displayName != null) {
             inputName.setText(displayName);
         }
@@ -138,7 +139,8 @@ public class GroupSettings extends AppCompatActivity {
             currencySpinner.setSelection(pos);
         }
 
-        if(!DataProvider.CurrentGroup.getGroup().getAdmins().contains(DataProvider.Users.getCurrentUser())){
+        if (!DataProvider.CurrentGroup.getGroup().getAdmins().contains(
+                DataProvider.Users.getCurrentUser())) {
             inputName.setEnabled(false);
             image.setEnabled(false);
             currencySpinner.setEnabled(false);
@@ -161,6 +163,7 @@ public class GroupSettings extends AppCompatActivity {
                 continue;
             }
         }
+
         return currencies;
     }
 
@@ -179,7 +182,7 @@ public class GroupSettings extends AppCompatActivity {
 
                         image.setImageBitmap(bitmap);
                         image.startAnimation(AnimationUtils.loadAnimation(this,
-                            R.anim.anim_load_new_profile_picture));
+                                R.anim.anim_load_new_profile_picture));
 
                     } catch (IOException e) {
                         Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
@@ -204,9 +207,11 @@ public class GroupSettings extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!DataProvider.CurrentGroup.getGroup().getAdmins().contains(DataProvider.Users.getCurrentUser())) {
+        if (!DataProvider.CurrentGroup.getGroup().getAdmins().contains(
+                DataProvider.Users.getCurrentUser())) {
             getMenuInflater().inflate(R.menu.menu_add_full_screen_activity, menu);
         }
+
         return true;
     }
 
@@ -233,12 +238,14 @@ public class GroupSettings extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.delete_group_name_error), Toast.LENGTH_LONG).show();
             return false;
         }
+
         DataProvider.CurrentGroup.getGroup().setDisplayName(displayName);
 
         if (currency == null || currencies.isEmpty()) {
             Toast.makeText(this, getString(R.string.delete_currency_error), Toast.LENGTH_LONG).show();
             return false;
         }
+
         DataProvider.CurrentGroup.getGroup().setCurrency(currency.getCurrencyCode());
 
 
