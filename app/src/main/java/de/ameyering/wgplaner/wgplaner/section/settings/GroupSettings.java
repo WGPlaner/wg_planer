@@ -2,7 +2,6 @@ package de.ameyering.wgplaner.wgplaner.section.settings;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,7 +25,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Currency;
-import java.util.List;
 import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
@@ -40,22 +38,18 @@ import io.swagger.client.model.User;
 public class GroupSettings extends AppCompatActivity {
 
 
+    public static final int REQ_CODE_PICK_IMAGE = 0;
+    public RecyclerView members;
+    public AddItemRequestedForAdapter adapterMembers;
     private ArrayList<Currency> currencies = new ArrayList<>();
     private ArrayList<User> liMembers;
     private Locale[] locales = Locale.getAvailableLocales();
     private LocaleSpinnerAdapter adapter;
     private Currency currency;
-
-    public static final int REQ_CODE_PICK_IMAGE = 0;
-    public static final int REQ_CODE_CROP_IMAGE = 1;
     private CircularImageView image;
     private Bitmap bitmap;
     private Uri selectedImage;
-
     private EditText inputName;
-    public RecyclerView members;
-    public AddItemRequestedForAdapter adapterMembers;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,13 +110,10 @@ public class GroupSettings extends AppCompatActivity {
         members.setHasFixedSize(false);
         members.setAdapter(adapterMembers);
 
-        for (int i = 0; i < DataProvider.Users.getUserCount(); i++)
-        {
-            liMembers.add(DataProvider.Users.getUserByUid(DataProvider.CurrentGroup.getGroup().getMembers().get(i)));
-        }
+        liMembers = DataProvider.Users.getUsers();
 
-        if (liMembers != null){
-                adapterMembers.updateSelection(liMembers);
+        if (liMembers != null) {
+            adapterMembers.updateSelection(liMembers);
         }
 
 
@@ -147,13 +138,11 @@ public class GroupSettings extends AppCompatActivity {
             currencySpinner.setSelection(pos);
         }
 
-        if(!(DataProvider.Users.getCurrentUser() == DataProvider.CurrentGroup.getGroup().getAdmins()))
-        {
+        if(!DataProvider.CurrentGroup.getGroup().getAdmins().contains(DataProvider.Users.getCurrentUser())){
             inputName.setEnabled(false);
             image.setEnabled(false);
             currencySpinner.setEnabled(false);
             members.setEnabled(false);
-
         }
     }
 
@@ -175,22 +164,6 @@ public class GroupSettings extends AppCompatActivity {
         return currencies;
     }
 
-    private class LoadBitmap extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            //todo get wgProfilePicture
-            bitmap = Configuration.singleton.getProfilePicture(GroupSettings.this);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            image.setImageBitmap(bitmap);
-            super.onPostExecute(aVoid);
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -200,71 +173,22 @@ public class GroupSettings extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     selectedImage = data.getData();
 
-                    Intent intent = new Intent("com.android.camera.action.CROP");
-                    intent.setType("image/*");
-
-                    List<ResolveInfo> activities = getPackageManager().queryIntentActivities(intent, 0);
-
-                    if (activities.isEmpty()) {
-                        try {
-                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                            bitmap = scaleBitmap(bitmap);
-
-                            image.setImageBitmap(bitmap);
-                            image.startAnimation(AnimationUtils.loadAnimation(this,
-                                R.anim.anim_load_new_profile_picture));
-
-                        } catch (IOException e) {
-                            Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
-                        }
-
-                        return;
-
-                    } else {
-                        intent.setData(selectedImage);
-                        intent.putExtra("outputX", 200);
-                        intent.putExtra("outputY", 200);
-                        intent.putExtra("aspectX", 1);
-                        intent.putExtra("aspectY", 1);
-                        intent.putExtra("scale", true);
-                        intent.putExtra("return-data", true);
-
-                        startActivityForResult(intent, REQ_CODE_CROP_IMAGE);
-                    }
-                }
-
-                break;
-
-            case REQ_CODE_CROP_IMAGE:
-                if (resultCode == RESULT_OK) {
-                    Bundle extras = data.getExtras();
-
-                    if (extras != null) {
-                        bitmap = extras.getParcelable("data");
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                         bitmap = scaleBitmap(bitmap);
 
                         image.setImageBitmap(bitmap);
                         image.startAnimation(AnimationUtils.loadAnimation(this,
                             R.anim.anim_load_new_profile_picture));
+
+                    } catch (IOException e) {
+                        Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
                     }
 
-                } else {
-                    if (selectedImage != null) {
-                        try {
-                            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                            bitmap = scaleBitmap(bitmap);
-
-                            image.setImageBitmap(bitmap);
-                            image.startAnimation(AnimationUtils.loadAnimation(this,
-                                R.anim.anim_load_new_profile_picture));
-
-                        } catch (IOException e) {
-                            Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
-                        }
-
-                        return;
-                    }
+                    return;
                 }
+
+                break;
         }
     }
 
@@ -280,7 +204,7 @@ public class GroupSettings extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(!(DataProvider.Users.getCurrentUser() == DataProvider.CurrentGroup.getGroup().getAdmins())) {
+        if (!DataProvider.CurrentGroup.getGroup().getAdmins().contains(DataProvider.Users.getCurrentUser())) {
             getMenuInflater().inflate(R.menu.menu_add_full_screen_activity, menu);
         }
         return true;
@@ -311,8 +235,7 @@ public class GroupSettings extends AppCompatActivity {
         }
         DataProvider.CurrentGroup.getGroup().setDisplayName(displayName);
 
-        if (currency == null || currencies.isEmpty())
-        {
+        if (currency == null || currencies.isEmpty()) {
             Toast.makeText(this, getString(R.string.delete_currency_error), Toast.LENGTH_LONG).show();
             return false;
         }
@@ -327,6 +250,22 @@ public class GroupSettings extends AppCompatActivity {
         return true;
     }
 
+    private class LoadBitmap extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //todo get wgProfilePicture
+            //bitmap = Configuration.singleton.getProfilePicture(GroupSettings.this);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            image.setImageBitmap(bitmap);
+            super.onPostExecute(aVoid);
+        }
+    }
+
     private class SaveBitmap extends AsyncTask<Bitmap, Void, Void> {
 
         @Override
@@ -334,7 +273,7 @@ public class GroupSettings extends AppCompatActivity {
             if (bitmaps.length > 0) {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmaps[0].compress(Bitmap.CompressFormat.PNG, 100, stream);
-                Configuration.singleton.setProfilePicture(stream.toByteArray());
+                //Configuration.singleton.setProfilePicture(stream.toByteArray());
             }
 
             return null;
