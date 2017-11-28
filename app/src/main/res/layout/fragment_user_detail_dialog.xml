@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:orientation="vertical">
 
     <ImageView
@@ -12,7 +13,8 @@
         android:layout_alignParentTop="true"
         android:layout_margin="3dp"
         android:clickable="true"
-        android:src="@drawable/ic_close_black" />
+        android:focusable="true"
+        android:src="@drawable/ic_close_black" android:contentDescription="TODO"/>
 
     <LinearLayout
         android:layout_width="match_parent"
