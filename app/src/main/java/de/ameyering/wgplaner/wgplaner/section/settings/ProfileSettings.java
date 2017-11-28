@@ -112,11 +112,13 @@ public class ProfileSettings extends AppCompatActivity {
             public void onClick(View view) {
                 ApiResponse<SuccessResponse> response = DataProvider.CurrentGroup.leaveGroup();
 
-                if(response != null && response.getData() != null){
+                if (response != null && response.getData() != null) {
                     setResult(RESULT_OK);
                     finish();
+
                 } else {
-                    Toast.makeText(ProfileSettings.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProfileSettings.this, getString(R.string.server_connection_failed),
+                        Toast.LENGTH_LONG).show();
                 }
             }
         });
