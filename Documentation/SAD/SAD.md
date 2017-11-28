@@ -56,37 +56,43 @@ This document contains the Architectural Representation, Goals and Constraints a
 as the Logical, Deployment, Implementation and Data Views.
 
 ## 2. Architectural Representation
-For our project we have a server and client application. Both are connected to firebase for authorization and push notifications.
-Following diagram shows the connection.
+Android MVP-Pattern:
 
-![Server Client Diagram](./ServerClientDiagram.png)
+![Android MVP-Pattern](./MVCPatternClient.png)
 
 ## 3. Architectural Goals and Constraints
-The main goal of the MVC architecture is to separate the view from the logic. Therefore, the view does not implement the logic, but gets all the precompiled information from the controller.
+The main goal of the MVP architecture is to separate the view from the logic. Therefore, the view does not implement the logic, but gets all the precompiled information from the controller.
 Models contain the data that is displayed in the views.
 
 ## 4. Use-Case View
  - [Overall-Use-Case-Diagram](../SRS/use_case_diagram.png)
 
 ### 4.1 Use-Case Realizations
+n/a
 
 ## 5. Logical View
 
 ### 5.1 Overview
-Models:
-![Models](../UC/ClassDiagrams/class_diagram_models.png)
-
-Class Diagram
-![Overall Class Diagram](../UC/ClassDiagrams/class_diagram_android_new.png)
 
 ### 5.2 Architecturally Significant Design Packages
-n/a
+
+This image represents the logical view at our MVP Implementation:
+
+![MVP-Pattern Client](./MVCClassFlow.png)
+
+Android Client:
+
+![Class diagram with MVP-Pattern](../UC/ClassDiagrams/class_diagram_android_min.png)
+
+API Models:
+
+![Models](../UC/ClassDiagrams/class_diagram_models.png)
 
 ## 6. Process View
 n/a
 
 ## 7. Deployment View
-![Deployment View](./DeploymentView.png)
+(TO BE DONE)
 
 ## 8. Implementation View
 
@@ -97,7 +103,9 @@ n/a
 n/a
 
 ## 9. Data View
-![Database Model](./DatabaseModels.png)
+Database ER-Diagram:
+
+(TO BE DONE)
 
 ## 10. Size and Performance
 n/a
