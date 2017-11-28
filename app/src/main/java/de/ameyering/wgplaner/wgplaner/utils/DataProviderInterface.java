@@ -21,7 +21,7 @@ public interface DataProviderInterface {
         UNREGISTERED, REGISTERED, SETUP_COMPLETED, GET_USER_FAILED, GET_GROUP_FAILED, CONNECTION_FAILED
     }
 
-    SetUpState initialize(String uid);
+    SetUpState initialize(String uid, Context context);
 
     boolean registerUser();
     
@@ -67,9 +67,9 @@ public interface DataProviderInterface {
     
     boolean isAdmin(String uid);
 
-    boolean createGroup(String name, Currency currency, Bitmap image);
+    boolean createGroup(String name, Currency currency, Bitmap image, Context context);
 
-    boolean joinCurrentGroup(String accessKey);
+    boolean joinCurrentGroup(String accessKey, Context context);
 
     boolean leaveCurrentGroup();
     
@@ -89,5 +89,5 @@ public interface DataProviderInterface {
 
     void syncShoppingList();
 
-    void syncGroup();
+    void syncGroup(Context context);
 }

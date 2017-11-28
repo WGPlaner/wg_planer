@@ -93,4 +93,6 @@
 
     <!-- BackNavigation String -->
     <string name="back_press_leave_notification">Press back again to leave the Application</string>
+
+    <string name="user_detail_email_default">Not specified</string>
 </resources>

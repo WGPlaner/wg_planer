@@ -27,7 +27,7 @@ public class NotificationService extends FirebaseMessagingService {
                 case GROUP_NEW_MEMBER:
                 case USER:
                 case GROUP: {
-                    DataProvider.getInstance().syncGroup();
+                    DataProvider.getInstance().syncGroup(getApplicationContext());
                 }
                 break;
                 case SHOPPING_LIST: {

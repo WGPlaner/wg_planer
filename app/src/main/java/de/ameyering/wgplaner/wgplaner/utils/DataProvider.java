@@ -97,7 +97,7 @@ public class DataProvider implements DataProviderInterface {
         this.serverCallsInstance = serverCallsInstance;
     }
 
-    public SetUpState initialize(String uid){
+    public SetUpState initialize(String uid, Context context){
         if(uid != null && !uid.isEmpty()){
             currentUserUid = uid;
             Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
@@ -147,7 +147,7 @@ public class DataProvider implements DataProviderInterface {
                     currentGroupCurrency = Currency.getInstance(group.getCurrency());
                     currentGroupMembersUids = group.getMembers();
                     currentGroupAdminsUids = group.getAdmins();
-                    initializeMembers();
+                    initializeMembers(context);
 
                     ApiResponse<ShoppingList> shoppingListResponse = serverCallsInstance.getShoppingList();
 
@@ -367,7 +367,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public boolean createGroup(String name, Currency currency, Bitmap image) {
+    public boolean createGroup(String name, Currency currency, Bitmap image, Context context) {
         Group group = new Group();
         group.setDisplayName(name);
         group.setCurrency(currency.getCurrencyCode());
@@ -382,7 +382,7 @@ public class DataProvider implements DataProviderInterface {
             currentGroupCurrency = Currency.getInstance(group.getCurrency());
             currentGroupMembersUids = group.getMembers();
             currentGroupAdminsUids = group.getAdmins();
-            initializeMembers();
+            initializeMembers(context);
 
             callAllListeners(DataType.CURRENT_GROUP);
             syncShoppingList();
@@ -392,7 +392,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public boolean joinCurrentGroup(String accessKey) {
+    public boolean joinCurrentGroup(String accessKey, Context context) {
         ApiResponse<Group> groupResponse = joinGroup(accessKey);
 
         if(groupResponse != null && groupResponse.getData() != null){
@@ -402,7 +402,7 @@ public class DataProvider implements DataProviderInterface {
             currentGroupCurrency = Currency.getInstance(group.getCurrency());
             currentGroupMembersUids = group.getMembers();
             currentGroupAdminsUids = group.getAdmins();
-            initializeMembers();
+            initializeMembers(context);
 
             callAllListeners(DataType.CURRENT_GROUP);
             syncShoppingList();
@@ -508,7 +508,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public void syncGroup() {
+    public void syncGroup(Context context) {
         ApiResponse<Group> groupResponse = getGroup();
 
         if(groupResponse != null && groupResponse.getData() != null){
@@ -519,7 +519,7 @@ public class DataProvider implements DataProviderInterface {
             currentGroupCurrency = Currency.getInstance(group.getCurrency());
             currentGroupMembersUids = group.getMembers();
             currentGroupAdminsUids = group.getAdmins();
-            initializeMembers();
+            initializeMembers(context);
 
             callAllListeners(DataType.CURRENT_GROUP);
             syncShoppingList();
@@ -609,7 +609,7 @@ public class DataProvider implements DataProviderInterface {
         return serverCallsInstance.updateShoppingListItem(item);
     }
 
-    private void initializeMembers(){
+    private void initializeMembers(Context context){
         currentGroupMembers = new ArrayList<>();
         currentGroupMemberImages = new ArrayList<>();
         for(String uid: currentGroupMembersUids){
@@ -617,9 +617,16 @@ public class DataProvider implements DataProviderInterface {
                 ApiResponse<User> userResponse = getUser(uid);
 
                 if(userResponse != null && userResponse.getData() != null){
-                    currentGroupMembers.add(userResponse.getData());
+                    User user = userResponse.getData();
+                    currentGroupMembers.add(user);
 
-                    //TODO: Implement getPictures
+                    if(ImageStore.getInstance().loadGroupMemberPicture(user.getUid(), context) == null){
+                        ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(user.getUid());
+
+                        if(imageResponse != null && imageResponse.getData() != null){
+                            ImageStore.getInstance().writeGroupMemberPicture(user.getUid(), imageResponse.getData(), context);
+                        }
+                    }
                 }
             }
         }

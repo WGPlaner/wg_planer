@@ -54,7 +54,7 @@ public class JoinGroupFragment extends Fragment {
     }
 
     private void joinGroup(String key) {
-        if(DataProvider.getInstance().joinCurrentGroup(key)){
+        if(DataProvider.getInstance().joinCurrentGroup(key, getContext())){
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
             getActivity().finish();
