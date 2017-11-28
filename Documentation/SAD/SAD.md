@@ -84,10 +84,6 @@ Android Client:
 
 ![Class diagram with MVP-Pattern](../UC/ClassDiagrams/class_diagram_android_min.png)
 
-API Models:
-
-![Models](../UC/ClassDiagrams/class_diagram_models.png)
-
 ## 6. Process View
 n/a
 
@@ -105,7 +101,7 @@ n/a
 ## 9. Data View
 Database ER-Diagram:
 
-(TO BE DONE)
+![Databse ER-Diagram](../UC/ClassDiagrams/class_diagram_models.png)
 
 ## 10. Size and Performance
 n/a
