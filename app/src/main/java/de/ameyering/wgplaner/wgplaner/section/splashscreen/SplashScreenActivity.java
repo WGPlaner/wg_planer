@@ -1,12 +1,18 @@
 package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,20 +30,44 @@ import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private LinearLayout errorContainer;
+    private TextView errorMessage;
+    private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeToRefresh;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
+
+        errorContainer = findViewById(R.id.splash_screen_error_container);
+        errorMessage = findViewById(R.id.splash_screen_error_message);
+
+        swipeToRefresh = findViewById(R.id.splash_screen_swipe_to_refresh);
+        swipeToRefresh.setEnabled(false);
+        swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                retryAnim();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initializeUser(DataProvider.getInstance().getCurrentUserUid());
+                    }
+                }).start();
+            }
+        });
+
 
         mAuth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -85,13 +115,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         switch (state) {
             case GET_USER_FAILED: {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(SplashScreenActivity.this, getString(R.string.user_unauthorized),
-                            Toast.LENGTH_LONG).show();
-                    }
-                });
+                failStateAnim();
             }
             break;
             case UNREGISTERED: {
@@ -110,10 +134,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                 //TODO: Implement get group failed
                 loadHome();
             }
+            break;
+            case CONNECTION_FAILED: {
+                failStateAnim();
+            }
         }
     }
 
     private void initialize() {
+        ImageStore.initialize(this);
         Configuration.initConfig(this);
         Money.initialize(Locale.getDefault());
     }
@@ -147,6 +176,35 @@ public class SplashScreenActivity extends AppCompatActivity {
                 Intent intent = new Intent(SplashScreenActivity.this, SetUpActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+    }
+
+    private void failStateAnim(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.animate().alpha(0f);
+                progressBar.setVisibility(View.INVISIBLE);
+                swipeToRefresh.setRefreshing(false);
+                swipeToRefresh.setEnabled(true);
+                errorContainer.setAlpha(0f);
+                errorContainer.setVisibility(View.VISIBLE);
+                errorContainer.animate().alpha(1f);
+                errorMessage.setText(getString(R.string.splash_screen_connection_timeout) + "\n" + getString(R.string.splash_screen_swipe_to_refresh));
+            }
+        });
+    }
+
+    private void retryAnim(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBar.animate().alpha(1f);
+                swipeToRefresh.setEnabled(false);
+                errorContainer.animate().alpha(0f);
+                errorContainer.setVisibility(View.INVISIBLE);
             }
         });
     }

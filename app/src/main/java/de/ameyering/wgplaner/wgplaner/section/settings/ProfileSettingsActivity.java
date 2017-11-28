@@ -95,8 +95,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
             }
         });
 
-        LoadBitmap loadTask = new LoadBitmap();
-        loadTask.execute();
+        image.setImageBitmap(DataProvider.getInstance().getCurrentUserImage(this));
 
         btLeaveGroup = findViewById(R.id.bt_delete_group_profile_settings);
 
@@ -223,35 +222,6 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
     }
 
-    private class LoadBitmap extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            bitmap = Configuration.singleton.getProfilePicture(ProfileSettingsActivity.this);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            image.setImageBitmap(bitmap);
-            super.onPostExecute(aVoid);
-        }
-    }
-
-    private class SaveBitmap extends AsyncTask<Bitmap, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Bitmap... bitmaps) {
-            if (bitmaps.length > 0) {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmaps[0].compress(Bitmap.CompressFormat.PNG, 100, stream);
-                Configuration.singleton.setProfilePicture(stream.toByteArray());
-            }
-
-            return null;
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
@@ -307,8 +277,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
         String email = inputEmail.getText().toString();
 
-        SaveBitmap task = new SaveBitmap();
-        task.execute(bitmap);
+        DataProvider.getInstance().setCurrentUserImage(bitmap);
 
         return true;
     }

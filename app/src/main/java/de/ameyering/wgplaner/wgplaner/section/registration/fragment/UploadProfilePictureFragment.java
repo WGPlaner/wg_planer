@@ -25,6 +25,7 @@ import java.util.List;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class UploadProfilePictureFragment extends NavigationFragment {
     public static final int REQ_CODE_PICK_IMAGE = 0;
@@ -67,8 +68,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
             }
         });
 
-        final LoadBitmap loadTask = new LoadBitmap();
-        loadTask.execute();
+        image.setImageBitmap(DataProvider.getInstance().getCurrentUserImage(getContext()));
 
         Button buttonContinue = view.findViewById(R.id.btn_continue_upload_profile_picture);
         Button buttonSkip = view.findViewById(R.id.btn_skip_upload_profile_picture);
@@ -76,8 +76,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SaveBitmap saveTask = new SaveBitmap();
-                saveTask.execute(bitmap);
+                DataProvider.getInstance().setCurrentUserImage(bitmap);
                 loadNext();
             }
         });
@@ -133,36 +132,5 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         int newHeight = Math.round(bitmap.getHeight() * scale);
 
         return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
-    }
-
-    private class LoadBitmap extends AsyncTask<Void, Void, Void> {
-        private Bitmap bitmap;
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            bitmap = Configuration.singleton.getProfilePicture(getContext());
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            UploadProfilePictureFragment.this.bitmap = bitmap;
-            UploadProfilePictureFragment.this.image.setImageBitmap(bitmap);
-        }
-    }
-
-    private class SaveBitmap extends AsyncTask<Bitmap, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Bitmap... bitmaps) {
-            if (bitmaps.length >= 0) {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                Configuration.singleton.setProfilePicture(stream.toByteArray());
-            }
-
-            return null;
-        }
     }
 }

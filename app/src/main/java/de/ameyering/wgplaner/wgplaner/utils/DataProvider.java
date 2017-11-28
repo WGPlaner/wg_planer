@@ -1,7 +1,9 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 
 import java.io.File;
@@ -39,6 +41,7 @@ public class DataProvider implements DataProviderInterface {
     private String currentUserDisplayName;
     private String currentUserEmail;
     private Locale currentUserLocale;
+    private Bitmap currentUserPicture;
 
     private UUID currentGroupUID;
     private String currentGroupName;
@@ -46,6 +49,7 @@ public class DataProvider implements DataProviderInterface {
     private List<String> currentGroupMembersUids;
     private List<String> currentGroupAdminsUids;
     private ArrayList<User> currentGroupMembers;
+    private ArrayList<Bitmap> currentGroupMemberImages;
 
     private List<ListItem> currentShoppingList;
     private ArrayList<ListItem> selectedItems;
@@ -81,6 +85,7 @@ public class DataProvider implements DataProviderInterface {
         currentGroupMembersUids = null;
         currentGroupAdminsUids = null;
         currentGroupMembers = null;
+        currentGroupMemberImages = null;
 
         currentShoppingList = new ArrayList<>();
         selectedItems = new ArrayList<>();
@@ -95,6 +100,7 @@ public class DataProvider implements DataProviderInterface {
     public SetUpState initialize(String uid){
         if(uid != null && !uid.isEmpty()){
             currentUserUid = uid;
+            Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
             ApiResponse<User> userResponse = serverCallsInstance.getUser(uid);
 
             if(userResponse != null && userResponse.getData() != null){
@@ -106,15 +112,29 @@ public class DataProvider implements DataProviderInterface {
                 currentGroupUID = user.getGroupUID();
                 if(currentUserFirebaseInstanceId.isEmpty()){
                     currentUserFirebaseInstanceId = user.getFirebaseInstanceID();
+
+                    if(!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())){
+                        currentUserFirebaseInstanceId = Configuration.singleton.getConfig(Configuration.Type.FIREBASE_INSTANCE_ID);
+
+                        updateUser();
+                    }
                 }
-            } else if (userResponse == null) {
-                return SetUpState.GET_USER_FAILED;
-            } else {
+
+                ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(currentUserUid);
+
+                if(imageResponse != null && imageResponse.getStatusCode() == 200){
+                    currentUserPicture = BitmapFactory.decodeByteArray(imageResponse.getData(), 0, imageResponse.getData().length);
+                }
+            } else if (userResponse != null && userResponse.getData() == null) {
                 if(userResponse.getStatusCode() == 404){
                     return SetUpState.UNREGISTERED;
-                } else {
+                } else if (userResponse.getStatusCode() != 0){
                     return SetUpState.GET_USER_FAILED;
+                } else {
+                    return SetUpState.CONNECTION_FAILED;
                 }
+            } else {
+                return SetUpState.CONNECTION_FAILED;
             }
 
             if(currentGroupUID != null){
@@ -173,7 +193,18 @@ public class DataProvider implements DataProviderInterface {
                 currentUserEmail = user.getEmail();
                 if(currentUserFirebaseInstanceId.isEmpty()) {
                     currentUserFirebaseInstanceId = getFirebaseInstanceId();
+
+                    if(!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())){
+                        currentUserFirebaseInstanceId = Configuration.singleton.getConfig(Configuration.Type.FIREBASE_INSTANCE_ID);
+
+                        updateUser();
+                    }
                 }
+
+                if(ImageStore.getInstance().getProfilePictureFile() != null) {
+                    serverCallsInstance.updateUserImage(ImageStore.getInstance().getProfilePictureFile());
+                }
+
                 return true;
             }
         }
@@ -184,6 +215,7 @@ public class DataProvider implements DataProviderInterface {
     public void setFirebaseInstanceId(String token) {
         if(token != null) {
             this.currentUserFirebaseInstanceId = token;
+            Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }
     }
 
@@ -196,19 +228,37 @@ public class DataProvider implements DataProviderInterface {
     public void setCurrentUserDisplayName(String displayName) {
         if(displayName != null && !currentUserDisplayName.equals(displayName)){
             this.currentUserDisplayName = displayName;
+            Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
             updateUser();
             callAllListeners(DataType.CURRENT_USER);
         }
     }
 
     @Override
-    public void setCurrentUserImage(@Nullable File image) {
-        //TODO: Implement image flow
+    public void setCurrentUserImage(Bitmap bitmap) {
+        if(bitmap != null) {
+            currentUserPicture = bitmap;
+            ImageStore.getInstance().setProfilePicture(bitmap);
+            updateUserImage();
+            callAllListeners(DataType.CURRENT_USER);
+        }
+    }
+
+    private void updateUserImage() {
+        File file = ImageStore.getInstance().getProfilePictureFile();
+        if(file != null){
+            ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateUserImage(file);
+
+            if(imageResponse != null && imageResponse.getData() != null){
+                callAllListeners(DataType.CURRENT_USER);
+            }
+        }
     }
 
     @Override
     public void setCurrentUserEmail(@Nullable String email) {
         this.currentUserEmail = email;
+        Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, email);
         updateUser();
         callAllListeners(DataType.CURRENT_USER);
     }
@@ -233,9 +283,13 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public File getCurrentUserImage() {
-        //TODO: Implement image flow
-        return null;
+    public Bitmap getCurrentUserImage(Context context) {
+        if(currentUserPicture != null) {
+            return currentUserPicture;
+        }
+
+        currentUserPicture = ImageStore.getInstance().getProfileBitmap(context);
+        return currentUserPicture;
     }
 
     @Override
@@ -557,12 +611,15 @@ public class DataProvider implements DataProviderInterface {
 
     private void initializeMembers(){
         currentGroupMembers = new ArrayList<>();
+        currentGroupMemberImages = new ArrayList<>();
         for(String uid: currentGroupMembersUids){
             if(uid != null){
                 ApiResponse<User> userResponse = getUser(uid);
 
                 if(userResponse != null && userResponse.getData() != null){
                     currentGroupMembers.add(userResponse.getData());
+
+                    //TODO: Implement getPictures
                 }
             }
         }

@@ -24,7 +24,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setVisibility(View.GONE);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
         toolbar.setNavigationContentDescription(getString(R.string.nav_back));
 
@@ -50,6 +49,7 @@ public class RegistrationActivity extends AppCompatActivity {
             welcomeFragment = (WelcomeFragment) getSupportFragmentManager().getFragment(savedInstanceState, "welcomeFragment");
         } else {
             loadWelcomeFragment();
+            toolbar.setVisibility(View.GONE);
         }
     }
 
@@ -70,7 +70,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void popBackStack(){
         if(getSupportFragmentManager().getBackStackEntryCount() == 0){
             if(!toastWasShown) {
-                Toast toast = Toast.makeText(this, "Attention", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(this, getString(R.string.back_press_leave_notification), Toast.LENGTH_LONG);
                 toast.show();
                 toastWasShown = true;
             } else {

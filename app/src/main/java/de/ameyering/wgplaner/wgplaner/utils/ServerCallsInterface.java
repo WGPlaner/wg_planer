@@ -34,6 +34,10 @@ import io.swagger.client.model.User;
 
      ApiResponse<User> updateUser(User user);
 
+     void getUserImageAsync(String uid, @Nullable final OnAsyncCallListener<byte[]> listener);
+
+     ApiResponse<byte[]> getUserImage(String uid);
+
      void updateUserImageAsync(File image, @Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
      ApiResponse<SuccessResponse> updateUserImage(File image);

@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.squareup.okhttp.Call;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -258,8 +260,65 @@ public class ServerCalls implements ServerCallsInterface{
         return null;
     }
 
+    @Override
+    public void getUserImageAsync(String uid, @Nullable final OnAsyncCallListener<byte[]> listener) {
+        if(uid != null){
+            setAuth(USER_ID_AUTH_LABEL);
+
+            try{
+                UserApi api = new UserApi();
+                api.getUserImageAsync(uid, new ApiCallback<byte[]>() {
+                    @Override
+                    public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                        if(listener != null){
+                            listener.onFailure(e);
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(byte[] result, int statusCode, Map<String, List<String>> responseHeaders) {
+                        if(listener != null){
+                            listener.onSuccess(result);
+                        }
+                    }
+
+                    @Override
+                    public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+
+                    }
+
+                    @Override
+                    public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
+
+                    }
+                });
+            } catch (ApiException e){
+                if(listener != null){
+                    listener.onFailure(e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public ApiResponse<byte[]> getUserImage(String uid) {
+        if(uid != null) {
+            GetUserImage task = new GetUserImage();
+
+            try {
+                return task.execute(uid).get();
+            } catch (ExecutionException e){
+                return null;
+            } catch (InterruptedException e){
+                return null;
+            }
+        }
+
+        return null;
+    }
+
     public void updateUserImageAsync(File image,
-        @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
+                                     @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
         if (image != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
@@ -828,6 +887,24 @@ public class ServerCalls implements ServerCallsInterface{
                 }
             }
 
+            return null;
+        }
+    }
+
+    private class GetUserImage extends AsyncTask<String, Void, ApiResponse<byte[]>> {
+
+        @Override
+        protected ApiResponse<byte[]> doInBackground(String... strings) {
+            if(strings != null && strings.length > 0){
+                setAuth(USER_ID_AUTH_LABEL);
+                UserApi api = new UserApi();
+
+                try{
+                    return api.getUserImageWithHttpInfo(strings[0]);
+                } catch (ApiException e){
+                    return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
+                }
+            }
             return null;
         }
     }

@@ -1,6 +1,7 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
@@ -17,7 +18,7 @@ import io.swagger.client.model.User;
 public interface DataProviderInterface {
 
     enum SetUpState{
-        UNREGISTERED, REGISTERED, SETUP_COMPLETED, GET_USER_FAILED, GET_GROUP_FAILED
+        UNREGISTERED, REGISTERED, SETUP_COMPLETED, GET_USER_FAILED, GET_GROUP_FAILED, CONNECTION_FAILED
     }
 
     SetUpState initialize(String uid);
@@ -30,7 +31,7 @@ public interface DataProviderInterface {
     
     void setCurrentUserDisplayName(String displayName);
     
-    void setCurrentUserImage(@Nullable File image);
+    void setCurrentUserImage(Bitmap bitmap);
     
     void setCurrentUserEmail(@Nullable String email);
     
@@ -40,7 +41,7 @@ public interface DataProviderInterface {
     
     String getCurrentUserDisplayName();
     
-    File getCurrentUserImage();
+    Bitmap getCurrentUserImage(Context context);
     
     String getCurrentUserEmail();
     
