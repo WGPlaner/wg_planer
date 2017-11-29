@@ -65,7 +65,7 @@ The main goal of the MVP architecture is to separate the view from the logic. Th
 Models contain the data that is displayed in the views.
 
 ## 4. Use-Case View
- - [Overall-Use-Case-Diagram](../SRS/use_case_diagram.png)
+ ![Overall-Use-Case-Diagram](../SRS/use_case_diagram.png)
 
 ### 4.1 Use-Case Realizations
 n/a
