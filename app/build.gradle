@@ -11,7 +11,7 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "de.ameyering.wgplaner.test.Instrumentation"
+        testInstrumentationRunner "de.ameyering.wgplaner.test.runner.Instrumentation"
     }
     buildTypes {
         release {

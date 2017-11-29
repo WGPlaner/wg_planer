@@ -1,4 +1,4 @@
-package de.ameyering.wgplaner.test;
+package de.ameyering.wgplaner.test.runner;
 
 import android.os.Bundle;
 
