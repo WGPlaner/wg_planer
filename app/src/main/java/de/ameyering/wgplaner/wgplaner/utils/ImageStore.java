@@ -71,7 +71,7 @@ public class ImageStore {
     public void setProfilePicture(Bitmap profilePicture) {
         if (profilePicture != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            profilePicture.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            profilePicture.compress(Bitmap.CompressFormat.JPEG, 95, outputStream);
             profilePictureBytes = outputStream.toByteArray();
 
             writeProfilePicture(profilePictureBytes);
@@ -81,7 +81,7 @@ public class ImageStore {
     public void setGroupPicture(Bitmap groupPicture) {
         if (groupPicture != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            groupPicture.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            groupPicture.compress(Bitmap.CompressFormat.JPEG, 95, outputStream);
             groupPictureBytes = outputStream.toByteArray();
 
             writeGroupPicture(groupPictureBytes);

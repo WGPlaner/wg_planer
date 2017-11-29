@@ -109,7 +109,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
                                 R.anim.anim_load_new_profile_picture));
 
                     } catch (IOException e) {
-                        Toast.makeText(getContext(), "Failed to load Picture", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), getString(R.string.load_profile_picture_error), Toast.LENGTH_LONG).show();
                     }
                 }
 

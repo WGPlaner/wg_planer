@@ -12,6 +12,8 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
 
 public class RegistrationActivity extends AppCompatActivity {
+    private static final String WELCOME_FRAGMENT_ARGS = "WelcomeFragment";
+
     private Toolbar toolbar;
     private WelcomeFragment welcomeFragment;
 
@@ -49,7 +51,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             welcomeFragment = (WelcomeFragment) getSupportFragmentManager().getFragment(savedInstanceState,
-                    "welcomeFragment");
+                    WELCOME_FRAGMENT_ARGS);
 
         } else {
             loadWelcomeFragment();
@@ -95,6 +97,6 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        getSupportFragmentManager().putFragment(outState, "welcomeFragment", welcomeFragment);
+        getSupportFragmentManager().putFragment(outState, WELCOME_FRAGMENT_ARGS, welcomeFragment);
     }
 }

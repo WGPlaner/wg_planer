@@ -15,7 +15,7 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class DescriptionFragment extends Fragment {
-    private static final String JOIN_GROUP_FRAGMENT_TAG = "JoinGOrupFrgment";
+    private static final String JOIN_GROUP_FRAGMENT_TAG = "JoinGroupFragment";
     private static final String CREATE_GROUP_FRAGMENT_TAG = "CreateGroupFragment";
 
     public CreateGroupFragment createGroupFragment = new CreateGroupFragment();

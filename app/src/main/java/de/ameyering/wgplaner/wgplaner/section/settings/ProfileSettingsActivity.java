@@ -121,7 +121,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                     setResult(RESULT_OK);
                     finish();
                 } else {
-                    Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed),
+                    Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
                 }
             }
         });
