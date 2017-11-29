@@ -22,7 +22,7 @@ import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.model.*;
 import io.swagger.client.model.User;
 
-public class ServerCalls implements ServerCallsInterface{
+public class ServerCalls implements ServerCallsInterface {
     private static final String USER_ID_AUTH_LABEL = "UserIDAuth";
     private static final String FIREBASE_ID_AUTH_LABEL = "FirebaseIDAuth";
 
@@ -63,7 +63,7 @@ public class ServerCalls implements ServerCallsInterface{
         return false;
     }
 
-    public static ServerCalls getInstance(){
+    public static ServerCalls getInstance() {
         return singleton;
     }
 
@@ -88,7 +88,7 @@ public class ServerCalls implements ServerCallsInterface{
                     logSuccess(CREATE_USER_NAME, ASYNCHRONOUS_FLAG);
 
                     if (result != null) {
-                        
+
                         if (listener != null) {
                             listener.onSuccess(result);
                         }
@@ -262,22 +262,22 @@ public class ServerCalls implements ServerCallsInterface{
 
     @Override
     public void getUserImageAsync(String uid, @Nullable final OnAsyncCallListener<byte[]> listener) {
-        if(uid != null){
+        if (uid != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
-            try{
+            try {
                 UserApi api = new UserApi();
                 api.getUserImageAsync(uid, new ApiCallback<byte[]>() {
                     @Override
                     public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                        if (listener != null) {
                             listener.onFailure(e);
                         }
                     }
 
                     @Override
                     public void onSuccess(byte[] result, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                        if (listener != null) {
                             listener.onSuccess(result);
                         }
                     }
@@ -292,8 +292,9 @@ public class ServerCalls implements ServerCallsInterface{
 
                     }
                 });
-            } catch (ApiException e){
-                if(listener != null){
+
+            } catch (ApiException e) {
+                if (listener != null) {
                     listener.onFailure(e);
                 }
             }
@@ -302,14 +303,16 @@ public class ServerCalls implements ServerCallsInterface{
 
     @Override
     public ApiResponse<byte[]> getUserImage(String uid) {
-        if(uid != null) {
+        if (uid != null) {
             GetUserImage task = new GetUserImage();
 
             try {
                 return task.execute(uid).get();
-            } catch (ExecutionException e){
+
+            } catch (ExecutionException e) {
                 return null;
-            } catch (InterruptedException e){
+
+            } catch (InterruptedException e) {
                 return null;
             }
         }
@@ -318,7 +321,7 @@ public class ServerCalls implements ServerCallsInterface{
     }
 
     public void updateUserImageAsync(File image,
-                                     @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
+        @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
         if (image != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
@@ -632,18 +635,20 @@ public class ServerCalls implements ServerCallsInterface{
         setAuth(USER_ID_AUTH_LABEL);
 
         GroupApi api = new GroupApi();
-        try{
-            api.createGroupCodeAsync(DataProvider.getInstance().getCurrentGroupUID(), new ApiCallback<GroupCode>() {
+
+        try {
+            api.createGroupCodeAsync(DataProvider.getInstance().getCurrentGroupUID(),
+            new ApiCallback<GroupCode>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                    if(listener != null){
+                    if (listener != null) {
                         listener.onFailure(e);
                     }
                 }
 
                 @Override
                 public void onSuccess(GroupCode result, int statusCode, Map<String, List<String>> responseHeaders) {
-                    if(listener != null){
+                    if (listener != null) {
                         listener.onSuccess(result);
                     }
                 }
@@ -658,21 +663,24 @@ public class ServerCalls implements ServerCallsInterface{
 
                 }
             });
-        } catch (ApiException e){
-            if(listener != null){
+
+        } catch (ApiException e) {
+            if (listener != null) {
                 listener.onFailure(e);
             }
         }
     }
 
     @Override
-    public ApiResponse<GroupCode> createGroupKey(){
-        try{
+    public ApiResponse<GroupCode> createGroupKey() {
+        try {
             CreateGroupKey task = new CreateGroupKey();
             return task.execute().get();
-        } catch (ExecutionException e){
+
+        } catch (ExecutionException e) {
             return null;
-        } catch (InterruptedException e){
+
+        } catch (InterruptedException e) {
             return null;
         }
     }
@@ -686,14 +694,14 @@ public class ServerCalls implements ServerCallsInterface{
             api.getGroupImageAsync(DataProvider.getInstance().getCurrentGroupUID(), new ApiCallback<byte[]>() {
                 @Override
                 public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                    if(listener != null){
+                    if (listener != null) {
                         listener.onFailure(e);
                     }
                 }
 
                 @Override
                 public void onSuccess(byte[] result, int statusCode, Map<String, List<String>> responseHeaders) {
-                    if(listener != null){
+                    if (listener != null) {
                         listener.onSuccess(result);
                     }
                 }
@@ -708,8 +716,9 @@ public class ServerCalls implements ServerCallsInterface{
 
                 }
             });
-        } catch (ApiException e){
-            if(listener != null){
+
+        } catch (ApiException e) {
+            if (listener != null) {
                 listener.onFailure(e);
             }
         }
@@ -717,34 +726,40 @@ public class ServerCalls implements ServerCallsInterface{
 
     @Override
     public ApiResponse<byte[]> getGroupImage() {
-        try{
+        try {
             GetGroupImage task = new GetGroupImage();
             return task.execute().get();
-        } catch (ExecutionException e){
+
+        } catch (ExecutionException e) {
             return null;
-        } catch (InterruptedException e){
+
+        } catch (InterruptedException e) {
             return null;
         }
     }
 
     @Override
-    public void updateGroupImageAsync(File image, @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
-        if(image != null){
+    public void updateGroupImageAsync(File image,
+        @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
+        if (image != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
             GroupApi api = new GroupApi();
+
             try {
-                api.updateGroupImageAsync(DataProvider.getInstance().getCurrentGroupUID(), image, new ApiCallback<SuccessResponse>() {
+                api.updateGroupImageAsync(DataProvider.getInstance().getCurrentGroupUID(), image,
+                new ApiCallback<SuccessResponse>() {
                     @Override
                     public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                        if (listener != null) {
                             listener.onFailure(e);
                         }
                     }
 
                     @Override
-                    public void onSuccess(SuccessResponse result, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                    public void onSuccess(SuccessResponse result, int statusCode,
+                        Map<String, List<String>> responseHeaders) {
+                        if (listener != null) {
                             listener.onSuccess(result);
                         }
                     }
@@ -759,8 +774,9 @@ public class ServerCalls implements ServerCallsInterface{
 
                     }
                 });
-            } catch (ApiException e){
-                if(listener != null){
+
+            } catch (ApiException e) {
+                if (listener != null) {
                     listener.onFailure(e);
                 }
             }
@@ -769,18 +785,21 @@ public class ServerCalls implements ServerCallsInterface{
 
     @Override
     public ApiResponse<SuccessResponse> updateGroupImage(File image) {
-        if(image != null){
+        if (image != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
-            try{
+            try {
                 UpdateUserImage task = new UpdateUserImage();
                 return task.execute(image).get();
-            } catch (ExecutionException e){
+
+            } catch (ExecutionException e) {
                 return null;
-            } catch (InterruptedException e){
+
+            } catch (InterruptedException e) {
                 return null;
             }
         }
+
         return null;
     }
 
@@ -918,23 +937,25 @@ public class ServerCalls implements ServerCallsInterface{
     }
 
     @Override
-    public void updateShoppingListItemAsync(ListItem item, @Nullable final OnAsyncCallListener<ListItem> listener) {
-        if(item != null){
+    public void updateShoppingListItemAsync(ListItem item,
+        @Nullable final OnAsyncCallListener<ListItem> listener) {
+        if (item != null) {
             setAuth(FIREBASE_ID_AUTH_LABEL);
 
             try {
                 ShoppinglistApi api = new ShoppinglistApi();
-                api.createListItemAsync(DataProvider.getInstance().getCurrentGroupUID(), item, new ApiCallback<ListItem>() {
+                api.createListItemAsync(DataProvider.getInstance().getCurrentGroupUID(), item,
+                new ApiCallback<ListItem>() {
                     @Override
                     public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                        if (listener != null) {
                             listener.onFailure(e);
                         }
                     }
 
                     @Override
                     public void onSuccess(ListItem result, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                        if (listener != null) {
                             listener.onSuccess(result);
                         }
                     }
@@ -949,8 +970,9 @@ public class ServerCalls implements ServerCallsInterface{
 
                     }
                 });
-            } catch (ApiException e){
-                if(listener != null){
+
+            } catch (ApiException e) {
+                if (listener != null) {
                     listener.onFailure(e);
                 }
             }
@@ -959,38 +981,45 @@ public class ServerCalls implements ServerCallsInterface{
 
     @Override
     public ApiResponse<ListItem> updateShoppingListItem(ListItem item) {
-       if(item != null){
-           UpdateShoppingListItem task = new UpdateShoppingListItem();
+        if (item != null) {
+            UpdateShoppingListItem task = new UpdateShoppingListItem();
 
-           try{
-               return task.execute(item).get();
-           } catch (ExecutionException e){
-               return null;
-           } catch (InterruptedException e){
-               return null;
-           }
-       }
-       return null;
+            try {
+                return task.execute(item).get();
+
+            } catch (ExecutionException e) {
+                return null;
+
+            } catch (InterruptedException e) {
+                return null;
+            }
+        }
+
+        return null;
     }
 
     @Override
-    public void buyListItemsAsync(List<UUID> items, @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
-        if(items != null){
+    public void buyListItemsAsync(List<UUID> items,
+        @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
+        if (items != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
             ShoppinglistApi api = new ShoppinglistApi();
-            try{
-                api.buyListItemsAsync(DataProvider.getInstance().getCurrentGroupUID(), items, new ApiCallback<SuccessResponse>() {
+
+            try {
+                api.buyListItemsAsync(DataProvider.getInstance().getCurrentGroupUID(), items,
+                new ApiCallback<SuccessResponse>() {
                     @Override
                     public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                        if (listener != null) {
                             listener.onFailure(e);
                         }
                     }
 
                     @Override
-                    public void onSuccess(SuccessResponse result, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                    public void onSuccess(SuccessResponse result, int statusCode,
+                        Map<String, List<String>> responseHeaders) {
+                        if (listener != null) {
                             listener.onSuccess(result);
                         }
                     }
@@ -1005,8 +1034,9 @@ public class ServerCalls implements ServerCallsInterface{
 
                     }
                 });
-            } catch (ApiException e){
-                if(listener != null){
+
+            } catch (ApiException e) {
+                if (listener != null) {
                     listener.onFailure(e);
                 }
             }
@@ -1015,18 +1045,21 @@ public class ServerCalls implements ServerCallsInterface{
 
     @Override
     public ApiResponse<SuccessResponse> buyListItems(List<UUID> items) {
-        if(items != null){
+        if (items != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
-            try{
+            try {
                 BuyListItems task = new BuyListItems();
                 return task.execute(items).get();
-            } catch (ExecutionException e){
+
+            } catch (ExecutionException e) {
                 return null;
-            } catch (InterruptedException e){
+
+            } catch (InterruptedException e) {
                 return null;
             }
         }
+
         return null;
     }
 
@@ -1109,16 +1142,18 @@ public class ServerCalls implements ServerCallsInterface{
 
         @Override
         protected ApiResponse<byte[]> doInBackground(String... strings) {
-            if(strings != null && strings.length > 0){
+            if (strings != null && strings.length > 0) {
                 setAuth(USER_ID_AUTH_LABEL);
                 UserApi api = new UserApi();
 
-                try{
+                try {
                     return api.getUserImageWithHttpInfo(strings[0]);
-                } catch (ApiException e){
+
+                } catch (ApiException e) {
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
+
             return null;
         }
     }
@@ -1229,9 +1264,11 @@ public class ServerCalls implements ServerCallsInterface{
             setAuth(USER_ID_AUTH_LABEL);
 
             GroupApi api = new GroupApi();
-            try{
+
+            try {
                 return api.createGroupCodeWithHttpInfo(DataProvider.getInstance().getCurrentGroupUID());
-            } catch (ApiException e){
+
+            } catch (ApiException e) {
                 return new ApiResponse<GroupCode>(e.getCode(), e.getResponseHeaders(), null);
             }
         }
@@ -1244,9 +1281,11 @@ public class ServerCalls implements ServerCallsInterface{
             setAuth(USER_ID_AUTH_LABEL);
 
             GroupApi api = new GroupApi();
-            try{
+
+            try {
                 return api.getGroupImageWithHttpInfo(DataProvider.getInstance().getCurrentGroupUID());
-            } catch (ApiException e){
+
+            } catch (ApiException e) {
                 return new ApiResponse<byte[]>(e.getCode(), e.getResponseHeaders(), null);
             }
         }
@@ -1256,16 +1295,19 @@ public class ServerCalls implements ServerCallsInterface{
 
         @Override
         protected ApiResponse<SuccessResponse> doInBackground(File... files) {
-            if(files != null && files.length > 0){
+            if (files != null && files.length > 0) {
                 setAuth(USER_ID_AUTH_LABEL);
 
                 GroupApi api = new GroupApi();
-                try{
+
+                try {
                     return api.updateGroupImageWithHttpInfo(DataProvider.getInstance().getCurrentGroupUID(), files[0]);
-                } catch (ApiException e){
+
+                } catch (ApiException e) {
                     return new ApiResponse<SuccessResponse>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
+
             return null;
         }
     }
@@ -1314,20 +1356,23 @@ public class ServerCalls implements ServerCallsInterface{
         }
     }
 
-    private class UpdateShoppingListItem extends AsyncTask<ListItem, Void, ApiResponse<ListItem>>{
+    private class UpdateShoppingListItem extends AsyncTask<ListItem, Void, ApiResponse<ListItem>> {
 
         @Override
         protected ApiResponse<ListItem> doInBackground(ListItem... listItems) {
-            if(listItems != null && listItems.length > 0){
+            if (listItems != null && listItems.length > 0) {
                 setAuth(FIREBASE_ID_AUTH_LABEL);
                 ShoppinglistApi api = new ShoppinglistApi();
 
-                try{
-                    return api.updateListItemWithHttpInfo(DataProvider.getInstance().getCurrentGroupUID(), listItems[0]);
-                } catch (ApiException e){
+                try {
+                    return api.updateListItemWithHttpInfo(DataProvider.getInstance().getCurrentGroupUID(),
+                            listItems[0]);
+
+                } catch (ApiException e) {
                     return new ApiResponse<ListItem>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
+
             return null;
         }
     }
@@ -1336,16 +1381,19 @@ public class ServerCalls implements ServerCallsInterface{
 
         @Override
         protected ApiResponse<SuccessResponse> doInBackground(List<UUID>[] lists) {
-            if(lists != null && lists.length > 0){
+            if (lists != null && lists.length > 0) {
                 setAuth(USER_ID_AUTH_LABEL);
 
                 ShoppinglistApi api = new ShoppinglistApi();
-                try{
+
+                try {
                     return api.buyListItemsWithHttpInfo(DataProvider.getInstance().getCurrentGroupUID(), lists[0]);
-                } catch (ApiException e){
+
+                } catch (ApiException e) {
                     return new ApiResponse<SuccessResponse>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
+
             return null;
         }
     }

@@ -22,7 +22,7 @@ import io.swagger.client.model.User;
 
 public class DataProvider implements DataProviderInterface {
 
-    public interface OnDataChangeListener{
+    public interface OnDataChangeListener {
 
         void onDataChanged(final DataType type);
     }
@@ -56,23 +56,23 @@ public class DataProvider implements DataProviderInterface {
 
     private ArrayList<OnDataChangeListener> mListeners;
 
-    static{
+    static {
         singleton = new DataProvider();
     }
 
-    public static void initialize(ServerCallsInterface serverCallsInstance){
+    public static void initialize(ServerCallsInterface serverCallsInstance) {
         singleton.setServerCallsInstance(serverCallsInstance);
     }
 
-    public static boolean isInitialized(){
+    public static boolean isInitialized() {
         return singleton.serverCallsInstance != null;
     }
 
-    public static DataProvider getInstance(){
+    public static DataProvider getInstance() {
         return singleton;
     }
 
-    private DataProvider(){
+    private DataProvider() {
         currentUserUid = "";
         currentUserDisplayName = "";
         currentUserEmail = null;
@@ -93,28 +93,30 @@ public class DataProvider implements DataProviderInterface {
         mListeners = new ArrayList<>();
     }
 
-    private void setServerCallsInstance(ServerCallsInterface serverCallsInstance){
+    private void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
         this.serverCallsInstance = serverCallsInstance;
     }
 
-    public SetUpState initialize(String uid, Context context){
-        if(uid != null && !uid.isEmpty()){
+    public SetUpState initialize(String uid, Context context) {
+        if (uid != null && !uid.isEmpty()) {
             currentUserUid = uid;
             Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
             ApiResponse<User> userResponse = serverCallsInstance.getUser(uid);
 
-            if(userResponse != null && userResponse.getData() != null){
+            if (userResponse != null && userResponse.getData() != null) {
                 User user = userResponse.getData();
 
                 currentUserUid = user.getUid();
                 currentUserDisplayName = user.getDisplayName();
                 currentUserEmail = user.getEmail();
                 currentGroupUID = user.getGroupUID();
-                if(currentUserFirebaseInstanceId.isEmpty()){
+
+                if (currentUserFirebaseInstanceId.isEmpty()) {
                     currentUserFirebaseInstanceId = user.getFirebaseInstanceID();
 
-                    if(!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())){
-                        currentUserFirebaseInstanceId = Configuration.singleton.getConfig(Configuration.Type.FIREBASE_INSTANCE_ID);
+                    if (!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())) {
+                        currentUserFirebaseInstanceId = Configuration.singleton.getConfig(
+                                Configuration.Type.FIREBASE_INSTANCE_ID);
 
                         updateUser();
                     }
@@ -122,25 +124,30 @@ public class DataProvider implements DataProviderInterface {
 
                 ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(currentUserUid);
 
-                if(imageResponse != null && imageResponse.getStatusCode() == 200){
-                    currentUserPicture = BitmapFactory.decodeByteArray(imageResponse.getData(), 0, imageResponse.getData().length);
+                if (imageResponse != null && imageResponse.getStatusCode() == 200) {
+                    currentUserPicture = BitmapFactory.decodeByteArray(imageResponse.getData(), 0,
+                            imageResponse.getData().length);
                 }
+
             } else if (userResponse != null && userResponse.getData() == null) {
-                if(userResponse.getStatusCode() == 404){
+                if (userResponse.getStatusCode() == 404) {
                     return SetUpState.UNREGISTERED;
-                } else if (userResponse.getStatusCode() != 0){
+
+                } else if (userResponse.getStatusCode() != 0) {
                     return SetUpState.GET_USER_FAILED;
+
                 } else {
                     return SetUpState.CONNECTION_FAILED;
                 }
+
             } else {
                 return SetUpState.CONNECTION_FAILED;
             }
 
-            if(currentGroupUID != null){
+            if (currentGroupUID != null) {
                 ApiResponse<Group> groupResponse = serverCallsInstance.getGroup(currentGroupUID);
 
-                if(groupResponse != null && groupResponse.getData() != null){
+                if (groupResponse != null && groupResponse.getData() != null) {
                     Group group = groupResponse.getData();
 
                     currentGroupName = group.getDisplayName();
@@ -151,33 +158,40 @@ public class DataProvider implements DataProviderInterface {
 
                     ApiResponse<ShoppingList> shoppingListResponse = serverCallsInstance.getShoppingList();
 
-                    if(shoppingListResponse != null && shoppingListResponse.getData() != null){
+                    if (shoppingListResponse != null && shoppingListResponse.getData() != null) {
                         List<ListItem> items = shoppingListResponse.getData().getListItems();
-                        if(items == null){
+
+                        if (items == null) {
                             this.currentShoppingList = new ArrayList<>();
+
                         } else {
                             this.currentShoppingList = items;
                         }
+
                         selectedItems = new ArrayList<>();
+
                     } else {
                         currentShoppingList = new ArrayList<>();
                         selectedItems = new ArrayList<>();
                     }
 
                     return SetUpState.SETUP_COMPLETED;
+
                 } else {
                     return SetUpState.GET_GROUP_FAILED;
                 }
+
             } else {
                 return SetUpState.REGISTERED;
             }
         }
+
         return SetUpState.GET_USER_FAILED;
     }
 
     @Override
     public boolean registerUser() {
-        if(currentUserDisplayName != null && !currentUserDisplayName.isEmpty()) {
+        if (currentUserDisplayName != null && !currentUserDisplayName.isEmpty()) {
             User user = new User();
             user.setUid(currentUserUid);
             user.setDisplayName(currentUserDisplayName);
@@ -186,34 +200,37 @@ public class DataProvider implements DataProviderInterface {
 
             ApiResponse<User> userResponse = serverCallsInstance.createUser(user);
 
-            if(userResponse != null && userResponse.getData() != null){
+            if (userResponse != null && userResponse.getData() != null) {
                 user = userResponse.getData();
                 currentUserUid = user.getUid();
                 currentUserDisplayName = user.getDisplayName();
                 currentUserEmail = user.getEmail();
-                if(currentUserFirebaseInstanceId.isEmpty()) {
+
+                if (currentUserFirebaseInstanceId.isEmpty()) {
                     currentUserFirebaseInstanceId = getFirebaseInstanceId();
 
-                    if(!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())){
-                        currentUserFirebaseInstanceId = Configuration.singleton.getConfig(Configuration.Type.FIREBASE_INSTANCE_ID);
+                    if (!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())) {
+                        currentUserFirebaseInstanceId = Configuration.singleton.getConfig(
+                                Configuration.Type.FIREBASE_INSTANCE_ID);
 
                         updateUser();
                     }
                 }
 
-                if(ImageStore.getInstance().getProfilePictureFile() != null) {
+                if (ImageStore.getInstance().getProfilePictureFile() != null) {
                     serverCallsInstance.updateUserImage(ImageStore.getInstance().getProfilePictureFile());
                 }
 
                 return true;
             }
         }
+
         return false;
     }
 
     @Override
     public void setFirebaseInstanceId(String token) {
-        if(token != null) {
+        if (token != null) {
             this.currentUserFirebaseInstanceId = token;
             Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }
@@ -226,7 +243,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentUserDisplayName(String displayName) {
-        if(displayName != null && !currentUserDisplayName.equals(displayName)){
+        if (displayName != null && !currentUserDisplayName.equals(displayName)) {
             this.currentUserDisplayName = displayName;
             Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
             updateUser();
@@ -236,7 +253,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentUserImage(Bitmap bitmap) {
-        if(bitmap != null) {
+        if (bitmap != null) {
             currentUserPicture = bitmap;
             ImageStore.getInstance().setProfilePicture(bitmap);
             updateUserImage();
@@ -246,10 +263,11 @@ public class DataProvider implements DataProviderInterface {
 
     private void updateUserImage() {
         File file = ImageStore.getInstance().getProfilePictureFile();
-        if(file != null){
+
+        if (file != null) {
             ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateUserImage(file);
 
-            if(imageResponse != null && imageResponse.getData() != null){
+            if (imageResponse != null && imageResponse.getData() != null) {
                 callAllListeners(DataType.CURRENT_USER);
             }
         }
@@ -265,7 +283,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentUserLocale(Locale locale) {
-        if(locale != null && !currentUserLocale.equals(locale)){
+        if (locale != null && !currentUserLocale.equals(locale)) {
             this.currentUserLocale = locale;
             updateUser();
             callAllListeners(DataType.CURRENT_USER);
@@ -284,7 +302,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public Bitmap getCurrentUserImage(Context context) {
-        if(currentUserPicture != null) {
+        if (currentUserPicture != null) {
             return currentUserPicture;
         }
 
@@ -304,7 +322,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentGroupName(String groupName) {
-        if(groupName != null && !groupName.isEmpty()){
+        if (groupName != null && !groupName.isEmpty()) {
             this.currentGroupName = groupName;
             callAllListeners(DataType.CURRENT_GROUP);
         }
@@ -312,7 +330,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentGroupCurrency(Currency currency) {
-        if(currency != null){
+        if (currency != null) {
             this.currentGroupCurrency = currency;
             callAllListeners(DataType.CURRENT_GROUP);
         }
@@ -351,13 +369,14 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public User getUserByUid(String uid) {
-        if(currentGroupMembers != null){
-            for(User user: currentGroupMembers){
-                if(user.getUid().equals(uid)){
+        if (currentGroupMembers != null) {
+            for (User user : currentGroupMembers) {
+                if (user.getUid().equals(uid)) {
                     return user;
                 }
             }
         }
+
         return new User();
     }
 
@@ -375,7 +394,7 @@ public class DataProvider implements DataProviderInterface {
 
         ApiResponse<Group> groupResponse = createGroup(group);
 
-        if(groupResponse != null && groupResponse.getData() != null){
+        if (groupResponse != null && groupResponse.getData() != null) {
             group = groupResponse.getData();
             currentGroupUID = group.getUid();
             currentGroupName = group.getDisplayName();
@@ -388,6 +407,7 @@ public class DataProvider implements DataProviderInterface {
             syncShoppingList();
             return true;
         }
+
         return false;
     }
 
@@ -395,7 +415,7 @@ public class DataProvider implements DataProviderInterface {
     public boolean joinCurrentGroup(String accessKey, Context context) {
         ApiResponse<Group> groupResponse = joinGroup(accessKey);
 
-        if(groupResponse != null && groupResponse.getData() != null){
+        if (groupResponse != null && groupResponse.getData() != null) {
             Group group = groupResponse.getData();
             currentGroupUID = group.getUid();
             currentGroupName = group.getDisplayName();
@@ -408,6 +428,7 @@ public class DataProvider implements DataProviderInterface {
             syncShoppingList();
             return true;
         }
+
         return false;
     }
 
@@ -415,7 +436,7 @@ public class DataProvider implements DataProviderInterface {
     public boolean leaveCurrentGroup() {
         ApiResponse<SuccessResponse> groupResponse = leaveGroup();
 
-        if(groupResponse != null && groupResponse.getData() != null){
+        if (groupResponse != null && groupResponse.getData() != null) {
             currentGroupUID = null;
             currentGroupName = null;
             currentGroupCurrency = null;
@@ -431,36 +452,41 @@ public class DataProvider implements DataProviderInterface {
 
             return true;
         }
+
         return false;
     }
 
     @Override
     public boolean addShoppingListItem(ListItem item) {
-        if(item != null && currentShoppingList != null){
-            for(ListItem currentItem: currentShoppingList){
-                if(currentItem.getTitle().equals(item.getTitle()) && currentItem.getRequestedFor().equals(item.getRequestedFor())){
+        if (item != null && currentShoppingList != null) {
+            for (ListItem currentItem : currentShoppingList) {
+                if (currentItem.getTitle().equals(item.getTitle()) &&
+                    currentItem.getRequestedFor().equals(item.getRequestedFor())) {
                     currentItem.setCount(currentItem.getCount() + item.getCount());
                     ApiResponse<ListItem> itemResponse = updateListItem(currentItem);
 
-                    if(itemResponse != null && itemResponse.getData() != null){
+                    if (itemResponse != null && itemResponse.getData() != null) {
                         return true;
                     }
+
                     return false;
                 }
             }
 
             ApiResponse<ListItem> itemRepsonse = addListItem(item);
 
-            if(itemRepsonse != null && itemRepsonse.getData() != null){
+            if (itemRepsonse != null && itemRepsonse.getData() != null) {
                 return true;
             }
         }
+
         return false;
     }
 
     @Override
     public void selectShoppingListItem(ListItem item) {
-        if(item != null && currentShoppingList != null && selectedItems != null && currentShoppingList.contains(item)){
+        if (item != null && currentShoppingList != null && selectedItems != null &&
+            currentShoppingList.contains(item)) {
             selectedItems.add(item);
             callAllListeners(DataType.SELECTED_ITEMS);
         }
@@ -480,7 +506,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void buySelection() {
-        if(currentShoppingList != null && selectedItems != null){
+        if (currentShoppingList != null && selectedItems != null) {
             currentShoppingList.removeAll(selectedItems);
             selectedItems.clear();
             callAllListeners(DataType.SHOPPING_LIST);
@@ -490,18 +516,20 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public ArrayList<ListItem> getCurrentShoppingList() {
-        if(currentShoppingList != null) {
+        if (currentShoppingList != null) {
             ArrayList<ListItem> items = new ArrayList<>();
             items.addAll(currentShoppingList);
             return items;
         }
+
         return new ArrayList<>();
     }
 
     @Override
     public boolean isSomethingSelected() {
-        if(selectedItems != null){
+        if (selectedItems != null) {
             return !selectedItems.isEmpty();
+
         } else {
             return false;
         }
@@ -511,7 +539,7 @@ public class DataProvider implements DataProviderInterface {
     public void syncGroup(Context context) {
         ApiResponse<Group> groupResponse = getGroup();
 
-        if(groupResponse != null && groupResponse.getData() != null){
+        if (groupResponse != null && groupResponse.getData() != null) {
             Group group = groupResponse.getData();
 
             currentGroupUID = group.getUid();
@@ -530,21 +558,22 @@ public class DataProvider implements DataProviderInterface {
     public void syncShoppingList() {
         ApiResponse<ShoppingList> shoppingListResponse = getShoppingList();
 
-        if(shoppingListResponse != null && shoppingListResponse.getData() != null){
+        if (shoppingListResponse != null && shoppingListResponse.getData() != null) {
             List<ListItem> items = shoppingListResponse.getData().getListItems();
 
-            if(items == null){
+            if (items == null) {
                 currentShoppingList = new ArrayList<>();
                 selectedItems = new ArrayList<>();
+
             } else {
                 currentShoppingList = items;
 
-                if(selectedItems == null){
+                if (selectedItems == null) {
                     selectedItems = new ArrayList<>();
                 }
 
-                for(ListItem item: selectedItems){
-                    if(!currentShoppingList.contains(item)){
+                for (ListItem item : selectedItems) {
+                    if (!currentShoppingList.contains(item)) {
                         selectedItems.remove(item);
                     }
                 }
@@ -555,7 +584,7 @@ public class DataProvider implements DataProviderInterface {
         }
     }
 
-    private ApiResponse<User> updateUser(){
+    private ApiResponse<User> updateUser() {
         User user = new User();
         user.setUid(currentUserUid);
         user.setDisplayName(currentUserDisplayName);
@@ -566,15 +595,15 @@ public class DataProvider implements DataProviderInterface {
         return serverCallsInstance.updateUser(user);
     }
 
-    private ApiResponse<User> getUser(String uid){
+    private ApiResponse<User> getUser(String uid) {
         return serverCallsInstance.getUser(uid);
     }
 
-    private ApiResponse<Group> getGroup(){
+    private ApiResponse<Group> getGroup() {
         return serverCallsInstance.getGroup(currentGroupUID);
     }
 
-    private ApiResponse<Group> updateGroup(){
+    private ApiResponse<Group> updateGroup() {
         Group group = new Group();
         group.setDisplayName(currentGroupName);
         group.setCurrency(currentGroupCurrency.getSymbol());
@@ -585,45 +614,46 @@ public class DataProvider implements DataProviderInterface {
         return null;
     }
 
-    private ApiResponse<Group> joinGroup(String accessKey){
+    private ApiResponse<Group> joinGroup(String accessKey) {
         return serverCallsInstance.joinGroup(accessKey);
     }
 
-    private ApiResponse<SuccessResponse> leaveGroup(){
+    private ApiResponse<SuccessResponse> leaveGroup() {
         return serverCallsInstance.leaveGroup();
     }
 
-    private ApiResponse<Group> createGroup(Group group){
+    private ApiResponse<Group> createGroup(Group group) {
         return serverCallsInstance.createGroup(group);
     }
 
-    private ApiResponse<ShoppingList> getShoppingList(){
+    private ApiResponse<ShoppingList> getShoppingList() {
         return serverCallsInstance.getShoppingList();
     }
 
-    private ApiResponse<ListItem> addListItem(ListItem item){
+    private ApiResponse<ListItem> addListItem(ListItem item) {
         return serverCallsInstance.createShoppingListItem(item);
     }
 
-    private ApiResponse<ListItem> updateListItem(ListItem item){
+    private ApiResponse<ListItem> updateListItem(ListItem item) {
         return serverCallsInstance.updateShoppingListItem(item);
     }
 
-    private void initializeMembers(Context context){
+    private void initializeMembers(Context context) {
         currentGroupMembers = new ArrayList<>();
         currentGroupMemberImages = new ArrayList<>();
-        for(String uid: currentGroupMembersUids){
-            if(uid != null){
+
+        for (String uid : currentGroupMembersUids) {
+            if (uid != null) {
                 ApiResponse<User> userResponse = getUser(uid);
 
-                if(userResponse != null && userResponse.getData() != null){
+                if (userResponse != null && userResponse.getData() != null) {
                     User user = userResponse.getData();
                     currentGroupMembers.add(user);
 
-                    if(ImageStore.getInstance().loadGroupMemberPicture(user.getUid(), context) == null){
+                    if (ImageStore.getInstance().loadGroupMemberPicture(user.getUid(), context) == null) {
                         ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(user.getUid());
 
-                        if(imageResponse != null && imageResponse.getData() != null){
+                        if (imageResponse != null && imageResponse.getData() != null) {
                             ImageStore.getInstance().writeGroupMemberPicture(user.getUid(), imageResponse.getData(), context);
                         }
                     }
@@ -632,20 +662,20 @@ public class DataProvider implements DataProviderInterface {
         }
     }
 
-    private void callAllListeners(DataType type){
-        for(OnDataChangeListener listener: mListeners){
+    private void callAllListeners(DataType type) {
+        for (OnDataChangeListener listener : mListeners) {
             listener.onDataChanged(type);
         }
     }
 
-    public void addOnDataChangeListener(OnDataChangeListener listener){
-        if(listener != null) {
+    public void addOnDataChangeListener(OnDataChangeListener listener) {
+        if (listener != null) {
             mListeners.add(listener);
         }
     }
 
-    public void removeOnDataChangeListener(OnDataChangeListener listener){
-        if(listener != null){
+    public void removeOnDataChangeListener(OnDataChangeListener listener) {
+        if (listener != null) {
             mListeners.remove(listener);
         }
     }

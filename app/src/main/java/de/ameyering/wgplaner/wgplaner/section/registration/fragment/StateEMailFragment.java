@@ -50,6 +50,7 @@ public class StateEMailFragment extends NavigationFragment {
                     DataProvider.getInstance().setCurrentUserEmail(emailAddress);
 
                     finish();
+
                 } else {
                     Toast.makeText(getContext(), "Email is invalid", Toast.LENGTH_LONG).show();
                 }
@@ -76,13 +77,15 @@ public class StateEMailFragment extends NavigationFragment {
         return matcher.matches();
     }
 
-    private void finish(){
-        if(DataProvider.getInstance().registerUser()){
+    private void finish() {
+        if (DataProvider.getInstance().registerUser()) {
             Intent intent = new Intent(getContext(), SetUpActivity.class);
             startActivity(intent);
             getActivity().finish();
+
         } else {
-            Toast.makeText(getContext(), getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.server_connection_failed),
+                Toast.LENGTH_LONG).show();
         }
     }
 }

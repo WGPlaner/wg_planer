@@ -115,7 +115,8 @@ public class CategoryHolder {
                             header.append(DataProvider.getInstance().getUserByUid(requestedFor.get(i)).getDisplayName());
 
                         } else {
-                            header.append(" || " + DataProvider.getInstance().getUserByUid(requestedFor.get(i)).getDisplayName());
+                            header.append(" || " + DataProvider.getInstance().getUserByUid(requestedFor.get(
+                                        i)).getDisplayName());
                         }
                     }
                 }
@@ -145,7 +146,8 @@ public class CategoryHolder {
                         header.append(DataProvider.getInstance().getUserByUid(requestedFor.get(i)).getDisplayName());
 
                     } else {
-                        header.append(" || " + DataProvider.getInstance().getUserByUid(requestedFor.get(i)).getDisplayName());
+                        header.append(" || " + DataProvider.getInstance().getUserByUid(requestedFor.get(
+                                    i)).getDisplayName());
                     }
                 }
             }

@@ -36,19 +36,23 @@ public class SetUpActivity extends AppCompatActivity {
         });
 
 
-        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+        getSupportFragmentManager().addOnBackStackChangedListener(new
+        FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                     getSupportActionBar().hide();
+
                 } else {
                     getSupportActionBar().show();
                 }
             }
         });
 
-        if(savedInstanceState != null){
-            descriptionFragment = (DescriptionFragment) getSupportFragmentManager().getFragment(savedInstanceState, DESCRIPTION_FRAGMENT_TAG);
+        if (savedInstanceState != null) {
+            descriptionFragment = (DescriptionFragment) getSupportFragmentManager().getFragment(
+                    savedInstanceState, DESCRIPTION_FRAGMENT_TAG);
+
         } else {
             loadDescriptionFragment();
             toolbar.setVisibility(View.GONE);
@@ -58,12 +62,14 @@ public class SetUpActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState,DESCRIPTION_FRAGMENT_TAG, descriptionFragment);
+        getSupportFragmentManager().putFragment(outState, DESCRIPTION_FRAGMENT_TAG, descriptionFragment);
     }
 
-    private void loadDescriptionFragment(){
+    private void loadDescriptionFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
+        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+            R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+            R.anim.anim_fragment_exit_to_right);
         transaction.add(R.id.container_set_up, descriptionFragment);
         transaction.commit();
     }
@@ -73,12 +79,14 @@ public class SetUpActivity extends AppCompatActivity {
         popBackStack();
     }
 
-    private void popBackStack(){
-        if(getSupportFragmentManager().getBackStackEntryCount() == 0){
-            if(!toastWasShown) {
-                Toast toast = Toast.makeText(this, getString(R.string.back_press_leave_notification), Toast.LENGTH_LONG);
+    private void popBackStack() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            if (!toastWasShown) {
+                Toast toast = Toast.makeText(this, getString(R.string.back_press_leave_notification),
+                        Toast.LENGTH_LONG);
                 toast.show();
                 toastWasShown = true;
+
             } else {
                 finish();
             }

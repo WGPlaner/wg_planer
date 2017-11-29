@@ -53,8 +53,8 @@ public class HomeActivity extends AppCompatActivity
         DataProvider.getInstance().addOnDataChangeListener(new DataProvider.OnDataChangeListener() {
             @Override
             public void onDataChanged(DataProvider.DataType type) {
-                if(type == DataProvider.DataType.CURRENT_GROUP){
-                    if(DataProvider.getInstance().getCurrentGroupUID() == null){
+                if (type == DataProvider.DataType.CURRENT_GROUP) {
+                    if (DataProvider.getInstance().getCurrentGroupUID() == null) {
                         Intent intent = new Intent(HomeActivity.this, SetUpActivity.class);
                         startActivity(intent);
                         finish();
@@ -133,6 +133,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_profile_settings) {
             startActivityForResult(new Intent(this, ProfileSettingsActivity.class), REQ_CODE_PROFILE_SETTINGS);
+
         } else if (id == R.id.nav_group_settings) {
 
         } else {

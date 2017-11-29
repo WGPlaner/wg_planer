@@ -298,7 +298,8 @@ public class ShoppingListItemAdapter extends
                 args.putInt(NUMBER, FALSE_VALUE);
             }
 
-            if (title == FALSE_VALUE && requestedBy == FALSE_VALUE && requestedFor == FALSE_VALUE && number == FALSE_VALUE) {
+            if (title == FALSE_VALUE && requestedBy == FALSE_VALUE && requestedFor == FALSE_VALUE &&
+                number == FALSE_VALUE) {
                 return null;
             }
 
@@ -336,7 +337,8 @@ public class ShoppingListItemAdapter extends
                 }
             }
 
-            if (newRequestedFor != null && oldRequestedFor != null && !newRequestedFor.equals(oldRequestedFor)) {
+            if (newRequestedFor != null && oldRequestedFor != null &&
+                !newRequestedFor.equals(oldRequestedFor)) {
                 return false;
             }
 

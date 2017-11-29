@@ -57,7 +57,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isInEditMode) {
+                if (isInEditMode) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
                     builder.setMessage(getString(R.string.dialog_discard_message));
                     builder.setPositiveButton(R.string.dialog_discard_positive, new DialogInterface.OnClickListener() {
@@ -76,6 +76,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                     });
                     AlertDialog dialog = builder.create();
                     dialog.show();
+
                 } else {
                     setResult(RESULT_CANCELED);
                     finish();
@@ -116,11 +117,13 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         btLeaveGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(DataProvider.getInstance().leaveCurrentGroup()){
+                if (DataProvider.getInstance().leaveCurrentGroup()) {
                     setResult(RESULT_OK);
                     finish();
+
                 } else {
-                    Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed),
+                        Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -229,9 +232,10 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         MenuItem save = menu.findItem(R.id.edit_fullscreen_save);
         MenuItem edit = menu.findItem(R.id.edit_fullscreen_edit);
 
-        if(isInEditMode){
+        if (isInEditMode) {
             save.setVisible(true);
             edit.setVisible(false);
+
         } else {
             edit.setVisible(true);
             save.setVisible(false);
@@ -253,6 +257,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                     return true;
                 }
             }
+
             case R.id.edit_fullscreen_edit: {
                 isInEditMode = true;
                 item.setVisible(false);

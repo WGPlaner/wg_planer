@@ -42,7 +42,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         View view = inflater.inflate(R.layout.fragment_upload_profile_picture_registration, container,
                 false);
 
-        if(stateEMailFragment == null){
+        if (stateEMailFragment == null) {
             stateEMailFragment = new StateEMailFragment();
         }
 
@@ -100,24 +100,28 @@ public class UploadProfilePictureFragment extends NavigationFragment {
                 if (resultCode == getActivity().RESULT_OK) {
 
                     selectedImage = data.getData();
+
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
                         bitmap = scaleBitmap(bitmap);
                         image.setImageBitmap(bitmap);
                         image.startAnimation(AnimationUtils.loadAnimation(getContext(),
-                            R.anim.anim_load_new_profile_picture));
+                                R.anim.anim_load_new_profile_picture));
 
                     } catch (IOException e) {
                         Toast.makeText(getContext(), "Failed to load Picture", Toast.LENGTH_LONG).show();
                     }
                 }
+
                 break;
         }
     }
 
-    private void loadNext(){
+    private void loadNext() {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
+        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+            R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+            R.anim.anim_fragment_exit_to_right);
         transaction.hide(UploadProfilePictureFragment.this);
         transaction.add(R.id.container_registration, stateEMailFragment);
         transaction.addToBackStack("");

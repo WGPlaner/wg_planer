@@ -31,40 +31,45 @@ public class ImageStore {
         singleton = new ImageStore();
     }
 
-    public static void initialize(Context context){
+    public static void initialize(Context context) {
         singleton.profilePicture = new File(context.getFilesDir(), profilePictureName);
         singleton.groupPicture = new File(context.getFilesDir(), groupPictureName);
 
-        if(singleton.profilePictureBytes == null){
-            if(singleton.profilePicture.exists()){
+        if (singleton.profilePictureBytes == null) {
+            if (singleton.profilePicture.exists()) {
                 singleton.loadProfilePicture();
+
             } else {
                 try {
                     singleton.profilePicture.createNewFile();
-                } catch (IOException e){
+
+                } catch (IOException e) {
                     Log.e("ProfilePicture", ":FileCreationFailed");
                 }
             }
         }
-        if(singleton.groupPictureBytes == null){
-            if(singleton.groupPicture.exists()){
+
+        if (singleton.groupPictureBytes == null) {
+            if (singleton.groupPicture.exists()) {
                 singleton.loadGroupPicture();
+
             } else {
-                try{
+                try {
                     singleton.groupPicture.createNewFile();
-                } catch (IOException e){
+
+                } catch (IOException e) {
                     Log.e("GroupPicture", ":FileCreationFailed");
                 }
             }
         }
     }
 
-    public static ImageStore getInstance(){
+    public static ImageStore getInstance() {
         return singleton;
     }
 
-    public void setProfilePicture(Bitmap profilePicture){
-        if(profilePicture != null) {
+    public void setProfilePicture(Bitmap profilePicture) {
+        if (profilePicture != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             profilePicture.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             profilePictureBytes = outputStream.toByteArray();
@@ -73,8 +78,8 @@ public class ImageStore {
         }
     }
 
-    public void setGroupPicture(Bitmap groupPicture){
-        if(groupPicture != null) {
+    public void setGroupPicture(Bitmap groupPicture) {
+        if (groupPicture != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             groupPicture.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             groupPictureBytes = outputStream.toByteArray();
@@ -83,71 +88,81 @@ public class ImageStore {
         }
     }
 
-    public Bitmap getProfileBitmap(Context context){
-        if(profilePictureBytes != null && profilePictureBytes.length > 0) {
+    public Bitmap getProfileBitmap(Context context) {
+        if (profilePictureBytes != null && profilePictureBytes.length > 0) {
             return BitmapFactory.decodeByteArray(profilePictureBytes, 0, profilePictureBytes.length);
+
         } else {
             return BitmapFactory.decodeResource(context.getResources(), R.drawable.profile_picture_dummy);
         }
     }
 
-    public Bitmap getGroupBitmap(){
+    public Bitmap getGroupBitmap() {
         return BitmapFactory.decodeByteArray(groupPictureBytes, 0, groupPictureBytes.length);
     }
 
-    public File getProfilePictureFile(){
+    public File getProfilePictureFile() {
         return profilePicture;
     }
 
-    public File getGroupPictureFile(){
+    public File getGroupPictureFile() {
         return groupPicture;
     }
 
-    private void writeProfilePicture(byte[] profilePictureBytes){
+    private void writeProfilePicture(byte[] profilePictureBytes) {
         FileOutputStream fileOutputStream = null;
 
-        try{
+        try {
             fileOutputStream = new FileOutputStream(profilePicture);
             fileOutputStream.write(profilePictureBytes);
-        } catch (FileNotFoundException e){
+
+        } catch (FileNotFoundException e) {
             profilePicture = null;
-        } catch (IOException e){
+
+        } catch (IOException e) {
             this.profilePictureBytes = null;
+
         } finally {
-            try{
+            try {
                 fileOutputStream.close();
-            } catch (IOException e){
+
+            } catch (IOException e) {
                 Log.e("ProfilePicture", ":OutputStreamCloseFailed");
             }
         }
     }
 
-    private void writeGroupPicture(byte[] groupPictureBytes){
+    private void writeGroupPicture(byte[] groupPictureBytes) {
         FileOutputStream fileOutputStream = null;
 
-        try{
+        try {
             fileOutputStream = new FileOutputStream(groupPicture);
             fileOutputStream.write(groupPictureBytes);
-        } catch (FileNotFoundException e){
+
+        } catch (FileNotFoundException e) {
             groupPicture = null;
-        } catch (IOException e){
+
+        } catch (IOException e) {
             this.groupPictureBytes = null;
+
         } finally {
-            try{
+            try {
                 fileOutputStream.close();
-            } catch (IOException e){
+
+            } catch (IOException e) {
                 Log.e("GroupPicture", ":OutputStreamCloseFailed");
             }
         }
     }
 
-    public boolean writeGroupMemberPicture(String uid, byte[] imageBytes, Context context){
+    public boolean writeGroupMemberPicture(String uid, byte[] imageBytes, Context context) {
         File image = new File(context.getFilesDir(), uid + ".jpg");
 
-        if(!image.exists()){
+        if (!image.exists()) {
             try {
                 image.createNewFile();
-            } catch (IOException e){
+
+            } catch (IOException e) {
                 return false;
             }
         }
@@ -155,28 +170,33 @@ public class ImageStore {
         FileOutputStream fileOutputStream = null;
         boolean success = false;
 
-        try{
+        try {
             fileOutputStream = new FileOutputStream(image);
             fileOutputStream.write(imageBytes);
             success = true;
-        } catch (FileNotFoundException e){
+
+        } catch (FileNotFoundException e) {
             success = false;
-        } catch (IOException e){
+
+        } catch (IOException e) {
             success = false;
+
         } finally {
-            try{
+            try {
                 fileOutputStream.close();
-            } catch (IOException e){
+
+            } catch (IOException e) {
                 Log.e("GroupMemberPicture", ":FailedToCloseOutputStream");
             }
+
             return success;
         }
     }
 
-    public Bitmap loadGroupMemberPicture(String uid, Context context){
+    public Bitmap loadGroupMemberPicture(String uid, Context context) {
         File image = new File(context.getFilesDir(), uid + ".jpg");
 
-        if(!image.exists()){
+        if (!image.exists()) {
             return null;
         }
 
@@ -184,21 +204,26 @@ public class ImageStore {
         byte[] imageBytes = null;
         Bitmap bitmapImage = null;
 
-        try{
+        try {
             fileInputStream = new FileInputStream(image);
             imageBytes = new byte[(int) image.length()];
             fileInputStream.read(imageBytes);
             bitmapImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        } catch (FileNotFoundException e){
+
+        } catch (FileNotFoundException e) {
             bitmapImage = null;
-        } catch (IOException e){
+
+        } catch (IOException e) {
             bitmapImage = null;
+
         } finally {
-            try{
+            try {
                 fileInputStream.close();
-            } catch (IOException e){
+
+            } catch (IOException e) {
                 Log.e("GroupMemberPicture", ":FailedToCloseInputStream");
             }
+
             return bitmapImage;
         }
     }
@@ -206,18 +231,22 @@ public class ImageStore {
     private void loadGroupPicture() {
         FileInputStream fileInputStream = null;
 
-        try{
+        try {
             fileInputStream = new FileInputStream(groupPicture);
             groupPictureBytes = new byte[(int) groupPicture.length()];
             fileInputStream.read(groupPictureBytes);
-        } catch (FileNotFoundException e){
+
+        } catch (FileNotFoundException e) {
             groupPicture = null;
-        } catch (IOException e){
+
+        } catch (IOException e) {
             groupPictureBytes = null;
+
         } finally {
-            try{
+            try {
                 fileInputStream.close();
-            } catch (IOException e){
+
+            } catch (IOException e) {
                 Log.e("GroupPicture", ":InputStreamCloseFailed");
             }
         }
@@ -226,18 +255,22 @@ public class ImageStore {
     private void loadProfilePicture() {
         FileInputStream fileInputStream = null;
 
-        try{
+        try {
             fileInputStream = new FileInputStream(profilePicture);
             profilePictureBytes = new byte[(int) profilePicture.length()];
             fileInputStream.read(profilePictureBytes);
-        } catch (FileNotFoundException e){
+
+        } catch (FileNotFoundException e) {
             profilePicture = null;
-        } catch (IOException e){
+
+        } catch (IOException e) {
             profilePictureBytes = null;
+
         } finally {
-            try{
+            try {
                 fileInputStream.close();
-            } catch (IOException e){
+
+            } catch (IOException e) {
                 Log.e("ProfilePicture", ":InputStreamCloseFailed");
             }
         }

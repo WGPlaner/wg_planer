@@ -24,7 +24,8 @@ public class JoinGroupFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setup_join_group, container, false);
 
         key = view.findViewById(R.id.fragment_setup_join_group_input_access_key);
@@ -54,10 +55,11 @@ public class JoinGroupFragment extends Fragment {
     }
 
     private void joinGroup(String key) {
-        if(DataProvider.getInstance().joinCurrentGroup(key, getContext())){
+        if (DataProvider.getInstance().joinCurrentGroup(key, getContext())) {
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
             getActivity().finish();
+
         } else {
             getActivity().runOnUiThread(new Runnable() {
                 @Override

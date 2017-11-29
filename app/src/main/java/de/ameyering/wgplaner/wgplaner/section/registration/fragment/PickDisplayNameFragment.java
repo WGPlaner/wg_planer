@@ -31,7 +31,7 @@ public class PickDisplayNameFragment extends NavigationFragment {
 
         String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
 
-        if(uploadProfilePictureFragment == null){
+        if (uploadProfilePictureFragment == null) {
             uploadProfilePictureFragment = new UploadProfilePictureFragment();
         }
 
@@ -48,11 +48,14 @@ public class PickDisplayNameFragment extends NavigationFragment {
                     DataProvider.getInstance().setCurrentUserDisplayName(displayName);
 
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
+                    transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+                        R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+                        R.anim.anim_fragment_exit_to_right);
                     transaction.hide(PickDisplayNameFragment.this);
                     transaction.add(R.id.container_registration, uploadProfilePictureFragment);
                     transaction.addToBackStack("");
                     transaction.commit();
+
                 } else {
                     Toast.makeText(getContext(), PickDisplayNameFragment.this.getActivity().getString(
                             R.string.warning_input_username_empty), Toast.LENGTH_SHORT).show();

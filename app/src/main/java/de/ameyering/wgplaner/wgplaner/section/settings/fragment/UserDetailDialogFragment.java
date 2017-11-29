@@ -29,10 +29,10 @@ public class UserDetailDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             String uid = savedInstanceState.getString(UID_BUNDLE_ARG);
 
-            if(uid != null) {
+            if (uid != null) {
                 User user = DataProvider.getInstance().getUserByUid(uid);
 
                 LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -47,7 +47,7 @@ public class UserDetailDialogFragment extends DialogFragment {
 
                 Bitmap bitmap = ImageStore.getInstance().loadGroupMemberPicture(uid, getActivity());
 
-                if(bitmap != null){
+                if (bitmap != null) {
                     image.setImageBitmap(bitmap);
                 }
 
@@ -55,8 +55,9 @@ public class UserDetailDialogFragment extends DialogFragment {
 
                 String emailVal = user.getEmail();
 
-                if(emailVal != null && !emailVal.isEmpty()){
+                if (emailVal != null && !emailVal.isEmpty()) {
                     email.setText(emailVal);
+
                 } else {
                     email.setText(getString(R.string.user_detail_email_default));
                     email.setTypeface(null, Typeface.ITALIC);
@@ -64,7 +65,7 @@ public class UserDetailDialogFragment extends DialogFragment {
 
                 DateTime date = user.getCreatedAt();
 
-                if(date != null) {
+                if (date != null) {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
                     String dateString = sdf.format(date.toDate());

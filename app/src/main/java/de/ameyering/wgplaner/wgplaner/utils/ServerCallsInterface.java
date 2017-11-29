@@ -16,75 +16,80 @@ import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
- interface ServerCallsInterface {
+interface ServerCallsInterface {
 
     interface OnAsyncCallListener<T> {
-         void onFailure(ApiException e);
+        void onFailure(ApiException e);
 
-         void onSuccess(T result);
+        void onSuccess(T result);
     }
 
-     void createUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener);
+    void createUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener);
 
-     ApiResponse<User> createUser(User user);
+    ApiResponse<User> createUser(User user);
 
-     void getUserAsync(String uid, @Nullable final OnAsyncCallListener<User> listener);
+    void getUserAsync(String uid, @Nullable final OnAsyncCallListener<User> listener);
 
-     ApiResponse<User> getUser(String uid);
+    ApiResponse<User> getUser(String uid);
 
-     void updateUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener);
+    void updateUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener);
 
-     ApiResponse<User> updateUser(User user);
+    ApiResponse<User> updateUser(User user);
 
-     void getUserImageAsync(String uid, @Nullable final OnAsyncCallListener<byte[]> listener);
+    void getUserImageAsync(String uid, @Nullable final OnAsyncCallListener<byte[]> listener);
 
-     ApiResponse<byte[]> getUserImage(String uid);
+    ApiResponse<byte[]> getUserImage(String uid);
 
-     void updateUserImageAsync(File image, @Nullable final OnAsyncCallListener<SuccessResponse> listener);
+    void updateUserImageAsync(File image,
+        @Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
-     ApiResponse<SuccessResponse> updateUserImage(File image);
+    ApiResponse<SuccessResponse> updateUserImage(File image);
 
-     void leaveGroupAsync(@Nullable final OnAsyncCallListener<SuccessResponse> listener);
+    void leaveGroupAsync(@Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
-     ApiResponse<SuccessResponse> leaveGroup();
+    ApiResponse<SuccessResponse> leaveGroup();
 
-     void getGroupAsync(UUID groupUid, @Nullable final OnAsyncCallListener<Group> listener);
+    void getGroupAsync(UUID groupUid, @Nullable final OnAsyncCallListener<Group> listener);
 
-     ApiResponse<Group> getGroup(UUID groupUid);
+    ApiResponse<Group> getGroup(UUID groupUid);
 
-     void createGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
+    void createGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
 
-     ApiResponse<Group> createGroup(Group group);
+    ApiResponse<Group> createGroup(Group group);
 
-     void joinGroupAsync(String accessKey, @Nullable final OnAsyncCallListener<Group> listener);
+    void joinGroupAsync(String accessKey, @Nullable final OnAsyncCallListener<Group> listener);
 
-     ApiResponse<Group> joinGroup(String accessKey);
+    ApiResponse<Group> joinGroup(String accessKey);
 
-     void createGroupKeyAsync(@Nullable final OnAsyncCallListener<GroupCode> listener);
+    void createGroupKeyAsync(@Nullable final OnAsyncCallListener<GroupCode> listener);
 
-     ApiResponse<GroupCode> createGroupKey();
+    ApiResponse<GroupCode> createGroupKey();
 
-     void getGroupImageAsync(@Nullable final OnAsyncCallListener<byte[]> listener);
+    void getGroupImageAsync(@Nullable final OnAsyncCallListener<byte[]> listener);
 
-     ApiResponse<byte[]> getGroupImage();
+    ApiResponse<byte[]> getGroupImage();
 
-     void updateGroupImageAsync(File image, @Nullable final OnAsyncCallListener<SuccessResponse> listener);
+    void updateGroupImageAsync(File image,
+        @Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
-     ApiResponse<SuccessResponse> updateGroupImage(File image);
+    ApiResponse<SuccessResponse> updateGroupImage(File image);
 
-     void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList> listener);
+    void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList> listener);
 
-     ApiResponse<ShoppingList> getShoppingList();
+    ApiResponse<ShoppingList> getShoppingList();
 
-     void createShoppingListItemAsync(ListItem item, @Nullable final OnAsyncCallListener<ListItem> listener);
+    void createShoppingListItemAsync(ListItem item,
+        @Nullable final OnAsyncCallListener<ListItem> listener);
 
-     ApiResponse<ListItem> createShoppingListItem(ListItem item);
+    ApiResponse<ListItem> createShoppingListItem(ListItem item);
 
-     void updateShoppingListItemAsync(ListItem item, @Nullable final OnAsyncCallListener<ListItem> listener);
+    void updateShoppingListItemAsync(ListItem item,
+        @Nullable final OnAsyncCallListener<ListItem> listener);
 
-     ApiResponse<ListItem> updateShoppingListItem(ListItem item);
+    ApiResponse<ListItem> updateShoppingListItem(ListItem item);
 
-     void buyListItemsAsync(List<UUID> items, @Nullable final OnAsyncCallListener<SuccessResponse> listener);
+    void buyListItemsAsync(List<UUID> items,
+        @Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
-     ApiResponse<SuccessResponse> buyListItems(List<UUID> items);
+    ApiResponse<SuccessResponse> buyListItems(List<UUID> items);
 }

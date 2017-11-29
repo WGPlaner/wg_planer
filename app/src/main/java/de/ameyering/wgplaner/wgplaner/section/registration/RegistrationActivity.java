@@ -34,19 +34,23 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+        getSupportFragmentManager().addOnBackStackChangedListener(new
+        FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                     getSupportActionBar().hide();
+
                 } else {
                     getSupportActionBar().show();
                 }
             }
         });
 
-        if(savedInstanceState != null){
-            welcomeFragment = (WelcomeFragment) getSupportFragmentManager().getFragment(savedInstanceState, "welcomeFragment");
+        if (savedInstanceState != null) {
+            welcomeFragment = (WelcomeFragment) getSupportFragmentManager().getFragment(savedInstanceState,
+                    "welcomeFragment");
+
         } else {
             loadWelcomeFragment();
             toolbar.setVisibility(View.GONE);
@@ -57,7 +61,9 @@ public class RegistrationActivity extends AppCompatActivity {
         welcomeFragment = new WelcomeFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
+        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+            R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+            R.anim.anim_fragment_exit_to_right);
         transaction.add(R.id.container_registration, welcomeFragment);
         transaction.commit();
     }
@@ -67,12 +73,14 @@ public class RegistrationActivity extends AppCompatActivity {
         popBackStack();
     }
 
-    private void popBackStack(){
-        if(getSupportFragmentManager().getBackStackEntryCount() == 0){
-            if(!toastWasShown) {
-                Toast toast = Toast.makeText(this, getString(R.string.back_press_leave_notification), Toast.LENGTH_LONG);
+    private void popBackStack() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            if (!toastWasShown) {
+                Toast toast = Toast.makeText(this, getString(R.string.back_press_leave_notification),
+                        Toast.LENGTH_LONG);
                 toast.show();
                 toastWasShown = true;
+
             } else {
                 finish();
             }

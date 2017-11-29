@@ -26,11 +26,13 @@ public class DescriptionFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setup_description, container, false);
 
         TextView header = view.findViewById(R.id.fragment_setup_description_header);
-        header.setText(String.format(getString(R.string.set_up_group_header), DataProvider.getInstance().getCurrentUserDisplayName()));
+        header.setText(String.format(getString(R.string.set_up_group_header),
+                DataProvider.getInstance().getCurrentUserDisplayName()));
 
         Button btnCreateGroup = view.findViewById(R.id.fragment_setup_description_btn_create);
         Button btnJoinGroup = view.findViewById(R.id.fragment_setup_description_btn_join);
@@ -49,8 +51,9 @@ public class DescriptionFragment extends Fragment {
             }
         });
 
-        if(isInCreateGroup){
+        if (isInCreateGroup) {
             loadCreateGroup();
+
         } else if (isInJoinGroup) {
             loadJoinGroup();
         }
@@ -65,20 +68,24 @@ public class DescriptionFragment extends Fragment {
         isInJoinGroup = false;
     }
 
-    private void loadCreateGroup(){
+    private void loadCreateGroup() {
         isInCreateGroup = true;
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
+        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+            R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+            R.anim.anim_fragment_exit_to_right);
         transaction.hide(this);
         transaction.add(R.id.container_set_up, createGroupFragment);
         transaction.addToBackStack("");
         transaction.commit();
     }
 
-    private void loadJoinGroup(){
+    private void loadJoinGroup() {
         isInJoinGroup = true;
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
+        transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+            R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+            R.anim.anim_fragment_exit_to_right);
         transaction.hide(this);
         transaction.add(R.id.container_set_up, joinGroupFragment);
         transaction.addToBackStack("");

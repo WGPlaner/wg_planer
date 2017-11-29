@@ -45,7 +45,8 @@ public class CreateGroupFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setup_create_group, container, false);
 
         currencies = transformLocale(locales);
@@ -112,7 +113,7 @@ public class CreateGroupFragment extends Fragment {
 
                         groupPicture.setImageBitmap(bitmap);
                         groupPicture.startAnimation(AnimationUtils.loadAnimation(getContext(),
-                            R.anim.anim_load_new_profile_picture));
+                                R.anim.anim_load_new_profile_picture));
 
                     } catch (IOException e) {
                         Toast.makeText(getContext(), "Failed to load picture", Toast.LENGTH_LONG).show();
@@ -154,10 +155,11 @@ public class CreateGroupFragment extends Fragment {
 
 
     private void createGroup() {
-        if(DataProvider.getInstance().createGroup(groupName, currency, null, getContext())){
+        if (DataProvider.getInstance().createGroup(groupName, currency, null, getContext())) {
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
             getActivity().finish();
+
         } else {
             getActivity().runOnUiThread(new Runnable() {
                 @Override

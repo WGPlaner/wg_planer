@@ -73,11 +73,12 @@ public class ShoppingListFragment extends SectionFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(type == DataProvider.DataType.SELECTED_ITEMS){
+                            if (type == DataProvider.DataType.SELECTED_ITEMS) {
                                 if (floatingActionButton != null) {
                                     changeFloatingActionButton();
                                 }
-                            } else if(type == DataProvider.DataType.SHOPPING_LIST){
+
+                            } else if (type == DataProvider.DataType.SHOPPING_LIST) {
                                 onNewData(DataProvider.getInstance().getCurrentShoppingList());
                             }
                         }
@@ -115,11 +116,11 @@ public class ShoppingListFragment extends SectionFragment {
         }
     }
 
-    private void changeFloatingActionButton(){
+    private void changeFloatingActionButton() {
         if (!DataProvider.getInstance().isSomethingSelected()) {
             floatingActionButton.setVisibility(View.VISIBLE);
             floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                R.drawable.ic_add_white));
+                    R.drawable.ic_add_white));
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -131,7 +132,7 @@ public class ShoppingListFragment extends SectionFragment {
         } else {
             floatingActionButton.setVisibility(View.VISIBLE);
             floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                R.drawable.ic_check_white));
+                    R.drawable.ic_check_white));
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -21,7 +21,7 @@ public class NotificationService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
 
-        if(DataProvider.isInitialized()) {
+        if (DataProvider.isInitialized()) {
 
             switch (data.get(TYPE_KEY)) {
                 case GROUP_NEW_MEMBER:
@@ -30,6 +30,7 @@ public class NotificationService extends FirebaseMessagingService {
                     DataProvider.getInstance().syncGroup(getApplicationContext());
                 }
                 break;
+
                 case SHOPPING_LIST: {
                     DataProvider.getInstance().syncShoppingList();
                 }

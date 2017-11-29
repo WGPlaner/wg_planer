@@ -117,23 +117,28 @@ public class SplashScreenActivity extends AppCompatActivity {
                 failStateAnim();
             }
             break;
+
             case UNREGISTERED: {
                 loadRegistration();
             }
             break;
+
             case REGISTERED: {
                 loadSetUp();
             }
             break;
+
             case SETUP_COMPLETED: {
                 loadHome();
             }
             break;
+
             case GET_GROUP_FAILED: {
                 //TODO: Implement get group failed
                 loadHome();
             }
             break;
+
             case CONNECTION_FAILED: {
                 failStateAnim();
             }
@@ -168,7 +173,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
     }
 
-    private void loadSetUp(){
+    private void loadSetUp() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -179,7 +184,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
     }
 
-    private void failStateAnim(){
+    private void failStateAnim() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -190,12 +195,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                 errorContainer.setAlpha(0f);
                 errorContainer.setVisibility(View.VISIBLE);
                 errorContainer.animate().alpha(1f);
-                errorMessage.setText(getString(R.string.splash_screen_connection_timeout) + "\n" + getString(R.string.splash_screen_swipe_to_refresh));
+                errorMessage.setText(getString(R.string.splash_screen_connection_timeout) + "\n" + getString(
+                        R.string.splash_screen_swipe_to_refresh));
             }
         });
     }
 
-    private void retryAnim(){
+    private void retryAnim() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

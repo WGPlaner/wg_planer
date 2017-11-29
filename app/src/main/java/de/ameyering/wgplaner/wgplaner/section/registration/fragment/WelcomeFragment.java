@@ -20,7 +20,7 @@ public class WelcomeFragment extends NavigationFragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_welcome_registration, container, false);
 
-        if(pickDisplayNameFragment == null){
+        if (pickDisplayNameFragment == null) {
             pickDisplayNameFragment = new PickDisplayNameFragment();
         }
 
@@ -29,7 +29,9 @@ public class WelcomeFragment extends NavigationFragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right, R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left, R.anim.anim_fragment_exit_to_right);
+                transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+                    R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+                    R.anim.anim_fragment_exit_to_right);
                 transaction.hide(WelcomeFragment.this);
                 transaction.add(R.id.container_registration, pickDisplayNameFragment);
                 transaction.addToBackStack("");
