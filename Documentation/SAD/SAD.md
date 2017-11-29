@@ -88,7 +88,7 @@ Android Client:
 n/a
 
 ## 7. Deployment View
-(TO BE DONE)
+![Deployment View](./DeploymentView.png)
 
 ## 8. Implementation View
 
