@@ -120,10 +120,8 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 if (DataProvider.getInstance().leaveCurrentGroup()) {
                     setResult(RESULT_OK);
                     finish();
-
                 } else {
                     Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed),
-                        Toast.LENGTH_LONG).show();
                 }
             }
         });

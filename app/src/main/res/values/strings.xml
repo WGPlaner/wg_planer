@@ -95,4 +95,13 @@
     <string name="back_press_leave_notification">Press back again to leave the Application</string>
 
     <string name="user_detail_email_default">Not specified</string>
+    <string name="currency">Currency</string>
+    <string name="euro">Euro</string>
+    <string name="dollar">Dollar</string>
+    <string name="members">Groupmembers</string>
+    <string name="addUser">Add User</string>
+
+    <!-- Group Settings strings -->
+    <string name="delete_group_name_error"> You can not delete the Name</string>
+    <string name="delete_currency_error"> You can not delete the Currency</string>
 </resources>
