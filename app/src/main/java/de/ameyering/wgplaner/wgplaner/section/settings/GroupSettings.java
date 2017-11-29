@@ -30,8 +30,7 @@ import java.util.Locale;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.AddItemRequestedForAdapter;
-import de.ameyering.wgplaner.wgplaner.section.home.adapter.LocaleSpinnerAdapter;
-import de.ameyering.wgplaner.wgplaner.utils.Configuration;
+import de.ameyering.wgplaner.wgplaner.section.setup.adapter.LocaleSpinnerAdapter;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.User;
 
@@ -99,7 +98,7 @@ public class GroupSettings extends AppCompatActivity {
         loadTask.execute();
 
         inputName = findViewById(R.id.tfName_profile_settings);
-        String displayName = DataProvider.CurrentGroup.getGroup().getDisplayName();
+        String displayName = DataProvider.getInstance().getCurrentGroupName();
 
         if (displayName != null) {
             inputName.setText(displayName);
@@ -111,7 +110,7 @@ public class GroupSettings extends AppCompatActivity {
         members.setHasFixedSize(false);
         members.setAdapter(adapterMembers);
 
-        liMembers = DataProvider.Users.getUsers();
+        liMembers = DataProvider.getInstance().getCurrentGroupMembers();
 
         if (liMembers != null) {
             adapterMembers.updateSelection(liMembers);
@@ -139,8 +138,7 @@ public class GroupSettings extends AppCompatActivity {
             currencySpinner.setSelection(pos);
         }
 
-        if (!DataProvider.CurrentGroup.getGroup().getAdmins().contains(
-                DataProvider.Users.getCurrentUser())) {
+        if (!DataProvider.getInstance().isAdmin(DataProvider.getInstance().getCurrentUserUid())) {
             inputName.setEnabled(false);
             image.setEnabled(false);
             currencySpinner.setEnabled(false);
@@ -207,8 +205,7 @@ public class GroupSettings extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!DataProvider.CurrentGroup.getGroup().getAdmins().contains(
-                DataProvider.Users.getCurrentUser())) {
+        if (!DataProvider.getInstance().isAdmin(DataProvider.getInstance().getCurrentUserUid())) {
             getMenuInflater().inflate(R.menu.menu_add_full_screen_activity, menu);
         }
 
@@ -239,14 +236,14 @@ public class GroupSettings extends AppCompatActivity {
             return false;
         }
 
-        DataProvider.CurrentGroup.getGroup().setDisplayName(displayName);
+        DataProvider.getInstance().setCurrentGroupName(displayName);
 
         if (currency == null || currencies.isEmpty()) {
             Toast.makeText(this, getString(R.string.delete_currency_error), Toast.LENGTH_LONG).show();
             return false;
         }
 
-        DataProvider.CurrentGroup.getGroup().setCurrency(currency.getCurrencyCode());
+        DataProvider.getInstance().setCurrentGroupCurrency(currency);
 
 
         //TODO: Send updateUser
