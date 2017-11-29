@@ -119,7 +119,7 @@ public class ShoppingListCategoryAdapter extends
 
     public void onNewData(ArrayList<CategoryHolder> items) {
         final CategoryDiffCallback callback = new CategoryDiffCallback(items, this.items);
-        final DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback);
+        final DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback, true);
 
         this.items.clear();
         this.items.addAll(items);

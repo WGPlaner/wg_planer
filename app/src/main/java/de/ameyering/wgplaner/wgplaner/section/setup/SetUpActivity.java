@@ -1,4 +1,4 @@
-package de.ameyering.wgplaner.wgplaner.section.registration;
+package de.ameyering.wgplaner.wgplaner.section.setup;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,32 +9,32 @@ import android.view.View;
 import android.widget.Toast;
 
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
+import de.ameyering.wgplaner.wgplaner.section.setup.fragment.DescriptionFragment;
 
-public class RegistrationActivity extends AppCompatActivity {
-    private static final String WELCOME_FRAGMENT_ARGS = "WelcomeFragment";
+public class SetUpActivity extends AppCompatActivity {
+    private static final String DESCRIPTION_FRAGMENT_TAG = "DescriptionFragment";
 
     private Toolbar toolbar;
-    private WelcomeFragment welcomeFragment;
-
     private boolean toastWasShown = false;
+
+    private DescriptionFragment descriptionFragment = new DescriptionFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_set_up);
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.set_up_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
         toolbar.setNavigationContentDescription(getString(R.string.nav_back));
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popBackStack();
             }
         });
+
 
         getSupportFragmentManager().addOnBackStackChangedListener(new
         FragmentManager.OnBackStackChangedListener() {
@@ -50,23 +50,27 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
         if (savedInstanceState != null) {
-            welcomeFragment = (WelcomeFragment) getSupportFragmentManager().getFragment(savedInstanceState,
-                    WELCOME_FRAGMENT_ARGS);
+            descriptionFragment = (DescriptionFragment) getSupportFragmentManager().getFragment(
+                    savedInstanceState, DESCRIPTION_FRAGMENT_TAG);
 
         } else {
-            loadWelcomeFragment();
+            loadDescriptionFragment();
             toolbar.setVisibility(View.GONE);
         }
     }
 
-    private void loadWelcomeFragment() {
-        welcomeFragment = new WelcomeFragment();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, DESCRIPTION_FRAGMENT_TAG, descriptionFragment);
+    }
 
+    private void loadDescriptionFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
             R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
             R.anim.anim_fragment_exit_to_right);
-        transaction.add(R.id.container_registration, welcomeFragment);
+        transaction.add(R.id.container_set_up, descriptionFragment);
         transaction.commit();
     }
 
@@ -91,12 +95,5 @@ public class RegistrationActivity extends AppCompatActivity {
             getSupportFragmentManager().popBackStack();
             toastWasShown = false;
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        getSupportFragmentManager().putFragment(outState, WELCOME_FRAGMENT_ARGS, welcomeFragment);
     }
 }

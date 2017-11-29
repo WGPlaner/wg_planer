@@ -6,7 +6,11 @@
     <string name="profile_settings_activity">Your Profile</string>
     <string name="title_activity_home">Home</string>
 
-    <string name="action_settings">Settings</string>on
+    <string name="action_settings">Settings</string>
+
+    <string name="splash_screen_failed_to_connect">Connection to Server failed</string>
+    <string name="splash_screen_connection_timeout">Connection Timeout</string>
+    <string name="splash_screen_swipe_to_refresh">Swipe down to refresh</string>
 
     <!-- String related to NavView -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -17,6 +21,11 @@
     <string name="nav_rosters">Rosters</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_pinboard">Pinboard</string>
+    <string name="nav_section_sections">Sections</string>
+    <string name="nav_section_settings">Settings</string>
+    <string name="nav_general_settings">General</string>
+    <string name="nav_profile_settings">Profile</string>
+    <string name="nav_group_settings">Group</string>
 
     <!-- Registration Strings -->
     <string name="nav_back">Navigate back</string>
@@ -47,7 +56,7 @@
     <string name="set_up_group_name_error">Please enter a group name</string>
     <string name="set_up_group_currency_error">Please pick a currency</string>
     <string name="set_up_group_currency_hint">Group currency</string>
-    <string name="set_up_group_header">Dear user</string>
+    <string name="set_up_group_header">Dear %s</string>
     <string name="set_up_group_body_key">In order to use all available features of the WGPlaner Application you have to be member of a group.\n\nTherefore you can either join an existing group by entering the corresponding access key or create a new group</string>
     <string name="set_up_key_hint">Key</string>
     <string name="set_up_btn_create_group">Create group</string>
@@ -80,6 +89,12 @@
     <string name="profile_settings_username_hint">Name</string>
     <string name="profile_settings_btn_save_changes">Save Changes</string>
     <string name="delete_display_name_error">You can not delete your Name</string>
+    <string name="edit_profile_button">EDIT</string>
+
+    <!-- BackNavigation String -->
+    <string name="back_press_leave_notification">Press back again to leave the Application</string>
+
+    <string name="user_detail_email_default">Not specified</string>
     <string name="currency">Currency</string>
     <string name="euro">Euro</string>
     <string name="dollar">Dollar</string>
@@ -90,4 +105,5 @@
     <string name="delete_group_name_error"> You can not delete the Name</string>
     <string name="delete_currency_error"> You can not delete the Currency</string>
 
+    <string name="load_profile_picture_error">Failed to load Picture</string>
 </resources>

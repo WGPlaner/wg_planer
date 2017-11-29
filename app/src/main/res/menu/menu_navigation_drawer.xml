@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_dashboard"
-        android:icon="@drawable/ic_nav_dashboard"
-        android:title="@string/nav_dashboard" />
+        android:title="@string/nav_section_sections">
+        <menu>
+            <item
+                android:id="@+id/nav_dashboard"
+                android:icon="@drawable/ic_nav_dashboard"
+                android:title="@string/nav_dashboard" />
+            <item
+                android:id="@+id/nav_shopping_list"
+                android:icon="@drawable/ic_nav_shopping_list"
+                android:title="@string/nav_shopping_list" />
+            <item
+                android:id="@+id/nav_accounting"
+                android:icon="@drawable/ic_nav_accounting"
+                android:title="@string/nav_accounting" />
+            <item
+                android:id="@+id/nav_rosters"
+                android:icon="@drawable/ic_nav_rosters"
+                android:title="@string/nav_rosters" />
+            <item
+                android:id="@+id/nav_calendar"
+                android:icon="@drawable/ic_nav_calendar"
+                android:title="@string/nav_calendar" />
+            <item
+                android:id="@+id/nav_pinboard"
+                android:icon="@drawable/ic_nav_pinboard"
+                android:title="@string/nav_pinboard" />
+        </menu>
+    </item>
     <item
-        android:id="@+id/nav_shopping_list"
-        android:icon="@drawable/ic_nav_shopping_list"
-        android:title="@string/nav_shopping_list" />
-    <item
-        android:id="@+id/nav_accounting"
-        android:icon="@drawable/ic_nav_accounting"
-        android:title="@string/nav_accounting" />
-    <item
-        android:id="@+id/nav_rosters"
-        android:icon="@drawable/ic_nav_rosters"
-        android:title="@string/nav_rosters" />
-    <item
-        android:id="@+id/nav_calendar"
-        android:icon="@drawable/ic_nav_calendar"
-        android:title="@string/nav_calendar" />
-    <item
-        android:id="@+id/nav_pinboard"
-        android:icon="@drawable/ic_nav_pinboard"
-        android:title="@string/nav_pinboard" />
+        android:title="@string/nav_section_settings">
+        <menu>
+            <item
+                android:id="@+id/nav_general_settings"
+                android:icon="@drawable/ic_nav_general_settings"
+                android:title="@string/nav_general_settings"/>
+            <item
+                android:id="@+id/nav_profile_settings"
+                android:icon="@drawable/ic_nav_profile_settings"
+                android:title="@string/nav_profile_settings"/>
+            <item
+                android:id="@+id/nav_group_settings"
+                android:icon="@drawable/ic_nav_group_settings"
+                android:title="@string/nav_group_settings"/>
+        </menu>
+    </item>
 </menu>

@@ -3,6 +3,8 @@ package de.ameyering.wgplaner.wgplaner.section.registration.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,10 @@ import android.widget.Toast;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
-import io.swagger.client.model.User;
 
 public class PickDisplayNameFragment extends NavigationFragment {
     private EditText inputName;
+    private UploadProfilePictureFragment uploadProfilePictureFragment;
 
     @Nullable
     @Override
@@ -29,6 +31,10 @@ public class PickDisplayNameFragment extends NavigationFragment {
 
         String displayName = Configuration.singleton.getConfig(Configuration.Type.USER_DISPLAY_NAME);
 
+        if (uploadProfilePictureFragment == null) {
+            uploadProfilePictureFragment = new UploadProfilePictureFragment();
+        }
+
         if (displayName != null) {
             inputName.setText(displayName);
         }
@@ -39,13 +45,16 @@ public class PickDisplayNameFragment extends NavigationFragment {
                 String displayName = inputName.getText().toString();
 
                 if (!displayName.isEmpty()) {
-                    User user = DataProvider.Users.getCurrentUser();
-                    user.setDisplayName(displayName);
-                    DataProvider.Users.setCurrentUser(user);
+                    DataProvider.getInstance().setCurrentUserDisplayName(displayName);
 
-                    if (mNavigationEventListener != null) {
-                        mNavigationEventListener.onForward();
-                    }
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+                        R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+                        R.anim.anim_fragment_exit_to_right);
+                    transaction.hide(PickDisplayNameFragment.this);
+                    transaction.add(R.id.container_registration, uploadProfilePictureFragment);
+                    transaction.addToBackStack("");
+                    transaction.commit();
 
                 } else {
                     Toast.makeText(getContext(), PickDisplayNameFragment.this.getActivity().getString(

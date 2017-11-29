@@ -1,4 +1,4 @@
-package de.ameyering.wgplaner.wgplaner.section.home.adapter;
+package de.ameyering.wgplaner.wgplaner.section.setup.adapter;
 
 
 import android.content.Context;

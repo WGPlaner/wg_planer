@@ -32,7 +32,7 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.add_item_add_requested_for_pick_users));
 
-        List<User> all = DataProvider.Users.getUsers();
+        List<User> all = DataProvider.getInstance().getCurrentGroupMembers();
         list = new User[all.size()];
 
         for (int i = 0; i < all.size(); i++) {

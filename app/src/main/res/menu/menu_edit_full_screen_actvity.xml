@@ -2,7 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/add_item_save"
+        android:id="@+id/edit_fullscreen_edit"
+        android:title="@string/edit_profile_button"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/edit_fullscreen_save"
         android:title="@string/full_screen_add_save_item"
         app:showAsAction="always"/>
 </menu>

@@ -1,553 +1,682 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
-import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
-import io.swagger.client.model.*;
+import io.swagger.client.model.Group;
+import io.swagger.client.model.ListItem;
+import io.swagger.client.model.ShoppingList;
+import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
-public abstract class DataProvider {
+public class DataProvider implements DataProviderInterface {
 
-    public interface OnUpdatedDataListener {
-        void onUpdatedData();
+    public interface OnDataChangeListener {
+
+        void onDataChanged(final DataType type);
     }
 
-    public static void initialize(String uid) {
-        Users.initialize(uid);
-        CurrentGroup.initialize();
-        ShoppingList.initialize();
+    public enum DataType {
+        CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS
     }
 
-    public static abstract class Users {
-        private static ArrayList<User> users;
-        private static User currentUser = new User();
 
-        private static ArrayList<OnUpdatedDataListener> mListeners;
+    private static DataProvider singleton;
 
-        private static void initialize(String uid) {
-            users = new ArrayList<>();
-            currentUser.setUid(uid);
-            mListeners = new ArrayList<>();
-        }
+    private ServerCallsInterface serverCallsInstance;
 
-        public static void setCurrentUser(User user) {
-            if (user != null && !currentUser.equals(user)) {
-                currentUser = user;
-                storeCurrentUser();
-                callAllListeners();
-            }
-        }
+    private String currentUserUid;
+    private String currentUserFirebaseInstanceId;
+    private String currentUserDisplayName;
+    private String currentUserEmail;
+    private Locale currentUserLocale;
+    private Bitmap currentUserPicture;
 
-        public static String getCurrentUsersUid() {
-            if (currentUser.getUid() != null) {
-                return currentUser.getUid();
-            }
+    private UUID currentGroupUID;
+    private String currentGroupName;
+    private Currency currentGroupCurrency;
+    private List<String> currentGroupMembersUids;
+    private List<String> currentGroupAdminsUids;
+    private ArrayList<User> currentGroupMembers;
+    private ArrayList<Bitmap> currentGroupMemberImages;
 
-            return "";
-        }
+    private List<ListItem> currentShoppingList;
+    private ArrayList<ListItem> selectedItems;
 
-        public static User getCurrentUser() {
-            return currentUser;
-        }
+    private ArrayList<OnDataChangeListener> mListeners;
 
-        public static int getUserCount() {
-            return users.size() + 1;
-        }
+    static {
+        singleton = new DataProvider();
+    }
 
-        public static boolean addUser(User user) {
-            if (user != null && !users.contains(user)) {
-                users.add(user);
-                return true;
-            }
+    public static void initialize(ServerCallsInterface serverCallsInstance) {
+        singleton.setServerCallsInstance(serverCallsInstance);
+    }
 
-            return false;
-        }
+    public static boolean isInitialized() {
+        return singleton.serverCallsInstance != null;
+    }
 
-        public static boolean removeUser(User user) {
-            if (user != null) {
-                return users.remove(user);
-            }
+    public static DataProvider getInstance() {
+        return singleton;
+    }
 
-            return false;
-        }
+    private DataProvider() {
+        currentUserUid = "";
+        currentUserDisplayName = "";
+        currentUserEmail = null;
+        currentUserFirebaseInstanceId = "";
+        currentUserLocale = null;
 
-        @Nullable
-        public static User getUserByUid(String uid) {
-            if (currentUser.getUid() != null && currentUser.getUid().equals(uid)) {
-                return currentUser;
+        currentGroupUID = null;
+        currentGroupName = "";
+        currentGroupCurrency = null;
+        currentGroupMembersUids = null;
+        currentGroupAdminsUids = null;
+        currentGroupMembers = null;
+        currentGroupMemberImages = null;
+
+        currentShoppingList = new ArrayList<>();
+        selectedItems = new ArrayList<>();
+
+        mListeners = new ArrayList<>();
+    }
+
+    private void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
+        this.serverCallsInstance = serverCallsInstance;
+    }
+
+    public SetUpState initialize(String uid, Context context) {
+        if (uid != null && !uid.isEmpty()) {
+            currentUserUid = uid;
+            Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
+            ApiResponse<User> userResponse = serverCallsInstance.getUser(uid);
+
+            if (userResponse != null && userResponse.getData() != null) {
+                User user = userResponse.getData();
+
+                currentUserUid = user.getUid();
+                currentUserDisplayName = user.getDisplayName();
+                currentUserEmail = user.getEmail();
+                currentGroupUID = user.getGroupUID();
+
+                if (currentUserFirebaseInstanceId.isEmpty()) {
+                    currentUserFirebaseInstanceId = user.getFirebaseInstanceID();
+
+                    if (!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())) {
+                        currentUserFirebaseInstanceId = Configuration.singleton.getConfig(
+                                Configuration.Type.FIREBASE_INSTANCE_ID);
+
+                        updateUser();
+                    }
+                }
+
+                ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(currentUserUid);
+
+                if (imageResponse != null && imageResponse.getStatusCode() == 200) {
+                    currentUserPicture = BitmapFactory.decodeByteArray(imageResponse.getData(), 0,
+                            imageResponse.getData().length);
+                }
+
+            } else if (userResponse != null && userResponse.getData() == null) {
+                if (userResponse.getStatusCode() == 404) {
+                    return SetUpState.UNREGISTERED;
+
+                } else if (userResponse.getStatusCode() != 0) {
+                    return SetUpState.GET_USER_FAILED;
+
+                } else {
+                    return SetUpState.CONNECTION_FAILED;
+                }
 
             } else {
-                for (User user : users) {
-                    if (user.getUid() != null && user.getUid().equals(uid)) {
-                        return user;
-                    }
-                }
-
-                return null;
-            }
-        }
-
-        public static ArrayList<User> getUsers() {
-            ArrayList<User> users = (ArrayList<User>) Users.users.clone();
-            users.add(currentUser);
-            return users;
-        }
-
-        public static void initializeCurrentUser(@Nullable final ServerCalls.OnAsyncCallListener<User>
-            listener) {
-            ServerCalls.getUserAsync(currentUser.getUid(), new ServerCalls.OnAsyncCallListener<User>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    if (listener != null) {
-                        listener.onFailure(e);
-                    }
-                }
-
-                @Override
-                public void onSuccess(User result) {
-                    setCurrentUser(result);
-
-                    if (listener != null) {
-                        listener.onSuccess(result);
-                    }
-                }
-            });
-        }
-
-        public static ApiResponse<User> initializeCurrentUser() {
-            ApiResponse<User> response = ServerCalls.getUser(currentUser.getUid());
-
-            if (response != null && response.getData() != null) {
-                setCurrentUser(response.getData());
+                return SetUpState.CONNECTION_FAILED;
             }
 
-            return response;
-        }
+            if (currentGroupUID != null) {
+                ApiResponse<Group> groupResponse = serverCallsInstance.getGroup(currentGroupUID);
 
-        public static void synchronizeCurrentUser(@Nullable final ServerCalls.OnAsyncCallListener<User>
-            listener) {
-            ServerCalls.updateUserAsync(currentUser, new ServerCalls.OnAsyncCallListener<User>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    if (listener != null) {
-                        listener.onFailure(e);
-                    }
-                }
+                if (groupResponse != null && groupResponse.getData() != null) {
+                    Group group = groupResponse.getData();
 
-                @Override
-                public void onSuccess(User result) {
-                    if (listener != null) {
-                        listener.onSuccess(result);
-                    }
-                }
-            });
-        }
+                    currentGroupName = group.getDisplayName();
+                    currentGroupCurrency = Currency.getInstance(group.getCurrency());
+                    currentGroupMembersUids = group.getMembers();
+                    currentGroupAdminsUids = group.getAdmins();
+                    initializeMembers(context);
 
-        public static ApiResponse<User> synchronizeCurrentUser() {
-            return ServerCalls.updateUser(currentUser);
-        }
+                    ApiResponse<ShoppingList> shoppingListResponse = serverCallsInstance.getShoppingList();
 
-        public static void createCurrentUser(@Nullable final ServerCalls.OnAsyncCallListener<User>
-            listener) {
-            ServerCalls.createUserAsync(currentUser, new ServerCalls.OnAsyncCallListener<User>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    if (listener != null) {
-                        listener.onFailure(e);
-                    }
-                }
+                    if (shoppingListResponse != null && shoppingListResponse.getData() != null) {
+                        List<ListItem> items = shoppingListResponse.getData().getListItems();
 
-                @Override
-                public void onSuccess(User result) {
-                    setCurrentUser(result);
+                        if (items == null) {
+                            this.currentShoppingList = new ArrayList<>();
 
-                    if (listener != null) {
-                        listener.onSuccess(result);
-                    }
-                }
-            });
-        }
-
-        private static void storeCurrentUser() {
-            if (currentUser.getUid() != null) {
-                Configuration.singleton.addConfig(Configuration.Type.USER_UID, currentUser.getUid());
-            }
-
-            if (currentUser.getDisplayName() != null) {
-                Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME,
-                    currentUser.getDisplayName());
-            }
-
-            if (currentUser.getGroupUid() != null) {
-                Configuration.singleton.addConfig(Configuration.Type.USER_GROUP_ID,
-                    currentUser.getGroupUid().toString());
-
-            } else {
-                Configuration.singleton.addConfig(Configuration.Type.USER_GROUP_ID, null);
-            }
-
-            Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, currentUser.getEmail());
-            Configuration.singleton.addConfig(Configuration.Type.USER_PHOTO_URL, currentUser.getPhotoUrl());
-            Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID,
-                currentUser.getFirebaseInstanceId());
-        }
-
-        public static boolean addOnUpdatedDataListener(OnUpdatedDataListener listener) {
-            if (listener != null && !mListeners.contains(listener)) {
-                mListeners.add(listener);
-                return true;
-            }
-
-            return false;
-        }
-
-        public static boolean removeOnUpdatedDataListener(OnUpdatedDataListener listener) {
-            if (listener != null) {
-                return mListeners.remove(listener);
-            }
-
-            return false;
-        }
-
-        private static void callAllListeners() {
-            for (OnUpdatedDataListener listener : mListeners) {
-                listener.onUpdatedData();
-            }
-        }
-    }
-
-    public static abstract class CurrentGroup {
-        private static Group group;
-
-        private static ArrayList<OnUpdatedDataListener> mListeners;
-
-        private static void initialize() {
-            group = new Group();
-            mListeners = new ArrayList<>();
-        }
-
-        public static void setGroup(Group group) {
-            if (group != null && !CurrentGroup.group.equals(group)) {
-                Users.currentUser.setGroupUid(group.getUid());
-                CurrentGroup.group = group;
-            }
-        }
-
-        public static Group getGroup() {
-            return group;
-        }
-
-        public static void updateGroup(@Nullable final ServerCalls.OnAsyncCallListener<Group> listener) {
-            ServerCalls.getGroupAsync(Users.getCurrentUsersUid(), new ServerCalls.OnAsyncCallListener<Group>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    if (listener != null) {
-                        listener.onFailure(e);
-                    }
-                }
-
-                @Override
-                public void onSuccess(Group result) {
-                    initializeUsers();
-
-                    if (listener != null) {
-                        listener.onSuccess(result);
-                    }
-                }
-            });
-        }
-
-        public static ApiResponse<Group> updateGroup() {
-            ApiResponse<Group> response = ServerCalls.getGroup(Users.getCurrentUser().getGroupUid().toString());
-
-            if (response != null && response.getData() != null) {
-                setGroup(response.getData());
-            }
-
-            return response;
-        }
-
-        public static void createGroup(Group group,
-            @Nullable final ServerCalls.OnAsyncCallListener<Group> listener) {
-            ServerCalls.createGroupAsync(group, new ServerCalls.OnAsyncCallListener<Group>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    if (listener != null) {
-                        listener.onFailure(e);
-                    }
-                }
-
-                @Override
-                public void onSuccess(Group result) {
-                    if (listener != null) {
-                        setGroup(result);
-                        listener.onSuccess(result);
-                    }
-                }
-            });
-        }
-
-        public static ApiResponse<Group> createGroup(Group group) {
-            ApiResponse<Group> response = ServerCalls.createGroup(group);
-
-            if (response != null && response.getData() != null) {
-                Group result = response.getData();
-                setGroup(group);
-                callAllListeners();
-            }
-
-            return response;
-        }
-
-        public static void joinGroup(String key,
-            @Nullable final ServerCalls.OnAsyncCallListener<Group> listener) {
-            ServerCalls.joinGroupAsync(key, new ServerCalls.OnAsyncCallListener<Group>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    if (listener != null) {
-                        listener.onFailure(e);
-                    }
-                }
-
-                @Override
-                public void onSuccess(Group result) {
-                    if (group != null) {
-                        setGroup(result);
-                        callAllListeners();
-
-                        if (listener != null) {
-                            listener.onSuccess(result);
+                        } else {
+                            this.currentShoppingList = items;
                         }
+
+                        selectedItems = new ArrayList<>();
+
+                    } else {
+                        currentShoppingList = new ArrayList<>();
+                        selectedItems = new ArrayList<>();
                     }
-                }
-            });
-        }
 
-        public static ApiResponse<Group> joinGroup(String key) {
-            ApiResponse<Group> response = ServerCalls.joinGroup(key);
+                    return SetUpState.SETUP_COMPLETED;
 
-            if (response != null && response.getData() != null) {
-                setGroup(response.getData());
-            }
-
-            return response;
-        }
-
-        public static void leaveGroup(@Nullable final ServerCalls.OnAsyncCallListener<SuccessResponse>
-            listener) {
-            ServerCalls.leaveGroupAsync(new ServerCalls.OnAsyncCallListener<SuccessResponse>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    if (listener != null) {
-                        listener.onFailure(e);
-                    }
+                } else {
+                    return SetUpState.GET_GROUP_FAILED;
                 }
 
-                @Override
-                public void onSuccess(SuccessResponse result) {
-                    group = new Group();
-                    Users.currentUser.setGroupUid(null);
-
-                    if (listener != null) {
-                        listener.onSuccess(result);
-                    }
-                }
-            });
-        }
-
-        public static ApiResponse<SuccessResponse> leaveGroup() {
-            ApiResponse<SuccessResponse> response = ServerCalls.leaveGroup();
-
-            if (response != null && response.getData() != null) {
-                group = new Group();
-                Users.currentUser.setGroupUid(null);
-            }
-
-            return response;
-        }
-
-        private static void initializeUsers() {
-            Users.users.clear();
-
-            for (String uid : group.getMembers()) {
-                if (uid != null && !uid.isEmpty()) {
-                    ApiResponse<User> response = ServerCalls.getUser(uid);
-
-                    if (response != null && response.getData() != null) {
-                        Users.users.add(response.getData());
-                    }
-                }
+            } else {
+                return SetUpState.REGISTERED;
             }
         }
 
-        public static boolean addOnUpdatedDataListener(OnUpdatedDataListener listener) {
-            if (listener != null && !mListeners.contains(listener)) {
-                mListeners.add(listener);
+        return SetUpState.GET_USER_FAILED;
+    }
+
+    @Override
+    public boolean registerUser() {
+        if (currentUserDisplayName != null && !currentUserDisplayName.isEmpty()) {
+            User user = new User();
+            user.setUid(currentUserUid);
+            user.setDisplayName(currentUserDisplayName);
+            user.setEmail(currentUserEmail);
+            user.setFirebaseInstanceID(currentUserFirebaseInstanceId);
+
+            ApiResponse<User> userResponse = serverCallsInstance.createUser(user);
+
+            if (userResponse != null && userResponse.getData() != null) {
+                user = userResponse.getData();
+                currentUserUid = user.getUid();
+                currentUserDisplayName = user.getDisplayName();
+                currentUserEmail = user.getEmail();
+
+                if (currentUserFirebaseInstanceId.isEmpty()) {
+                    currentUserFirebaseInstanceId = getFirebaseInstanceId();
+
+                    if (!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())) {
+                        currentUserFirebaseInstanceId = Configuration.singleton.getConfig(
+                                Configuration.Type.FIREBASE_INSTANCE_ID);
+
+                        updateUser();
+                    }
+                }
+
+                if (ImageStore.getInstance().getProfilePictureFile() != null) {
+                    serverCallsInstance.updateUserImage(ImageStore.getInstance().getProfilePictureFile());
+                }
+
                 return true;
             }
-
-            return false;
         }
 
-        public static boolean removeOnUpdatedDataListener(OnUpdatedDataListener listener) {
-            if (listener != null) {
-                return mListeners.remove(listener);
-            }
+        return false;
+    }
 
-            return false;
+    @Override
+    public void setFirebaseInstanceId(String token) {
+        if (token != null) {
+            this.currentUserFirebaseInstanceId = token;
+            Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }
+    }
 
-        private static void callAllListeners() {
-            for (OnUpdatedDataListener listener : mListeners) {
-                listener.onUpdatedData();
+    @Override
+    public String getFirebaseInstanceId() {
+        return currentUserFirebaseInstanceId;
+    }
+
+    @Override
+    public void setCurrentUserDisplayName(String displayName) {
+        if (displayName != null && !currentUserDisplayName.equals(displayName)) {
+            this.currentUserDisplayName = displayName;
+            Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
+            updateUser();
+            callAllListeners(DataType.CURRENT_USER);
+        }
+    }
+
+    @Override
+    public void setCurrentUserImage(Bitmap bitmap) {
+        if (bitmap != null) {
+            currentUserPicture = bitmap;
+            ImageStore.getInstance().setProfilePicture(bitmap);
+            updateUserImage();
+            callAllListeners(DataType.CURRENT_USER);
+        }
+    }
+
+    private void updateUserImage() {
+        File file = ImageStore.getInstance().getProfilePictureFile();
+
+        if (file != null) {
+            ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateUserImage(file);
+
+            if (imageResponse != null && imageResponse.getData() != null) {
+                callAllListeners(DataType.CURRENT_USER);
             }
         }
     }
 
-    public static abstract class ShoppingList {
-        private static ArrayList<ListItem> shoppingList;
-        private static ArrayList<ListItem> selectedItems;
+    @Override
+    public void setCurrentUserEmail(@Nullable String email) {
+        this.currentUserEmail = email;
+        Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, email);
+        updateUser();
+        callAllListeners(DataType.CURRENT_USER);
+    }
 
-        private static ArrayList<OnUpdatedDataListener> mListeners;
+    @Override
+    public void setCurrentUserLocale(Locale locale) {
+        if (locale != null && !currentUserLocale.equals(locale)) {
+            this.currentUserLocale = locale;
+            updateUser();
+            callAllListeners(DataType.CURRENT_USER);
+        }
+    }
 
-        private static void initialize() {
-            shoppingList = new ArrayList<>();
-            selectedItems = new ArrayList<>();
-            mListeners = new ArrayList<>();
+    @Override
+    public String getCurrentUserUid() {
+        return currentUserUid;
+    }
+
+    @Override
+    public String getCurrentUserDisplayName() {
+        return currentUserDisplayName;
+    }
+
+    @Override
+    public Bitmap getCurrentUserImage(Context context) {
+        if (currentUserPicture != null) {
+            return currentUserPicture;
         }
 
-        public static boolean selectItem(ListItem item) {
-            if (shoppingList.contains(item)) {
-                selectedItems.add(item);
-                callAllListeners();
-                return true;
+        currentUserPicture = ImageStore.getInstance().getProfileBitmap(context);
+        return currentUserPicture;
+    }
+
+    @Override
+    public String getCurrentUserEmail() {
+        return currentUserEmail;
+    }
+
+    @Override
+    public Locale getCurrentUserLocale() {
+        return currentUserLocale;
+    }
+
+    @Override
+    public void setCurrentGroupName(String groupName) {
+        if (groupName != null && !groupName.isEmpty()) {
+            this.currentGroupName = groupName;
+            callAllListeners(DataType.CURRENT_GROUP);
+        }
+    }
+
+    @Override
+    public void setCurrentGroupCurrency(Currency currency) {
+        if (currency != null) {
+            this.currentGroupCurrency = currency;
+            callAllListeners(DataType.CURRENT_GROUP);
+        }
+    }
+
+    @Override
+    public void setCurrentGroupImage(File image) {
+        //TODO: Implement image flow
+    }
+
+    @Override
+    public UUID getCurrentGroupUID() {
+        return currentGroupUID;
+    }
+
+    @Override
+    public String getCurrentGroupName() {
+        return currentGroupName;
+    }
+
+    @Override
+    public Currency getCurrentGroupCurrency() {
+        return currentGroupCurrency;
+    }
+
+    @Override
+    public File getCurrentGroupImage() {
+        //TODO: Implement image flow
+        return null;
+    }
+
+    @Override
+    public ArrayList<User> getCurrentGroupMembers() {
+        return currentGroupMembers;
+    }
+
+    @Override
+    public User getUserByUid(String uid) {
+        if (currentGroupMembers != null) {
+            for (User user : currentGroupMembers) {
+                if (user.getUid().equals(uid)) {
+                    return user;
+                }
             }
-
-            return false;
         }
 
-        public static ArrayList<ListItem> getShoppingList() {
-            return shoppingList;
-        }
+        return new User();
+    }
 
-        public static int getSelectedShoppingListCount() {
-            return selectedItems.size();
-        }
+    @Override
+    public boolean isAdmin(String uid) {
+        return currentGroupAdminsUids.contains(uid);
+    }
 
-        public static boolean unselectItem(ListItem item) {
-            if (selectedItems.remove(item)) {
-                callAllListeners();
-                return true;
-            }
+    @Override
+    public boolean createGroup(String name, Currency currency, Bitmap image, Context context) {
+        Group group = new Group();
+        group.setDisplayName(name);
+        group.setCurrency(currency.getCurrencyCode());
+        //TODO: Implement image flow
 
-            return false;
-        }
+        ApiResponse<Group> groupResponse = createGroup(group);
 
-        public static boolean buySelection() {
-            for (ListItem item : selectedItems) {
-                shoppingList.remove(item);
-            }
+        if (groupResponse != null && groupResponse.getData() != null) {
+            group = groupResponse.getData();
+            currentGroupUID = group.getUid();
+            currentGroupName = group.getDisplayName();
+            currentGroupCurrency = Currency.getInstance(group.getCurrency());
+            currentGroupMembersUids = group.getMembers();
+            currentGroupAdminsUids = group.getAdmins();
+            initializeMembers(context);
 
-            selectedItems.clear();
-            callAllListeners();
+            callAllListeners(DataType.CURRENT_GROUP);
+            syncShoppingList();
             return true;
         }
 
-        public static void addItem(ListItem item,
-            @Nullable final ServerCalls.OnAsyncCallListener<ListItem> listener) {
-            ServerCalls.createShoppingListItemAsync(item, new ServerCalls.OnAsyncCallListener<ListItem>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    if (listener != null) {
-                        listener.onFailure(e);
-                    }
-                }
+        return false;
+    }
 
-                @Override
-                public void onSuccess(ListItem result) {
-                    shoppingList.add(result);
-                    callAllListeners();
+    @Override
+    public boolean joinCurrentGroup(String accessKey, Context context) {
+        ApiResponse<Group> groupResponse = joinGroup(accessKey);
 
-                    if (listener != null) {
-                        listener.onSuccess(result);
-                    }
-                }
-            });
+        if (groupResponse != null && groupResponse.getData() != null) {
+            Group group = groupResponse.getData();
+            currentGroupUID = group.getUid();
+            currentGroupName = group.getDisplayName();
+            currentGroupCurrency = Currency.getInstance(group.getCurrency());
+            currentGroupMembersUids = group.getMembers();
+            currentGroupAdminsUids = group.getAdmins();
+            initializeMembers(context);
+
+            callAllListeners(DataType.CURRENT_GROUP);
+            syncShoppingList();
+            return true;
         }
 
-        public static void updateShoppingList(@Nullable final
-            ServerCalls.OnAsyncCallListener<io.swagger.client.model.ShoppingList> listener) {
-            ServerCalls.getShoppingListAsync(new
-            ServerCalls.OnAsyncCallListener<io.swagger.client.model.ShoppingList>() {
-                @Override
-                public void onFailure(ApiException e) {
-                    if (listener != null) {
-                        listener.onFailure(e);
-                    }
-                }
+        return false;
+    }
 
-                @Override
-                public void onSuccess(io.swagger.client.model.ShoppingList result) {
-                    if (result != null) {
-                        if (result.getListItems() != null) {
-                            shoppingList = (ArrayList<ListItem>) result.getListItems();
-                            callAllListeners();
+    @Override
+    public boolean leaveCurrentGroup() {
+        ApiResponse<SuccessResponse> groupResponse = leaveGroup();
 
-                        } else {
-                            shoppingList.clear();
-                            callAllListeners();
-                        }
-                    }
+        if (groupResponse != null && groupResponse.getData() != null) {
+            currentGroupUID = null;
+            currentGroupName = null;
+            currentGroupCurrency = null;
+            currentGroupMembers = null;
+            currentGroupAdminsUids = null;
+            currentGroupMembersUids = null;
+            currentShoppingList = new ArrayList<>();
+            selectedItems = new ArrayList<>();
 
-                    if (listener != null) {
-                        listener.onSuccess(result);
-                    }
-                }
-            });
+            callAllListeners(DataType.CURRENT_GROUP);
+            callAllListeners(DataType.SHOPPING_LIST);
+            callAllListeners(DataType.SELECTED_ITEMS);
+
+            return true;
         }
 
-        public static ApiResponse<io.swagger.client.model.ShoppingList> updateShoppingList() {
-            ApiResponse<io.swagger.client.model.ShoppingList> response = ServerCalls.getShoppingList();
+        return false;
+    }
 
-            if (response != null && response.getData() != null) {
-                if (response.getData().getListItems() != null) {
-                    shoppingList = (ArrayList<ListItem>) response.getData().getListItems();
-                    callAllListeners();
+    @Override
+    public boolean addShoppingListItem(ListItem item) {
+        if (item != null && currentShoppingList != null) {
+            for (ListItem currentItem : currentShoppingList) {
+                if (currentItem.getTitle().equals(item.getTitle()) &&
+                    currentItem.getRequestedFor().equals(item.getRequestedFor())) {
+                    currentItem.setCount(currentItem.getCount() + item.getCount());
+                    ApiResponse<ListItem> itemResponse = updateListItem(currentItem);
 
-                } else {
-                    shoppingList.clear();
-                    callAllListeners();
+                    if (itemResponse != null && itemResponse.getData() != null) {
+                        return true;
+                    }
+
+                    return false;
                 }
             }
 
-            return response;
-        }
+            ApiResponse<ListItem> itemRepsonse = addListItem(item);
 
-        public static boolean addOnUpdatedDataListener(OnUpdatedDataListener listener) {
-            if (listener != null && !mListeners.contains(listener)) {
-                mListeners.add(listener);
+            if (itemRepsonse != null && itemRepsonse.getData() != null) {
                 return true;
             }
-
-            return false;
         }
 
-        public static boolean removeOnUpdatedDataListener(OnUpdatedDataListener listener) {
-            if (listener != null) {
-                return mListeners.remove(listener);
-            }
+        return false;
+    }
 
-            return false;
+    @Override
+    public void selectShoppingListItem(ListItem item) {
+        if (item != null && currentShoppingList != null && selectedItems != null &&
+            currentShoppingList.contains(item)) {
+            selectedItems.add(item);
+            callAllListeners(DataType.SELECTED_ITEMS);
+        }
+    }
+
+    @Override
+    public void unselectShoppingListItem(ListItem item) {
+        if (selectedItems.remove(item)) {
+            callAllListeners(DataType.SELECTED_ITEMS);
+        }
+    }
+
+    @Override
+    public boolean isItemSelected(ListItem item) {
+        return selectedItems.contains(item);
+    }
+
+    @Override
+    public void buySelection() {
+        if (currentShoppingList != null && selectedItems != null) {
+            currentShoppingList.removeAll(selectedItems);
+            selectedItems.clear();
+            callAllListeners(DataType.SHOPPING_LIST);
+            callAllListeners(DataType.SELECTED_ITEMS);
+        }
+    }
+
+    @Override
+    public ArrayList<ListItem> getCurrentShoppingList() {
+        if (currentShoppingList != null) {
+            ArrayList<ListItem> items = new ArrayList<>();
+            items.addAll(currentShoppingList);
+            return items;
         }
 
-        private static void callAllListeners() {
-            for (OnUpdatedDataListener listener : mListeners) {
-                listener.onUpdatedData();
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean isSomethingSelected() {
+        if (selectedItems != null) {
+            return !selectedItems.isEmpty();
+
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void syncGroup(Context context) {
+        ApiResponse<Group> groupResponse = getGroup();
+
+        if (groupResponse != null && groupResponse.getData() != null) {
+            Group group = groupResponse.getData();
+
+            currentGroupUID = group.getUid();
+            currentGroupName = group.getDisplayName();
+            currentGroupCurrency = Currency.getInstance(group.getCurrency());
+            currentGroupMembersUids = group.getMembers();
+            currentGroupAdminsUids = group.getAdmins();
+            initializeMembers(context);
+
+            callAllListeners(DataType.CURRENT_GROUP);
+            syncShoppingList();
+        }
+    }
+
+    @Override
+    public void syncShoppingList() {
+        ApiResponse<ShoppingList> shoppingListResponse = getShoppingList();
+
+        if (shoppingListResponse != null && shoppingListResponse.getData() != null) {
+            List<ListItem> items = shoppingListResponse.getData().getListItems();
+
+            if (items == null) {
+                currentShoppingList = new ArrayList<>();
+                selectedItems = new ArrayList<>();
+
+            } else {
+                currentShoppingList = items;
+
+                if (selectedItems == null) {
+                    selectedItems = new ArrayList<>();
+                }
+
+                for (ListItem item : selectedItems) {
+                    if (!currentShoppingList.contains(item)) {
+                        selectedItems.remove(item);
+                    }
+                }
+
+                callAllListeners(DataType.SHOPPING_LIST);
+                callAllListeners(DataType.SELECTED_ITEMS);
             }
+        }
+    }
+
+    private ApiResponse<User> updateUser() {
+        User user = new User();
+        user.setUid(currentUserUid);
+        user.setDisplayName(currentUserDisplayName);
+        user.setFirebaseInstanceID(currentUserFirebaseInstanceId);
+        user.setEmail(currentUserEmail);
+        user.setGroupUID(currentGroupUID);
+
+        return serverCallsInstance.updateUser(user);
+    }
+
+    private ApiResponse<User> getUser(String uid) {
+        return serverCallsInstance.getUser(uid);
+    }
+
+    private ApiResponse<Group> getGroup() {
+        return serverCallsInstance.getGroup(currentGroupUID);
+    }
+
+    private ApiResponse<Group> updateGroup() {
+        Group group = new Group();
+        group.setDisplayName(currentGroupName);
+        group.setCurrency(currentGroupCurrency.getSymbol());
+        group.setMembers(currentGroupMembersUids);
+        group.setAdmins(currentGroupAdminsUids);
+
+        //TODO: Implement Update group
+        return null;
+    }
+
+    private ApiResponse<Group> joinGroup(String accessKey) {
+        return serverCallsInstance.joinGroup(accessKey);
+    }
+
+    private ApiResponse<SuccessResponse> leaveGroup() {
+        return serverCallsInstance.leaveGroup();
+    }
+
+    private ApiResponse<Group> createGroup(Group group) {
+        return serverCallsInstance.createGroup(group);
+    }
+
+    private ApiResponse<ShoppingList> getShoppingList() {
+        return serverCallsInstance.getShoppingList();
+    }
+
+    private ApiResponse<ListItem> addListItem(ListItem item) {
+        return serverCallsInstance.createShoppingListItem(item);
+    }
+
+    private ApiResponse<ListItem> updateListItem(ListItem item) {
+        return serverCallsInstance.updateShoppingListItem(item);
+    }
+
+    private void initializeMembers(Context context) {
+        currentGroupMembers = new ArrayList<>();
+        currentGroupMemberImages = new ArrayList<>();
+
+        for (String uid : currentGroupMembersUids) {
+            if (uid != null) {
+                ApiResponse<User> userResponse = getUser(uid);
+
+                if (userResponse != null && userResponse.getData() != null) {
+                    User user = userResponse.getData();
+                    currentGroupMembers.add(user);
+
+                    if (ImageStore.getInstance().loadGroupMemberPicture(user.getUid(), context) == null) {
+                        ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(user.getUid());
+
+                        if (imageResponse != null && imageResponse.getData() != null) {
+                            ImageStore.getInstance().writeGroupMemberPicture(user.getUid(), imageResponse.getData(), context);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void callAllListeners(DataType type) {
+        for (OnDataChangeListener listener : mListeners) {
+            listener.onDataChanged(type);
+        }
+    }
+
+    public void addOnDataChangeListener(OnDataChangeListener listener) {
+        if (listener != null) {
+            mListeners.add(listener);
+        }
+    }
+
+    public void removeOnDataChangeListener(OnDataChangeListener listener) {
+        if (listener != null) {
+            mListeners.remove(listener);
         }
     }
 }

@@ -106,16 +106,17 @@ public class CategoryHolder {
                 List<String> requestedFor = item.getRequestedFor();
                 StringBuilder header = new StringBuilder("");
 
-                if (requestedFor.size() == DataProvider.Users.getUserCount()) {
+                if (requestedFor.size() == DataProvider.getInstance().getCurrentGroupMembers().size()) {
                     header.append(context.getString(R.string.group_label));
 
                 } else {
                     for (int i = 0; i < requestedFor.size(); i++) {
                         if (i == 0) {
-                            header.append(DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName());
+                            header.append(DataProvider.getInstance().getUserByUid(requestedFor.get(i)).getDisplayName());
 
                         } else {
-                            header.append(" || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName());
+                            header.append(" || " + DataProvider.getInstance().getUserByUid(requestedFor.get(
+                                        i)).getDisplayName());
                         }
                     }
                 }
@@ -136,16 +137,17 @@ public class CategoryHolder {
             List<String> requestedFor = item.getRequestedFor();
             StringBuilder header = new StringBuilder("");
 
-            if (requestedFor.size() == DataProvider.Users.getUserCount()) {
+            if (requestedFor.size() == DataProvider.getInstance().getCurrentGroupMembers().size()) {
                 header.append(context.getString(R.string.group_label));
 
             } else {
                 for (int i = 0; i < requestedFor.size(); i++) {
                     if (i == 0) {
-                        header.append(DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName());
+                        header.append(DataProvider.getInstance().getUserByUid(requestedFor.get(i)).getDisplayName());
 
                     } else {
-                        header.append(" || " + DataProvider.Users.getUserByUid(requestedFor.get(i)).getDisplayName());
+                        header.append(" || " + DataProvider.getInstance().getUserByUid(requestedFor.get(
+                                    i)).getDisplayName());
                     }
                 }
             }
