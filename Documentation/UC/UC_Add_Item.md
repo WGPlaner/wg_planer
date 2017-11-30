@@ -3,9 +3,11 @@
 # 1. Change Settings
 
 ## 1.1 Brief Description
-This use case allows users to add items to a shopping list. A product has a title and may contain information the number of items and who the product shall be bought for.
+This use case allows users to add produkts/items to a shopping list. 
+A product has a title and may contain information the number of items and who the product shall be bought for.
 
 ## 1.2 Mockup
+n/a
 
 # 2. Flow of Events
 
@@ -22,7 +24,11 @@ n/a
 n/a
 
 # 4. Preconditions
-n/a
+The main preconditions for this use case are:
+
+ 1. The users app instance is registered.
+ 2. The user is member of a group/shared flat.
+ 2. The user has started the app and has navigated to "Shopping List".
 
 # 5. Postconditions
 
