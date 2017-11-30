@@ -6,7 +6,8 @@ import cucumber.api.android.CucumberInstrumentationCore;
 
 public class Instrumentation extends android.support.test.runner.AndroidJUnitRunner {
 
-    private final CucumberInstrumentationCore instrumentationCore = new CucumberInstrumentationCore(this);
+    private final CucumberInstrumentationCore instrumentationCore = new CucumberInstrumentationCore(
+        this);
 
     @Override
     public void onCreate(final Bundle bundle) {

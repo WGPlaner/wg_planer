@@ -21,15 +21,19 @@ import static org.hamcrest.Matchers.not;
 class Driver {
     static void tapElement(String text) throws IllegalAccessException {
         Field field = findElement(text);
-        if (field != null)
+
+        if (field != null) {
             onView(withId(field.getInt(new Constants()))).perform(click());
-        else
+
+        } else {
             onView(withText(text)).perform(click());
+        }
     }
 
     static Field findElement(String text) {
         try {
             return Constants.class.getDeclaredField(text);
+
         } catch (NoSuchFieldException e) {
             return null;
         }
@@ -48,14 +52,18 @@ class Driver {
         }
     }
 
-    public static void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static void setMobileDataEnabled(Context context,
+        boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException,
+        NoSuchMethodException, InvocationTargetException {
+        final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
         final Class conmanClass = Class.forName(conman.getClass().getName());
         final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
         connectivityManagerField.setAccessible(true);
         final Object connectivityManager = connectivityManagerField.get(conman);
         final Class connectivityManagerClass =  Class.forName(connectivityManager.getClass().getName());
-        final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+        final Method setMobileDataEnabledMethod =
+            connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
         setMobileDataEnabledMethod.setAccessible(true);
 
         setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
