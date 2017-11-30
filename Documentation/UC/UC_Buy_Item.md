@@ -8,7 +8,8 @@ A product has a title and may contain information the number of items and who th
 Bought items shall be removed from the list.
 
 ## 1.2 Mockup
-n/a
+Checked List to buy produkts/items
+[![Mockup CheckedList](../Mockups/uc_shopping_list_CheckedList_200px.png)](../Mockups/uc_shopping_list_CheckedList.PNG)
 
 # 2. Flow of Events
 
