@@ -1,0 +1,33 @@
+# Use-Case Specification: Add Item
+
+# 1. Change Settings
+
+## 1.1 Brief Description
+This use case allows users to add items to a shopping list. A product has a title and may contain information the number of items and who the product shall be bought for.
+
+## 1.2 Mockup
+
+# 2. Flow of Events
+
+## 2.1 Basic Flow
+Here is the activity diagram for managing the shopping list.
+![Activity Diagram](../ActivityDiagrams/uc_add_item_activity_diagramm.png)
+
+And here is a screenshot of the `.feature` file for this use case:
+
+## 2.2 Alternative Flows
+n/a
+
+# 3. Special Requirements
+n/a
+
+# 4. Preconditions
+n/a
+
+# 5. Postconditions
+
+### 5.1 Save changes / Sync with server
+If a product has been added it must be synced with the server.
+
+# 6. Extension Points
+n/a
