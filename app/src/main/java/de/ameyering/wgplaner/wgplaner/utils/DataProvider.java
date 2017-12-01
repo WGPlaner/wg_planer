@@ -597,6 +597,29 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
+    public void syncGroupMembers(Context context) {
+        currentGroupMembers = new ArrayList<>();
+        currentGroupMemberImages = new ArrayList<>();
+
+        for (String uid : currentGroupMembersUids) {
+            if (uid != null) {
+                ApiResponse<User> userResponse = getUser(uid);
+
+                if (userResponse != null && userResponse.getData() != null) {
+                    User user = userResponse.getData();
+                    currentGroupMembers.add(user);
+
+                    ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(user.getUid());
+
+                    if (imageResponse != null && imageResponse.getData() != null) {
+                        ImageStore.getInstance().writeGroupMemberPicture(user.getUid(), imageResponse.getData(), context);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public void syncShoppingList() {
         ApiResponse<ShoppingList> shoppingListResponse = getShoppingList();
 

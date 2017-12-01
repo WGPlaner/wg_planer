@@ -92,4 +92,6 @@ public interface DataProviderInterface {
     void syncShoppingList();
 
     void syncGroup(Context context);
+
+    void syncGroupMembers(Context context);
 }
