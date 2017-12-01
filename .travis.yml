@@ -55,9 +55,9 @@ script:
 - ./gradlew assembleRelease -PdisablePreDex
 - echo -en 'travis_fold:end:script.build\\r'
 
-- echo -e '\033[0;33mUnit tests...\033[0m' && echo -en 'travis_fold:start:script.unittest\\r'
-- ./gradlew testReleaseUnitTest createDebugCoverageReport -PdisablePreDex
-- echo -en 'travis_fold:end:script.unittest\\r'
+#- echo -e '\033[0;33mUnit tests...\033[0m' && echo -en 'travis_fold:start:script.unittest\\r'
+#- ./gradlew testReleaseUnitTest createDebugCoverageReport -PdisablePreDex
+#- echo -en 'travis_fold:end:script.unittest\\r'
 
 - echo -e '\033[0;33mUI tests...\033[0m' && echo -en 'travis_fold:start:script.uitest\\r'
 - android-wait-for-emulator
