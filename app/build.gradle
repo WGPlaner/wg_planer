@@ -6,11 +6,12 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "de.ameyering.wgplaner.wgplaner"
+        testApplicationId "de.ameyering.wgplaner.test"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "de.ameyering.wgplaner.test.runner.Instrumentation"
     }
     buildTypes {
         release {
@@ -24,25 +25,36 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    sourceSets {
+        androidTest {
+            assets {
+                assets.srcDirs = ['src/androidTest/assets']
+            }
+            java {
+                java.srcDirs = ['src/androidTest/java']
+            }
+        }
+    }
 }
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestApi('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     implementation 'com.android.support:appcompat-v7:26.+'
     implementation 'com.android.support:design:26.+'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    api 'com.google.firebase:firebase-auth:11.6.0'
-    api 'com.google.firebase:firebase-core:11.6.0'
-    api 'com.google.firebase:firebase-messaging:11.6.0'
     implementation 'com.android.support:cardview-v7:26.+'
     implementation 'com.android.support:recyclerview-v7:26.+'
-    testApi 'junit:junit:4.12'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    api 'com.google.firebase:firebase-auth:11.6.2'
+    api 'com.google.firebase:firebase-core:11.6.2'
+    api 'com.google.firebase:firebase-messaging:11.6.2'
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'io.cucumber:cucumber-android:2.1.0'
+    testImplementation 'junit:junit:4.12'
     testApi 'org.mockito:mockito-core:2.10.0'
-    androidTestCompile 'io.cucumber:cucumber-android:2.1.0'
-    androidTestCompile 'io.cucumber:cucumber-picocontainer:2.1.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
