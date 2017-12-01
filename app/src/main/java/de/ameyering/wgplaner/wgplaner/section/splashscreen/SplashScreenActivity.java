@@ -2,6 +2,7 @@ package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
@@ -34,6 +37,8 @@ import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";
+    private static final String PATH_PATTERN = "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
+
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private LinearLayout errorContainer;
@@ -41,10 +46,24 @@ public class SplashScreenActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeToRefresh;
 
+    private Intent joinGroupIntent = null;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        Intent intent = getIntent();
+        Uri data = intent.getData();
+        if(data != null) {
+            Pattern pattern = Pattern.compile(PATH_PATTERN);
+            Matcher matcher = pattern.matcher(data.toString());
+
+            if (matcher.matches()) {
+                this.joinGroupIntent = intent;
+            }
+        }
+
 
         progressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
@@ -167,6 +186,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+                if(joinGroupIntent != null){
+                    intent.setData(intent.getData());
+                }
                 startActivity(intent);
                 finish();
             }
@@ -178,6 +200,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashScreenActivity.this, SetUpActivity.class);
+                if(joinGroupIntent != null){
+                    intent.setData(joinGroupIntent.getData());
+                }
                 startActivity(intent);
                 finish();
             }

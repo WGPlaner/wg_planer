@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
+import de.ameyering.wgplaner.wgplaner.section.settings.GroupSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.settings.ProfileSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
@@ -24,6 +25,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQ_CODE_PROFILE_SETTINGS = 0;
+    private static final int REQ_CODE_GROUP_SETTINGS = 1;
 
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -135,7 +137,7 @@ public class HomeActivity extends AppCompatActivity
             startActivityForResult(new Intent(this, ProfileSettingsActivity.class), REQ_CODE_PROFILE_SETTINGS);
 
         } else if (id == R.id.nav_group_settings) {
-
+            startActivityForResult(new Intent(this, GroupSettingsActivity.class), REQ_CODE_GROUP_SETTINGS);
         } else {
             return false;
         }

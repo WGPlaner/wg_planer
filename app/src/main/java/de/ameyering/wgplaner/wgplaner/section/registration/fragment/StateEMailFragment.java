@@ -80,6 +80,9 @@ public class StateEMailFragment extends NavigationFragment {
     private void finish() {
         if (DataProvider.getInstance().registerUser()) {
             Intent intent = new Intent(getContext(), SetUpActivity.class);
+            if(RegistrationActivity.joinGroupIntent != null){
+                intent.setData(RegistrationActivity.joinGroupIntent.getData());
+            }
             startActivity(intent);
             getActivity().finish();
 

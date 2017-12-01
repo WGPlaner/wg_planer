@@ -1,16 +1,17 @@
 package de.ameyering.wgplaner.wgplaner.section.settings;
 
+import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,21 +20,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
-import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
 
     public static final int REQ_CODE_PICK_IMAGE = 0;
-    public static final int REQ_CODE_CROP_IMAGE = 1;
 
     private Button btLeaveGroup;
     private EditText inputName;
@@ -95,6 +92,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
             }
         });
+        image.setEnabled(false);
 
         image.setImageBitmap(DataProvider.getInstance().getCurrentUserImage(this));
 
@@ -117,12 +115,30 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         btLeaveGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (DataProvider.getInstance().leaveCurrentGroup()) {
-                    setResult(RESULT_OK);
-                    finish();
-                } else {
-                    Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
+                builder.setTitle(getString(R.string.dialog_leave_group_title));
+                builder.setMessage(getString(R.string.dialog_leave_group_message));
+
+                builder.setPositiveButton(R.string.dialog_leave_group_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (DataProvider.getInstance().leaveCurrentGroup()) {
+                            setResult(RESULT_OK);
+                            finish();
+                        } else {
+                            Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+                builder.setNegativeButton(R.string.dialog_discard_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                builder.create().show();
             }
         });
     }
@@ -145,71 +161,19 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     selectedImage = data.getData();
 
-                    Intent intent = new Intent("com.android.camera.action.CROP");
-                    intent.setType("image/*");
-
-                    List<ResolveInfo> activities = getPackageManager().queryIntentActivities(intent, 0);
-
-                    if (activities.isEmpty()) {
-                        try {
-                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                            bitmap = scaleBitmap(bitmap);
-
-                            image.setImageBitmap(bitmap);
-                            image.startAnimation(AnimationUtils.loadAnimation(this,
-                                    R.anim.anim_load_new_profile_picture));
-
-                        } catch (IOException e) {
-                            Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
-                        }
-
-                        return;
-
-                    } else {
-                        intent.setData(selectedImage);
-                        intent.putExtra("outputX", 200);
-                        intent.putExtra("outputY", 200);
-                        intent.putExtra("aspectX", 1);
-                        intent.putExtra("aspectY", 1);
-                        intent.putExtra("scale", true);
-                        intent.putExtra("return-data", true);
-
-                        startActivityForResult(intent, REQ_CODE_CROP_IMAGE);
-                    }
-                }
-
-                break;
-
-            case REQ_CODE_CROP_IMAGE:
-                if (resultCode == RESULT_OK) {
-                    Bundle extras = data.getExtras();
-
-                    if (extras != null) {
-                        bitmap = extras.getParcelable("data");
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                         bitmap = scaleBitmap(bitmap);
 
                         image.setImageBitmap(bitmap);
                         image.startAnimation(AnimationUtils.loadAnimation(this,
-                                R.anim.anim_load_new_profile_picture));
-                    }
+                            R.anim.anim_load_new_profile_picture));
 
-                } else {
-                    if (selectedImage != null) {
-                        try {
-                            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                            bitmap = scaleBitmap(bitmap);
-
-                            image.setImageBitmap(bitmap);
-                            image.startAnimation(AnimationUtils.loadAnimation(this,
-                                    R.anim.anim_load_new_profile_picture));
-
-                        } catch (IOException e) {
-                            Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
-                        }
-
-                        return;
+                    } catch (IOException e) {
+                        Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
                     }
                 }
+                break;
         }
     }
 
@@ -262,6 +226,10 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 MenuItem save = menu.findItem(R.id.edit_fullscreen_save);
                 save.setVisible(true);
                 this.inputName.setEnabled(true);
+                this.image.setEnabled(true);
+                Resources r = getResources();
+                float elevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, r.getDisplayMetrics());
+                ObjectAnimator.ofFloat(image, "elevation", elevation).setDuration(200).start();
                 this.inputEmail.setEnabled(true);
                 return true;
             }

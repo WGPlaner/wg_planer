@@ -4,6 +4,7 @@
     <string name="set_up_group_activity">Create Group</string>
     <string name="join_group_activity">Join Group</string>
     <string name="profile_settings_activity">Your Profile</string>
+    <string name="group_settings_activity">Your Group</string>
     <string name="title_activity_home">Home</string>
 
     <string name="action_settings">Settings</string>
@@ -106,4 +107,15 @@
     <string name="delete_currency_error"> You can not delete the Currency</string>
 
     <string name="load_profile_picture_error">Failed to load Picture</string>
+    
+    <!-- UserDialog Strings -->
+    <string name="joined_at_hint">Joined at</string>
+    <string name="dialog_invite_friends_title">Access Key</string>
+    <string name="dialog_invite_friends_button_copy">Copy</string>
+    <string name="dialog_invite_friends_button_share">Share</string>
+    <string name="send_to">Send to</string>
+
+    <string name="dialog_leave_group_title">Leave group</string>
+    <string name="dialog_leave_group_message">Are you sure?</string>
+    <string name="dialog_leave_group_positive">Leave Group</string>
 </resources>

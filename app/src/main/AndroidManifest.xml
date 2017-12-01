@@ -66,15 +66,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".utils.WGPlanerInstanceIdService"
-            android:exported="false">
+            android:name=".utils.WGPlanerInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name=".utils.NotificationService"
-            android:exported="false">
+            android:name=".utils.NotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -95,6 +93,10 @@
         <activity
             android:name=".section.settings.ProfileSettingsActivity"
             android:label="@string/profile_settings_activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".section.settings.GroupSettingsActivity"
+            android:label="@string/group_settings_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".section.setup.SetUpActivity"
