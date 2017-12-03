@@ -38,6 +38,7 @@ import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";
     private static final String PATH_PATTERN = "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
+    private DataProvider dataProvider;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -80,7 +81,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        initializeUser(DataProvider.getInstance().getCurrentUserUid());
+                        initializeUser(dataProvider.getCurrentUserUid());
                     }
                 }).start();
             }
@@ -124,12 +125,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (user != null) {
             String uid = user.getUid();
             DataProvider.initialize(ServerCalls.getInstance());
+            dataProvider = DataProvider.getInstance();
             initializeUser(uid);
         }
     }
 
     private void initializeUser(String uid) {
-        DataProviderInterface.SetUpState state = DataProvider.getInstance().initialize(uid, this);
+        DataProviderInterface.SetUpState state = dataProvider.initialize(uid, this);
 
         switch (state) {
             case GET_USER_FAILED: {

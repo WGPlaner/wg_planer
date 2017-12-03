@@ -29,8 +29,9 @@ import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
-
     public static final int REQ_CODE_PICK_IMAGE = 0;
+    
+    private DataProvider dataProvider = DataProvider.getInstance();
 
     private Button btLeaveGroup;
     private EditText inputName;
@@ -48,7 +49,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_settings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.profile_settings_toolbar);
+        Toolbar toolbar = findViewById(R.id.profile_settings_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -94,19 +95,19 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         });
         image.setEnabled(false);
 
-        image.setImageBitmap(DataProvider.getInstance().getCurrentUserImage(this));
+        image.setImageBitmap(dataProvider.getCurrentUserImage(this));
 
         btLeaveGroup = findViewById(R.id.bt_delete_group_profile_settings);
 
         inputName = findViewById(R.id.tfName_profile_settings);
-        String displayName = DataProvider.getInstance().getCurrentUserDisplayName();
+        String displayName = dataProvider.getCurrentUserDisplayName();
 
         if (displayName != null) {
             inputName.setText(displayName);
         }
 
         inputEmail = findViewById(R.id.tfEmail_profile_settings);
-        String email = DataProvider.getInstance().getCurrentUserEmail();
+        String email = dataProvider.getCurrentUserEmail();
 
         if (email != null) {
             inputEmail.setText(email);
@@ -122,7 +123,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.dialog_leave_group_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (DataProvider.getInstance().leaveCurrentGroup()) {
+                        if (dataProvider.leaveCurrentGroup()) {
                             setResult(RESULT_OK);
                             finish();
                         } else {
@@ -211,8 +212,8 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.edit_fullscreen_save: {
                 if (checkInputAndReturn()) {
-                    DataProvider.getInstance().setCurrentUserDisplayName(inputName.getText().toString());
-                    DataProvider.getInstance().setCurrentUserEmail(inputEmail.getText().toString());
+                    dataProvider.setCurrentUserDisplayName(inputName.getText().toString());
+                    dataProvider.setCurrentUserEmail(inputEmail.getText().toString());
                     Intent data = new Intent();
                     setResult(RESULT_OK, data);
                     finish();
@@ -241,14 +242,14 @@ public class ProfileSettingsActivity extends AppCompatActivity {
     private boolean checkInputAndReturn() {
         String displayName = inputName.getText().toString();
 
-        if (displayName == null || displayName.isEmpty()) {
+        if (displayName.isEmpty()) {
             Toast.makeText(this, getString(R.string.delete_display_name_error), Toast.LENGTH_LONG).show();
             return false;
         }
 
         String email = inputEmail.getText().toString();
 
-        DataProvider.getInstance().setCurrentUserImage(bitmap);
+        dataProvider.setCurrentUserImage(bitmap);
 
         return true;
     }

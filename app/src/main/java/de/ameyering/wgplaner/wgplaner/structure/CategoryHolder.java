@@ -11,6 +11,8 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.ListItem;
 
 public class CategoryHolder {
+    private static DataProvider dataProvider = DataProvider.getInstance();
+    
     private String header = "";
     private ArrayList<ListItem> items = new ArrayList<>();
 
@@ -106,16 +108,17 @@ public class CategoryHolder {
                 List<String> requestedFor = item.getRequestedFor();
                 StringBuilder header = new StringBuilder("");
 
-                if (requestedFor.size() == DataProvider.getInstance().getCurrentGroupMembers().size()) {
+                if (requestedFor.size() == dataProvider.getCurrentGroupMembers().size()) {
                     header.append(context.getString(R.string.group_label));
 
                 } else {
                     for (int i = 0; i < requestedFor.size(); i++) {
                         if (i == 0) {
-                            header.append(DataProvider.getInstance().getUserByUid(requestedFor.get(i)).getDisplayName());
+                            header.append(dataProvider.getUserByUid(requestedFor.get(i)).getDisplayName());
 
                         } else {
-                            header.append(" || " + DataProvider.getInstance().getUserByUid(requestedFor.get(
+                            header.append(" || ");
+                            header.append(dataProvider.getUserByUid(requestedFor.get(
                                         i)).getDisplayName());
                         }
                     }
@@ -137,16 +140,17 @@ public class CategoryHolder {
             List<String> requestedFor = item.getRequestedFor();
             StringBuilder header = new StringBuilder("");
 
-            if (requestedFor.size() == DataProvider.getInstance().getCurrentGroupMembers().size()) {
+            if (requestedFor.size() == dataProvider.getCurrentGroupMembers().size()) {
                 header.append(context.getString(R.string.group_label));
 
             } else {
                 for (int i = 0; i < requestedFor.size(); i++) {
                     if (i == 0) {
-                        header.append(DataProvider.getInstance().getUserByUid(requestedFor.get(i)).getDisplayName());
+                        header.append(dataProvider.getUserByUid(requestedFor.get(i)).getDisplayName());
 
                     } else {
-                        header.append(" || " + DataProvider.getInstance().getUserByUid(requestedFor.get(
+                        header.append(" || ");
+                        header.append(dataProvider.getUserByUid(requestedFor.get(
                                     i)).getDisplayName());
                     }
                 }

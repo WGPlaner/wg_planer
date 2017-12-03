@@ -37,9 +37,9 @@
                     android:id="@+id/tfName_group_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="@string/profile_settings_username_hint"
-                    android:textSize="18dp"
-                    android:enabled="false"/>
+                    android:textSize="18dp" />
 
             </android.support.design.widget.TextInputLayout>
 

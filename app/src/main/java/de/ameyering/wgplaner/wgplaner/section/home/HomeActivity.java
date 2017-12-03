@@ -27,6 +27,8 @@ public class HomeActivity extends AppCompatActivity
     private static final int REQ_CODE_PROFILE_SETTINGS = 0;
     private static final int REQ_CODE_GROUP_SETTINGS = 1;
 
+    private DataProvider dataProvider;
+
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
@@ -41,6 +43,10 @@ public class HomeActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if(dataProvider == null){
+            dataProvider = DataProvider.getInstance();
+        }
+
         fab = findViewById(R.id.fab);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -52,11 +58,11 @@ public class HomeActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DataProvider.getInstance().addOnDataChangeListener(new DataProvider.OnDataChangeListener() {
+        dataProvider.addOnDataChangeListener(new DataProvider.OnDataChangeListener() {
             @Override
             public void onDataChanged(DataProvider.DataType type) {
                 if (type == DataProvider.DataType.CURRENT_GROUP) {
-                    if (DataProvider.getInstance().getCurrentGroupUID() == null) {
+                    if (dataProvider.getCurrentGroupUID() == null) {
                         Intent intent = new Intent(HomeActivity.this, SetUpActivity.class);
                         startActivity(intent);
                         finish();
@@ -95,11 +101,8 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        return id == R.id.action_settings;
 
-        return false;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

@@ -9,13 +9,19 @@ import java.util.Map;
 
 
 public class NotificationService extends FirebaseMessagingService {
-    private static final String SHOPPING_LIST = "ShoppingList";
-    private static final String GROUP = "Group";
-    private static final String USER = "User";
+    private static final String SHOPPING_LIST_ADD = "ShoppingList-Add";
+    private static final String SHOPPING_LIST_UPDATE = "ShoppingList-Update";
+    private static final String SHOPPING_LIST_BUY = "ShoppingList-Buy";
+    private static final String GROUP_DATA = "Group-Data";
+    private static final String GROUP_IMAGE = "Group-Image";
+    private static final String USER_DATA = "User-Data";
+    private static final String USER_IMAGE = "User-Image";
     private static final String GROUP_NEW_MEMBER = "GroupNewMember";
 
     private static final String TYPE_KEY = "Type";
     private static final String UPDATED_KEY = "Updated";
+    
+    private static DataProvider dataProvider = DataProvider.getInstance();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -24,19 +30,41 @@ public class NotificationService extends FirebaseMessagingService {
         if (DataProvider.isInitialized()) {
 
             switch (data.get(TYPE_KEY)) {
-                case GROUP_NEW_MEMBER:
-                case GROUP: {
-                    DataProvider.getInstance().syncGroup(getApplicationContext());
+                case GROUP_DATA: {
+                    dataProvider.syncGroup();
                 }
                 break;
-
-                case SHOPPING_LIST: {
-                    DataProvider.getInstance().syncShoppingList();
+                case GROUP_IMAGE: {
+                    dataProvider.syncGroupPicture(getApplicationContext());
                 }
                 break;
-                case USER: {
-
+                case GROUP_NEW_MEMBER: {
+                    String uid = getUidsFromData(data);
+                    if(uid != null && !uid.isEmpty()) {
+                        dataProvider.syncGroupNewMember(uid, getApplicationContext());
+                    }
                 }
+                break;
+                case USER_DATA: {
+                    String uid = getUidsFromData(data);
+                    if(uid != null && !uid.isEmpty()){
+                        dataProvider.syncGroupMember(uid);
+                    }
+                }
+                break;
+                case USER_IMAGE: {
+                    String uid = getUidsFromData(data);
+                    if(uid != null && !uid.isEmpty()){
+                        dataProvider.syncGroupMemberPicture(uid, getApplicationContext());
+                    }
+                }
+                break;
+                case SHOPPING_LIST_ADD:
+                case SHOPPING_LIST_BUY:
+                case SHOPPING_LIST_UPDATE: {
+                    dataProvider.syncShoppingList();
+                }
+                break;
             }
         }
 
@@ -47,5 +75,26 @@ public class NotificationService extends FirebaseMessagingService {
     @Override
     public void onDeletedMessages() {
         super.onDeletedMessages();
+    }
+    
+    private String getUidsFromData(Map<String, String> data){
+        StringBuilder uidArray = new StringBuilder(data.get(UPDATED_KEY));
+
+        int indexArrayStart = uidArray.indexOf("[\"");
+        if(indexArrayStart != -1){
+            uidArray.delete(indexArrayStart, indexArrayStart + 2);
+        }
+
+        int indexArrayEnd = uidArray.lastIndexOf("\"]");
+        if(indexArrayEnd != -1){
+            uidArray.deleteCharAt(indexArrayEnd);
+            uidArray.deleteCharAt(indexArrayEnd);
+        }
+        
+        if(uidArray.indexOf(",") == -1){
+            return uidArray.toString();
+        } else {
+            return "";
+        }        
     }
 }

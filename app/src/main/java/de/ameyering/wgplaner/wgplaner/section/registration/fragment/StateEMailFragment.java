@@ -23,6 +23,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class StateEMailFragment extends NavigationFragment {
     private EditText inputEmail;
+    private DataProvider dataProvider = DataProvider.getInstance();
 
     @Nullable
     @Override
@@ -47,7 +48,7 @@ public class StateEMailFragment extends NavigationFragment {
                 String emailAddress = inputEmail.getText().toString();
 
                 if (isValidEmail(emailAddress)) {
-                    DataProvider.getInstance().setCurrentUserEmail(emailAddress);
+                    dataProvider.setCurrentUserEmail(emailAddress);
 
                     finish();
 
@@ -78,7 +79,7 @@ public class StateEMailFragment extends NavigationFragment {
     }
 
     private void finish() {
-        if (DataProvider.getInstance().registerUser()) {
+        if (dataProvider.registerUser()) {
             Intent intent = new Intent(getContext(), SetUpActivity.class);
             if(RegistrationActivity.joinGroupIntent != null){
                 intent.setData(RegistrationActivity.joinGroupIntent.getData());

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,7 +105,7 @@ public class CreateGroupFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQ_CODE_PICK_IMAGE: {
-                if (resultCode == getActivity().RESULT_OK) {
+                if (resultCode == AppCompatActivity.RESULT_OK) {
                     try {
                         Uri selectedImage = data.getData();
 

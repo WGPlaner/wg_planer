@@ -59,7 +59,7 @@ public interface DataProviderInterface {
 
     Currency getCurrentGroupCurrency();
 
-    Bitmap getCurrentGroupImage();
+    Bitmap getCurrentGroupImage(Context context);
 
     ArrayList<User> getCurrentGroupMembers();
 
@@ -91,7 +91,15 @@ public interface DataProviderInterface {
 
     void syncShoppingList();
 
-    void syncGroup(Context context);
+    void syncGroup();
 
-    void syncGroupMembers(Context context);
+    void syncGroupMembers();
+
+    void syncGroupNewMember(String uid, Context context);
+
+    void syncGroupMember(String uid);
+
+    void syncGroupMemberPicture(String uid, Context context);
+
+    void syncGroupPicture(Context context);
 }

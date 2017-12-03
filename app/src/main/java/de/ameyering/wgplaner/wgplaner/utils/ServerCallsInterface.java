@@ -53,6 +53,10 @@ interface ServerCallsInterface {
 
     ApiResponse<Group> getGroup(UUID groupUid);
 
+    void updateGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
+
+    ApiResponse<Group> updateGroup(Group group);
+
     void createGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
 
     ApiResponse<Group> createGroup(Group group);

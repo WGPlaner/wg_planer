@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +46,8 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 public class GroupSettingsActivity extends AppCompatActivity {
     public static final int REQ_CODE_PICK_IMAGE = 0;
     private static final String CLIPBOARD_LABEL = "AccessKey";
+    
+    private DataProvider dataProvider = DataProvider.getInstance();
 
     public RecyclerView members;
     public GroupMemberAdapter adapterMembers;
@@ -113,17 +116,19 @@ public class GroupSettingsActivity extends AppCompatActivity {
         });
 
         inputName = findViewById(R.id.tfName_group_settings);
-        String displayName = DataProvider.getInstance().getCurrentGroupName();
+        String displayName = dataProvider.getCurrentGroupName();
 
         if (displayName != null) {
             inputName.setText(displayName);
         }
 
         members = findViewById(R.id.rvMembers_group_settings);
-        adapterMembers = new GroupMemberAdapter(DataProvider.getInstance().getCurrentGroupMembers(), this);
+        adapterMembers = new GroupMemberAdapter(dataProvider.getCurrentGroupMembers(), this);
         members.setLayoutManager(new LinearLayoutManager(this));
         members.setHasFixedSize(false);
         members.setAdapter(adapterMembers);
+
+        image.setImageBitmap(dataProvider.getCurrentGroupImage(this));
 
         currencySpinner = findViewById(R.id.spCurrency_group_settings);
         currencySpinner.setEnabled(false);
@@ -152,12 +157,12 @@ public class GroupSettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingsActivity.this);
 
-                String accessKey = DataProvider.getInstance().createGroupAccessKey();
+                String accessKey = dataProvider.createGroupAccessKey();
                 URL url = null;
                 try {
                     url = new URL("https://api.wgplaner.ameyering.de/groups/join/" + accessKey);
                 } catch (MalformedURLException e){
-                    //TODO: Implement failure
+                    Log.e("URL", ":" + e);
                 }
                 final String urlString = url.toString();
 
@@ -178,6 +183,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText(CLIPBOARD_LABEL, urlString);
                         clipboard.setPrimaryClip(clip);
+                        Toast.makeText(GroupSettingsActivity.this, getString(R.string.access_key_copied), Toast.LENGTH_LONG).show();
                     }
                 });
                 builder.setNegativeButton(R.string.dialog_discard_negative, new DialogInterface.OnClickListener() {
@@ -191,13 +197,13 @@ public class GroupSettingsActivity extends AppCompatActivity {
                     builder.setMessage(accessKey);
                     builder.show();
                 } else {
-                    Toast.makeText(GroupSettingsActivity.this, "Failed tp generate Access-Key", Toast.LENGTH_LONG).show();
+                    Toast.makeText(GroupSettingsActivity.this, getString(R.string.generate_access_key_error), Toast.LENGTH_LONG).show();
                 }
 
             }
         });
 
-        if(!DataProvider.getInstance().isAdmin(DataProvider.getInstance().getCurrentUserUid())) {
+        if(!dataProvider.isAdmin(dataProvider.getCurrentUserUid())) {
             fab.setVisibility(View.GONE);
         }
     }
@@ -262,7 +268,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
-        if (DataProvider.getInstance().isAdmin(DataProvider.getInstance().getCurrentUserUid())) {
+        if (dataProvider.isAdmin(dataProvider.getCurrentUserUid())) {
             getMenuInflater().inflate(R.menu.menu_edit_full_screen_actvity, menu);
             MenuItem save = menu.findItem(R.id.edit_fullscreen_save);
             MenuItem edit = menu.findItem(R.id.edit_fullscreen_edit);
@@ -317,51 +323,21 @@ public class GroupSettingsActivity extends AppCompatActivity {
             return false;
         }
 
-        DataProvider.getInstance().setCurrentGroupName(displayName);
+        if(!displayName.equals(dataProvider.getCurrentGroupName())){
+            dataProvider.setCurrentGroupName(displayName);
+        }
 
         if (currency == null || currencies.isEmpty()) {
             Toast.makeText(this, getString(R.string.delete_currency_error), Toast.LENGTH_LONG).show();
             return false;
         }
 
-        DataProvider.getInstance().setCurrentGroupCurrency(currency);
+        if(!currency.equals(dataProvider.getCurrentGroupCurrency())){
+            dataProvider.setCurrentGroupCurrency(currency);
+        }
 
-
-        //TODO: Send updateUser
-
-        SaveBitmap task = new SaveBitmap();
-        task.execute(bitmap);
+        dataProvider.setCurrentGroupImage(bitmap);
 
         return true;
-    }
-
-    private class LoadBitmap extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            //todo get wgProfilePicture
-            //bitmap = Configuration.singleton.getProfilePicture(GroupSettingsActivity.this);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            image.setImageBitmap(bitmap);
-            super.onPostExecute(aVoid);
-        }
-    }
-
-    private class SaveBitmap extends AsyncTask<Bitmap, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Bitmap... bitmaps) {
-            if (bitmaps.length > 0) {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmaps[0].compress(Bitmap.CompressFormat.PNG, 100, stream);
-                //Configuration.singleton.setProfilePicture(stream.toByteArray());
-            }
-
-            return null;
-        }
     }
 }

@@ -61,10 +61,10 @@ public class ShoppingListItemAdapter extends
                 @Override
                 public void onClick(View view) {
                     if (checkbox.isChecked()) {
-                        DataProvider.getInstance().selectShoppingListItem(item);
+                        dataProvider.selectShoppingListItem(item);
 
                     } else {
-                        DataProvider.getInstance().unselectShoppingListItem(item);
+                        dataProvider.unselectShoppingListItem(item);
                     }
                 }
             });
@@ -73,7 +73,7 @@ public class ShoppingListItemAdapter extends
         public void initialize(ListItem item) {
             this.item = item;
 
-            checkbox.setChecked(DataProvider.getInstance().isItemSelected(item));
+            checkbox.setChecked(dataProvider.isItemSelected(item));
 
             String title = item.getTitle();
 
@@ -84,7 +84,7 @@ public class ShoppingListItemAdapter extends
             String requestedBy = item.getRequestedBy();
 
             if (requestedBy != null) {
-                String requestedByName = DataProvider.getInstance().getUserByUid(requestedBy).getDisplayName();
+                String requestedByName = dataProvider.getUserByUid(requestedBy).getDisplayName();
 
                 if (requestedByName != null) {
                     displayRequestedBy.setText(requestedByName);
@@ -94,10 +94,10 @@ public class ShoppingListItemAdapter extends
             displayNumber.setText(item.getCount().toString());
 
             List<String> uids = item.getRequestedFor();
-            String concatNames = "";
+            StringBuffer concatNames = new StringBuffer();
 
             for (String uid : uids) {
-                concatNames = concatNames + DataProvider.getInstance().getUserByUid(uid).getDisplayName() + ", ";
+                concatNames.append(dataProvider.getUserByUid(uid).getDisplayName()).append(", ");
             }
 
             displayRequestedFor.setText(concatNames);
@@ -106,7 +106,7 @@ public class ShoppingListItemAdapter extends
         public void updateContent(ListItem item, Bundle args) {
             this.item = item;
 
-            checkbox.setChecked(DataProvider.getInstance().isItemSelected(item));
+            checkbox.setChecked(dataProvider.isItemSelected(item));
 
             if (args == null) {
                 return;
@@ -127,10 +127,10 @@ public class ShoppingListItemAdapter extends
 
             if (requestedFor == ItemDiffCallback.TRUE_VALUE) {
                 List<String> uids = item.getRequestedFor();
-                String concatNames = "";
+                StringBuffer concatNames = new StringBuffer();
 
                 for (String uid : uids) {
-                    concatNames = concatNames + DataProvider.getInstance().getUserByUid(uid).getDisplayName() + ", ";
+                    concatNames.append(dataProvider.getUserByUid(uid).getDisplayName()).append(", ");
                 }
 
                 displayRequestedFor.setText(concatNames);
@@ -143,6 +143,7 @@ public class ShoppingListItemAdapter extends
     }
 
     private ArrayList<ListItem> items = new ArrayList<>();
+    private DataProvider dataProvider = DataProvider.getInstance();
 
     public ShoppingListItemAdapter(ArrayList<ListItem> items, Context context) {
         this.items.clear();
@@ -222,15 +223,7 @@ public class ShoppingListItemAdapter extends
             ListItem newItem = newItems.get(newItemPosition);
             ListItem oldItem = oldItems.get(oldItemPosition);
 
-            if (!isTitleEquals(newItem.getTitle(), oldItem.getTitle())) {
-                return false;
-            }
-
-            if (!isRequestedForEquals(newItem.getRequestedFor(), oldItem.getRequestedFor())) {
-                return false;
-            }
-
-            return true;
+            return isTitleEquals(newItem.getTitle(), oldItem.getTitle()) && isRequestedForEquals(newItem.getRequestedFor(), oldItem.getRequestedFor());
         }
 
         @Override
@@ -318,11 +311,7 @@ public class ShoppingListItemAdapter extends
                 }
             }
 
-            if (newTitle != null && oldTitle != null && !newTitle.equals(oldTitle)) {
-                return false;
-            }
-
-            return true;
+            return !(newTitle != null && oldTitle != null && !newTitle.equals(oldTitle));
         }
 
         private boolean isRequestedForEquals(List<String> newRequestedFor, List<String> oldRequestedFor) {
@@ -337,12 +326,8 @@ public class ShoppingListItemAdapter extends
                 }
             }
 
-            if (newRequestedFor != null && oldRequestedFor != null &&
-                !newRequestedFor.equals(oldRequestedFor)) {
-                return false;
-            }
-
-            return true;
+            return !(newRequestedFor != null && oldRequestedFor != null &&
+                !newRequestedFor.equals(oldRequestedFor));
         }
 
         private boolean isRequestedByEquals(String newRequestedBy, String oldRequestedBy) {
@@ -357,19 +342,12 @@ public class ShoppingListItemAdapter extends
                 }
             }
 
-            if (newRequestedBy != null && oldRequestedBy != null && !newRequestedBy.equals(oldRequestedBy)) {
-                return false;
-            }
-
-            return true;
+            return !(newRequestedBy != null && oldRequestedBy != null && !newRequestedBy.equals(oldRequestedBy));
         }
 
         private boolean isNumberEquals(int newNumber, int oldNumber) {
-            if (newNumber == oldNumber) {
-                return true;
-            }
+            return newNumber == oldNumber;
 
-            return false;
         }
     }
 }

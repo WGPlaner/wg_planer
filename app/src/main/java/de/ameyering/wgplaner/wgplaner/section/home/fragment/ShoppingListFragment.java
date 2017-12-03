@@ -26,6 +26,7 @@ public class ShoppingListFragment extends SectionFragment {
     private RecyclerView categories;
     private ShoppingListCategoryAdapter adapter;
     private DataProvider.OnDataChangeListener shoppingListListener = null;
+    private DataProvider dataProvider = DataProvider.getInstance();
 
     private ArrayList<ListItem> items = new ArrayList<>();
 
@@ -56,7 +57,7 @@ public class ShoppingListFragment extends SectionFragment {
 
         if (adapter == null) {
             items.clear();
-            items.addAll(DataProvider.getInstance().getCurrentShoppingList());
+            items.addAll(dataProvider.getCurrentShoppingList());
             ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
                     CategoryHolder.Category.REQUESTED_FOR, items);
             adapter = new ShoppingListCategoryAdapter(holders, getContext());
@@ -70,26 +71,34 @@ public class ShoppingListFragment extends SectionFragment {
 
                 @Override
                 public void onDataChanged(final DataProvider.DataType type) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (type == DataProvider.DataType.SELECTED_ITEMS) {
-                                if (floatingActionButton != null) {
-                                    changeFloatingActionButton();
-                                }
+                    if(getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (type == DataProvider.DataType.SELECTED_ITEMS) {
+                                    if (floatingActionButton != null) {
+                                        changeFloatingActionButton();
+                                    }
 
-                            } else if (type == DataProvider.DataType.SHOPPING_LIST) {
-                                onNewData(DataProvider.getInstance().getCurrentShoppingList());
+                                } else if (type == DataProvider.DataType.SHOPPING_LIST) {
+                                    onNewData(dataProvider.getCurrentShoppingList());
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             };
 
-            DataProvider.getInstance().addOnDataChangeListener(shoppingListListener);
+            dataProvider.addOnDataChangeListener(shoppingListListener);
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        onNewData(dataProvider.getCurrentShoppingList());
+        super.onResume();
     }
 
     public void onNewData(ArrayList<ListItem> items) {
@@ -109,7 +118,7 @@ public class ShoppingListFragment extends SectionFragment {
         switch (requestCode) {
             case REQ_CODE_ADD_ITEM: {
                 if (resultCode == Activity.RESULT_OK) {
-                    onNewData(DataProvider.getInstance().getCurrentShoppingList());
+                    onNewData(dataProvider.getCurrentShoppingList());
                 }
             }
             break;
@@ -117,7 +126,7 @@ public class ShoppingListFragment extends SectionFragment {
     }
 
     private void changeFloatingActionButton() {
-        if (!DataProvider.getInstance().isSomethingSelected()) {
+        if (!dataProvider.isSomethingSelected()) {
             floatingActionButton.setVisibility(View.VISIBLE);
             floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                     R.drawable.ic_add_white));
@@ -136,7 +145,7 @@ public class ShoppingListFragment extends SectionFragment {
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DataProvider.getInstance().buySelection();
+                    dataProvider.buySelection();
                 }
             });
         }

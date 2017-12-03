@@ -32,6 +32,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
     private CircularImageView image;
     private Bitmap bitmap;
     private Uri selectedImage;
+    private DataProvider dataProvider = DataProvider.getInstance();
 
     private StateEMailFragment stateEMailFragment;
 
@@ -68,7 +69,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
             }
         });
 
-        image.setImageBitmap(DataProvider.getInstance().getCurrentUserImage(getContext()));
+        image.setImageBitmap(dataProvider.getCurrentUserImage(getContext()));
 
         Button buttonContinue = view.findViewById(R.id.btn_continue_upload_profile_picture);
         Button buttonSkip = view.findViewById(R.id.btn_skip_upload_profile_picture);
@@ -76,7 +77,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataProvider.getInstance().setCurrentUserImage(bitmap);
+                dataProvider.setCurrentUserImage(bitmap);
                 loadNext();
             }
         });
@@ -97,7 +98,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
 
         switch (requestCode) {
             case REQ_CODE_PICK_IMAGE:
-                if (resultCode == getActivity().RESULT_OK) {
+                if (resultCode == AppCompatActivity.RESULT_OK) {
 
                     selectedImage = data.getData();
 
