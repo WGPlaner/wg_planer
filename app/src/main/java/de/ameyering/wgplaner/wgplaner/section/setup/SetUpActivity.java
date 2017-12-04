@@ -2,6 +2,7 @@ package de.ameyering.wgplaner.wgplaner.section.setup;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -25,12 +26,34 @@ public class SetUpActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private boolean toastWasShown = false;
 
-    private DescriptionFragment descriptionFragment = new DescriptionFragment();
+    private Fragment descriptionFragment = new DescriptionFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up);
+
+        if(getIntent() != null && getIntent().getData() != null){
+            Uri data = getIntent().getData();
+            Pattern pattern = Pattern.compile(PATH_PATTERN);
+            Matcher matcher = pattern.matcher(data.toString());
+
+            if(matcher.matches()){
+                if(!DataProvider.getInstance().joinCurrentGroup(data.getLastPathSegment(), this)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(SetUpActivity.this, getString(R.string.server_connection_failed),
+                                Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }
 
         toolbar = findViewById(R.id.set_up_toolbar);
         setSupportActionBar(toolbar);
@@ -58,32 +81,10 @@ public class SetUpActivity extends AppCompatActivity {
         });
 
         if (savedInstanceState != null) {
-            descriptionFragment = (DescriptionFragment) getSupportFragmentManager().getFragment(
+            descriptionFragment = getSupportFragmentManager().getFragment(
                     savedInstanceState, DESCRIPTION_FRAGMENT_TAG);
 
         } else {
-            if(getIntent().getData() != null){
-                Uri data = getIntent().getData();
-                Pattern pattern = Pattern.compile(PATH_PATTERN);
-                Matcher matcher = pattern.matcher(data.toString());
-
-                if(matcher.matches()){
-                    if(!DataProvider.getInstance().joinCurrentGroup(data.getLastPathSegment(), this)) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(SetUpActivity.this, getString(R.string.server_connection_failed),
-                                    Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    } else {
-                        Intent intent = new Intent(this, HomeActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-            }
-
             loadDescriptionFragment();
             toolbar.setVisibility(View.GONE);
         }

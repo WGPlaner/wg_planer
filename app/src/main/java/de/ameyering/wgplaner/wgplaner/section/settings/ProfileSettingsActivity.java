@@ -144,15 +144,6 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isValidEmail(String email) {
-        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        Pattern pattern = Pattern.compile(regex);
-
-        Matcher matcher = pattern.matcher(email);
-
-        return matcher.matches();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -214,6 +205,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 if (checkInputAndReturn()) {
                     dataProvider.setCurrentUserDisplayName(inputName.getText().toString());
                     dataProvider.setCurrentUserEmail(inputEmail.getText().toString());
+                    dataProvider.setCurrentUserImage(bitmap);
                     Intent data = new Intent();
                     setResult(RESULT_OK, data);
                     finish();
@@ -249,8 +241,20 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
         String email = inputEmail.getText().toString();
 
-        dataProvider.setCurrentUserImage(bitmap);
+        if(!email.isEmpty()){
+            if(!isValidEmail(email)){
+                Toast.makeText(this, getString(R.string.invalid_email), Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
 
         return true;
+    }
+
+    private boolean isValidEmail(String email) {
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        Pattern pattern = Pattern.compile(regex);
+
+        return pattern.matcher(email).matches();
     }
 }

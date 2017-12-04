@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -29,7 +28,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,6 +40,7 @@ import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.section.settings.adapter.GroupMemberAdapter;
 import de.ameyering.wgplaner.wgplaner.section.setup.adapter.LocaleSpinnerAdapter;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import io.swagger.client.model.User;
 
 public class GroupSettingsActivity extends AppCompatActivity {
     public static final int REQ_CODE_PICK_IMAGE = 0;
@@ -63,6 +62,28 @@ public class GroupSettingsActivity extends AppCompatActivity {
     private EditText inputName;
     private boolean isInEditMode = false;
     private Menu menu;
+
+    private DataProvider.OnDataChangeListener listener = new DataProvider.OnDataChangeListener() {
+        @Override
+        public void onDataChanged(DataProvider.DataType type) {
+            if(type == DataProvider.DataType.CURRENT_GROUP) {
+                currency = dataProvider.getCurrentGroupCurrency();
+                int pos = currencies.indexOf(currency);
+                if(pos != -1) {
+                    currencySpinner.setSelection(pos);
+                }
+
+                inputName.setText(dataProvider.getCurrentGroupName());
+            } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS){
+                ArrayList<User> users = dataProvider.getCurrentGroupMembers();
+
+                GroupMemberAdapter adapter = new GroupMemberAdapter(users, GroupSettingsActivity.this);
+                members.setAdapter(adapter);
+
+                image.setImageBitmap(dataProvider.getCurrentGroupImage(GroupSettingsActivity.this));
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -339,5 +360,17 @@ public class GroupSettingsActivity extends AppCompatActivity {
         dataProvider.setCurrentGroupImage(bitmap);
 
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        dataProvider.removeOnDataChangeListener(listener);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        dataProvider.addOnDataChangeListener(listener);
+        super.onResume();
     }
 }

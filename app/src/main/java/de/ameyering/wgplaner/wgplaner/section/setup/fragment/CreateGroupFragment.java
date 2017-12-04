@@ -156,7 +156,7 @@ public class CreateGroupFragment extends Fragment {
 
 
     private void createGroup() {
-        if (DataProvider.getInstance().createGroup(groupName, currency, null, getContext())) {
+        if (DataProvider.getInstance().createGroup(groupName, currency, bitmap, getContext())) {
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
             getActivity().finish();

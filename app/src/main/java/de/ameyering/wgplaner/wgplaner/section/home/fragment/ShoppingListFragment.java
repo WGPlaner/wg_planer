@@ -82,6 +82,8 @@ public class ShoppingListFragment extends SectionFragment {
 
                                 } else if (type == DataProvider.DataType.SHOPPING_LIST) {
                                     onNewData(dataProvider.getCurrentShoppingList());
+                                } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS){
+                                    onNewData(dataProvider.getCurrentShoppingList());
                                 }
                             }
                         });

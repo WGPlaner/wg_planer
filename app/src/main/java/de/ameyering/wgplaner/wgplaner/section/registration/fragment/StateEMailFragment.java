@@ -53,7 +53,12 @@ public class StateEMailFragment extends NavigationFragment {
                     finish();
 
                 } else {
-                    Toast.makeText(getContext(), "Email is invalid", Toast.LENGTH_LONG).show();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), "Email is invalid", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }
         });
@@ -88,8 +93,13 @@ public class StateEMailFragment extends NavigationFragment {
             getActivity().finish();
 
         } else {
-            Toast.makeText(getContext(), getString(R.string.server_connection_failed),
-                Toast.LENGTH_LONG).show();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), getString(R.string.server_connection_failed),
+                        Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 }
