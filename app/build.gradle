@@ -25,6 +25,9 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    testOptions {
+        animationsDisabled = true
+    }
     sourceSets {
         androidTest {
             assets {

@@ -29,6 +29,18 @@ public class ShoppingListFragment extends SectionFragment {
 
     private ArrayList<ListItem> items = new ArrayList<>();
 
+    @Override
+    public void onPause() {
+        DataProvider.getInstance().removeOnDataChangeListener(shoppingListListener);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        DataProvider.getInstance().addOnDataChangeListener(shoppingListListener);
+        super.onResume();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -70,6 +82,10 @@ public class ShoppingListFragment extends SectionFragment {
 
                 @Override
                 public void onDataChanged(final DataProvider.DataType type) {
+                    // TODO:
+                    if (getActivity() == null) {
+                        return;
+                    }
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

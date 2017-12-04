@@ -1,22 +1,23 @@
-#Feature: Manage Shopping List
-#
-#   Scenario: Add Item to Shopping List
-#    Given I have opened activity "AddItemActivity"
-#     When I enter text into input field with id "name"
-#      And I enter a number into input field with id "number"
-#      And I tap on toolbar button with text "Save"
-#     Then "AddItemActivity" should be closed
-#
-#   Scenario: Reorder Items
-#    Given I have opened the activity "HomeActivity"
-#      And I have navigated to section "ShoppingList"
-#     When I select a "Requested for" from spinner with id "categories"
-#     Then I should see the Items ordered by "Requested for"
-#
-#   Scenario: Buy Item
-#    Given I have opened "HomeActivity"
-#      And I have navigated to section "ShoppingList"
-#     When I check an item
-#     Then I should see drawable "ic_check" as drawable of FloatingActionButton
-#     When I tap on FloatingActionButton
-#     Then Checked items should be removed
+Feature: Add a shopping list item
+
+  Scenario: Add an invalid item without someone that needs it
+      Given The shopping list view is open
+       When I click button with id "fab"
+        And I enter "Milk" into input field with id "add_item_name_input"
+        And I enter "123" into input field with id "add_item_number_input"
+        And I click button with id "edit_fullscreen_save"
+       Then Toast with text "Please fill out all fields" is displayed
+
+  Scenario: Add an invalid item without a title.
+      Given The shopping list view is open
+       When I click button with id "fab"
+        And I enter "123" into input field with id "add_item_number_input"
+        And I click button with id "edit_fullscreen_save"
+       Then Toast with text "Please fill out all fields" is displayed
+
+  Scenario: Add an invalid item without a count.
+      Given The shopping list view is open
+       When I click button with id "fab"
+        And I enter "Milk" into input field with id "add_item_name_input"
+        And I click button with id "edit_fullscreen_save"
+       Then Toast with text "Please fill out all fields" is displayed
