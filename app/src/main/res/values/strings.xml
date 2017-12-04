@@ -123,5 +123,5 @@
     <string name="generate_access_key_error">Failed to generate Access Key</string>
 
     <string name="invalid_email">Please state a valid EMail or no EMail</string>
-    <string name="fill_out_all_fields">Please fill out all of the fields</string>
+    <string name="fill_out_all_fields">Please fill out all fields</string>
 </resources>

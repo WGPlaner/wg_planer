@@ -25,7 +25,29 @@ public class ShoppingListFragment extends SectionFragment {
 
     private RecyclerView categories;
     private ShoppingListCategoryAdapter adapter;
-    private DataProvider.OnDataChangeListener shoppingListListener = null;
+    private DataProvider.OnDataChangeListener shoppingListListener = new DataProvider.OnDataChangeListener() {
+
+        @Override
+        public void onDataChanged(final DataProvider.DataType type) {
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (type == DataProvider.DataType.SELECTED_ITEMS) {
+                            if (floatingActionButton != null) {
+                                changeFloatingActionButton();
+                            }
+
+                        } else if (type == DataProvider.DataType.SHOPPING_LIST) {
+                            onNewData(dataProvider.getCurrentShoppingList());
+                        } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS){
+                            onNewData(dataProvider.getCurrentShoppingList());
+                        }
+                    }
+                });
+            }
+        }
+    };
     private DataProvider dataProvider = DataProvider.getInstance();
 
     private ArrayList<ListItem> items = new ArrayList<>();
@@ -66,31 +88,6 @@ public class ShoppingListFragment extends SectionFragment {
         }
 
         if (shoppingListListener == null) {
-
-            shoppingListListener = new DataProvider.OnDataChangeListener() {
-
-                @Override
-                public void onDataChanged(final DataProvider.DataType type) {
-                    if(getActivity() != null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (type == DataProvider.DataType.SELECTED_ITEMS) {
-                                    if (floatingActionButton != null) {
-                                        changeFloatingActionButton();
-                                    }
-
-                                } else if (type == DataProvider.DataType.SHOPPING_LIST) {
-                                    onNewData(dataProvider.getCurrentShoppingList());
-                                } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS){
-                                    onNewData(dataProvider.getCurrentShoppingList());
-                                }
-                            }
-                        });
-                    }
-                }
-            };
-
             dataProvider.addOnDataChangeListener(shoppingListListener);
         }
 
@@ -100,7 +97,14 @@ public class ShoppingListFragment extends SectionFragment {
     @Override
     public void onResume() {
         onNewData(dataProvider.getCurrentShoppingList());
+        dataProvider.addOnDataChangeListener(shoppingListListener);
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        dataProvider.removeOnDataChangeListener(shoppingListListener);
+        super.onPause();
     }
 
     public void onNewData(ArrayList<ListItem> items) {

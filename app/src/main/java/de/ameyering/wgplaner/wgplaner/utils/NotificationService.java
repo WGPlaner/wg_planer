@@ -16,18 +16,19 @@ public class NotificationService extends FirebaseMessagingService {
     private static final String GROUP_IMAGE = "Group-Image";
     private static final String USER_DATA = "User-Data";
     private static final String USER_IMAGE = "User-Image";
-    private static final String GROUP_NEW_MEMBER = "GroupNewMember";
+    private static final String GROUP_NEW_MEMBER = "Group-NewMember";
+    private static final String GROUP_MEMBER_LEFT = "Group-MemberLeft";
 
     private static final String TYPE_KEY = "Type";
     private static final String UPDATED_KEY = "Updated";
     
-    private static DataProvider dataProvider = DataProvider.getInstance();
+    private static DataProviderInterface dataProvider = DataProvider.getInstance();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
 
-        if (DataProvider.isInitialized()) {
+        if (DataProvider.isInitialized() && dataProvider.getCurrentGroupUID() != null) {
 
             switch (data.get(TYPE_KEY)) {
                 case GROUP_DATA: {
@@ -42,6 +43,13 @@ public class NotificationService extends FirebaseMessagingService {
                     String uid = getUidsFromData(data);
                     if(uid != null && !uid.isEmpty()) {
                         dataProvider.syncGroupNewMember(uid, getApplicationContext());
+                    }
+                }
+                break;
+                case GROUP_MEMBER_LEFT: {
+                    String uid = getUidsFromData(data);
+                    if(uid != null && !uid.isEmpty()){
+                        dataProvider.syncGroupMemberLeft(uid, getApplicationContext());
                     }
                 }
                 break;

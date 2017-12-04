@@ -3,6 +3,8 @@ package de.ameyering.wgplaner.wgplaner.section.settings.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -98,8 +100,54 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         return new ViewHolder(view);
     }
 
+    public void onNewData(ArrayList<User> users){
+        UserCallback callback = new UserCallback(users, this.users);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback, true);
+
+        this.users.clear();
+        this.users.addAll(users);
+
+        result.dispatchUpdatesTo(this);
+    }
+
     @Override
     public int getItemCount() {
         return users.size();
+    }
+
+    private static class UserCallback extends DiffUtil.Callback {
+        private ArrayList<User> newUsers;
+        private ArrayList<User> oldUsers;
+
+        public UserCallback(ArrayList<User> newUsers, ArrayList<User> oldUsers) {
+            this.newUsers = newUsers;
+            this.oldUsers = oldUsers;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldUsers.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newUsers.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            User newUser = newUsers.get(newItemPosition);
+            User oldUser = oldUsers.get(oldItemPosition);
+
+            return newUser.getUid().equals(oldUser.getUid());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            User newUser = newUsers.get(newItemPosition);
+            User oldUser = oldUsers.get(oldItemPosition);
+
+            return newUser.getDisplayName().equals(oldUser.getDisplayName());
+        }
     }
 }

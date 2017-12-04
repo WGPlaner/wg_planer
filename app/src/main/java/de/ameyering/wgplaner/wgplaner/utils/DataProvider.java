@@ -706,6 +706,18 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
+    public void syncGroupMemberLeft(String uid, Context context) {
+        int pos = currentGroupMembersUids.indexOf(uid);
+
+        if(pos != -1){
+            currentGroupMembersUids.remove(pos);
+            currentGroupMembers.remove(pos);
+            imageStoreInstance.deleteGroupMemberPicture(uid, context);
+            callAllListeners(DataType.CURRENT_GROUP_MEMBERS);
+        }
+    }
+
+    @Override
     public void syncGroupMembers() {
         //currently nothing implemented
     }

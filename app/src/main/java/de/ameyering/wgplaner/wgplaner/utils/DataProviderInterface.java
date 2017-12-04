@@ -97,6 +97,8 @@ public interface DataProviderInterface {
 
     void syncGroupNewMember(String uid, Context context);
 
+    void syncGroupMemberLeft(String uid, Context context);
+
     void syncGroupMember(String uid);
 
     void syncGroupMemberPicture(String uid, Context context);

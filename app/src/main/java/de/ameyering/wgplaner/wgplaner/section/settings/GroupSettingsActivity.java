@@ -63,24 +63,34 @@ public class GroupSettingsActivity extends AppCompatActivity {
     private boolean isInEditMode = false;
     private Menu menu;
 
+    private AlertDialog alertDialog = null;
+
     private DataProvider.OnDataChangeListener listener = new DataProvider.OnDataChangeListener() {
         @Override
         public void onDataChanged(DataProvider.DataType type) {
             if(type == DataProvider.DataType.CURRENT_GROUP) {
-                currency = dataProvider.getCurrentGroupCurrency();
-                int pos = currencies.indexOf(currency);
-                if(pos != -1) {
-                    currencySpinner.setSelection(pos);
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        currency = dataProvider.getCurrentGroupCurrency();
+                        int pos = currencies.indexOf(currency);
+                        if(pos != -1) {
+                            currencySpinner.setSelection(pos);
+                        }
 
-                inputName.setText(dataProvider.getCurrentGroupName());
+                        inputName.setText(dataProvider.getCurrentGroupName());
+                    }
+                });
             } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS){
-                ArrayList<User> users = dataProvider.getCurrentGroupMembers();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<User> users = dataProvider.getCurrentGroupMembers();
+                        adapterMembers.onNewData(users);
 
-                GroupMemberAdapter adapter = new GroupMemberAdapter(users, GroupSettingsActivity.this);
-                members.setAdapter(adapter);
-
-                image.setImageBitmap(dataProvider.getCurrentGroupImage(GroupSettingsActivity.this));
+                        image.setImageBitmap(dataProvider.getCurrentGroupImage(GroupSettingsActivity.this));
+                    }
+                });
             }
         }
     };
@@ -216,7 +226,8 @@ public class GroupSettingsActivity extends AppCompatActivity {
 
                 if(accessKey != null && url != null){
                     builder.setMessage(accessKey);
-                    builder.show();
+                    alertDialog = builder.create();
+                    alertDialog.show();
                 } else {
                     Toast.makeText(GroupSettingsActivity.this, getString(R.string.generate_access_key_error), Toast.LENGTH_LONG).show();
                 }
@@ -364,6 +375,10 @@ public class GroupSettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        if(alertDialog != null && alertDialog.isShowing()){
+            alertDialog.dismiss();
+        }
+
         dataProvider.removeOnDataChangeListener(listener);
         super.onPause();
     }

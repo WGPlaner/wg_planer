@@ -197,6 +197,11 @@ public class ImageStore {
         return success;
     }
 
+    public boolean deleteGroupMemberPicture(String uid, Context context) {
+        File image = new File(context.getFilesDir(), uid + ".jpg");
+        return image.delete();
+    }
+
     public Bitmap loadGroupMemberPicture(String uid, Context context) {
         File image = new File(context.getFilesDir(), uid + ".jpg");
 
