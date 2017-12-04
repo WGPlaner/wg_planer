@@ -14,10 +14,9 @@ Bought items shall be removed from the list.
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-Here is the activity diagram for managing the shopping list.
+Here is the activity diagram for buying one or more products/items.
 ![Activity Diagram](../ActivityDiagrams/uc_buy_item_activity_diagramm.png)
 
-And here is a screenshot of the `.feature` file for this use case:
 
 ## 2.2 Alternative Flows
 n/a
