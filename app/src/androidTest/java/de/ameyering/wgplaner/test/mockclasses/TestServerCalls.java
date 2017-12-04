@@ -67,7 +67,7 @@ public class TestServerCalls implements ServerCallsInterface {
 
     public enum TestCase {
         SUCCESS,
-        FAILURE;
+        FAILURE
     }
 
     @Override
@@ -373,6 +373,7 @@ public class TestServerCalls implements ServerCallsInterface {
         switch(testCase) {
             case SUCCESS: {
                 Group group = new Group();
+                group.setUid(new UUID(11111111111111L, 000000000001L));
                 group.setCurrency(DEFAULT_CURRENCY);
                 group.setDisplayName(DEFAULT_GROUP_NAME);
                 group.setMembers(DEFAULT_GROUP_MEMBERS);
@@ -394,7 +395,8 @@ public class TestServerCalls implements ServerCallsInterface {
         if(listener != null) {
             switch (testCase) {
                 case SUCCESS: {
-                    TestGroupCode code = new TestGroupCode();
+                    GroupCode code = new GroupCode();
+                    code.setCode("MYSUPERDUPERCODE");
                     listener.onSuccess(code);
                 }
                 break;
@@ -584,11 +586,30 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void buyListItemsAsync(List<UUID> items, @Nullable OnAsyncCallListener<SuccessResponse> listener) {
-
+        switch(testCase) {
+            case SUCCESS: {
+                listener.onSuccess(new SuccessResponse());
+            }
+            break;
+            case FAILURE: {
+                listener.onFailure(new ApiException());
+            }
+            break;
+        }
     }
 
     @Override
     public ApiResponse<SuccessResponse> buyListItems(List<UUID> items) {
-        return null;
+        switch(testCase) {
+            case SUCCESS: {
+                return new ApiResponse<SuccessResponse>(200, null, new SuccessResponse());
+            }
+            case FAILURE: {
+                return new ApiResponse<SuccessResponse>(0, null, null);
+            }
+            default: {
+                return null;
+            }
+        }
     }
 }
