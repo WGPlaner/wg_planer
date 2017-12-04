@@ -14,7 +14,7 @@ A product has a title and may contain information the number of items and who th
 
 ## 2.1 Basic Flow
 Here is the activity diagram for adding a new item/product.
-![Activity Diagram](../ActivityDiagrams/uc_add_item_activity_diagramm.png)
+![Activity Diagram](../ActivityDiagrams/uc_add_item_activity_diagram.png)
 
 ## 2.2 Alternative Flows
 n/a
