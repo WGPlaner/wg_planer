@@ -8,7 +8,7 @@ A product has a title and may contain information the number of items and who th
 
 ## 1.2 Mockup
 ### Dialog Window to add a new Produkt to a shopping list
-[![Mockup DialogWindow](../Mockups/uc_shopping_list_DialogWindow_200px.png)](../Mockups/uc_shopping_list_DialogWindow.PNG)
+[![Mockup DialogWindow](../Mockups/uc_add_item.png)](../Mockups/uc_add_item.PNG)
 
 # 2. Flow of Events
 
