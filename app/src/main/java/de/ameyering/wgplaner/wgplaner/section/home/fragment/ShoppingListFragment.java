@@ -86,6 +86,7 @@ public class ShoppingListFragment extends SectionFragment {
                     if (getActivity() == null) {
                         return;
                     }
+
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

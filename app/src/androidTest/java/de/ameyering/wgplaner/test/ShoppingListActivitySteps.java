@@ -17,8 +17,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 
 public class ShoppingListActivitySteps {
-    private ActivityTestRule<HomeActivity> mActivityRule = new ActivityTestRule<>
-        (HomeActivity.class);
+    private ActivityTestRule<HomeActivity> mActivityRule = new ActivityTestRule<>(HomeActivity.class);
 
     public ShoppingListActivitySteps() {
     }
@@ -40,6 +39,7 @@ public class ShoppingListActivitySteps {
         if (mActivityRule != null && mActivityRule.getActivity() != null) {
             mActivityRule.getActivity().finish();
         }
+
         ActivityFinisher.finishOpenActivities();
     }
 

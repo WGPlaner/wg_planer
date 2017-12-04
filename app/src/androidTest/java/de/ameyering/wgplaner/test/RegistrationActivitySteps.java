@@ -50,6 +50,7 @@ public class RegistrationActivitySteps {
         if (mActivityRule != null && mActivityRule.getActivity() != null) {
             mActivityRule.getActivity().finish();
         }
+
         ActivityFinisher.finishOpenActivities();
     }
 
