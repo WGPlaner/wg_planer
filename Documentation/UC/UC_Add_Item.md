@@ -7,8 +7,8 @@ This use case allows users to add produkts/items to a shopping list.
 A product has a title and may contain information the number of items and who the product shall be bought for.
 
 ## 1.2 Mockup
-### Dialog Window to add a new Produkt to a shopping list
-[![Mockup DialogWindow](../Mockups/uc_add_item.png)](../Mockups/uc_add_item.PNG)
+### New page to add a new Produkt to a shopping list
+[![Mockup AddItem](../Mockups/uc_add_item.png)](../Mockups/uc_add_item.PNG)
 
 # 2. Flow of Events
 
