@@ -15,7 +15,7 @@ Bought items shall be removed from the list.
 
 ## 2.1 Basic Flow
 Here is the activity diagram for buying one or more products/items.
-![Activity Diagram](../ActivityDiagrams/uc_buy_item_activity_diagramm.png)
+![Activity Diagram](../ActivityDiagrams/uc_buy_item_activity_diagram.png)
 
 
 ## 2.2 Alternative Flows
