@@ -51,7 +51,7 @@ public interface DataProviderInterface {
 
     void setCurrentGroupCurrency(Currency currency);
 
-    void setCurrentGroupImage(File image);
+    void setCurrentGroupImage(Bitmap bitmap);
 
     UUID getCurrentGroupUID();
 
@@ -59,7 +59,7 @@ public interface DataProviderInterface {
 
     Currency getCurrentGroupCurrency();
 
-    File getCurrentGroupImage();
+    Bitmap getCurrentGroupImage(Context context);
 
     ArrayList<User> getCurrentGroupMembers();
 
@@ -72,6 +72,8 @@ public interface DataProviderInterface {
     boolean joinCurrentGroup(String accessKey, Context context);
 
     boolean leaveCurrentGroup();
+
+    String createGroupAccessKey();
 
     boolean addShoppingListItem(ListItem item);
 
@@ -89,5 +91,17 @@ public interface DataProviderInterface {
 
     void syncShoppingList();
 
-    void syncGroup(Context context);
+    void syncGroup();
+
+    void syncGroupMembers();
+
+    void syncGroupNewMember(String uid, Context context);
+
+    void syncGroupMemberLeft(String uid, Context context);
+
+    void syncGroupMember(String uid);
+
+    void syncGroupMemberPicture(String uid, Context context);
+
+    void syncGroupPicture(Context context);
 }

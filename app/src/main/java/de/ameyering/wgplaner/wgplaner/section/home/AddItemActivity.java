@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,18 +70,40 @@ public class AddItemActivity extends AppCompatActivity {
         nameInput = findViewById(R.id.add_item_name_input);
         numberInput = findViewById(R.id.add_item_number_input) ;
 
+        if (savedInstanceState != null) {
+            ArrayList<String> selectedUids = savedInstanceState.getStringArrayList("UsersUids");
+
+            if (selectedUids != null && !selectedUids.isEmpty()) {
+                for (String uid : selectedUids) {
+                    selected.add(DataProvider.getInstance().getUserByUid(uid));
+                }
+            }
+
+            String name = savedInstanceState.getString("Name");
+            String number = savedInstanceState.getString("Number");
+
+            if (name != null) {
+                nameInput.setText(name);
+            }
+
+            if (number != null) {
+                numberInput.setText(number);
+            }
+        }
+
         requestedFor = findViewById(R.id.add_item_requested_for_list);
         adapter = new AddItemRequestedForAdapter();
         requestedFor.setLayoutManager(new LinearLayoutManager(this));
         requestedFor.setHasFixedSize(false);
         requestedFor.setAdapter(adapter);
+        adapter.updateSelection(selected);
 
         Button buttonAddUser = findViewById(R.id.add_item_add_user_btn);
         buttonAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AddItemAddUserDialogFragment dialog = new AddItemAddUserDialogFragment();
-                dialog.setSelectedItems(adapter.getSelection());
+                dialog.setSelectedItems(selected);
                 dialog.setOnResultListener(new AddItemAddUserDialogFragment.OnResultListener() {
                     @Override
                     public void onResult(ArrayList<User> selected) {
@@ -118,6 +141,20 @@ public class AddItemActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        ArrayList<String> selectedUids = new ArrayList<>();
+
+        for (User user : selected) {
+            selectedUids.add(user.getUid());
+        }
+
+        outState.putStringArrayList("UsersUids", selectedUids);
+        outState.putString("Name", nameInput.getText().toString());
+        outState.putString("Number", numberInput.getText().toString());
+        super.onSaveInstanceState(outState);
+    }
+
     private boolean checkInputAndReturn() {
         String name = nameInput.getText().toString();
         String number = numberInput.getText().toString();
@@ -146,6 +183,15 @@ public class AddItemActivity extends AppCompatActivity {
             newItem.setRequestedFor(users);
 
             return true;
+
+        } else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AddItemActivity.this, getString(R.string.fill_out_all_fields),
+                        Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         return false;

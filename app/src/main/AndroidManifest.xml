@@ -97,6 +97,10 @@
             android:label="@string/profile_settings_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".section.settings.GroupSettingsActivity"
+            android:label="@string/group_settings_activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".section.setup.SetUpActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar"/>

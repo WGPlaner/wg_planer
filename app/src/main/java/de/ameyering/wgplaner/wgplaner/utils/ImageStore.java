@@ -97,8 +97,13 @@ public class ImageStore {
         }
     }
 
-    public Bitmap getGroupBitmap() {
-        return BitmapFactory.decodeByteArray(groupPictureBytes, 0, groupPictureBytes.length);
+    public Bitmap getGroupBitmap(Context context) {
+        if (groupPictureBytes != null && groupPictureBytes.length > 0) {
+            return BitmapFactory.decodeByteArray(groupPictureBytes, 0, groupPictureBytes.length);
+
+        } else {
+            return BitmapFactory.decodeResource(context.getResources(), R.drawable.profile_picture_dummy);
+        }
     }
 
     public File getProfilePictureFile() {
@@ -188,9 +193,14 @@ public class ImageStore {
             } catch (IOException e) {
                 Log.e("GroupMemberPicture", ":FailedToCloseOutputStream");
             }
-
-            return success;
         }
+
+        return success;
+    }
+
+    public boolean deleteGroupMemberPicture(String uid, Context context) {
+        File image = new File(context.getFilesDir(), uid + ".jpg");
+        return image.delete();
     }
 
     public Bitmap loadGroupMemberPicture(String uid, Context context) {
@@ -223,9 +233,9 @@ public class ImageStore {
             } catch (IOException e) {
                 Log.e("GroupMemberPicture", ":FailedToCloseInputStream");
             }
-
-            return bitmapImage;
         }
+
+        return bitmapImage;
     }
 
     private void loadGroupPicture() {

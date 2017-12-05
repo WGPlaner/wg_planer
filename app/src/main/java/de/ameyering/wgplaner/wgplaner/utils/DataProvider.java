@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,8 +14,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
 import io.swagger.client.model.Group;
+import io.swagger.client.model.GroupCode;
 import io.swagger.client.model.ListItem;
 import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.SuccessResponse;
@@ -28,12 +31,13 @@ public class DataProvider implements DataProviderInterface {
     }
 
     public enum DataType {
-        CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS
+        CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS, CURRENT_GROUP_MEMBERS
     }
 
 
     private static DataProvider singleton;
 
+    private ImageStore imageStoreInstance;
     private ServerCallsInterface serverCallsInstance = ServerCalls.getInstance();
 
     private String currentUserUid;
@@ -49,7 +53,8 @@ public class DataProvider implements DataProviderInterface {
     private List<String> currentGroupMembersUids;
     private List<String> currentGroupAdminsUids;
     private ArrayList<User> currentGroupMembers;
-    private ArrayList<Bitmap> currentGroupMemberImages;
+
+    private String currentGroupAccessKey;
 
     private List<ListItem> currentShoppingList;
     private ArrayList<ListItem> selectedItems;
@@ -59,7 +64,7 @@ public class DataProvider implements DataProviderInterface {
     static {
         singleton = new DataProvider();
     }
-
+  
     public void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
         this.serverCallsInstance = serverCallsInstance;
     }
@@ -85,7 +90,7 @@ public class DataProvider implements DataProviderInterface {
         currentGroupMembersUids = null;
         currentGroupAdminsUids = null;
         currentGroupMembers = null;
-        currentGroupMemberImages = null;
+        currentGroupAccessKey = null;
 
         currentShoppingList = new ArrayList<>();
         selectedItems = new ArrayList<>();
@@ -118,11 +123,22 @@ public class DataProvider implements DataProviderInterface {
                     }
                 }
 
-                ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(currentUserUid);
+                if (imageStoreInstance.getProfilePictureFile().length() < 5000L) {
+                    serverCallsInstance.getUserImageAsync(currentUserUid,
+                    new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+                        @Override
+                        public void onFailure(ApiException e) {
+                            //TODO: Implement failure
+                        }
 
-                if (imageResponse != null && imageResponse.getStatusCode() == 200) {
-                    currentUserPicture = BitmapFactory.decodeByteArray(imageResponse.getData(), 0,
-                            imageResponse.getData().length);
+                        @Override
+                        public void onSuccess(byte[] result) {
+                            currentUserPicture = BitmapFactory.decodeByteArray(result, 0,
+                                    result.length);
+                            imageStoreInstance.setProfilePicture(currentUserPicture);
+
+                        }
+                    });
                 }
 
             } else if (userResponse != null && userResponse.getData() == null) {
@@ -152,24 +168,45 @@ public class DataProvider implements DataProviderInterface {
                     currentGroupAdminsUids = group.getAdmins();
                     initializeMembers(context);
 
-                    ApiResponse<ShoppingList> shoppingListResponse = serverCallsInstance.getShoppingList();
-
-                    if (shoppingListResponse != null && shoppingListResponse.getData() != null) {
-                        List<ListItem> items = shoppingListResponse.getData().getListItems();
-
-                        if (items == null) {
-                            this.currentShoppingList = new ArrayList<>();
-
-                        } else {
-                            this.currentShoppingList = items;
+                    serverCallsInstance.getGroupImageAsync(new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+                        @Override
+                        public void onFailure(ApiException e) {
+                            //TODO: Implement on failure
                         }
 
-                        selectedItems = new ArrayList<>();
+                        @Override
+                        public void onSuccess(byte[] result) {
+                            imageStoreInstance.setGroupPicture(currentUserPicture = BitmapFactory.decodeByteArray(result, 0,
+                                        result.length));
+                        }
+                    });
 
-                    } else {
-                        currentShoppingList = new ArrayList<>();
-                        selectedItems = new ArrayList<>();
-                    }
+                    serverCallsInstance.getShoppingListAsync(new
+                    ServerCallsInterface.OnAsyncCallListener<ShoppingList>() {
+                        @Override
+                        public void onFailure(ApiException e) {
+                            DataProvider.this.currentShoppingList = new ArrayList<>();
+                            DataProvider.this.selectedItems = new ArrayList<>();
+                        }
+
+                        @Override
+                        public void onSuccess(ShoppingList result) {
+                            List<ListItem> items = result.getListItems();
+
+                            if (items == null) {
+                                DataProvider.this.currentShoppingList = new ArrayList<>();
+                                DataProvider.this.selectedItems = new ArrayList<>();
+                                callAllListeners(DataType.SHOPPING_LIST);
+                                callAllListeners(DataType.SELECTED_ITEMS);
+
+                            } else {
+                                DataProvider.this.currentShoppingList = items;
+                                DataProvider.this.selectedItems = new ArrayList<>();
+                                callAllListeners(DataType.SHOPPING_LIST);
+                                callAllListeners(DataType.SELECTED_ITEMS);
+                            }
+                        }
+                    });
 
                     return SetUpState.SETUP_COMPLETED;
 
@@ -213,8 +250,8 @@ public class DataProvider implements DataProviderInterface {
                     }
                 }
 
-                if (ImageStore.getInstance().getProfilePictureFile() != null) {
-                    serverCallsInstance.updateUserImage(ImageStore.getInstance().getProfilePictureFile());
+                if (imageStoreInstance.getProfilePictureFile() != null) {
+                    serverCallsInstance.updateUserImage(imageStoreInstance.getProfilePictureFile());
                 }
 
                 return true;
@@ -251,14 +288,14 @@ public class DataProvider implements DataProviderInterface {
     public void setCurrentUserImage(Bitmap bitmap) {
         if (bitmap != null) {
             currentUserPicture = bitmap;
-            ImageStore.getInstance().setProfilePicture(bitmap);
+            imageStoreInstance.setProfilePicture(bitmap);
             updateUserImage();
             callAllListeners(DataType.CURRENT_USER);
         }
     }
 
     private void updateUserImage() {
-        File file = ImageStore.getInstance().getProfilePictureFile();
+        File file = imageStoreInstance.getProfilePictureFile();
 
         if (file != null) {
             ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateUserImage(file);
@@ -298,11 +335,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public Bitmap getCurrentUserImage(Context context) {
-        if (currentUserPicture != null) {
-            return currentUserPicture;
-        }
-
-        currentUserPicture = ImageStore.getInstance().getProfileBitmap(context);
+        currentUserPicture = imageStoreInstance.getProfileBitmap(context);
         return currentUserPicture;
     }
 
@@ -328,13 +361,19 @@ public class DataProvider implements DataProviderInterface {
     public void setCurrentGroupCurrency(Currency currency) {
         if (currency != null) {
             this.currentGroupCurrency = currency;
-            callAllListeners(DataType.CURRENT_GROUP);
+
+            ApiResponse<Group> groupResponse = updateGroup();
+
+            if (groupResponse != null && groupResponse.getData() != null) {
+                callAllListeners(DataType.CURRENT_GROUP);
+            }
         }
     }
 
     @Override
-    public void setCurrentGroupImage(File image) {
-        //TODO: Implement image flow
+    public void setCurrentGroupImage(Bitmap bitmap) {
+        imageStoreInstance.setGroupPicture(bitmap);
+        serverCallsInstance.updateGroupImage(imageStoreInstance.getGroupPictureFile());
     }
 
     @Override
@@ -353,9 +392,8 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public File getCurrentGroupImage() {
-        //TODO: Implement image flow
-        return null;
+    public Bitmap getCurrentGroupImage(Context context) {
+        return imageStoreInstance.getGroupBitmap(context);
     }
 
     @Override
@@ -382,7 +420,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public boolean createGroup(String name, Currency currency, Bitmap image, Context context) {
+    public boolean createGroup(String name, Currency currency, Bitmap imagecr, Context context) {
         Group group = new Group();
         group.setDisplayName(name);
         group.setCurrency(currency.getCurrencyCode());
@@ -397,6 +435,9 @@ public class DataProvider implements DataProviderInterface {
             currentGroupCurrency = Currency.getInstance(group.getCurrency());
             currentGroupMembersUids = group.getMembers();
             currentGroupAdminsUids = group.getAdmins();
+            imageStoreInstance.setGroupPicture(imagecr);
+            serverCallsInstance.updateGroupImageAsync(imageStoreInstance.getGroupPictureFile(), null);
+
             initializeMembers(context);
 
             callAllListeners(DataType.CURRENT_GROUP);
@@ -408,7 +449,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public boolean joinCurrentGroup(String accessKey, Context context) {
+    public boolean joinCurrentGroup(String accessKey, final Context context) {
         ApiResponse<Group> groupResponse = joinGroup(accessKey);
 
         if (groupResponse != null && groupResponse.getData() != null) {
@@ -419,6 +460,18 @@ public class DataProvider implements DataProviderInterface {
             currentGroupMembersUids = group.getMembers();
             currentGroupAdminsUids = group.getAdmins();
             initializeMembers(context);
+
+            serverCallsInstance.getGroupImageAsync(new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+                @Override
+                public void onFailure(ApiException e) {
+                    Log.e("GroupImage", ":GetFailure");
+                }
+
+                @Override
+                public void onSuccess(byte[] result) {
+                    ImageStore.getInstance().setGroupPicture(BitmapFactory.decodeByteArray(result, 0, result.length));
+                }
+            });
 
             callAllListeners(DataType.CURRENT_GROUP);
             syncShoppingList();
@@ -453,6 +506,23 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
+    public String createGroupAccessKey() {
+        if (currentGroupAccessKey == null) {
+            ApiResponse<GroupCode> codeResponse = serverCallsInstance.createGroupKey();
+
+            if (codeResponse != null && codeResponse.getData() != null) {
+                return codeResponse.getData().getCode();
+
+            } else {
+                return null;
+            }
+
+        } else {
+            return currentGroupAccessKey;
+        }
+    }
+
+    @Override
     public boolean addShoppingListItem(ListItem item) {
         if (item != null && currentShoppingList != null) {
             for (ListItem currentItem : currentShoppingList) {
@@ -461,11 +531,8 @@ public class DataProvider implements DataProviderInterface {
                     currentItem.setCount(currentItem.getCount() + item.getCount());
                     ApiResponse<ListItem> itemResponse = updateListItem(currentItem);
 
-                    if (itemResponse != null && itemResponse.getData() != null) {
-                        return true;
-                    }
+                    return itemResponse != null && itemResponse.getData() != null;
 
-                    return false;
                 }
             }
 
@@ -502,10 +569,16 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void buySelection() {
-        if (currentShoppingList != null && selectedItems != null) {
-            currentShoppingList.removeAll(selectedItems);
+        ArrayList<UUID> items = new ArrayList<>();
+
+        for (ListItem item : selectedItems) {
+            items.add(item.getId());
+        }
+
+        ApiResponse<SuccessResponse> buyResponse = serverCallsInstance.buyListItems(items);
+
+        if (buyResponse != null && buyResponse.getData() != null) {
             selectedItems.clear();
-            callAllListeners(DataType.SHOPPING_LIST);
             callAllListeners(DataType.SELECTED_ITEMS);
         }
     }
@@ -523,16 +596,11 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public boolean isSomethingSelected() {
-        if (selectedItems != null) {
-            return !selectedItems.isEmpty();
-
-        } else {
-            return false;
-        }
+        return selectedItems != null && !selectedItems.isEmpty();
     }
 
     @Override
-    public void syncGroup(Context context) {
+    public void syncGroup() {
         ApiResponse<Group> groupResponse = getGroup();
 
         if (groupResponse != null && groupResponse.getData() != null) {
@@ -543,30 +611,56 @@ public class DataProvider implements DataProviderInterface {
             currentGroupCurrency = Currency.getInstance(group.getCurrency());
             currentGroupMembersUids = group.getMembers();
             currentGroupAdminsUids = group.getAdmins();
-            initializeMembers(context);
 
             callAllListeners(DataType.CURRENT_GROUP);
-            syncShoppingList();
+        }
+    }
+
+    @Override
+    public void syncGroupNewMember(String uid, Context context) {
+        if (!currentGroupMembersUids.contains(uid)) {
+            currentGroupMembersUids.add(uid);
+
+            ApiResponse<User> userResponse = serverCallsInstance.getUser(uid);
+
+            if (userResponse != null && userResponse.getData() != null) {
+                currentGroupMembers.add(userResponse.getData());
+
+                ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(uid);
+
+                if (imageResponse != null && imageResponse.getData() != null) {
+                    imageStoreInstance.writeGroupMemberPicture(uid, imageResponse.getData(), context);
+                }
+
+                callAllListeners(DataType.CURRENT_GROUP_MEMBERS);
+                syncShoppingList();
+
+            } else {
+                currentGroupMembersUids.remove(uid);
+            }
+        }
+    }
+
+    @Override
+    public void syncGroupMemberPicture(String uid, Context context) {
+        if (currentGroupMembersUids.contains(uid)) {
+            ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(uid);
+
+            if (imageResponse != null && imageResponse.getData() != null) {
+                imageStoreInstance.writeGroupMemberPicture(uid, imageResponse.getData(), context);
+            }
         }
     }
 
     @Override
     public void syncShoppingList() {
-        ApiResponse<ShoppingList> shoppingListResponse = getShoppingList();
+        ApiResponse<ShoppingList> listResponse = serverCallsInstance.getShoppingList();
 
-        if (shoppingListResponse != null && shoppingListResponse.getData() != null) {
-            List<ListItem> items = shoppingListResponse.getData().getListItems();
+        if (listResponse != null && listResponse.getData() != null) {
+            List<ListItem> items = listResponse.getData().getListItems();
 
-            if (items == null) {
-                currentShoppingList = new ArrayList<>();
-                selectedItems = new ArrayList<>();
-
-            } else {
+            if (items != null) {
                 currentShoppingList = items;
-
-                if (selectedItems == null) {
-                    selectedItems = new ArrayList<>();
-                }
 
                 for (ListItem item : selectedItems) {
                     if (!currentShoppingList.contains(item)) {
@@ -576,8 +670,59 @@ public class DataProvider implements DataProviderInterface {
 
                 callAllListeners(DataType.SHOPPING_LIST);
                 callAllListeners(DataType.SELECTED_ITEMS);
+
+            } else {
+                currentShoppingList = new ArrayList<>();
+                selectedItems = new ArrayList<>();
+
+                callAllListeners(DataType.SHOPPING_LIST);
+                callAllListeners(DataType.SELECTED_ITEMS);
             }
         }
+    }
+
+    @Override
+    public void syncGroupPicture(Context context) {
+        ApiResponse<byte[]> imageResponse = serverCallsInstance.getGroupImage();
+
+        if (imageResponse != null && imageResponse.getData() != null) {
+            imageStoreInstance.setGroupPicture(BitmapFactory.decodeByteArray(imageResponse.getData(), 0,
+                    imageResponse.getData().length));
+
+            callAllListeners(DataType.CURRENT_GROUP);
+        }
+    }
+
+    @Override
+    public void syncGroupMember(String uid) {
+        int pos = currentGroupMembersUids.indexOf(uid);
+
+        if (pos != -1) {
+            ApiResponse<User> userResponse = serverCallsInstance.getUser(uid);
+
+            if (userResponse != null && userResponse.getData() != null) {
+                currentGroupMembers.remove(pos);
+                currentGroupMembers.add(pos, userResponse.getData());
+                callAllListeners(DataType.CURRENT_GROUP_MEMBERS);
+            }
+        }
+    }
+
+    @Override
+    public void syncGroupMemberLeft(String uid, Context context) {
+        int pos = currentGroupMembersUids.indexOf(uid);
+
+        if (pos != -1) {
+            currentGroupMembersUids.remove(pos);
+            currentGroupMembers.remove(pos);
+            imageStoreInstance.deleteGroupMemberPicture(uid, context);
+            callAllListeners(DataType.CURRENT_GROUP_MEMBERS);
+        }
+    }
+
+    @Override
+    public void syncGroupMembers() {
+        //currently nothing implemented
     }
 
     private ApiResponse<User> updateUser() {
@@ -601,13 +746,13 @@ public class DataProvider implements DataProviderInterface {
 
     private ApiResponse<Group> updateGroup() {
         Group group = new Group();
+        group.setUid(currentGroupUID);
         group.setDisplayName(currentGroupName);
-        group.setCurrency(currentGroupCurrency.getSymbol());
+        group.setCurrency(currentGroupCurrency.getCurrencyCode());
         group.setMembers(currentGroupMembersUids);
         group.setAdmins(currentGroupAdminsUids);
 
-        //TODO: Implement Update group
-        return null;
+        return serverCallsInstance.updateGroup(group);
     }
 
     private ApiResponse<Group> joinGroup(String accessKey) {
@@ -634,24 +779,30 @@ public class DataProvider implements DataProviderInterface {
         return serverCallsInstance.updateShoppingListItem(item);
     }
 
-    private void initializeMembers(Context context) {
+    private void initializeMembers(final Context context) {
         currentGroupMembers = new ArrayList<>();
-        currentGroupMemberImages = new ArrayList<>();
 
         for (String uid : currentGroupMembersUids) {
             if (uid != null) {
                 ApiResponse<User> userResponse = getUser(uid);
 
                 if (userResponse != null && userResponse.getData() != null) {
-                    User user = userResponse.getData();
+                    final User user = userResponse.getData();
                     currentGroupMembers.add(user);
 
-                    if (ImageStore.getInstance().loadGroupMemberPicture(user.getUid(), context) == null) {
-                        ApiResponse<byte[]> imageResponse = serverCallsInstance.getUserImage(user.getUid());
+                    if (imageStoreInstance.loadGroupMemberPicture(user.getUid(), context) == null) {
+                        serverCallsInstance.getUserImageAsync(user.getUid(),
+                        new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+                            @Override
+                            public void onFailure(ApiException e) {
+                                //nothing happens so far...
+                            }
 
-                        if (imageResponse != null && imageResponse.getData() != null) {
-                            ImageStore.getInstance().writeGroupMemberPicture(user.getUid(), imageResponse.getData(), context);
-                        }
+                            @Override
+                            public void onSuccess(byte[] result) {
+                                imageStoreInstance.writeGroupMemberPicture(user.getUid(), result, context);
+                            }
+                        });
                     }
                 }
             }

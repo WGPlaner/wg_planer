@@ -3,6 +3,7 @@ package de.ameyering.wgplaner.wgplaner.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -104,7 +105,9 @@ public class Configuration implements Serializable {
                 try {
                     config.createNewFile();
 
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                    Log.e("ConfigFile", ":CreationFailed");
+                }
             }
         }
 
@@ -132,14 +135,18 @@ public class Configuration implements Serializable {
                     try {
                         fileInputStream.close();
 
-                    } catch (IOException e) {}
+                    } catch (IOException e) {
+                        Log.e("InputStream", ":FailedToClose");
+                    }
                 }
 
                 if (objectInputStream != null) {
                     try {
                         objectInputStream.close();
 
-                    } catch (IOException e) {}
+                    } catch (IOException e) {
+                        Log.e("InputStream", ":FailedToClose");
+                    }
                 }
             }
 
@@ -156,20 +163,21 @@ public class Configuration implements Serializable {
                 objectOutputStream.writeObject(configuration);
 
             } catch (Exception e) {
+                Log.e("OutputStream", e.toString());
 
             } finally {
                 try {
                     fileOutputStream.close();
 
                 } catch (IOException e) {
-
+                    Log.e("OutputStream", ":FailedToClose");
                 }
 
                 try {
                     objectOutputStream.close();
 
                 } catch (IOException e) {
-
+                    Log.e("OutputStream", ":FailedToClose");
                 }
             }
         }

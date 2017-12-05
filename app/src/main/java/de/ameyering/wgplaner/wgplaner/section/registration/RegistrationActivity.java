@@ -1,5 +1,7 @@
 package de.ameyering.wgplaner.wgplaner.section.registration;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -8,16 +10,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
+import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
+import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class RegistrationActivity extends AppCompatActivity {
     private static final String WELCOME_FRAGMENT_ARGS = "WelcomeFragment";
+    private static final String PATH_PATTERN =
+        "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
 
     private Toolbar toolbar;
     private WelcomeFragment welcomeFragment;
 
     private boolean toastWasShown = false;
+    public static Intent joinGroupIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,16 @@ public class RegistrationActivity extends AppCompatActivity {
                     WELCOME_FRAGMENT_ARGS);
 
         } else {
+            if (getIntent().getData() != null) {
+                Uri data = getIntent().getData();
+                Pattern pattern = Pattern.compile(PATH_PATTERN);
+                Matcher matcher = pattern.matcher(data.toString());
+
+                if (matcher.matches()) {
+                    joinGroupIntent = getIntent();
+                }
+            }
+
             loadWelcomeFragment();
             toolbar.setVisibility(View.GONE);
         }
@@ -84,6 +104,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 toastWasShown = true;
 
             } else {
+                toastWasShown = false;
                 finish();
             }
 

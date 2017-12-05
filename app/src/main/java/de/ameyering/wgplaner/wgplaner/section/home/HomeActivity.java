@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
+import de.ameyering.wgplaner.wgplaner.section.settings.GroupSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.settings.ProfileSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
@@ -24,6 +25,9 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQ_CODE_PROFILE_SETTINGS = 0;
+    private static final int REQ_CODE_GROUP_SETTINGS = 1;
+
+    private DataProvider dataProvider;
 
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -39,6 +43,10 @@ public class HomeActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (dataProvider == null) {
+            dataProvider = DataProvider.getInstance();
+        }
+
         fab = findViewById(R.id.fab);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -50,11 +58,11 @@ public class HomeActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DataProvider.getInstance().addOnDataChangeListener(new DataProvider.OnDataChangeListener() {
+        dataProvider.addOnDataChangeListener(new DataProvider.OnDataChangeListener() {
             @Override
             public void onDataChanged(DataProvider.DataType type) {
                 if (type == DataProvider.DataType.CURRENT_GROUP) {
-                    if (DataProvider.getInstance().getCurrentGroupUID() == null) {
+                    if (dataProvider.getCurrentGroupUID() == null) {
                         Intent intent = new Intent(HomeActivity.this, SetUpActivity.class);
                         startActivity(intent);
                         finish();
@@ -93,11 +101,8 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        return id == R.id.action_settings;
 
-        return false;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -135,6 +140,7 @@ public class HomeActivity extends AppCompatActivity
             startActivityForResult(new Intent(this, ProfileSettingsActivity.class), REQ_CODE_PROFILE_SETTINGS);
 
         } else if (id == R.id.nav_group_settings) {
+            startActivityForResult(new Intent(this, GroupSettingsActivity.class), REQ_CODE_GROUP_SETTINGS);
 
         } else {
             return false;

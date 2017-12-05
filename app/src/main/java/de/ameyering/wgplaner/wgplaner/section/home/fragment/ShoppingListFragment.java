@@ -25,21 +25,34 @@ public class ShoppingListFragment extends SectionFragment {
 
     private RecyclerView categories;
     private ShoppingListCategoryAdapter adapter;
-    private DataProvider.OnDataChangeListener shoppingListListener = null;
+    private DataProvider.OnDataChangeListener shoppingListListener = new
+    DataProvider.OnDataChangeListener() {
+
+        @Override
+        public void onDataChanged(final DataProvider.DataType type) {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (type == DataProvider.DataType.SELECTED_ITEMS) {
+                            if (floatingActionButton != null) {
+                                changeFloatingActionButton();
+                            }
+
+                        } else if (type == DataProvider.DataType.SHOPPING_LIST) {
+                            onNewData(dataProvider.getCurrentShoppingList());
+
+                        } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS) {
+                            onNewData(dataProvider.getCurrentShoppingList());
+                        }
+                    }
+                });
+            }
+        }
+    };
+    private DataProvider dataProvider = DataProvider.getInstance();
 
     private ArrayList<ListItem> items = new ArrayList<>();
-
-    @Override
-    public void onPause() {
-        DataProvider.getInstance().removeOnDataChangeListener(shoppingListListener);
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        DataProvider.getInstance().addOnDataChangeListener(shoppingListListener);
-        super.onResume();
-    }
 
     @Nullable
     @Override
@@ -68,7 +81,7 @@ public class ShoppingListFragment extends SectionFragment {
 
         if (adapter == null) {
             items.clear();
-            items.addAll(DataProvider.getInstance().getCurrentShoppingList());
+            items.addAll(dataProvider.getCurrentShoppingList());
             ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
                     CategoryHolder.Category.REQUESTED_FOR, items);
             adapter = new ShoppingListCategoryAdapter(holders, getContext());
@@ -77,36 +90,23 @@ public class ShoppingListFragment extends SectionFragment {
         }
 
         if (shoppingListListener == null) {
-
-            shoppingListListener = new DataProvider.OnDataChangeListener() {
-
-                @Override
-                public void onDataChanged(final DataProvider.DataType type) {
-                    // TODO:
-                    if (getActivity() == null) {
-                        return;
-                    }
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (type == DataProvider.DataType.SELECTED_ITEMS) {
-                                if (floatingActionButton != null) {
-                                    changeFloatingActionButton();
-                                }
-
-                            } else if (type == DataProvider.DataType.SHOPPING_LIST) {
-                                onNewData(DataProvider.getInstance().getCurrentShoppingList());
-                            }
-                        }
-                    });
-                }
-            };
-
-            DataProvider.getInstance().addOnDataChangeListener(shoppingListListener);
+            dataProvider.addOnDataChangeListener(shoppingListListener);
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        onNewData(dataProvider.getCurrentShoppingList());
+        dataProvider.addOnDataChangeListener(shoppingListListener);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        dataProvider.removeOnDataChangeListener(shoppingListListener);
+        super.onPause();
     }
 
     public void onNewData(ArrayList<ListItem> items) {
@@ -126,7 +126,7 @@ public class ShoppingListFragment extends SectionFragment {
         switch (requestCode) {
             case REQ_CODE_ADD_ITEM: {
                 if (resultCode == Activity.RESULT_OK) {
-                    onNewData(DataProvider.getInstance().getCurrentShoppingList());
+                    onNewData(dataProvider.getCurrentShoppingList());
                 }
             }
             break;
@@ -134,7 +134,7 @@ public class ShoppingListFragment extends SectionFragment {
     }
 
     private void changeFloatingActionButton() {
-        if (!DataProvider.getInstance().isSomethingSelected()) {
+        if (!dataProvider.isSomethingSelected()) {
             floatingActionButton.setVisibility(View.VISIBLE);
             floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                     R.drawable.ic_add_white));
@@ -153,7 +153,7 @@ public class ShoppingListFragment extends SectionFragment {
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DataProvider.getInstance().buySelection();
+                    dataProvider.buySelection();
                 }
             });
         }

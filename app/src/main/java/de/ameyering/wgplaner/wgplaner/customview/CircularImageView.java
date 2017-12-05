@@ -98,65 +98,69 @@ public class CircularImageView extends AppCompatImageView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int eventAction = event.getAction();
+        if (isEnabled()) {
+            int eventAction = event.getAction();
 
-        float posX = event.getX();
-        float posY = event.getY();
+            float posX = event.getX();
+            float posY = event.getY();
 
-        switch (eventAction) {
-            case MotionEvent.ACTION_DOWN: {
-                if (mBoundsRect.contains(posX, posY) && !isPressed && isInCircleBounds(posX, posY)) {
-                    Resources r = getResources();
-                    float min = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, r.getDisplayMetrics());
-                    float max = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12f, r.getDisplayMetrics());
-                    ObjectAnimator.ofFloat(this, "elevation", min, max).setDuration(200).start();
-                    isPressed = true;
-                }
-            }
-            break;
-
-            case MotionEvent.ACTION_UP: {
-                if (isPressed) {
-                    Resources r = getResources();
-                    float min = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, r.getDisplayMetrics());
-                    float max = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12f, r.getDisplayMetrics());
-                    ObjectAnimator.ofFloat(this, "elevation", max, min).setDuration(200).start();
-                    isPressed = false;
-
-                    if (mBoundsRect.contains(posX, posY) && isInCircleBounds(posX, posY)) {
-                        performClick();
+            switch (eventAction) {
+                case MotionEvent.ACTION_DOWN: {
+                    if (mBoundsRect.contains(posX, posY) && !isPressed && isInCircleBounds(posX, posY)) {
+                        Resources r = getResources();
+                        float min = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, r.getDisplayMetrics());
+                        float max = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12f, r.getDisplayMetrics());
+                        ObjectAnimator.ofFloat(this, "elevation", min, max).setDuration(200).start();
+                        isPressed = true;
                     }
                 }
-            }
-            break;
+                break;
 
-            case MotionEvent.ACTION_MOVE: {
-                if (mOnRotationListener != null) {
-                    if (Math.abs(oldPosX - posX) < Math.round(mDrawableRadius * 0.1)) {
-                        if (oldPosY > (posY + mDrawableRadius * 0.4)) {
-                            Matrix matrix = new Matrix();
-                            matrix.postRotate(-90);
-                            mBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
-                            mOnRotationListener.onRotateLeft(mBitmap);
+                case MotionEvent.ACTION_UP: {
+                    if (isPressed) {
+                        Resources r = getResources();
+                        float min = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, r.getDisplayMetrics());
+                        float max = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12f, r.getDisplayMetrics());
+                        ObjectAnimator.ofFloat(this, "elevation", max, min).setDuration(200).start();
+                        isPressed = false;
 
-                        } else if (oldPosY < (posY - mDrawableRadius * 0.4)) {
-                            Matrix matrix = new Matrix();
-                            matrix.postRotate(90);
-                            mBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
-                            mOnRotationListener.onRotateRight(mBitmap);
+                        if (mBoundsRect.contains(posX, posY) && isInCircleBounds(posX, posY)) {
+                            performClick();
                         }
                     }
                 }
+                break;
+
+                case MotionEvent.ACTION_MOVE: {
+                    if (mOnRotationListener != null) {
+                        if (Math.abs(oldPosX - posX) < Math.round(mDrawableRadius * 0.1)) {
+                            if (oldPosY > (posY + mDrawableRadius * 0.4)) {
+                                Matrix matrix = new Matrix();
+                                matrix.postRotate(-90);
+                                mBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+                                mOnRotationListener.onRotateLeft(mBitmap);
+
+                            } else if (oldPosY < (posY - mDrawableRadius * 0.4)) {
+                                Matrix matrix = new Matrix();
+                                matrix.postRotate(90);
+                                mBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+                                mOnRotationListener.onRotateRight(mBitmap);
+                            }
+                        }
+                    }
+                }
+                break;
             }
-            break;
+
+            invalidate();
+
+            oldPosX = posX;
+            oldPosY = posY;
+
+            return true;
         }
 
-        invalidate();
-
-        oldPosX = posX;
-        oldPosY = posY;
-
-        return true;
+        return false;
     }
 
     @Override
