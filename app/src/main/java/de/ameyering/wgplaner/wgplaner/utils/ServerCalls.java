@@ -65,7 +65,7 @@ public class ServerCalls implements ServerCallsInterface {
         return false;
     }
 
-    public static ServerCalls getInstance() {
+    public static ServerCallsInterface getInstance() {
         return singleton;
     }
 
