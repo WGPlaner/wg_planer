@@ -8,7 +8,7 @@ A product has a title and may contain information the number of items and who th
 
 ## 1.2 Mockup
 ### New page to add a new Produkt to a shopping list
-[![Mockup AddItem](../Mockups/uc_add_item.png)](../Mockups/uc_add_item.PNG)
+![Mockup AddItem](../Mockups/uc_add_item.PNG)
 
 # 2. Flow of Events
 
