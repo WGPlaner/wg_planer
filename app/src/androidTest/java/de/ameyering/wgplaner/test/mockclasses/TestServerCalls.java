@@ -396,7 +396,7 @@ public class TestServerCalls implements ServerCallsInterface {
             switch (testCase) {
                 case SUCCESS: {
                     GroupCode code = new GroupCode();
-                    code.setCode("MYSUPERDUPERCODE");
+                    code.setCode("MYSUPERDUPER");
                     listener.onSuccess(code);
                 }
                 break;
@@ -412,7 +412,8 @@ public class TestServerCalls implements ServerCallsInterface {
     public ApiResponse<GroupCode> createGroupKey() {
         switch(testCase) {
             case SUCCESS: {
-                TestGroupCode code = new TestGroupCode();
+                GroupCode code = new GroupCode();
+                code.setCode("MYSUPERDUPER");
 
                 return new ApiResponse<>(200, null, (GroupCode) code);
             }
