@@ -34,7 +34,7 @@ public class DataProvider implements DataProviderInterface {
 
     private static DataProvider singleton;
 
-    private ServerCallsInterface serverCallsInstance;
+    private ServerCallsInterface serverCallsInstance = ServerCalls.getInstance();
 
     private String currentUserUid;
     private String currentUserFirebaseInstanceId;
@@ -60,8 +60,8 @@ public class DataProvider implements DataProviderInterface {
         singleton = new DataProvider();
     }
 
-    public static void initialize(ServerCallsInterface serverCallsInstance) {
-        singleton.setServerCallsInstance(serverCallsInstance);
+    public void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
+        this.serverCallsInstance = serverCallsInstance;
     }
 
     public static boolean isInitialized() {
@@ -91,10 +91,6 @@ public class DataProvider implements DataProviderInterface {
         selectedItems = new ArrayList<>();
 
         mListeners = new ArrayList<>();
-    }
-
-    private void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
-        this.serverCallsInstance = serverCallsInstance;
     }
 
     public SetUpState initialize(String uid, Context context) {

@@ -104,7 +104,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         if (user != null) {
             String uid = user.getUid();
-            DataProvider.initialize(ServerCalls.getInstance());
             initializeUser(uid);
         }
     }

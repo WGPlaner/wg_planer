@@ -16,7 +16,7 @@ import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
-interface ServerCallsInterface {
+public interface ServerCallsInterface {
 
     interface OnAsyncCallListener<T> {
         void onFailure(ApiException e);

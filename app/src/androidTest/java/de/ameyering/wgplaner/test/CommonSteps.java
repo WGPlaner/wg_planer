@@ -28,7 +28,9 @@ public class CommonSteps {
     }
 
     @When("^I click button with id \"([^\"]*)\"$")
-    public void i_click_button_with_text(String buttonID) throws IllegalAccessException {
+    public void i_click_button_with_text(String buttonID) throws IllegalAccessException,
+        InterruptedException {
+        Thread.sleep(1000);
         ViewInteraction appCompatButton = onView(withResourceName(buttonID));
         appCompatButton.perform(click());
     }
@@ -42,5 +44,10 @@ public class CommonSteps {
     @Then("^I should see text \"([^\"]*)\"")
     public void text_is_visible(String text) throws Exception {
         onView(withText(text)).check(matches(isDisplayed()));
+    }
+
+    @Then("^Success$")
+    public void is_success() throws Exception {
+        // Placeholder for testing the cucumber feature files
     }
 }

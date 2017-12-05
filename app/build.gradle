@@ -25,6 +25,9 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    testOptions {
+        animationsDisabled = true
+    }
     sourceSets {
         androidTest {
             assets {
@@ -54,6 +57,7 @@ dependencies {
     androidTestImplementation 'io.cucumber:cucumber-android:2.1.0'
     testImplementation 'junit:junit:4.12'
     testApi 'org.mockito:mockito-core:2.10.0'
+    androidTestApi 'org.mockito:mockito-core:2.10.0'
 
 }
 
