@@ -37,6 +37,7 @@ public class Money {
     public Money(int preDecimal, int decimal) {
         if (decimal >= 100 || decimal < 0 || preDecimal < 0) {
             return;
+
         } else {
             this.preDecimal = preDecimal;
             this.decimal = decimal;

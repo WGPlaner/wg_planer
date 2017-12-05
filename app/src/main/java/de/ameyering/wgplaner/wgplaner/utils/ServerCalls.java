@@ -46,7 +46,7 @@ public class ServerCalls implements ServerCallsInterface {
     private static ApiClient client;
 
     private static ServerCalls singleton;
-    
+
     private static DataProvider dataProvider = DataProvider.getInstance();
 
     static {
@@ -503,21 +503,22 @@ public class ServerCalls implements ServerCallsInterface {
 
     @Override
     public void updateGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener) {
-        if(group != null){
+        if (group != null) {
             setAuth(USER_ID_AUTH_LABEL);
+
             try {
                 GroupApi api = new GroupApi();
                 api.updateGroupAsync(group, new ApiCallback<Group>() {
                     @Override
                     public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                        if (listener != null) {
                             listener.onFailure(e);
                         }
                     }
 
                     @Override
                     public void onSuccess(Group result, int statusCode, Map<String, List<String>> responseHeaders) {
-                        if(listener != null){
+                        if (listener != null) {
                             listener.onSuccess(result);
                         }
                     }
@@ -532,8 +533,9 @@ public class ServerCalls implements ServerCallsInterface {
 
                     }
                 });
-            } catch (ApiException e){
-                if(listener != null){
+
+            } catch (ApiException e) {
+                if (listener != null) {
                     listener.onFailure(e);
                 }
             }
@@ -542,21 +544,25 @@ public class ServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<Group> updateGroup(Group group) {
-        if(group != null){
+        if (group != null) {
             UpdateGroup task = new UpdateGroup();
-            try{
+
+            try {
                 return task.execute(group).get();
-            } catch (ExecutionException e){
+
+            } catch (ExecutionException e) {
                 return null;
-            } catch (InterruptedException e){
+
+            } catch (InterruptedException e) {
                 return null;
             }
         }
+
         return null;
     }
 
     public void createGroupAsync(Group group,
-                                 @Nullable final OnAsyncCallListener<Group> listener) {
+        @Nullable final OnAsyncCallListener<Group> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
         try {
@@ -1275,16 +1281,18 @@ public class ServerCalls implements ServerCallsInterface {
 
         @Override
         protected ApiResponse<Group> doInBackground(Group... groups) {
-            if(groups != null && groups.length > 0){
+            if (groups != null && groups.length > 0) {
                 setAuth(USER_ID_AUTH_LABEL);
                 GroupApi api = new GroupApi();
 
-                try{
+                try {
                     return api.updateGroupWithHttpInfo(groups[0]);
-                } catch (ApiException e){
+
+                } catch (ApiException e) {
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
             }
+
             return null;
         }
     }
@@ -1430,7 +1438,8 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class UpdateShoppingListItem extends AsyncTask<ListItem, Void, ApiResponse<ListItem>> {
+    private static class UpdateShoppingListItem extends
+        AsyncTask<ListItem, Void, ApiResponse<ListItem>> {
 
         @Override
         protected ApiResponse<ListItem> doInBackground(ListItem... listItems) {
@@ -1451,7 +1460,8 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class BuyListItems extends AsyncTask<List<UUID>, Void, ApiResponse<SuccessResponse>> {
+    private static class BuyListItems extends
+        AsyncTask<List<UUID>, Void, ApiResponse<SuccessResponse>> {
 
         @Override
         protected ApiResponse<SuccessResponse> doInBackground(List<UUID>[] lists) {

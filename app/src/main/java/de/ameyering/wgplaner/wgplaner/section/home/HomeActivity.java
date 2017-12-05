@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(dataProvider == null){
+        if (dataProvider == null) {
             dataProvider = DataProvider.getInstance();
         }
 
@@ -141,6 +141,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_group_settings) {
             startActivityForResult(new Intent(this, GroupSettingsActivity.class), REQ_CODE_GROUP_SETTINGS);
+
         } else {
             return false;
         }

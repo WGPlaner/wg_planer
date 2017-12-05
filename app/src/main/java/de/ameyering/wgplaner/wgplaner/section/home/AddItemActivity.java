@@ -70,11 +70,11 @@ public class AddItemActivity extends AppCompatActivity {
         nameInput = findViewById(R.id.add_item_name_input);
         numberInput = findViewById(R.id.add_item_number_input) ;
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             ArrayList<String> selectedUids = savedInstanceState.getStringArrayList("UsersUids");
 
-            if(selectedUids != null && !selectedUids.isEmpty()){
-                for(String uid: selectedUids){
+            if (selectedUids != null && !selectedUids.isEmpty()) {
+                for (String uid : selectedUids) {
                     selected.add(DataProvider.getInstance().getUserByUid(uid));
                 }
             }
@@ -82,11 +82,11 @@ public class AddItemActivity extends AppCompatActivity {
             String name = savedInstanceState.getString("Name");
             String number = savedInstanceState.getString("Number");
 
-            if(name != null){
+            if (name != null) {
                 nameInput.setText(name);
             }
 
-            if(number != null){
+            if (number != null) {
                 numberInput.setText(number);
             }
         }
@@ -144,9 +144,11 @@ public class AddItemActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         ArrayList<String> selectedUids = new ArrayList<>();
-        for(User user: selected){
+
+        for (User user : selected) {
             selectedUids.add(user.getUid());
         }
+
         outState.putStringArrayList("UsersUids", selectedUids);
         outState.putString("Name", nameInput.getText().toString());
         outState.putString("Number", numberInput.getText().toString());
@@ -181,11 +183,13 @@ public class AddItemActivity extends AppCompatActivity {
             newItem.setRequestedFor(users);
 
             return true;
+
         } else {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(AddItemActivity.this, getString(R.string.fill_out_all_fields), Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddItemActivity.this, getString(R.string.fill_out_all_fields),
+                        Toast.LENGTH_LONG).show();
                 }
             });
         }

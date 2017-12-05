@@ -21,7 +21,8 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class SetUpActivity extends AppCompatActivity {
     private static final String DESCRIPTION_FRAGMENT_TAG = "DescriptionFragment";
-    private static final String PATH_PATTERN = "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
+    private static final String PATH_PATTERN =
+        "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
 
     private Toolbar toolbar;
     private boolean toastWasShown = false;
@@ -33,13 +34,13 @@ public class SetUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up);
 
-        if(getIntent() != null && getIntent().getData() != null){
+        if (getIntent() != null && getIntent().getData() != null) {
             Uri data = getIntent().getData();
             Pattern pattern = Pattern.compile(PATH_PATTERN);
             Matcher matcher = pattern.matcher(data.toString());
 
-            if(matcher.matches()){
-                if(!DataProvider.getInstance().joinCurrentGroup(data.getLastPathSegment(), this)) {
+            if (matcher.matches()) {
+                if (!DataProvider.getInstance().joinCurrentGroup(data.getLastPathSegment(), this)) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -47,6 +48,7 @@ public class SetUpActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         }
                     });
+
                 } else {
                     Intent intent = new Intent(this, HomeActivity.class);
                     startActivity(intent);

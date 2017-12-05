@@ -30,7 +30,7 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
     public static final int REQ_CODE_PICK_IMAGE = 0;
-    
+
     private DataProvider dataProvider = DataProvider.getInstance();
 
     private Button btLeaveGroup;
@@ -120,14 +120,17 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 builder.setTitle(getString(R.string.dialog_leave_group_title));
                 builder.setMessage(getString(R.string.dialog_leave_group_message));
 
-                builder.setPositiveButton(R.string.dialog_leave_group_positive, new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.dialog_leave_group_positive,
+                new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (dataProvider.leaveCurrentGroup()) {
                             setResult(RESULT_OK);
                             finish();
+
                         } else {
-                            Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                            Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed),
+                                Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -159,12 +162,13 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
                         image.setImageBitmap(bitmap);
                         image.startAnimation(AnimationUtils.loadAnimation(this,
-                            R.anim.anim_load_new_profile_picture));
+                                R.anim.anim_load_new_profile_picture));
 
                     } catch (IOException e) {
                         Toast.makeText(this, "Failed to load Picture", Toast.LENGTH_LONG).show();
                     }
                 }
+
                 break;
         }
     }
@@ -241,8 +245,8 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
         String email = inputEmail.getText().toString();
 
-        if(!email.isEmpty()){
-            if(!isValidEmail(email)){
+        if (!email.isEmpty()) {
+            if (!isValidEmail(email)) {
                 Toast.makeText(this, getString(R.string.invalid_email), Toast.LENGTH_LONG).show();
                 return false;
             }

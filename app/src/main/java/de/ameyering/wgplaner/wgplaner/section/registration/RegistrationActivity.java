@@ -20,7 +20,8 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class RegistrationActivity extends AppCompatActivity {
     private static final String WELCOME_FRAGMENT_ARGS = "WelcomeFragment";
-    private static final String PATH_PATTERN = "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
+    private static final String PATH_PATTERN =
+        "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
 
     private Toolbar toolbar;
     private WelcomeFragment welcomeFragment;
@@ -63,15 +64,16 @@ public class RegistrationActivity extends AppCompatActivity {
                     WELCOME_FRAGMENT_ARGS);
 
         } else {
-            if(getIntent().getData() != null){
+            if (getIntent().getData() != null) {
                 Uri data = getIntent().getData();
                 Pattern pattern = Pattern.compile(PATH_PATTERN);
                 Matcher matcher = pattern.matcher(data.toString());
 
-                if(matcher.matches()){
+                if (matcher.matches()) {
                     joinGroupIntent = getIntent();
                 }
             }
+
             loadWelcomeFragment();
             toolbar.setVisibility(View.GONE);
         }

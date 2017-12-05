@@ -37,7 +37,8 @@ import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";
-    private static final String PATH_PATTERN = "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
+    private static final String PATH_PATTERN =
+        "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
     private DataProvider dataProvider;
 
     private FirebaseAuth mAuth;
@@ -56,7 +57,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Uri data = intent.getData();
-        if(data != null) {
+
+        if (data != null) {
             Pattern pattern = Pattern.compile(PATH_PATTERN);
             Matcher matcher = pattern.matcher(data.toString());
 
@@ -188,9 +190,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
-                if(joinGroupIntent != null){
+
+                if (joinGroupIntent != null) {
                     intent.setData(intent.getData());
                 }
+
                 startActivity(intent);
                 finish();
             }
@@ -202,9 +206,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashScreenActivity.this, SetUpActivity.class);
-                if(joinGroupIntent != null){
+
+                if (joinGroupIntent != null) {
                     intent.setData(joinGroupIntent.getData());
                 }
+
                 startActivity(intent);
                 finish();
             }

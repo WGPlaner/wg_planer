@@ -164,6 +164,7 @@ public class Configuration implements Serializable {
 
             } catch (Exception e) {
                 Log.e("OutputStream", e.toString());
+
             } finally {
                 try {
                     fileOutputStream.close();

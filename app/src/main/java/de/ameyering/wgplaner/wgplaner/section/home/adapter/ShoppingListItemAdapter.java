@@ -223,7 +223,8 @@ public class ShoppingListItemAdapter extends
             ListItem newItem = newItems.get(newItemPosition);
             ListItem oldItem = oldItems.get(oldItemPosition);
 
-            return isTitleEquals(newItem.getTitle(), oldItem.getTitle()) && isRequestedForEquals(newItem.getRequestedFor(), oldItem.getRequestedFor());
+            return isTitleEquals(newItem.getTitle(), oldItem.getTitle()) &&
+                isRequestedForEquals(newItem.getRequestedFor(), oldItem.getRequestedFor());
         }
 
         @Override
@@ -327,7 +328,7 @@ public class ShoppingListItemAdapter extends
             }
 
             return !(newRequestedFor != null && oldRequestedFor != null &&
-                !newRequestedFor.equals(oldRequestedFor));
+                    !newRequestedFor.equals(oldRequestedFor));
         }
 
         private boolean isRequestedByEquals(String newRequestedBy, String oldRequestedBy) {
@@ -342,7 +343,8 @@ public class ShoppingListItemAdapter extends
                 }
             }
 
-            return !(newRequestedBy != null && oldRequestedBy != null && !newRequestedBy.equals(oldRequestedBy));
+            return !(newRequestedBy != null && oldRequestedBy != null &&
+                    !newRequestedBy.equals(oldRequestedBy));
         }
 
         private boolean isNumberEquals(int newNumber, int oldNumber) {

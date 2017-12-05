@@ -24,7 +24,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
     ArrayList<User> users = new ArrayList<>();
     Context context;
 
-    public GroupMemberAdapter(ArrayList<User> users, Context context){
+    public GroupMemberAdapter(ArrayList<User> users, Context context) {
         this.users.clear();
         this.users.addAll(users);
         this.context = context;
@@ -68,14 +68,16 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
                         }
                     });
 
-                    Bitmap bitmap = ImageStore.getInstance().loadGroupMemberPicture(ViewHolder.this.user.getUid(), context);
+                    Bitmap bitmap = ImageStore.getInstance().loadGroupMemberPicture(ViewHolder.this.user.getUid(),
+                            context);
 
                     if (bitmap != null) {
                         image.setImageBitmap(bitmap);
                     }
 
-                    if(ViewHolder.this.user.getEmail() != null && !ViewHolder.this.user.getEmail().isEmpty()){
+                    if (ViewHolder.this.user.getEmail() != null && !ViewHolder.this.user.getEmail().isEmpty()) {
                         email.setText(ViewHolder.this.user.getEmail());
+
                     } else {
                         email.setVisibility(View.GONE);
                     }
@@ -95,12 +97,12 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_item_requested_for_item,
-            parent, false);
+                parent, false);
 
         return new ViewHolder(view);
     }
 
-    public void onNewData(ArrayList<User> users){
+    public void onNewData(ArrayList<User> users) {
         UserCallback callback = new UserCallback(users, this.users);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback, true);
 

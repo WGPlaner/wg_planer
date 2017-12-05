@@ -98,7 +98,7 @@ public class CircularImageView extends AppCompatImageView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(isEnabled()) {
+        if (isEnabled()) {
             int eventAction = event.getAction();
 
             float posX = event.getX();
@@ -159,6 +159,7 @@ public class CircularImageView extends AppCompatImageView {
 
             return true;
         }
+
         return false;
     }
 

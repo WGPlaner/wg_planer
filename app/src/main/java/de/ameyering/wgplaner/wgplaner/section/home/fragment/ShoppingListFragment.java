@@ -25,11 +25,12 @@ public class ShoppingListFragment extends SectionFragment {
 
     private RecyclerView categories;
     private ShoppingListCategoryAdapter adapter;
-    private DataProvider.OnDataChangeListener shoppingListListener = new DataProvider.OnDataChangeListener() {
+    private DataProvider.OnDataChangeListener shoppingListListener = new
+    DataProvider.OnDataChangeListener() {
 
         @Override
         public void onDataChanged(final DataProvider.DataType type) {
-            if(getActivity() != null) {
+            if (getActivity() != null) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -40,7 +41,8 @@ public class ShoppingListFragment extends SectionFragment {
 
                         } else if (type == DataProvider.DataType.SHOPPING_LIST) {
                             onNewData(dataProvider.getCurrentShoppingList());
-                        } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS){
+
+                        } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS) {
                             onNewData(dataProvider.getCurrentShoppingList());
                         }
                     }

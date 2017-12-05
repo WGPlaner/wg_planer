@@ -12,7 +12,7 @@ import io.swagger.client.model.ListItem;
 
 public class CategoryHolder {
     private static DataProvider dataProvider = DataProvider.getInstance();
-    
+
     private String header = "";
     private ArrayList<ListItem> items = new ArrayList<>();
 

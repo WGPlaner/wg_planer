@@ -45,7 +45,7 @@ import io.swagger.client.model.User;
 public class GroupSettingsActivity extends AppCompatActivity {
     public static final int REQ_CODE_PICK_IMAGE = 0;
     private static final String CLIPBOARD_LABEL = "AccessKey";
-    
+
     private DataProvider dataProvider = DataProvider.getInstance();
 
     public RecyclerView members;
@@ -68,20 +68,22 @@ public class GroupSettingsActivity extends AppCompatActivity {
     private DataProvider.OnDataChangeListener listener = new DataProvider.OnDataChangeListener() {
         @Override
         public void onDataChanged(DataProvider.DataType type) {
-            if(type == DataProvider.DataType.CURRENT_GROUP) {
+            if (type == DataProvider.DataType.CURRENT_GROUP) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         currency = dataProvider.getCurrentGroupCurrency();
                         int pos = currencies.indexOf(currency);
-                        if(pos != -1) {
+
+                        if (pos != -1) {
                             currencySpinner.setSelection(pos);
                         }
 
                         inputName.setText(dataProvider.getCurrentGroupName());
                     }
                 });
-            } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS){
+
+            } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -108,7 +110,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isInEditMode) {
+                if (isInEditMode) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingsActivity.this);
                     builder.setMessage(getString(R.string.dialog_discard_message));
                     builder.setPositiveButton(R.string.dialog_discard_positive, new DialogInterface.OnClickListener() {
@@ -127,6 +129,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
                     });
                     AlertDialog dialog = builder.create();
                     dialog.show();
+
                 } else {
                     setResult(RESULT_CANCELED);
                     finish();
@@ -182,6 +185,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
         if (pos != -1) {
             currencySpinner.setSelection(pos);
         }
+
         fab = findViewById(R.id.group_settings_fab_invite_friends);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,15 +194,19 @@ public class GroupSettingsActivity extends AppCompatActivity {
 
                 String accessKey = dataProvider.createGroupAccessKey();
                 URL url = null;
+
                 try {
                     url = new URL("https://api.wgplaner.ameyering.de/groups/join/" + accessKey);
-                } catch (MalformedURLException e){
+
+                } catch (MalformedURLException e) {
                     Log.e("URL", ":" + e);
                 }
+
                 final String urlString = url.toString();
 
                 builder.setTitle(getString(R.string.dialog_invite_friends_title));
-                builder.setPositiveButton(R.string.dialog_invite_friends_button_share, new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.dialog_invite_friends_button_share,
+                new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent sendIntent = new Intent();
@@ -208,13 +216,15 @@ public class GroupSettingsActivity extends AppCompatActivity {
                         startActivity(Intent.createChooser(sendIntent, getString(R.string.send_to)));
                     }
                 });
-                builder.setNeutralButton(R.string.dialog_invite_friends_button_copy, new DialogInterface.OnClickListener() {
+                builder.setNeutralButton(R.string.dialog_invite_friends_button_copy,
+                new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText(CLIPBOARD_LABEL, urlString);
                         clipboard.setPrimaryClip(clip);
-                        Toast.makeText(GroupSettingsActivity.this, getString(R.string.access_key_copied), Toast.LENGTH_LONG).show();
+                        Toast.makeText(GroupSettingsActivity.this, getString(R.string.access_key_copied),
+                            Toast.LENGTH_LONG).show();
                     }
                 });
                 builder.setNegativeButton(R.string.dialog_discard_negative, new DialogInterface.OnClickListener() {
@@ -224,18 +234,20 @@ public class GroupSettingsActivity extends AppCompatActivity {
                     }
                 });
 
-                if(accessKey != null && url != null){
+                if (accessKey != null && url != null) {
                     builder.setMessage(accessKey);
                     alertDialog = builder.create();
                     alertDialog.show();
+
                 } else {
-                    Toast.makeText(GroupSettingsActivity.this, getString(R.string.generate_access_key_error), Toast.LENGTH_LONG).show();
+                    Toast.makeText(GroupSettingsActivity.this, getString(R.string.generate_access_key_error),
+                        Toast.LENGTH_LONG).show();
                 }
 
             }
         });
 
-        if(!dataProvider.isAdmin(dataProvider.getCurrentUserUid())) {
+        if (!dataProvider.isAdmin(dataProvider.getCurrentUserUid())) {
             fab.setVisibility(View.GONE);
         }
     }
@@ -300,6 +312,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
+
         if (dataProvider.isAdmin(dataProvider.getCurrentUserUid())) {
             getMenuInflater().inflate(R.menu.menu_edit_full_screen_actvity, menu);
             MenuItem save = menu.findItem(R.id.edit_fullscreen_save);
@@ -329,6 +342,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
                     return true;
                 }
             }
+
             case R.id.edit_fullscreen_edit: {
                 isInEditMode = true;
                 item.setVisible(false);
@@ -355,7 +369,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
             return false;
         }
 
-        if(!displayName.equals(dataProvider.getCurrentGroupName())){
+        if (!displayName.equals(dataProvider.getCurrentGroupName())) {
             dataProvider.setCurrentGroupName(displayName);
         }
 
@@ -364,7 +378,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
             return false;
         }
 
-        if(!currency.equals(dataProvider.getCurrentGroupCurrency())){
+        if (!currency.equals(dataProvider.getCurrentGroupCurrency())) {
             dataProvider.setCurrentGroupCurrency(currency);
         }
 
@@ -375,7 +389,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if(alertDialog != null && alertDialog.isShowing()){
+        if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.dismiss();
         }
 
