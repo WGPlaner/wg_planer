@@ -4,7 +4,7 @@
 
 ## 1.1 Brief Description
 This use case allows users to add products/items to a shopping list. 
-A product has a title and may contain information like number of items and who the product shall be bought for.
+A product has a title and may contain information like the number of items and who the product shall be bought for.
 
 ## 1.2 Mockup
 ### New page to add a new Produkt to a shopping list
