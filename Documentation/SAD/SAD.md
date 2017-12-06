@@ -53,7 +53,7 @@ This document describes the architecture of the WGPlaner project.
 | [UC Add Item](../UC/UC_Add_Item.md)                                | 2017-12-06 | WGPlaner Team             |
 | [UC Buy Item](../UC/UC_Buy_Item.md)                                | 2017-12-06 | WGPlaner Team             |
 | [UC Profile Settings](../UC/UC_Profile_Settings.md)                | 2017-12-06 | WGPlaner Team             |
-| [UC Invite New Group Member](..UC/UC_Invite_New_Group_Member.md)   | 2017-12-06 | WGPlaner Team             |
+| [UC Invite New Group Member](../UC/UC_Invite_New_Group_Member.md)   | 2017-12-06 | WGPlaner Team             |
 
 ### 1.5 Overview
 This document contains the Architectural Representation, Goals and Constraints as well 
