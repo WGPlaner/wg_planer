@@ -11,6 +11,13 @@ Bought items shall be removed from the list.
 ### Checked List to buy produkts/items
 [![Mockup CheckedList](../Mockups/uc_shopping_list_CheckedList_200px.png)](../Mockups/uc_shopping_list_CheckedList.PNG)
 
+## 1.3 Screenshot
+### Shopping List with checked products
+[Shopping List with checked products](../Screenshots/uc_add_item_blank.png)
+
+### Shopping List after the products were bought
+[Shopping List after the products were bought](../Screenshots/uc_buy_item_bougt_products.png)
+
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
