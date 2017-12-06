@@ -37,7 +37,7 @@ public class DataProvider implements DataProviderInterface {
 
     private static DataProvider singleton;
 
-    private ImageStore imageStoreInstance;
+    private ImageStore imageStoreInstance = ImageStore.getInstance();
     private ServerCallsInterface serverCallsInstance = ServerCalls.getInstance();
 
     private String currentUserUid;
@@ -262,9 +262,12 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public void setFirebaseInstanceId(String token) {
+    public void setFirebaseInstanceId(String token, Context context) {
         if (token != null) {
             this.currentUserFirebaseInstanceId = token;
+            if(Configuration.singleton == null) {
+                Configuration.initConfig(context);
+            }
             Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }
     }

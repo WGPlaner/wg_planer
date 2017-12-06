@@ -192,8 +192,7 @@ public class AddItemActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 }
             });
+            return false;
         }
-
-        return false;
     }
 }

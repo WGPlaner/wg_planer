@@ -25,7 +25,7 @@ public interface DataProviderInterface {
 
     boolean registerUser();
 
-    void setFirebaseInstanceId(String token);
+    void setFirebaseInstanceId(String token, Context context);
 
     String getFirebaseInstanceId();
 

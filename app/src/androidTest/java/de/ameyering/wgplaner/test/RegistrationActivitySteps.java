@@ -60,10 +60,12 @@ public class RegistrationActivitySteps {
         initActivity(activity);
     }
 
+    /*
     @Then("^Toast with text \"([^\"]*)\" is displayed")
     public void toast_is_displayed(String text) throws Exception {
         onView(withText(text)).inRoot(withDecorView(not(is(mActivityRule.getActivity().
                         getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
+    */
 
 }

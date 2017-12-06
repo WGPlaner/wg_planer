@@ -315,7 +315,7 @@ public class TestServerCalls implements ServerCallsInterface {
     }
 
     @Override
-    public void createGroupAsync(Group group, @Nullable OnAsyncCallListener<Group> listener) {
+    public void updateGroupAsync(Group group, @Nullable OnAsyncCallListener<Group> listener) {
         if(listener != null) {
             switch (testCase) {
                 case SUCCESS: {
@@ -323,7 +323,38 @@ public class TestServerCalls implements ServerCallsInterface {
                 }
                 break;
                 case FAILURE: {
-                    listener.onFailure(new ApiException(0, "Failure"));
+                    listener.onFailure(new ApiException());
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    public ApiResponse<Group> updateGroup(Group group) {
+        switch (testCase) {
+            case SUCCESS: {
+                return new ApiResponse<Group>(200, null, group);
+            }
+            case FAILURE: {
+                return new ApiResponse<Group>(0, null, null);
+            }
+            default: {
+                return null;
+            }
+        }
+    }
+
+    @Override
+    public void createGroupAsync(Group group, @Nullable OnAsyncCallListener<Group> listener) {
+        if(listener != null) {
+            switch (testCase) {
+                case SUCCESS: {
+                        listener.onSuccess(group);
+                }
+                break;
+                case FAILURE: {
+                        listener.onFailure(new ApiException(0, "Failure"));
                 }
                 break;
             }
