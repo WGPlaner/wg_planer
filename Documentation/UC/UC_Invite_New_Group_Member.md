@@ -7,13 +7,18 @@ This use case allows admins to invite new group members to the shared flat.
 A group has at minimum one admin who can call up the access key to join a group.
 
 ## 1.2 Mockup
-### Dialog Window with the Access Key
-
 ### Group Settings Page, if admin
-[Group Settings Page, if admin](../Screenshots/uc_invite_new_group_member_group_settings.png)
+![Group Settings Page with "invite groupmember" button](../Mockups/uc_invite_new_group_member_group_settings_mockup.PNG)
+
+### Dialog Window with the Access Key
+![Dialog Window Access Key](../Mockups/uc_invite_new_group_member_dialog_window_mockup.PNG)
+
+## 1.3 Screenshot
+### Group Settings Page, if admin
+![Group Settings Page, if admin](../Screenshots/uc_invite_new_group_member_group_settings.png)
 
 ### Dialog Window which opens at the button pressure
-[Dialog Window which opens at the button pressure](../Screenshots/uc_invite_new_group_member_dialog_window.png)
+![Dialog Window which opens at the button pressure](../Screenshots/uc_invite_new_group_member_dialog_window.png)
 
 # 2. Flow of Events
 
