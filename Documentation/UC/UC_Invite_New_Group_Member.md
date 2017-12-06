@@ -22,10 +22,16 @@ n/a
 n/a
 
 # 4. Preconditions
-n/a
+The main preconditions for this use case are:
+
+ 1. The users app instance is registered.
+ 2. The user is member of a group/shared flat.
+ 3. The user has to be a admin.
+ 4. The admin has started the app and has navigated to "Group Settings".
+
 
 # 5. Postconditions
-n/a
+The server has to generate the Access Key to invite a new group member.
 
 # 6. Extension Points
 n/a
