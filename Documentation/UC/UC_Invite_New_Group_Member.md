@@ -8,7 +8,7 @@ A group has at minimum one admin who can call up the access key to join a group.
 
 ## 1.2 Mockup
 ### Group Settings Page, if admin
-![Group Settings Page with "invite groupmember" button](../UC/Mockups/uc_invite_new_group_member_group_settings_mockup.PNG)
+![Group Settings Page with "invite groupmember" button](../Mockups/uc_invite_new_group_member_group_settings_mockup.PNG)
 
 ### Dialog Window with the Access Key
 ![Dialog Window Access Key](../Mockups/uc_invite_new_group_member_dialog_window_mockup.PNG)
