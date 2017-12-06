@@ -12,7 +12,7 @@ A group has at minimum one admin who can call up the access key to join a group.
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-Here is the activity diagram for inviting a new group member.
+Here is the activity diagram for inviting new group members.
 ![Activity Diagram](../ActivityDiagrams/uc_invite_new_group_member_activity_diagram.png)
 
 ## 2.2 Alternative Flows
