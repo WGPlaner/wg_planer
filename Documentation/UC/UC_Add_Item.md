@@ -16,6 +16,9 @@ A product has a title and may contain information like the number of items and w
 Here is the activity diagram for adding a new item/product.
 ![Activity Diagram](../ActivityDiagrams/uc_add_item_activity_diagram.png)
 
+And here is a screenshot of the `.feature` file for this use case:
+![.feature file](./FeatureFiles/feature_file_add_shopping_list_item.png)
+
 ## 2.2 Alternative Flows
 n/a
 
