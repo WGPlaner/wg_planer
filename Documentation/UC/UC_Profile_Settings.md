@@ -18,13 +18,13 @@ A user has a name, a profile picture and an email. Profile picture and email are
 
 ## 1.3 Screenshot
 ### Profile Settings Page, not editable
-![Profile Settings Page, not editable](../Screenshots/uc_profile_settings_not_editable.png)
+![Profile Settings Page, not editable](../Screenshots/uc_profile_settings_not_editable.PNG)
 
 ### Profile Settings Page, if editing is activated
-![Profile Settings Page, if editing is activated](../Screenshots/uc_profile_settings_editable.png)
+![Profile Settings Page, if editing is activated](../Screenshots/uc_profile_settings_editable.PNG)
 
 ### Profile Settings Page, if editing is canceled
-![Profile Settings Page, if editing is canceled](../Screenshots/uc_profile_settings_cancel_edits.png)
+![Profile Settings Page, if editing is canceled](../Screenshots/uc_profile_settings_cancel_edits.PNG)
 
 # 2. Flow of Events
 
