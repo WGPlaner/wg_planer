@@ -13,7 +13,7 @@ Bought items shall be removed from the list.
 
 ## 1.3 Screenshot
 ### Shopping List with checked products
-![Shopping List with checked products](../Screenshots/uc_add_item_blank.png)
+![Shopping List with checked products](../Screenshots/uc_buy_item_checked_boxes.png)
 
 ### Shopping List after the products were bought
 ![Shopping List after the products were bought](../Screenshots/uc_buy_item_bougt_products.png)
