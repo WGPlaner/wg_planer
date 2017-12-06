@@ -12,13 +12,13 @@ A product has a title and may contain information like the number of items and w
 
 ## 1.3 Screenshot
 ### Add Item Page "blank"
-[Add Item Page "blank"](../Screenshots/uc_add_item_blank.png)
+![Add Item Page "blank"](../Screenshots/uc_add_item_blank.png)
 
 ### Add Item Page "filled"
-[Add Item Page "Filled"](../Screenshots/uc_add_item_filled.png)
+![Add Item Page "Filled"](../Screenshots/uc_add_item_filled.png)
 
 ### Updated Shopping List
-[Updated Shopping List](../Screenshots/uc_add_item_shopping_list.png)
+![Updated Shopping List](../Screenshots/uc_add_item_shopping_list.png)
 
 # 2. Flow of Events
 
