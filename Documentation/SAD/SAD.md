@@ -43,15 +43,17 @@ This document describes the architecture of the WGPlaner project.
 
 ### 1.4 References
 
-| Title                                                | Date       | Publishing organization   |
-| ---------------------------------------------------- |:----------:| ------------------------- |
-| [WGPlaner Blog](http://wgplanerblog.wordpress.com/)  | 2017-11-26 | WGPlaner Team             |
-| [SRS](../SRS/SRS.md)                                 | 2017-11-26 | WGPlaner Team             |
-| [UC Pinboard](../UC/UC_Pinboard.md)                  | 2017-11-26 | WGPlaner Team             |
-| [UC Registration](../UC/UC_Registration.md)          | 2017-11-26 | WGPlaner Team             |
-| [UC Shopping List](../UC/UC_Shopping_List.md)        | 2017-11-26 | WGPlaner Team             |
-| [UC Add Item](../UC/UC_Add_Item.md)                  | 2017-12-06 | WGPlaner Team             |
-| [UC Buy Item](../UC/UC_Buy_Item.md)                  | 2017-12-06 | WGPlaner Team             |
+| Title                                                              | Date       | Publishing organization   |
+| -------------------------------------------------------------------|:----------:| ------------------------- |
+| [WGPlaner Blog](http://wgplanerblog.wordpress.com/)                | 2017-11-26 | WGPlaner Team             |
+| [SRS](../SRS/SRS.md)                                               | 2017-11-26 | WGPlaner Team             |
+| [UC Pinboard](../UC/UC_Pinboard.md)                                | 2017-11-26 | WGPlaner Team             |
+| [UC Registration](../UC/UC_Registration.md)                        | 2017-11-26 | WGPlaner Team             |
+| [UC Shopping List](../UC/UC_Shopping_List.md)                      | 2017-11-26 | WGPlaner Team             |
+| [UC Add Item](../UC/UC_Add_Item.md)                                | 2017-12-06 | WGPlaner Team             |
+| [UC Buy Item](../UC/UC_Buy_Item.md)                                | 2017-12-06 | WGPlaner Team             |
+| [UC Profile Settings](../UC/UC_Profile_Settings.md                 | 2017-12-06 | WGPlaner Team             |
+| [UC Invite New Group Member](..UC/UC_Invite_New_Group_Member.md    | 2017-12-06 | WGPlaner Team             |
 
 ### 1.5 Overview
 This document contains the Architectural Representation, Goals and Constraints as well 
