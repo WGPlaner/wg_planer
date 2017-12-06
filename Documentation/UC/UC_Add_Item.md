@@ -3,8 +3,8 @@
 # 1. Change Settings
 
 ## 1.1 Brief Description
-This use case allows users to add produkts/items to a shopping list. 
-A product has a title and may contain information the number of items and who the product shall be bought for.
+This use case allows users to add products/items to a shopping list. 
+A product has a title and may contain information like number of items and who the product shall be bought for.
 
 ## 1.2 Mockup
 ### New page to add a new Produkt to a shopping list
