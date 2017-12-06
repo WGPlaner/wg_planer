@@ -69,11 +69,15 @@ SUBSYSTEMS:
 
 ### 1.4 References
 
-| Title                                         | Date       | Publishing organization   |
-| --------------------------------------------- |:----------:| ------------------------- |
-| [UC Registration](../UC/UC_Registration.md)   | 2017-11-02 | WGPlaner Team             |
-| [UC Pinboard](../UC/UC_Pinboard.md)           | 2017-11-02 | WGPlaner Team             |
-| [UC Shopping List](../UC/UC_Shopping_List.md) | 2017-11-02 | WGPlaner Team             |
+| Title                                                              | Date       | Publishing organization   |
+| ------------------------------------------------------------------ |:----------:| ------------------------- |
+| [UC Registration](../UC/UC_Registration.md)                        | 2017-11-02 | WGPlaner Team             |
+| [UC Pinboard](../UC/UC_Pinboard.md)                                | 2017-11-02 | WGPlaner Team             |
+| [UC Shopping List](../UC/UC_Shopping_List.md)                      | 2017-11-02 | WGPlaner Team             |
+| [UC Add Item](../UC/UC_Add_Item.md)                                | 2017-12-06 | WGPlaner Team             |
+| [UC Buy Item](../UC/UC_Buy_Item.md)                                | 2017-12-06 | WGPlaner Team             |
+| [UC Profile Settings](../UC/UC_Profile_Settings.md)                | 2017-12-06 | WGPlaner Team             |
+| [UC Invite New Group Member](../UC/UC_Invite_New_Group_Member.md)  | 2017-12-06 | WGPlaner Team             |
 
 ### 1.5 Overview
 The remainder of this document is structured in the following way: In the next chapter, the Overall Description section, an overview of the functionality of the product and an use-case-diagram is given. The third chapter, the Requirements Specification section, provides an more detailed description of the requirements. In order to achieve a high level of specification in defining the requirements, all functions presented in the diagram are separated into subsections of section "3.1 Functionality". Further requirements like usability and supportability are listed in chapters 3.2 through 3.12. Supporting information is given in chapter four.
