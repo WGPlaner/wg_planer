@@ -30,7 +30,7 @@ The main preconditions for this use case are:
 
  1. The users app instance is registered.
  2. The user is member of a group/shared flat.
- 2. The user has started the app and has navigated to "Shopping List".
+ 3. The user has started the app and has navigated to "Shopping List".
 
 # 5. Postconditions
 
