@@ -9,6 +9,12 @@ A group has at minimum one admin who can call up the access key to join a group.
 ## 1.2 Mockup
 ### Dialog Window with the Access Key
 
+### Group Settings Page, if admin
+[Group Settings Page, if admin](../Screenshots/uc_invite_new_group_member_group_settings.png)
+
+### Dialog Window which opens at the button pressure
+[Dialog Window which opens at the button pressure](../Screenshots/uc_invite_new_group_member_dialog_window.png)
+
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
