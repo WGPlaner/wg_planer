@@ -8,23 +8,23 @@ A user has a name, a profile picture and an email. Profile picture and email are
 
 ## 1.2 Mockup
 ### Profile Settings Page, not editable
-![Profile Settings Page, not editable](../Mockups/uc_profile_settings_not_editable_mockup.png)
+![Profile Settings Page, not editable](../Mockups/uc_profile_settings_not_editable_mockup.PNG)
 
 ### Profile Settings Page, if editing is activated
-![Profile Settings Page, if editing is activated](../Mockups/uc_profile_settings_editable_mockup.png)
+![Profile Settings Page, if editing is activated](../Mockups/uc_profile_settings_editable_mockup.PNG)
 
 ### Profile Settings Page, if editing is canceled
-![Profile Settings Page, if editing is canceled](../Mockups/uc_profile_settings_cancel_edits_mockup.png)
+![Profile Settings Page, if editing is canceled](../Mockups/uc_profile_settings_cancel_edits_mockup.PNG)
 
 ## 1.3 Screenshot
 ### Profile Settings Page, not editable
-![Profile Settings Page, not editable](../Screenshots/uc_profile_settings_not_editable.PNG)
+![Profile Settings Page, not editable](../Screenshots/uc_profile_settings_not_editable.png)
 
 ### Profile Settings Page, if editing is activated
-![Profile Settings Page, if editing is activated](../Screenshots/uc_profile_settings_editable.PNG)
+![Profile Settings Page, if editing is activated](../Screenshots/uc_profile_settings_editable.png)
 
 ### Profile Settings Page, if editing is canceled
-![Profile Settings Page, if editing is canceled](../Screenshots/uc_profile_settings_cancel_edits.PNG)
+![Profile Settings Page, if editing is canceled](../Screenshots/uc_profile_settings_cancel_edits.png)
 
 # 2. Flow of Events
 
