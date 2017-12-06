@@ -4,15 +4,15 @@
 
 ## 1.1 Brief Description
 This use case allows users to edit their personal profile settings. 
-A user has a name, a profile picture and a email. The profile picture and the email is optional.
+A user has a name, a profile picture and an email. Profile picture and email are optional.
 
 ## 1.2 Mockup
-### Profile Settings layout
+### Profile Settings Layout
 
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-Here is the activity diagram for inviting a new group member.
+Here is the activity diagram for editing the personal profile.
 ![Activity Diagram](../ActivityDiagrams/uc_profile_settings_activity_diagram.png)
 
 ## 2.2 Alternative Flows
@@ -31,9 +31,7 @@ The main preconditions for this use case are:
 
 # 5. Postconditions
 ## 5.1 Save changes / Sync with server
-
-The server has to load the actual inputs of the components.
-If a component has been edited and saved it must be synced with the server.
+The users profile has been saved and stored on the server.
 
 # 6. Extension Points
 n/a
