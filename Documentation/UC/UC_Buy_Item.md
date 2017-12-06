@@ -4,7 +4,7 @@
 
 ## 1.1 Brief Description
 This use case allows users to buy products/items.
-A product has a title and may contain information the number of items and who the product shall be bought for. 
+A product has a title and may contain information like the number of items and who the product shall be bought for. 
 Bought items shall be removed from the list.
 
 ## 1.2 Mockup
