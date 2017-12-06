@@ -33,7 +33,7 @@ The main preconditions for this use case are:
 ## 5.1 Save changes / Sync with server
 
 The server has to load the actual inputs of the components.
-If a component has been added it must be synced with the server.
+If a component has been edited and saved it must be synced with the server.
 
 # 6. Extension Points
 n/a
