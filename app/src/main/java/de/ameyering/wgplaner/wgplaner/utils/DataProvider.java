@@ -38,7 +38,7 @@ public class DataProvider implements DataProviderInterface {
     private static DataProvider singleton;
 
     private ImageStore imageStoreInstance = ImageStore.getInstance();
-    private ServerCallsInterface serverCallsInstance = ServerCalls.getInstance();
+    private ServerCallsInterface serverCallsInstance;
 
     private String currentUserUid;
     private String currentUserFirebaseInstanceId;
@@ -63,6 +63,7 @@ public class DataProvider implements DataProviderInterface {
 
     static {
         singleton = new DataProvider();
+        singleton.setServerCallsInstance(ServerCalls.getInstance());
     }
   
     public void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
@@ -356,7 +357,12 @@ public class DataProvider implements DataProviderInterface {
     public void setCurrentGroupName(String groupName) {
         if (groupName != null && !groupName.isEmpty()) {
             this.currentGroupName = groupName;
-            callAllListeners(DataType.CURRENT_GROUP);
+
+            ApiResponse<Group> groupResponse = updateGroup();
+
+            if (groupResponse != null && groupResponse.getData() != null) {
+                callAllListeners(DataType.CURRENT_GROUP);
+            }
         }
     }
 
@@ -427,7 +433,7 @@ public class DataProvider implements DataProviderInterface {
         Group group = new Group();
         group.setDisplayName(name);
         group.setCurrency(currency.getCurrencyCode());
-        //TODO: Implement image flow
+        imageStoreInstance.setGroupPicture(imagecr);
 
         ApiResponse<Group> groupResponse = createGroup(group);
 
@@ -440,6 +446,8 @@ public class DataProvider implements DataProviderInterface {
             currentGroupAdminsUids = group.getAdmins();
             imageStoreInstance.setGroupPicture(imagecr);
             serverCallsInstance.updateGroupImageAsync(imageStoreInstance.getGroupPictureFile(), null);
+
+            ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateGroupImage(imageStoreInstance.getGroupPictureFile());
 
             initializeMembers(context);
 

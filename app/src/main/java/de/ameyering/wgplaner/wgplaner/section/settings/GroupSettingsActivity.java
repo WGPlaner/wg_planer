@@ -80,6 +80,8 @@ public class GroupSettingsActivity extends AppCompatActivity {
                         }
 
                         inputName.setText(dataProvider.getCurrentGroupName());
+
+                        image.setImageBitmap(dataProvider.getCurrentGroupImage(GroupSettingsActivity.this));
                     }
                 });
 
@@ -89,8 +91,6 @@ public class GroupSettingsActivity extends AppCompatActivity {
                     public void run() {
                         ArrayList<User> users = dataProvider.getCurrentGroupMembers();
                         adapterMembers.onNewData(users);
-
-                        image.setImageBitmap(dataProvider.getCurrentGroupImage(GroupSettingsActivity.this));
                     }
                 });
             }
