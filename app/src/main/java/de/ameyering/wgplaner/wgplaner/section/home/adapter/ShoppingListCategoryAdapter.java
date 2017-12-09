@@ -24,6 +24,9 @@ import io.swagger.client.model.ListItem;
 public class ShoppingListCategoryAdapter extends
     RecyclerView.Adapter<ShoppingListCategoryAdapter.ViewHolder> {
 
+    private Context context;
+    private ArrayList<CategoryHolder> items = new ArrayList<>();
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public RecyclerView itemRecycler;
         public TextView categoryName;
@@ -73,10 +76,6 @@ public class ShoppingListCategoryAdapter extends
             this.holder = categoryHolder;
         }
     }
-
-    private Context context;
-
-    private ArrayList<CategoryHolder> items = new ArrayList<>();
 
     public ShoppingListCategoryAdapter(ArrayList<CategoryHolder> items, Context context) {
         if (items != null) {
