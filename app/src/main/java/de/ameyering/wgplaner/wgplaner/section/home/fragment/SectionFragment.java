@@ -4,7 +4,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 
-
 public abstract class SectionFragment extends Fragment {
     public Toolbar toolbar;
     public FloatingActionButton floatingActionButton;

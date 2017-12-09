@@ -10,7 +10,6 @@ import android.widget.Button;
 
 import de.ameyering.wgplaner.wgplaner.R;
 
-
 public class WelcomeFragment extends NavigationFragment {
     private PickDisplayNameFragment pickDisplayNameFragment;
 

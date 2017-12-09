@@ -1,17 +1,14 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.UUID;
 
-import io.swagger.client.ApiResponse;
 import io.swagger.client.model.ListItem;
 import io.swagger.client.model.User;
 

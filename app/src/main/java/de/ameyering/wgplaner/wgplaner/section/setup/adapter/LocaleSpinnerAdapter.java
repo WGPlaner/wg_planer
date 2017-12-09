@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.section.setup.adapter;
 
-
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

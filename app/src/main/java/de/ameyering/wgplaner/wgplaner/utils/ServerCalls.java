@@ -1,11 +1,8 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
-
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
-import com.squareup.okhttp.Call;
 
 import java.io.File;
 import java.util.List;
@@ -13,13 +10,20 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import io.swagger.client.*;
-import io.swagger.client.Configuration;
+import io.swagger.client.ApiCallback;
+import io.swagger.client.ApiClient;
+import io.swagger.client.ApiException;
+import io.swagger.client.ApiResponse;
 import io.swagger.client.api.GroupApi;
 import io.swagger.client.api.ShoppinglistApi;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
-import io.swagger.client.model.*;
+import io.swagger.client.Configuration;
+import io.swagger.client.model.Group;
+import io.swagger.client.model.GroupCode;
+import io.swagger.client.model.ListItem;
+import io.swagger.client.model.ShoppingList;
+import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
 public class ServerCalls implements ServerCallsInterface {

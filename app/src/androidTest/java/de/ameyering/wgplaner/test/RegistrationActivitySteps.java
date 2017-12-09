@@ -9,7 +9,6 @@ import android.support.test.rule.ActivityTestRule;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 
 import de.ameyering.wgplaner.test.mockclasses.TestServerCalls;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
@@ -17,14 +16,6 @@ import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 
 public class RegistrationActivitySteps {
     private ActivityTestRule<RegistrationActivity> mActivityRule = new ActivityTestRule<>

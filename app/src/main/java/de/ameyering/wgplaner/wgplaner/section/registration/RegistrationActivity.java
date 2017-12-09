@@ -15,8 +15,6 @@ import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.registration.fragment.WelcomeFragment;
-import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
-import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 
 public class RegistrationActivity extends AppCompatActivity {
     private static final String WELCOME_FRAGMENT_ARGS = "WelcomeFragment";
