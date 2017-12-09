@@ -32,6 +32,7 @@ public class ShoppingListActivitySteps {
 
     @Before
     public void setUp() throws Exception {
+        // Nothing to do.
     }
 
     @After
@@ -44,7 +45,7 @@ public class ShoppingListActivitySteps {
     }
 
     @Given("^The shopping list view is open$")
-    public void i_open_shopping_list_view() {
+    public void iOpenShoppingListView() {
         Activity activity = mActivityRule.launchActivity(null);
         initActivity(activity);
     }

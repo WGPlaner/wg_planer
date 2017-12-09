@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.section.setup.fragment;
 
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;

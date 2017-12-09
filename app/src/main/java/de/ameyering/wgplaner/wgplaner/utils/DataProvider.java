@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,14 +25,12 @@ import io.swagger.client.model.User;
 public class DataProvider implements DataProviderInterface {
 
     public interface OnDataChangeListener {
-
         void onDataChanged(final DataType type);
     }
 
     public enum DataType {
         CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS, CURRENT_GROUP_MEMBERS
     }
-
 
     private static DataProvider singleton;
 
@@ -177,8 +174,8 @@ public class DataProvider implements DataProviderInterface {
 
                         @Override
                         public void onSuccess(byte[] result) {
-                            imageStoreInstance.setGroupPicture(currentUserPicture = BitmapFactory.decodeByteArray(result, 0,
-                                        result.length));
+                            currentUserPicture = BitmapFactory.decodeByteArray(result, 0, result.length);
+                            imageStoreInstance.setGroupPicture(currentUserPicture);
                         }
                     });
 

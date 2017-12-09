@@ -21,7 +21,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;

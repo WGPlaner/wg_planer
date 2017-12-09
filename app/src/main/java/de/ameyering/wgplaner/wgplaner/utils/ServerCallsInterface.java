@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
-
 import android.support.annotation.Nullable;
 
 import java.io.File;

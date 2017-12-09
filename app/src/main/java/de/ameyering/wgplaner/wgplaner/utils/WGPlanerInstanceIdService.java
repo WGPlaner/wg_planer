@@ -5,7 +5,6 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
-
 public class WGPlanerInstanceIdService extends FirebaseInstanceIdService {
     private static final String TOKEN_TAG = "TOKEN";
 

@@ -113,15 +113,15 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-
+            // TODO
         } else if (id == R.id.nav_shopping_list) {
-
+            // TODO
         } else if (id == R.id.nav_accounting) {
-
+            // TODO
         } else if (id == R.id.nav_rosters) {
-
+            // TODO
         } else if (id == R.id.nav_calendar) {
-
+            // TODO
         } else if (id == R.id.nav_pinboard) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

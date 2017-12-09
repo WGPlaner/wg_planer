@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
-import de.ameyering.wgplaner.wgplaner.utils.ServerCalls;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";

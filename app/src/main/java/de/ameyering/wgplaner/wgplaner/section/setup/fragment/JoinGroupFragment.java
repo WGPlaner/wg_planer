@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.section.setup.fragment;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

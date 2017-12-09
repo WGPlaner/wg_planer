@@ -7,7 +7,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
-
 public class NotificationService extends FirebaseMessagingService {
     private static final String SHOPPING_LIST_ADD = "ShoppingList-Add";
     private static final String SHOPPING_LIST_UPDATE = "ShoppingList-Update";

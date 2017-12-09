@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.structure;
 
-
 import android.content.Context;
 
 import java.util.ArrayList;

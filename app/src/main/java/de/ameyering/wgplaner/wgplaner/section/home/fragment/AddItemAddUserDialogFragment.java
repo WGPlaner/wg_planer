@@ -14,7 +14,6 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.User;
 
-
 public class AddItemAddUserDialogFragment extends DialogFragment {
     private ArrayList<User> mSelectedItems = new ArrayList<>();
     private OnResultListener mOnResultListener;
