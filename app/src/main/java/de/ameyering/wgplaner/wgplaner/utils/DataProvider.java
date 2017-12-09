@@ -174,8 +174,8 @@ public class DataProvider implements DataProviderInterface {
 
                         @Override
                         public void onSuccess(byte[] result) {
-                            imageStoreInstance.setGroupPicture(currentUserPicture = BitmapFactory.decodeByteArray(result, 0,
-                                        result.length));
+                            currentUserPicture = BitmapFactory.decodeByteArray(result, 0, result.length);
+                            imageStoreInstance.setGroupPicture(currentUserPicture);
                         }
                     });
 
