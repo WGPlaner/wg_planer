@@ -28,7 +28,7 @@ import static org.hamcrest.CoreMatchers.not;
 
 public class CommonSteps {
     @When("^I click button with id \"([^\"]*)\"$")
-    public void i_click_button_with_text(String buttonID) throws IllegalAccessException,
+    public void iClickButtonWithText(String buttonID) throws IllegalAccessException,
         InterruptedException {
         Thread.sleep(1000);
         ViewInteraction appCompatButton = onView(withResourceName(buttonID));
@@ -36,23 +36,23 @@ public class CommonSteps {
     }
 
     @When("^I enter \"([^\"]*)\" into input field with id \"([^\"]*)\"$")
-    public void i_enter_text_into_field_id(String text, String fieldId) throws NoSuchFieldException {
+    public void iEnterTextIntoFieldId(String text, String fieldId) throws NoSuchFieldException {
         ViewInteraction appCompatButton = onView(withResourceName(fieldId));
         appCompatButton.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Then("^I should see text \"([^\"]*)\"")
-    public void text_is_visible(String text) throws Exception {
+    public void textIsVisible(String text) throws Exception {
         onView(withText(text)).check(matches(isDisplayed()));
     }
 
     @Then("^Success$")
-    public void is_success() throws Exception {
+    public void isSuccess() throws Exception {
         // Placeholder for testing the cucumber feature files
     }
 
     @Then("^Toast with text \"([^\"]*)\" is displayed")
-    public void toast_is_displayed(String text) throws Exception {
+    public void toastIsDisplayed(String text) throws Exception {
         final Activity[] activity = new Activity[1];
         InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             @Override

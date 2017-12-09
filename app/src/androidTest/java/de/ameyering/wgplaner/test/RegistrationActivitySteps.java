@@ -31,6 +31,7 @@ public class RegistrationActivitySteps {
 
     @Before
     public void setUp() throws Exception {
+        // Nothing to do.
     }
 
     @After
@@ -43,17 +44,8 @@ public class RegistrationActivitySteps {
     }
 
     @Given("^The app is opened$")
-    public void i_open_splash_screen() {
+    public void iOpenSplashScreen() {
         Activity activity = mActivityRule.launchActivity(null);
         initActivity(activity);
     }
-
-    /*
-    @Then("^Toast with text \"([^\"]*)\" is displayed")
-    public void toast_is_displayed(String text) throws Exception {
-        onView(withText(text)).inRoot(withDecorView(not(is(mActivityRule.getActivity().
-                        getWindow().getDecorView())))).check(matches(isDisplayed()));
-    }
-    */
-
 }
