@@ -15,16 +15,17 @@ public class Item {
             throw new MalformedItemException("name should not be null");
         }
 
+        name = name.trim();
+        if (name.isEmpty()) {
+            throw new MalformedItemException("name should not be empty");
+        }
+
         if (requestedBy == null) {
             throw new MalformedItemException("requestedBy should not be null");
         }
 
         if (requestedFor == null) {
             throw new MalformedItemException("requestedFor should not be null");
-        }
-
-        if (name.equals("")) {
-            throw new MalformedItemException("name should not be empty");
         }
 
         this.name = name;
