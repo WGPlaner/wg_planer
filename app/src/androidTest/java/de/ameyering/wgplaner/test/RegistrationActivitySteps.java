@@ -21,9 +21,6 @@ public class RegistrationActivitySteps {
     private ActivityTestRule<RegistrationActivity> mActivityRule = new ActivityTestRule<>
     (RegistrationActivity.class);
 
-    public RegistrationActivitySteps() {
-    }
-
     private void initActivity(Activity activity) {
         Context appContext = activity.getBaseContext();
         Money.initialize(Locale.getDefault());

@@ -27,9 +27,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
 public class CommonSteps {
-    public CommonSteps() {
-    }
-
     @When("^I click button with id \"([^\"]*)\"$")
     public void i_click_button_with_text(String buttonID) throws IllegalAccessException,
         InterruptedException {
