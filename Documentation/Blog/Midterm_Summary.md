@@ -1,7 +1,7 @@
 # Midterm Summary
 
 In this blog post we want to sum up all the work we did so far. 
-Below you will find a list of weeks we spent working on SAM so far. Each Week is linked to a blog post, which contains  information for the corresponding topic. For your comfort we have also linked some of the requirement-specification documents and files directly from this post. 
+Below you will find a list of weeks we spent working on WGPlaner so far. Each Week is linked to a blog post, which contains information for the corresponding topic. For your comfort we have also linked some of the requirement-specification documents and files directly from this post. 
 Enjoy and leave us a comment if you feel like!
 
  - Week 1: [Vision and Components](https://wgplanerblog.wordpress.com/2017/10/08/week-1-vision-and-components/)
