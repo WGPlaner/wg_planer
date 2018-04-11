@@ -1,6 +1,6 @@
 # Use-Case Specification: Registration
 
-# 1. Change Settings
+# 1. Registration
 
 ## 1.1 Brief Description
 This use case allows users to register for the WGPlaner Android Application. To do so, they have to pick a Username, which does not have to be unique. Additionally they can upload a profile picture or state an email address.

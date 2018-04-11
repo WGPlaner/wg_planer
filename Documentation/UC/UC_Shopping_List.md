@@ -1,6 +1,6 @@
 # Use-Case Specification: Shopping List
 
-# 1. Change Settings
+# 1. Shopping List
 
 ## 1.1 Brief Description
 This use case allows users to add products/items to a shopping list and manage them. A product has a title and may contain information the number of items and who the product shall be bought for. Bought items shall be removed from the list.

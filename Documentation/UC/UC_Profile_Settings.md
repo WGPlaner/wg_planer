@@ -1,6 +1,6 @@
 # Use-Case Specification: Profile Settings
 
-# 1. Change Settings
+# 1. Profile Settings
 
 ## 1.1 Brief Description
 This use case allows users to edit their personal profile settings. 
