@@ -1,6 +1,6 @@
 # Use-Case Specification: Invite new group member
 
-# 1. Change Settings
+# 1. Invite new group member
 
 ## 1.1 Brief Description
 This use case allows admins to invite new group members to the shared flat. 

@@ -1,6 +1,6 @@
 # Use-Case Specification: Buy Item
 
-# 1. Change Settings
+# 1. Buy Item
 
 ## 1.1 Brief Description
 This use case allows users to buy products/items.

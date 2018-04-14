@@ -1,6 +1,6 @@
 # Use-Case Specification: Add Item
 
-# 1. Change Settings
+# 1. Add Item
 
 ## 1.1 Brief Description
 This use case allows users to add products/items to a shopping list. 
