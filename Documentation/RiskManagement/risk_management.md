@@ -10,9 +10,14 @@ The first 20 percent of the risks which have the highest risk factor get a "Risk
 | Timing | The time planned is insufficient | 20% | 8 | 1.6 | Plan tasks with time buffer | Arne | Schedule |
 | Framework API | Updates of Framework API cause problems | 20% | 8 | 1.6 | Sandbox updates first | Andre | Performance |
 | Setup | Updates of IDEs or Tools cause problems | 20% | 5 | 1 | Sandbox updates first | Andre | Performance |
-| Not usable | product is not usable for end user | 5% | 10 | 0.5 | Early testing | Arne | Performance |
-| Quality | Code Quality is insufficient | 10% | 5 | 0.5 |  | Andre | Performance |
-| Deployment | Server deployment unsuccessfull | 5% | 8 | 0.4 |  | Andre | Performance |
-| Gradle | Gradle updates cause build failure | 5% | 8 | 0.4 |  | Arne | Performance |
-| Build | Client Build fails | 5% | 6 | 0.3 |  | Arne | Performance |
-| Licensing | Licenses of used libraries, etc. cause problems | 2% | 10 | 0.2 |  | Andre | Costs 
+| Not usable | product is not usable for end user | 5% | 10 | 0.5 | Early testing; using [codecov][codecov] | Arne | Performance |
+| Quality | Code Quality is insufficient | 10% | 5 | 0.5 | Use quality tools like [codacy][codacy] and [goreportcard][goreportcard] | Andre | Performance |
+| Deployment | Server deployment unsuccessfull | 5% | 8 | 0.4 | Use continuous deployment | Andre | Performance |
+| Gradle | Gradle updates cause build failure | 5% | 8 | 0.4 | Test updates locally | Arne | Performance |
+| Build | Client Build fails | 5% | 6 | 0.3 | Use continuous integration services like [travis][travis] | Arne | Performance |
+| Licensing | Licenses of used libraries, etc. cause problems | 2% | 10 | 0.2 | Read licenses thoroughly | Andre | Costs 
+
+[codacy]: https://app.codacy.com
+[goreportcard]: https://goreportcard.com
+[travis-1]: https://travis-ci.org/WGPlaner/wg_planer_server
+[codecov]: https://codecov.io/gh/WGPlaner/wg_planer_server
