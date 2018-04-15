@@ -28,7 +28,6 @@
 ### 1.1 Purpose
 This document provides a comprehensive architectural overview of the system, using a number of different architectural views to depict different aspects of the system. It is intended to capture and convey the significant architectural decisions which have been made on the system.
 
-
 ### 1.2 Scope
 This document describes the architecture of the WGPlaner project.
 
@@ -36,9 +35,13 @@ This document describes the architecture of the WGPlaner project.
 
 | Abbrevation | Description                            |
 | ----------- | -------------------------------------- |
+| API         | Application programming interface      |
+| MVC         | Model View Controller                  |
+| REST        | Representational state transfer        |
+| SDK         | Software development kit               |
 | SRS         | Software Requirements Specification    |
 | UC          | Use Case                               |
-| MVC         | Model View Controller                  |
+| VCS         | Version Control System                 |
 | n/a         | not applicable                         |
 
 ### 1.4 References
@@ -65,6 +68,15 @@ Android MVP-Pattern:
 ![Android MVP-Pattern](./MVCPatternClient.png)
 
 ## 3. Architectural Goals and Constraints
+Both client and server use the MVC/MVP pattern. We seperate models from controllers and views as described in the following paragraphs.
+
+### Server-side
+The server-side is written in (go)[https://golang.org/] and uses the (goswagger)[https://goswagger.io/] framework to create a RESTful API and the firebase SDK to authenticate users. The REST API, presented to the client itself, returns a JSON-"View" of models. The communication with the client happens over HTTP `POST`/`GET` requests which are handled by controllers. This way the server uses an MVC-like structure.
+
+### Client-side
+On the client side, which will be written in Java, we use the Android MVP framework and an API framework which is auto-generated using [swagger-codegen](https://swagger.io/swagger-codegen/). The API framework is used to communicate with the WGPlaner server. Furthermore, the firebase SDK is used to authenticate users.
+
+#### MVP
 The main goal of the MVP architecture is to separate the view from the logic. Therefore, the view does not implement the logic, but gets all the precompiled information from the controller.
 Models contain the data that is displayed in the views.
 
@@ -93,6 +105,8 @@ n/a
 
 ## 7. Deployment View
 ![Deployment View](./DeploymentView.png)
+
+<!-- TODO: https://github.com/anonfreak/bestplaces/blob/master/doku/SoftwareArchitectureDocument.md#deployment-view -->
 
 ## 8. Implementation View
 
