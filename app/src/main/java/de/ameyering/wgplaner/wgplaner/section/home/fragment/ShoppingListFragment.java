@@ -10,12 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
 import java.util.ArrayList;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.AddItemActivity;
-import de.ameyering.wgplaner.wgplaner.section.home.adapter.ShoppingListCategoryAdapter;
+import de.ameyering.wgplaner.wgplaner.section.home.adapter.ShoppingListAdapter;
 import de.ameyering.wgplaner.wgplaner.structure.CategoryHolder;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.ListItem;
@@ -24,7 +26,7 @@ public class ShoppingListFragment extends SectionFragment {
     private static final int REQ_CODE_ADD_ITEM = 0;
 
     private RecyclerView categories;
-    private ShoppingListCategoryAdapter adapter;
+    private ShoppingListAdapter adapter;
     private DataProvider.OnDataChangeListener shoppingListListener = new
     DataProvider.OnDataChangeListener() {
 
@@ -84,7 +86,7 @@ public class ShoppingListFragment extends SectionFragment {
             items.addAll(dataProvider.getCurrentShoppingList());
             ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
                     CategoryHolder.Category.REQUESTED_FOR, items);
-            adapter = new ShoppingListCategoryAdapter(holders, getContext());
+            adapter = new ShoppingListAdapter(holders);
 
             categories.setAdapter(adapter);
         }
@@ -136,26 +138,71 @@ public class ShoppingListFragment extends SectionFragment {
     private void changeFloatingActionButton() {
         if (!dataProvider.isSomethingSelected()) {
             floatingActionButton.setVisibility(View.VISIBLE);
-            floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                    R.drawable.ic_add_white));
-            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+
+            AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+            anim.setDuration(200);
+            anim.setRepeatCount(1);
+            anim.setRepeatMode(Animation.REVERSE);
+
+            anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), AddItemActivity.class);
-                    startActivityForResult(intent, REQ_CODE_ADD_ITEM);
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                    floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                        R.drawable.ic_add_white));
+                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), AddItemActivity.class);
+                            startActivityForResult(intent, REQ_CODE_ADD_ITEM);
+                        }
+                    });
                 }
             });
 
+            floatingActionButton.startAnimation(anim);
         } else {
             floatingActionButton.setVisibility(View.VISIBLE);
-            floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                    R.drawable.ic_check_white));
-            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+
+            AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+            anim.setDuration(200);
+            anim.setRepeatCount(1);
+            anim.setRepeatMode(Animation.REVERSE);
+
+            anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onClick(View view) {
-                    dataProvider.buySelection();
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                    floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                        R.drawable.ic_check_white));
+                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dataProvider.buySelection();
+                        }
+                    });
                 }
             });
+
+            floatingActionButton.startAnimation(anim);
         }
     }
 }

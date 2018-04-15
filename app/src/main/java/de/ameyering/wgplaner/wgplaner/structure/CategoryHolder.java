@@ -33,16 +33,8 @@ public class CategoryHolder {
         return header;
     }
 
-    public void setHeader(String header) {
-        this.header = header;
-    }
-
     public ArrayList<ListItem> getItems() {
         return items;
-    }
-
-    public void setItems(ArrayList<ListItem> items) {
-        this.items = items;
     }
 
     public static ArrayList<CategoryHolder> orderByCategory(Context context, Category category,
@@ -161,5 +153,17 @@ public class CategoryHolder {
         }
 
         return categoryHolders;
+    }
+
+    public ArrayList<Object> getViewItems() {
+        ArrayList<Object> viewItems = new ArrayList<>();
+
+        viewItems.add(0, header);
+
+        if(items != null) {
+            viewItems.addAll(1, items);
+        }
+
+        return viewItems;
     }
 }
