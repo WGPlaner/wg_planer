@@ -6,8 +6,8 @@
 This use case allows users to mark their bills as "paid". A bill contains bought items and costs.
 
 ## 1.2 Mockup
-### Page "Pay Bill"
-*tbd*
+### "Pay Bill" dialog
+![Pay bill](../Mockups/uc_pay_bills.png)
 
 ## 1.3 Screenshot
 ### Page "Pay Bill"

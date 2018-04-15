@@ -6,8 +6,8 @@
 This use case allows users to list fixed costs. Fixed costs are recurring costs (e.g. weekly/monthly) and contain a title, description and costs.
 
 ## 1.2 Mockup
-### Page "List fixed costs"
-*tbd*
+### Page listing fixed costs
+![Page see sent bill](../Mockups/uc_list_fixed_costs.png)
 
 ## 1.3 Screenshot
 ### Page "List fixed costs" - No items
