@@ -81,6 +81,7 @@
     <string name="product_attribute_number">Number</string>
     <string name="product_attribute_requested_by">Requested by</string>
     <string name="product_attribute_requested_for">Requested for</string>
+    <string name="product_attribute_price">Price</string>
 
     <string name="group_label">Group</string>
     <string name="asset_statements" translatable="false">[{\n  \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n  \"target\": {\n    \"namespace\": \"web\",\n    \"site\": \"https://api.wgplaner.ameyering.de\",\n  }\n}]</string>
