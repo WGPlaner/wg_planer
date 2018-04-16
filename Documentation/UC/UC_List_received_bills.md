@@ -7,7 +7,13 @@ This use case allows users to list their received bills. A bill contains bought 
 
 ## 1.2 Mockup
 ### Page listing received bills
-*tbd*
+![List received bills](../Mockups/uc_list_received_bills_list.png)
+
+### Detail page - received bill
+![Received bill details](../Mockups/uc_list_received_bills_detail.png)
+
+### Detail page - received bill action
+![Received bill details action menu](../Mockups/uc_list_received_bills_detail_actions.png)
 
 ## 1.3 Screenshot
 ### List received bills - No bill

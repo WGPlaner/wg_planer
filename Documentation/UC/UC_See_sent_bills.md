@@ -6,8 +6,17 @@
 This use case allows users to list their sent bills. A bill contains bought items and costs.
 
 ## 1.2 Mockup
-### Page listing sent bills
-*tbd*
+### Page listing pending 
+![Page see pending sent bills](../Mockups/uc_see_sent_bills_pending_list.png)
+
+### Page showing archived sent bills
+![Page see archived bills](../Mockups/uc_see_sent_bills_archive_list.png)
+
+### Page showing sent bill
+![Page see sent bill](../Mockups/uc_see_sent_bills_detail.png)
+
+### Page showing sent bill - action menu
+![Page see sent bill - action menu](../Mockups/uc_see_sent_bills_detail_actions.png)
 
 ## 1.3 Screenshot
 ### List sent bills - No bill
