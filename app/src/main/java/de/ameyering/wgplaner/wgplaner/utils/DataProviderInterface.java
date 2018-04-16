@@ -9,7 +9,9 @@ import java.util.Currency;
 import java.util.Locale;
 import java.util.UUID;
 
+import io.swagger.client.ApiResponse;
 import io.swagger.client.model.ListItem;
+import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.User;
 
 public interface DataProviderInterface {
@@ -86,7 +88,7 @@ public interface DataProviderInterface {
 
     boolean isSomethingSelected();
 
-    void syncShoppingList();
+    ApiResponse<ShoppingList> syncShoppingList();
 
     void syncGroup();
 

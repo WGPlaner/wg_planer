@@ -179,6 +179,7 @@ public class DataProvider implements DataProviderInterface {
                         }
                     });
 
+                    /*
                     serverCallsInstance.getShoppingListAsync(new
                     ServerCallsInterface.OnAsyncCallListener<ShoppingList>() {
                         @Override
@@ -205,6 +206,7 @@ public class DataProvider implements DataProviderInterface {
                             }
                         }
                     });
+                    */
 
                     return SetUpState.SETUP_COMPLETED;
 
@@ -559,14 +561,18 @@ public class DataProvider implements DataProviderInterface {
         if (item != null && currentShoppingList != null && selectedItems != null &&
             currentShoppingList.contains(item)) {
             selectedItems.add(item);
-            callAllListeners(DataType.SELECTED_ITEMS);
+            if(selectedItems.size() == 1) {
+                callAllListeners(DataType.SELECTED_ITEMS);
+            }
         }
     }
 
     @Override
     public void unselectShoppingListItem(ListItem item) {
         if (selectedItems.remove(item)) {
-            callAllListeners(DataType.SELECTED_ITEMS);
+            if(selectedItems.size() == 0) {
+                callAllListeners(DataType.SELECTED_ITEMS);
+            }
         }
     }
 
@@ -661,7 +667,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public void syncShoppingList() {
+    public ApiResponse<ShoppingList> syncShoppingList() {
         ApiResponse<ShoppingList> listResponse = serverCallsInstance.getShoppingList();
 
         if (listResponse != null && listResponse.getData() != null) {
@@ -669,24 +675,32 @@ public class DataProvider implements DataProviderInterface {
 
             if (items != null) {
                 currentShoppingList = items;
+                boolean selectedItemRemoved = false;
 
                 for (ListItem item : selectedItems) {
                     if (!currentShoppingList.contains(item)) {
                         selectedItems.remove(item);
+                        selectedItemRemoved = true;
                     }
                 }
 
                 callAllListeners(DataType.SHOPPING_LIST);
-                callAllListeners(DataType.SELECTED_ITEMS);
+                if(selectedItemRemoved && selectedItems.size() == 0) {
+                    callAllListeners(DataType.SELECTED_ITEMS);
+                }
 
             } else {
                 currentShoppingList = new ArrayList<>();
-                selectedItems = new ArrayList<>();
-
                 callAllListeners(DataType.SHOPPING_LIST);
-                callAllListeners(DataType.SELECTED_ITEMS);
+
+                if(selectedItems.size() > 0) {
+                    selectedItems = new ArrayList<>();
+                    callAllListeners(DataType.SELECTED_ITEMS);
+                }
             }
         }
+
+        return listResponse;
     }
 
     @Override

@@ -4,6 +4,7 @@ package de.ameyering.wgplaner.wgplaner.section.home.adapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +88,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public static class ShoppingListViewItemContent extends ShoppingListViewItem {
         private TextView name = null;
 
+        private CardView container = null;
+
         private LinearLayout containerNumber = null;
         private TextView displayNumber = null;
 
@@ -104,6 +107,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             super(itemView);
 
             name = itemView.findViewById(R.id.shopping_list_item_product_name);
+
+            container = itemView.findViewById(R.id.shopping_list_item_container);
 
             containerNumber = itemView.findViewById(R.id.shopping_list_item_product_attribute_number);
             displayNumber = itemView.findViewById(R.id.shopping_list_item_product_number);
@@ -127,6 +132,13 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                     } else {
                         dataProvider.unselectShoppingListItem(item);
                     }
+                }
+            });
+
+            container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    checkbox.performClick();
                 }
             });
         }
@@ -265,7 +277,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             return new ShoppingListViewItemHeader(item);
         } else {
             View item = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.section_shopping_list_item_layout2, parent, false);
+                R.layout.section_shopping_list_item_layout, parent, false);
 
             return new ShoppingListViewItemContent(item);
         }
