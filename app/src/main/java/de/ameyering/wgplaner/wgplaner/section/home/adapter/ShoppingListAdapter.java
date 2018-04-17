@@ -2,7 +2,6 @@ package de.ameyering.wgplaner.wgplaner.section.home.adapter;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +10,6 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,12 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
-import de.ameyering.wgplaner.wgplaner.structure.CategoryHolder;
-import de.ameyering.wgplaner.wgplaner.structure.User;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.ListItem;
 

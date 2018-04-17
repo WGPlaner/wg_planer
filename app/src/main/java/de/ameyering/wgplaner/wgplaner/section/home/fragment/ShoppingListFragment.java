@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.AddItemActivity;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.ShoppingListAdapter;
-import de.ameyering.wgplaner.wgplaner.structure.CategoryHolder;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.ApiResponse;
 import io.swagger.client.model.ListItem;
