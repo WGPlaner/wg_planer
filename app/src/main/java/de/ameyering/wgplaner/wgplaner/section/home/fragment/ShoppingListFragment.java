@@ -7,8 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -28,6 +32,9 @@ import io.swagger.client.model.ShoppingList;
 
 public class ShoppingListFragment extends SectionFragment {
     private static final int REQ_CODE_ADD_ITEM = 0;
+    public static final int SORT_REQUESTED_FOR = 0;
+    public static final int SORT_REQUESTED_BY = 1;
+    public static final int SORT_CATEGORY = 2;
 
     private RecyclerView categories;
     private ShoppingListAdapter adapter;
@@ -80,9 +87,7 @@ public class ShoppingListFragment extends SectionFragment {
         if (adapter == null) {
             items.clear();
             items.addAll(dataProvider.getCurrentShoppingList());
-            ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
-                    CategoryHolder.Category.REQUESTED_FOR, items);
-            adapter = new ShoppingListAdapter(holders);
+            adapter = new ShoppingListAdapter(items);
         }
 
         categories.setAdapter(adapter);
@@ -104,6 +109,8 @@ public class ShoppingListFragment extends SectionFragment {
         if (shoppingListListener == null) {
             dataProvider.addOnDataChangeListener(shoppingListListener);
         }
+
+        setHasOptionsMenu(true);
 
         return view;
     }
@@ -131,11 +138,14 @@ public class ShoppingListFragment extends SectionFragment {
         this.items.clear();
         this.items.addAll(items);
 
-        ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
-                CategoryHolder.Category.REQUESTED_FOR, this.items);
-
         if (adapter != null) {
-            adapter.onNewData(holders);
+            adapter.onNewData(this.items);
+        }
+    }
+
+    public void onNewData(int sorting) {
+        if(adapter != null) {
+            adapter.onNewData(sorting);
         }
     }
 
@@ -212,5 +222,38 @@ public class ShoppingListFragment extends SectionFragment {
 
             floatingActionButton.startAnimation(anim);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_shopping_list_toolbar, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_sort) {
+            PopupMenu popup = new PopupMenu(getContext(), getActivity().findViewById(R.id.action_sort));
+            MenuInflater inflater = popup.getMenuInflater();
+            inflater.inflate(R.menu.menu_shopping_list_sort, popup.getMenu());
+
+            popup.setOnMenuItemClickListener(item1 -> {
+                if(item1.getItemId() == R.id.action_sort_by_requested_for) {
+                    ShoppingListFragment.this.onNewData(SORT_REQUESTED_FOR);
+                } else if(item1.getItemId() == R.id.action_sort_by_requested_by) {
+                    ShoppingListFragment.this.onNewData(SORT_REQUESTED_BY);
+                } else if(item1.getItemId() == R.id.action_sort_by_category) {
+                    ShoppingListFragment.this.onNewData(SORT_CATEGORY);
+                } else {
+                    return false;
+                }
+
+                return true;
+            });
+
+            popup.show();
+            return true;
+        }
+
+        return false;
     }
 }
