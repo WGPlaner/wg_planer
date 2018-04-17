@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.section.home.fragment.BoughtItemsFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
 import de.ameyering.wgplaner.wgplaner.section.settings.GroupSettingsActivity;
@@ -33,6 +34,7 @@ public class HomeActivity extends AppCompatActivity
     private FloatingActionButton fab;
 
     private ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
+    private BoughtItemsFragment boughtItemsFragment = new BoughtItemsFragment();
 
     private NavigationView navigationView;
 
@@ -70,6 +72,10 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
+
+        boughtItemsFragment.setToolbar(toolbar);
+        boughtItemsFragment.setTitle(getString(R.string.section_title_bought_items));
+        boughtItemsFragment.setFloatingActionButton(fab);
 
         loadShoppingList();
     }
@@ -115,9 +121,15 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_dashboard) {
             // TODO
         } else if (id == R.id.nav_shopping_list) {
-            // TODO
-        } else if (id == R.id.nav_accounting) {
-            // TODO
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+            transaction.replace(R.id.container, shoppingListFragment);
+            transaction.commit();
+        } else if (id == R.id.nav_bought_items) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+            transaction.replace(R.id.container, boughtItemsFragment);
+            transaction.commit();
         } else if (id == R.id.nav_rosters) {
             // TODO
         } else if (id == R.id.nav_calendar) {
@@ -160,7 +172,7 @@ public class HomeActivity extends AppCompatActivity
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-        transaction.replace(R.id.container, shoppingListFragment);
+        transaction.add(R.id.container, shoppingListFragment);
         transaction.commit();
     }
 }

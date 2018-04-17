@@ -19,6 +19,7 @@
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_shopping_list">Shopping List</string>
     <string name="nav_accounting">Accounting</string>
+    <string name="nav_bought_items">Bought Items</string>
     <string name="nav_rosters">Rosters</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_pinboard">Pinboard</string>
@@ -76,6 +77,7 @@
     <string name="section_title_set_up_group">Group SetUp</string>
     <string name="section_title_shopping_list">Shopping List</string>
     <string name="section_title_pinboard">Pinboard</string>
+    <string name="section_title_bought_items">Bought Items</string>
 
     <!-- Product related strings -->
     <string name="product_attribute_number">Number</string>
