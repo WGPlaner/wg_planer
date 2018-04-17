@@ -82,7 +82,7 @@ public class ShoppingListFragment extends SectionFragment {
             items.addAll(dataProvider.getCurrentShoppingList());
             ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
                     CategoryHolder.Category.REQUESTED_FOR, items);
-            adapter = new ShoppingListAdapter(holders, getContext());
+            adapter = new ShoppingListAdapter(holders);
         }
 
         categories.setAdapter(adapter);
