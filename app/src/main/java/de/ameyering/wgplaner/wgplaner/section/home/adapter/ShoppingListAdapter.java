@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private static final int HEADER_VIEW_TYPE = 0;
     private static final int ITEM_VIEW_TYPE = 1;
 
+    private ArrayList<Object> viewItems = new ArrayList<>();
+    private static DataProvider dataProvider = DataProvider.getInstance();
+
     public static abstract class ShoppingListViewItem extends RecyclerView.ViewHolder {
 
         private ShoppingListViewItem(View itemView) {
@@ -45,7 +49,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         private TextView header = null;
 
-        public ShoppingListViewItemHeader (View itemView) {
+        ShoppingListViewItemHeader(View itemView) {
             super(itemView);
 
             header = itemView.findViewById(R.id.shopping_list_section_header);
@@ -53,35 +57,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         @Override
         public void setData(final Object object, Bundle args) {
-            if(args != null) {
-                if (object instanceof String) {
-                    AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                    anim.setDuration(200);
-                    anim.setRepeatCount(1);
-                    anim.setRepeatMode(Animation.REVERSE);
-
-                    anim.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            //Nothing to do here
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            // nothing to do here
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                            header.setText((String) object);
-                        }
-                    });
-
-                    header.startAnimation(anim);
-                }
-            } else {
-                header.setText((String) object);
-            }
+            header.setText((String) object);
         }
     }
 
@@ -103,7 +79,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         private ListItem item = null;
 
-        public ShoppingListViewItemContent(View itemView) {
+        ShoppingListViewItemContent(View itemView) {
             super(itemView);
 
             name = itemView.findViewById(R.id.shopping_list_item_product_name);
@@ -123,24 +99,16 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
             checkbox = itemView.findViewById(R.id.shopping_list_item_checked);
 
-            checkbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (checkbox.isChecked()) {
-                        dataProvider.selectShoppingListItem(item);
+            checkbox.setOnClickListener(view -> {
+                if (checkbox.isChecked()) {
+                    dataProvider.selectShoppingListItem(item);
 
-                    } else {
-                        dataProvider.unselectShoppingListItem(item);
-                    }
+                } else {
+                    dataProvider.unselectShoppingListItem(item);
                 }
             });
 
-            container.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    checkbox.performClick();
-                }
-            });
+            container.setOnClickListener(view -> checkbox.performClick());
         }
 
         @Override
@@ -150,100 +118,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             }
 
             if(item != null) {
-                if (args != null) {
-
-                    int title = args.getInt(DiffCallback.NAME);
-                    int requestedFor = args.getInt(DiffCallback.REQUESTED_FOR);
-                    int requestedBy = args.getInt(DiffCallback.REQUESTED_BY);
-                    int number = args.getInt(DiffCallback.NUMBER);
-
-                    if (title == DiffCallback.TRUE_VALUE) {
-                        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                        anim.setDuration(200);
-                        anim.setRepeatCount(1);
-                        anim.setRepeatMode(Animation.REVERSE);
-
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                                name.setText(item.getTitle());
-                            }
-                        });
-                        name.startAnimation(anim);
-                    }
-
-                    if (requestedBy == DiffCallback.TRUE_VALUE) {
-                        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                        anim.setDuration(200);
-                        anim.setRepeatCount(1);
-                        anim.setRepeatMode(Animation.REVERSE);
-
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                                displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-                            }
-                        });
-                        displayRequestedBy.startAnimation(anim);
-                    } else {
-                        displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-                    }
-
-                    if(number == DiffCallback.TRUE_VALUE) {
-                        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                        anim.setDuration(200);
-                        anim.setRepeatCount(1);
-                        anim.setRepeatMode(Animation.REVERSE);
-
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                                displayNumber.setText(item.getRequestedBy());
-                            }
-                        });
-                        displayNumber.startAnimation(anim);
-                    }
-                } else {
-                    name.setText(item.getTitle());
-                    displayNumber.setText(item.getCount().toString());
-                    displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-                }
+                name.setText(item.getTitle());
+                displayNumber.setText(item.getCount());
+                displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
             }
         }
     }
-
-    public ArrayList<Object> viewItems = new ArrayList<>();
-    private static DataProvider dataProvider = DataProvider.getInstance();
 
     public ShoppingListAdapter(ArrayList<CategoryHolder> sections) {
         viewItems = transformSections(sections);
@@ -317,16 +197,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     }
 
     private class DiffCallback extends DiffUtil.Callback {
-        public static final java.lang.String NAME = "NAME";
-        public static final java.lang.String REQUESTED_FOR = "REQUESTED_FOR";
-        public static final java.lang.String REQUESTED_BY = "REQUESTED_BY";
-        public static final java.lang.String NUMBER = "NUMBER";
-        public static final int TRUE_VALUE = 1;
-        public static final int FALSE_VALUE = 0;
         private ArrayList<Object> newList = new ArrayList<>();
         private ArrayList<Object> oldList = new ArrayList<>();
 
-        public DiffCallback(ArrayList<Object> newList, ArrayList<Object> oldList) {
+        DiffCallback(ArrayList<Object> newList, ArrayList<Object> oldList) {
             this.newList.clear();
             this.newList.addAll(newList);
 
@@ -353,13 +227,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 return false;
             }
 
-            if(oldItem instanceof String) {
+            if (oldItem instanceof String) {
                 return oldItem.equals(newItem);
-            } else if (oldItem instanceof ListItem) {
-                return oldItem.equals(newItem);
-            } else {
-                return false;
-            }
+            } else
+                return oldItem instanceof ListItem && oldItem.equals(newItem);
         }
 
         @Override
@@ -371,129 +242,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 return false;
             }
 
-            if(oldItem instanceof String) {
+            if (oldItem instanceof String) {
                 return oldItem.equals(newItem);
-            } else if (oldItem instanceof ListItem) {
-                return ((ListItem) oldItem).getId().equals(((ListItem) newItem).getId());
-            } else {
-                return false;
-            }
-        }
-
-        @Nullable
-        @Override
-        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-            Object newItem = newList.get(newItemPosition);
-            Object oldItem = oldList.get(oldItemPosition);
-
-            int title = TRUE_VALUE;
-            int requestedBy = TRUE_VALUE;
-            int requestedFor = TRUE_VALUE;
-            int number = TRUE_VALUE;
-
-            if(oldItem.getClass() != newItem.getClass()) {
-                return false;
-            }
-
-            if(oldItem instanceof String) {
-                return null;
-            } else if (oldItem instanceof ListItem) {
-                ListItem newListItem = (ListItem) newItem;
-                ListItem oldListItem = (ListItem) oldItem;
-
-                Bundle args = new Bundle();
-
-                if (!isTitleEquals(newListItem.getTitle(), oldListItem.getTitle())) {
-                    args.putInt(NAME, TRUE_VALUE);
-
-                } else {
-                    title = FALSE_VALUE;
-                    args.putInt(NAME, FALSE_VALUE);
-                }
-
-                if (!isRequestedByEquals(newListItem.getRequestedBy(), oldListItem.getRequestedBy())) {
-                    args.putInt(REQUESTED_BY, TRUE_VALUE);
-
-                } else {
-                    requestedBy = FALSE_VALUE;
-                    args.putInt(REQUESTED_BY, FALSE_VALUE);
-                }
-
-                if (!isRequestedForEquals(newListItem.getRequestedFor(), oldListItem.getRequestedFor())) {
-                    args.putInt(REQUESTED_FOR, TRUE_VALUE);
-
-                } else {
-                    requestedFor = FALSE_VALUE;
-                    args.putInt(REQUESTED_FOR, FALSE_VALUE);
-                }
-
-                if (!isNumberEquals(newListItem.getCount(), oldListItem.getCount())) {
-                    args.putInt(NUMBER, TRUE_VALUE);
-
-                } else {
-                    number = FALSE_VALUE;
-                    args.putInt(NUMBER, FALSE_VALUE);
-                }
-
-                if (title == FALSE_VALUE && requestedBy == FALSE_VALUE && requestedFor == FALSE_VALUE &&
-                    number == FALSE_VALUE) {
-                    return null;
-                }
-
-                return args;
-            } else {
-                return null;
-            }
-        }
-
-        private boolean isTitleEquals(String newTitle, String oldTitle) {
-            if (newTitle == null) {
-                if (oldTitle != null) {
-                    return false;
-                }
-
-            } else {
-                if (oldTitle == null) {
-                    return false;
-                }
-            }
-
-            return !(newTitle != null && oldTitle != null && !newTitle.equals(oldTitle));
-        }
-
-        private boolean isRequestedForEquals(List<String> newRequestedFor, List<String> oldRequestedFor) {
-            if (newRequestedFor == null) {
-                if (oldRequestedFor != null) {
-                    return false;
-                }
-
-            } else {
-                if (oldRequestedFor == null) {
-                    return false;
-                }
-            }
-
-            return !(newRequestedFor != null && oldRequestedFor != null &&
-                !newRequestedFor.equals(oldRequestedFor));
-        }
-
-        private boolean isRequestedByEquals(String newRequestedBy, String oldRequestedBy) {
-            if(newRequestedBy == null && oldRequestedBy == null) {
-                return true;
-            } else if (newRequestedBy != null && oldRequestedBy != null) {
-                if(newRequestedBy.equals(oldRequestedBy)){
-                    return true;
-                }
-
-                return false;
-            }
-
-            return false;
-        }
-
-        private boolean isNumberEquals(int newNumber, int oldNumber) {
-            return newNumber == oldNumber;
-
+            } else
+                return oldItem instanceof ListItem && ((ListItem) oldItem).getId().equals(((ListItem) newItem).getId());
         }
     }
 }

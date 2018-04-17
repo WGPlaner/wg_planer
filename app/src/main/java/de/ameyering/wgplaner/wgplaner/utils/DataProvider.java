@@ -569,10 +569,8 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void unselectShoppingListItem(ListItem item) {
-        if (selectedItems.remove(item)) {
-            if(selectedItems.size() == 0) {
-                callAllListeners(DataType.SELECTED_ITEMS);
-            }
+        if (selectedItems.remove(item) && selectedItems.size() == 0) {
+            callAllListeners(DataType.SELECTED_ITEMS);
         }
     }
 

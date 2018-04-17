@@ -37,20 +37,17 @@ public class ShoppingListFragment extends SectionFragment {
         @Override
         public void onDataChanged(final DataProvider.DataType type) {
             if (getActivity() != null) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (type == DataProvider.DataType.SELECTED_ITEMS) {
-                            if (floatingActionButton != null) {
-                                changeFloatingActionButton();
-                            }
-
-                        } else if (type == DataProvider.DataType.SHOPPING_LIST) {
-                            onNewData(dataProvider.getCurrentShoppingList());
-
-                        } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS) {
-                            onNewData(dataProvider.getCurrentShoppingList());
+                getActivity().runOnUiThread(() -> {
+                    if (type == DataProvider.DataType.SELECTED_ITEMS) {
+                        if (floatingActionButton != null) {
+                            changeFloatingActionButton();
                         }
+
+                    } else if (type == DataProvider.DataType.SHOPPING_LIST) {
+                        onNewData(dataProvider.getCurrentShoppingList());
+
+                    } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS) {
+                        onNewData(dataProvider.getCurrentShoppingList());
                     }
                 });
             }
@@ -68,64 +65,41 @@ public class ShoppingListFragment extends SectionFragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_shopping_list, container, false);
 
-        if (toolbar != null) {
-            if (title != null) {
-                toolbar.setSubtitle(title);
-
-            } else {
-                toolbar.setSubtitle(R.string.section_title_shopping_list);
-            }
+        if (toolbar != null && title != null) {
+            toolbar.setSubtitle(title);
         }
 
         if (floatingActionButton != null) {
             changeFloatingActionButton();
         }
 
-        if (categories == null) {
-            categories = view.findViewById(R.id.section_shopping_list_recycler_view);
-            categories.setLayoutManager(new LinearLayoutManager(getContext()));
-            categories.setHasFixedSize(false);
-        }
+        categories = view.findViewById(R.id.section_shopping_list_recycler_view);
+        categories.setLayoutManager(new LinearLayoutManager(getContext()));
+        categories.setHasFixedSize(false);
 
         if (adapter == null) {
             items.clear();
             items.addAll(dataProvider.getCurrentShoppingList());
             ArrayList<CategoryHolder> holders = CategoryHolder.orderByCategory(getContext(),
                     CategoryHolder.Category.REQUESTED_FOR, items);
-            adapter = new ShoppingListAdapter(holders);
-
-            categories.setAdapter(adapter);
+            adapter = new ShoppingListAdapter(holders, getContext());
         }
 
-        swipeToRefresh = view.findViewById(R.id.shopping_list_swipe_to_refresh);
-        swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ApiResponse<ShoppingList> result = dataProvider.syncShoppingList();
+        categories.setAdapter(adapter);
 
-                        if(result == null || result.getData() == null) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    swipeToRefresh.setRefreshing(false);
-                                    Toast.makeText(getActivity(), "Connection failed", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        } else {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    swipeToRefresh.setRefreshing(false);
-                                }
-                            });
-                        }
-                    }
-                }).start();
+        swipeToRefresh = view.findViewById(R.id.shopping_list_swipe_to_refresh);
+        swipeToRefresh.setOnRefreshListener(() -> new Thread(() -> {
+            ApiResponse<ShoppingList> result = dataProvider.syncShoppingList();
+
+            if(result == null || result.getData() == null) {
+                getActivity().runOnUiThread(() -> {
+                    swipeToRefresh.setRefreshing(false);
+                    Toast.makeText(getActivity(), "Connection failed", Toast.LENGTH_LONG).show();
+                });
+            } else {
+                getActivity().runOnUiThread(() -> swipeToRefresh.setRefreshing(false));
             }
-        });
+        }).start());
 
         if (shoppingListListener == null) {
             dataProvider.addOnDataChangeListener(shoppingListListener);
@@ -201,12 +175,9 @@ public class ShoppingListFragment extends SectionFragment {
                 public void onAnimationRepeat(Animation animation) {
                     floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                         R.drawable.ic_add_white));
-                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(getActivity(), AddItemActivity.class);
-                            startActivityForResult(intent, REQ_CODE_ADD_ITEM);
-                        }
+                    floatingActionButton.setOnClickListener(view -> {
+                        Intent intent = new Intent(getActivity(), AddItemActivity.class);
+                        startActivityForResult(intent, REQ_CODE_ADD_ITEM);
                     });
                 }
             });
@@ -235,12 +206,7 @@ public class ShoppingListFragment extends SectionFragment {
                 public void onAnimationRepeat(Animation animation) {
                     floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                         R.drawable.ic_check_white));
-                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dataProvider.buySelection();
-                        }
-                    });
+                    floatingActionButton.setOnClickListener(view -> dataProvider.buySelection());
                 }
             });
 
