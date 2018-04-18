@@ -692,7 +692,7 @@ public class DataProvider implements DataProviderInterface {
                 callAllListeners(DataType.SHOPPING_LIST);
 
                 if(selectedItems.size() > 0) {
-                    selectedItems = new ArrayList<>();
+                    selectedItems.clear();
                     callAllListeners(DataType.SELECTED_ITEMS);
                 }
             }

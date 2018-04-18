@@ -34,6 +34,7 @@ public class ShoppingListFragment extends SectionFragment {
     public static final int SORT_REQUESTED_FOR = 0;
     public static final int SORT_REQUESTED_BY = 1;
     public static final int SORT_CATEGORY = 2;
+    public static final int SORT_NAME = 3;
 
     private RecyclerView categories;
     private ShoppingListAdapter adapter;
@@ -170,11 +171,19 @@ public class ShoppingListFragment extends SectionFragment {
             anim.setRepeatMode(Animation.REVERSE);
 
             anim.setAnimationListener(new Animation.AnimationListener() {
+                /**
+                 * No implementation needed
+                 * @param animation
+                 */
                 @Override
                 public void onAnimationStart(Animation animation) {
 
                 }
 
+                /**
+                 * No implementation needed
+                 * @param animation
+                 */
                 @Override
                 public void onAnimationEnd(Animation animation) {
 
@@ -201,14 +210,22 @@ public class ShoppingListFragment extends SectionFragment {
             anim.setRepeatMode(Animation.REVERSE);
 
             anim.setAnimationListener(new Animation.AnimationListener() {
+                /**
+                 * No implementation needed
+                 * @param animation
+                 */
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    return;
+
                 }
 
+                /**
+                 * No implementation needed
+                 * @param animation
+                 */
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    return;
+
                 }
 
                 @Override
@@ -242,6 +259,8 @@ public class ShoppingListFragment extends SectionFragment {
                     ShoppingListFragment.this.onNewData(SORT_REQUESTED_BY);
                 } else if(item1.getItemId() == R.id.action_sort_by_category) {
                     ShoppingListFragment.this.onNewData(SORT_CATEGORY);
+                } else if(item1.getItemId() == R.id.action_sort_name) {
+                    ShoppingListFragment.this.onNewData(SORT_NAME);
                 } else {
                     return false;
                 }

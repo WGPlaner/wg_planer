@@ -126,8 +126,8 @@
     <string name="invalid_email">Please state a valid EMail or no EMail</string>
     <string name="fill_out_all_fields">Please fill out all fields</string>
 
-    <string name="sort_by_label">Sort by</string>
     <string name="sort_by_label_requested_for">Requested for</string>
     <string name="sort_by_label_requested_by">Requested by</string>
     <string name="sort_by_label_category">Category</string>
+    <string name="sort_by_label_name">Name</string>
 </resources>

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -126,17 +127,17 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 TransitionManager.beginDelayedTransition(attributeContainer);
                 containerRequestedFor.setVisibility(View.GONE);
                 containerRequestedBy.setVisibility(View.VISIBLE);
-                containerNumber.setVisibility(View.VISIBLE);
             } else if (sortBy == ShoppingListFragment.SORT_REQUESTED_BY) {
                 TransitionManager.beginDelayedTransition(attributeContainer);
                 containerRequestedFor.setVisibility(View.VISIBLE);
                 containerRequestedBy.setVisibility(View.GONE);
-                containerNumber.setVisibility(View.VISIBLE);
             } else if(sortBy == ShoppingListFragment.SORT_CATEGORY) {
                 TransitionManager.beginDelayedTransition(attributeContainer);
                 containerRequestedFor.setVisibility(View.VISIBLE);
                 containerRequestedBy.setVisibility(View.VISIBLE);
-                containerNumber.setVisibility(View.GONE);
+            } else if (sortBy == ShoppingListFragment.SORT_NAME) {
+                containerRequestedFor.setVisibility(View.VISIBLE);
+                containerRequestedBy.setVisibility(View.VISIBLE);
             }
 
             if(item != null) {
@@ -144,6 +145,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 displayNumber.setText(item.getCount().toString());
                 displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
                 createViews(LayoutInflater.from(displayRequestedFor.getContext()), displayRequestedFor, item.getRequestedFor());
+
+                checkbox.setChecked(dataProvider.isItemSelected(item));
             }
         }
 
@@ -233,9 +236,19 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 return sortByRequestedBy(items);
             case ShoppingListFragment.SORT_CATEGORY:
                 return sortByCategory(items);
+            case ShoppingListFragment.SORT_NAME:
+                return sortByName(items);
             default:
                 return new ArrayList<>();
         }
+    }
+
+    private ArrayList<Object> sortByName(ArrayList<ListItem> items) {
+        Collections.sort(items, (item, t1) -> item.getTitle().compareTo(t1.getTitle()));
+
+        ArrayList<Object> viewItems = new ArrayList<>();
+        viewItems.addAll(items);
+        return viewItems;
     }
 
     private ArrayList<Object> sortByCategory(ArrayList<ListItem> items) {
