@@ -233,9 +233,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 return sortByRequestedBy(items);
             case ShoppingListFragment.SORT_CATEGORY:
                 return sortByCategory(items);
+            default:
+                return new ArrayList<>();
         }
-
-        return new ArrayList<>();
     }
 
     private ArrayList<Object> sortByCategory(ArrayList<ListItem> items) {

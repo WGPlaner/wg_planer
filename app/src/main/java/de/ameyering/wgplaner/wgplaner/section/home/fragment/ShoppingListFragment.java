@@ -203,12 +203,12 @@ public class ShoppingListFragment extends SectionFragment {
             anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
+                    return;
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-
+                    return;
                 }
 
                 @Override
