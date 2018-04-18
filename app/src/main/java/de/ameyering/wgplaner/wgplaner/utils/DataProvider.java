@@ -62,7 +62,7 @@ public class DataProvider implements DataProviderInterface {
         singleton = new DataProvider();
         singleton.setServerCallsInstance(ServerCalls.getInstance());
     }
-  
+
     public void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
         this.serverCallsInstance = serverCallsInstance;
     }
@@ -265,9 +265,11 @@ public class DataProvider implements DataProviderInterface {
     public void setFirebaseInstanceId(String token, Context context) {
         if (token != null) {
             this.currentUserFirebaseInstanceId = token;
-            if(Configuration.singleton == null) {
+
+            if (Configuration.singleton == null) {
                 Configuration.initConfig(context);
             }
+
             Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }
     }
@@ -446,7 +448,8 @@ public class DataProvider implements DataProviderInterface {
             imageStoreInstance.setGroupPicture(imagecr);
             serverCallsInstance.updateGroupImageAsync(imageStoreInstance.getGroupPictureFile(), null);
 
-            ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateGroupImage(imageStoreInstance.getGroupPictureFile());
+            ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateGroupImage(
+                    imageStoreInstance.getGroupPictureFile());
 
             initializeMembers(context);
 
@@ -561,7 +564,8 @@ public class DataProvider implements DataProviderInterface {
         if (item != null && currentShoppingList != null && selectedItems != null &&
             currentShoppingList.contains(item)) {
             selectedItems.add(item);
-            if(selectedItems.size() == 1) {
+
+            if (selectedItems.size() == 1) {
                 callAllListeners(DataType.SELECTED_ITEMS);
             }
         }
@@ -683,7 +687,8 @@ public class DataProvider implements DataProviderInterface {
                 }
 
                 callAllListeners(DataType.SHOPPING_LIST);
-                if(selectedItemRemoved && selectedItems.size() == 0) {
+
+                if (selectedItemRemoved && selectedItems.size() == 0) {
                     callAllListeners(DataType.SELECTED_ITEMS);
                 }
 
@@ -691,7 +696,7 @@ public class DataProvider implements DataProviderInterface {
                 currentShoppingList = new ArrayList<>();
                 callAllListeners(DataType.SHOPPING_LIST);
 
-                if(selectedItems.size() > 0) {
+                if (selectedItems.size() > 0) {
                     selectedItems.clear();
                     callAllListeners(DataType.SELECTED_ITEMS);
                 }

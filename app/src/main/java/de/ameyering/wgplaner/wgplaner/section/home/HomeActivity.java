@@ -133,6 +133,7 @@ public class HomeActivity extends AppCompatActivity
 
             transaction.replace(R.id.container, pinboard);
             transaction.commit();
+
         } else if (id == R.id.nav_general_settings) {
 
         } else if (id == R.id.nav_profile_settings) {

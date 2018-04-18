@@ -96,11 +96,13 @@ public class ShoppingListFragment extends SectionFragment {
         swipeToRefresh.setOnRefreshListener(() -> new Thread(() -> {
             ApiResponse<ShoppingList> result = dataProvider.syncShoppingList();
 
-            if(result == null || result.getData() == null) {
-                getActivity().runOnUiThread(() -> {
+            if (result == null || result.getData() == null) {
+                getActivity()
+                .runOnUiThread(() -> {
                     swipeToRefresh.setRefreshing(false);
                     Toast.makeText(getActivity(), "Connection failed", Toast.LENGTH_LONG).show();
                 });
+
             } else {
                 getActivity().runOnUiThread(() -> swipeToRefresh.setRefreshing(false));
             }
@@ -144,7 +146,7 @@ public class ShoppingListFragment extends SectionFragment {
     }
 
     public void onNewData(int sorting) {
-        if(adapter != null) {
+        if (adapter != null) {
             adapter.onNewData(sorting);
         }
     }
@@ -192,7 +194,7 @@ public class ShoppingListFragment extends SectionFragment {
                 @Override
                 public void onAnimationRepeat(Animation animation) {
                     floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                        R.drawable.ic_add_white));
+                            R.drawable.ic_add_white));
                     floatingActionButton.setOnClickListener(view -> {
                         Intent intent = new Intent(getActivity(), AddItemActivity.class);
                         startActivityForResult(intent, REQ_CODE_ADD_ITEM);
@@ -201,6 +203,7 @@ public class ShoppingListFragment extends SectionFragment {
             });
 
             floatingActionButton.startAnimation(anim);
+
         } else {
             floatingActionButton.setVisibility(View.VISIBLE);
 
@@ -231,7 +234,7 @@ public class ShoppingListFragment extends SectionFragment {
                 @Override
                 public void onAnimationRepeat(Animation animation) {
                     floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                        R.drawable.ic_check_white));
+                            R.drawable.ic_check_white));
                     floatingActionButton.setOnClickListener(view -> dataProvider.buySelection());
                 }
             });
@@ -247,20 +250,24 @@ public class ShoppingListFragment extends SectionFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_sort) {
+        if (item.getItemId() == R.id.action_sort) {
             PopupMenu popup = new PopupMenu(getContext(), getActivity().findViewById(R.id.action_sort));
             MenuInflater inflater = popup.getMenuInflater();
             inflater.inflate(R.menu.menu_shopping_list_sort, popup.getMenu());
 
             popup.setOnMenuItemClickListener(item1 -> {
-                if(item1.getItemId() == R.id.action_sort_by_requested_for) {
+                if (item1.getItemId() == R.id.action_sort_by_requested_for) {
                     ShoppingListFragment.this.onNewData(SORT_REQUESTED_FOR);
-                } else if(item1.getItemId() == R.id.action_sort_by_requested_by) {
+
+                } else if (item1.getItemId() == R.id.action_sort_by_requested_by) {
                     ShoppingListFragment.this.onNewData(SORT_REQUESTED_BY);
-                } else if(item1.getItemId() == R.id.action_sort_by_category) {
+
+                } else if (item1.getItemId() == R.id.action_sort_by_category) {
                     ShoppingListFragment.this.onNewData(SORT_CATEGORY);
-                } else if(item1.getItemId() == R.id.action_sort_name) {
+
+                } else if (item1.getItemId() == R.id.action_sort_name) {
                     ShoppingListFragment.this.onNewData(SORT_NAME);
+
                 } else {
                     return false;
                 }

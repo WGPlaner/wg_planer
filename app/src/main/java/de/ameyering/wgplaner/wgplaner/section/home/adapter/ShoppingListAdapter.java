@@ -25,7 +25,8 @@ import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.ListItem;
 
-public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewItem> {
+public class ShoppingListAdapter extends
+    RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewItem> {
     private static final int HEADER_VIEW_TYPE = 0;
     private static final int ITEM_VIEW_TYPE = 1;
 
@@ -96,11 +97,11 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             displayNumber = itemView.findViewById(R.id.shopping_list_item_product_number);
 
             containerRequestedBy = itemView.findViewById(
-                R.id.shopping_list_item_product_attribute_requested_by);
+                    R.id.shopping_list_item_product_attribute_requested_by);
             displayRequestedBy = itemView.findViewById(R.id.shopping_list_item_product_requested_by);
 
             containerRequestedFor = itemView.findViewById(
-                R.id.shopping_list_item_product_attribute_requested_for);
+                    R.id.shopping_list_item_product_attribute_requested_for);
             displayRequestedFor = itemView.findViewById(R.id.shopping_list_item_product_requested_for);
 
             checkbox = itemView.findViewById(R.id.shopping_list_item_checked);
@@ -119,32 +120,36 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         @Override
         public void setData(Object object, Bundle args) {
-            if(object instanceof ListItem) {
+            if (object instanceof ListItem) {
                 item = (ListItem) object;
             }
 
-            if(sortBy == ShoppingListFragment.SORT_REQUESTED_FOR) {
+            if (sortBy == ShoppingListFragment.SORT_REQUESTED_FOR) {
                 TransitionManager.beginDelayedTransition(attributeContainer);
                 containerRequestedFor.setVisibility(View.GONE);
                 containerRequestedBy.setVisibility(View.VISIBLE);
+
             } else if (sortBy == ShoppingListFragment.SORT_REQUESTED_BY) {
                 TransitionManager.beginDelayedTransition(attributeContainer);
                 containerRequestedFor.setVisibility(View.VISIBLE);
                 containerRequestedBy.setVisibility(View.GONE);
-            } else if(sortBy == ShoppingListFragment.SORT_CATEGORY) {
+
+            } else if (sortBy == ShoppingListFragment.SORT_CATEGORY) {
                 TransitionManager.beginDelayedTransition(attributeContainer);
                 containerRequestedFor.setVisibility(View.VISIBLE);
                 containerRequestedBy.setVisibility(View.VISIBLE);
+
             } else if (sortBy == ShoppingListFragment.SORT_NAME) {
                 containerRequestedFor.setVisibility(View.VISIBLE);
                 containerRequestedBy.setVisibility(View.VISIBLE);
             }
 
-            if(item != null) {
+            if (item != null) {
                 name.setText(item.getTitle());
                 displayNumber.setText(item.getCount().toString());
                 displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-                createViews(LayoutInflater.from(displayRequestedFor.getContext()), displayRequestedFor, item.getRequestedFor());
+                createViews(LayoutInflater.from(displayRequestedFor.getContext()), displayRequestedFor,
+                    item.getRequestedFor());
 
                 checkbox.setChecked(dataProvider.isItemSelected(item));
             }
@@ -153,8 +158,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         private void createViews(LayoutInflater inflater, ViewGroup layout, List<String> users) {
             TransitionManager.beginDelayedTransition(layout, new ChangeBounds());
             layout.removeAllViews();
-            for(String user: users) {
-                TextView requestedForUser = (TextView) inflater.inflate(R.layout.section_shopping_list_item_request_for_layout, layout, false);
+
+            for (String user : users) {
+                TextView requestedForUser = (TextView) inflater.inflate(
+                        R.layout.section_shopping_list_item_request_for_layout, layout, false);
                 requestedForUser.setText(dataProvider.getUserByUid(user).getDisplayName());
                 layout.addView(requestedForUser);
             }
@@ -168,8 +175,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
     @Override
     public void onBindViewHolder(ShoppingListViewItem holder, int position, List<Object> payloads) {
-        if(payloads == null || payloads.isEmpty()) {
+        if (payloads == null || payloads.isEmpty()) {
             holder.setData(viewItems.get(position), null);
+
         } else {
             holder.setData(viewItems.get(position), (Bundle) payloads.get(0));
         }
@@ -177,14 +185,15 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
     @Override
     public ShoppingListViewItem onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == HEADER_VIEW_TYPE) {
+        if (viewType == HEADER_VIEW_TYPE) {
             View item = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.section_shopping_list_header_layout, parent, false);
+                    R.layout.section_shopping_list_header_layout, parent, false);
 
             return new ShoppingListViewItemHeader(item);
+
         } else {
             View item = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.section_shopping_list_item_layout, parent, false);
+                    R.layout.section_shopping_list_item_layout, parent, false);
 
             return new ShoppingListViewItemContent(item);
         }
@@ -199,8 +208,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public int getItemViewType(int position) {
         Object viewItem = viewItems.get(position);
 
-        if(viewItem instanceof String) {
+        if (viewItem instanceof String) {
             return HEADER_VIEW_TYPE;
+
         } else {
             return ITEM_VIEW_TYPE;
         }
@@ -232,12 +242,16 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         switch (sorting) {
             case ShoppingListFragment.SORT_REQUESTED_FOR:
                 return sortByRequestedFor(items);
+
             case ShoppingListFragment.SORT_REQUESTED_BY:
                 return sortByRequestedBy(items);
+
             case ShoppingListFragment.SORT_CATEGORY:
                 return sortByCategory(items);
+
             case ShoppingListFragment.SORT_NAME:
                 return sortByName(items);
+
             default:
                 return new ArrayList<>();
         }
@@ -254,13 +268,16 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private ArrayList<Object> sortByCategory(ArrayList<ListItem> items) {
         HashMap<String, ArrayList<ListItem>> requestedBy = new HashMap<>();
 
-        for(ListItem item: items) {
+        for (ListItem item : items) {
             String category = item.getCategory();
 
-            if (category == null) category = "null";
+            if (category == null) {
+                category = "null";
+            }
 
-            if(requestedBy.containsKey(category)) {
+            if (requestedBy.containsKey(category)) {
                 requestedBy.get(category).add(item);
+
             } else {
                 ArrayList<ListItem> specificItems = new ArrayList<>();
                 specificItems.add(item);
@@ -270,7 +287,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         ArrayList<Object> objects = new ArrayList<>();
 
-        for(String category: requestedBy.keySet()) {
+        for (String category : requestedBy.keySet()) {
             objects.add(category);
             objects.addAll(requestedBy.get(category));
         }
@@ -281,11 +298,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private ArrayList<Object> sortByRequestedBy(ArrayList<ListItem> items) {
         HashMap<String, ArrayList<ListItem>> requestedBy = new HashMap<>();
 
-        for(ListItem item: items) {
+        for (ListItem item : items) {
             String user = dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName();
 
-            if(requestedBy.containsKey(user)) {
+            if (requestedBy.containsKey(user)) {
                 requestedBy.get(user).add(item);
+
             } else {
                 ArrayList<ListItem> specificItems = new ArrayList<>();
                 specificItems.add(item);
@@ -295,7 +313,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         ArrayList<Object> objects = new ArrayList<>();
 
-        for(String user: requestedBy.keySet()) {
+        for (String user : requestedBy.keySet()) {
             objects.add(user);
             objects.addAll(requestedBy.get(user));
         }
@@ -306,12 +324,13 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private ArrayList<Object> sortByRequestedFor(ArrayList<ListItem> items) {
         HashMap<List<String>, ArrayList<ListItem>> requestedFor = new HashMap<>();
 
-        for(ListItem item: items) {
+        for (ListItem item : items) {
             List<String> users = item.getRequestedFor();
             Collections.sort(item.getRequestedFor());
 
-            if(requestedFor.containsKey(users)) {
+            if (requestedFor.containsKey(users)) {
                 requestedFor.get(users).add(item);
+
             } else {
                 ArrayList<ListItem> specificItems = new ArrayList<>();
                 specificItems.add(item);
@@ -321,17 +340,19 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         ArrayList<Object> viewItems = new ArrayList<>();
 
-        for(List<String> uids: requestedFor.keySet()) {
+        for (List<String> uids : requestedFor.keySet()) {
             String header = "";
 
-            if(uids.size() == dataProvider.getCurrentGroupMembers().size()) {
+            if (uids.size() == dataProvider.getCurrentGroupMembers().size()) {
                 header = dataProvider.getCurrentGroupName();
+
             } else {
                 StringBuffer buffer = new StringBuffer();
-                for(int i = 0; i < uids.size(); i++) {
+
+                for (int i = 0; i < uids.size(); i++) {
                     buffer.append(dataProvider.getUserByUid(uids.get(i)).getDisplayName());
 
-                    if(i != uids.size() - 1) {
+                    if (i != uids.size() - 1) {
                         buffer.append(", ");
                     }
                 }
@@ -378,14 +399,17 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             Object oldItem = oldList.get(oldItemPosition);
             Object newItem = newList.get(newItemPosition);
 
-            if(oldItem.getClass() != newItem.getClass()) {
+            if (oldItem.getClass() != newItem.getClass()) {
                 return false;
             }
 
             if (oldItem instanceof String) {
                 return oldItem.equals(newItem);
-            } else
-                return oldItem instanceof ListItem && ((ListItem) oldItem).getId().equals(((ListItem) newItem).getId());
+
+            } else {
+                return oldItem instanceof ListItem &&
+                    ((ListItem) oldItem).getId().equals(((ListItem) newItem).getId());
+            }
         }
     }
 }
