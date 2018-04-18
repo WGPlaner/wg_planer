@@ -8,6 +8,7 @@
     <string name="title_activity_home">Home</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_sort">Sort</string>
 
     <string name="splash_screen_failed_to_connect">Connection to Server failed</string>
     <string name="splash_screen_connection_timeout">Connection Timeout</string>
@@ -124,4 +125,9 @@
 
     <string name="invalid_email">Please state a valid EMail or no EMail</string>
     <string name="fill_out_all_fields">Please fill out all fields</string>
+
+    <string name="sort_by_label_requested_for">Requested for</string>
+    <string name="sort_by_label_requested_by">Requested by</string>
+    <string name="sort_by_label_category">Category</string>
+    <string name="sort_by_label_name">Name</string>
 </resources>

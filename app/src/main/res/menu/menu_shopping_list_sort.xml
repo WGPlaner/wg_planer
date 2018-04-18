@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_sort_by_requested_for"
+        android:orderInCategory="100"
+        android:title="@string/sort_by_label_requested_for" />
+    <item
+        android:id="@+id/action_sort_by_requested_by"
+        android:orderInCategory="100"
+        android:title="@string/sort_by_label_requested_by" />
+    <item
+        android:id="@+id/action_sort_by_category"
+        android:orderInCategory="100"
+        android:title="@string/sort_by_label_category" />
+    <item
+        android:id="@+id/action_sort_name"
+        android:orderInCategory="100"
+        android:title="@string/sort_by_label_name" />
+</menu>

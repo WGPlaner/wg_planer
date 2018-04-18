@@ -51,33 +51,30 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.profile_settings_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isInEditMode) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
-                    builder.setMessage(getString(R.string.dialog_discard_message));
-                    builder.setPositiveButton(R.string.dialog_discard_positive, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                            setResult(RESULT_CANCELED);
-                            finish();
-                        }
-                    });
-                    builder.setNegativeButton(R.string.dialog_discard_negative, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+        toolbar.setNavigationOnClickListener(view -> {
+            if (isInEditMode) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
+                builder.setMessage(getString(R.string.dialog_discard_message));
+                builder.setPositiveButton(R.string.dialog_discard_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
+                });
+                builder.setNegativeButton(R.string.dialog_discard_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
-                } else {
-                    setResult(RESULT_CANCELED);
-                    finish();
-                }
+            } else {
+                setResult(RESULT_CANCELED);
+                finish();
             }
         });
 

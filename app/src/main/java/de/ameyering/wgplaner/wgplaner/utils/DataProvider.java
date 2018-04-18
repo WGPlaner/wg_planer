@@ -62,7 +62,7 @@ public class DataProvider implements DataProviderInterface {
         singleton = new DataProvider();
         singleton.setServerCallsInstance(ServerCalls.getInstance());
     }
-  
+
     public void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
         this.serverCallsInstance = serverCallsInstance;
     }
@@ -179,6 +179,7 @@ public class DataProvider implements DataProviderInterface {
                         }
                     });
 
+                    /*
                     serverCallsInstance.getShoppingListAsync(new
                     ServerCallsInterface.OnAsyncCallListener<ShoppingList>() {
                         @Override
@@ -205,6 +206,7 @@ public class DataProvider implements DataProviderInterface {
                             }
                         }
                     });
+                    */
 
                     return SetUpState.SETUP_COMPLETED;
 
@@ -263,9 +265,11 @@ public class DataProvider implements DataProviderInterface {
     public void setFirebaseInstanceId(String token, Context context) {
         if (token != null) {
             this.currentUserFirebaseInstanceId = token;
-            if(Configuration.singleton == null) {
+
+            if (Configuration.singleton == null) {
                 Configuration.initConfig(context);
             }
+
             Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }
     }
@@ -444,7 +448,8 @@ public class DataProvider implements DataProviderInterface {
             imageStoreInstance.setGroupPicture(imagecr);
             serverCallsInstance.updateGroupImageAsync(imageStoreInstance.getGroupPictureFile(), null);
 
-            ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateGroupImage(imageStoreInstance.getGroupPictureFile());
+            ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateGroupImage(
+                    imageStoreInstance.getGroupPictureFile());
 
             initializeMembers(context);
 
@@ -559,13 +564,16 @@ public class DataProvider implements DataProviderInterface {
         if (item != null && currentShoppingList != null && selectedItems != null &&
             currentShoppingList.contains(item)) {
             selectedItems.add(item);
-            callAllListeners(DataType.SELECTED_ITEMS);
+
+            if (selectedItems.size() == 1) {
+                callAllListeners(DataType.SELECTED_ITEMS);
+            }
         }
     }
 
     @Override
     public void unselectShoppingListItem(ListItem item) {
-        if (selectedItems.remove(item)) {
+        if (selectedItems.remove(item) && selectedItems.size() == 0) {
             callAllListeners(DataType.SELECTED_ITEMS);
         }
     }
@@ -661,7 +669,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public void syncShoppingList() {
+    public ApiResponse<ShoppingList> syncShoppingList() {
         ApiResponse<ShoppingList> listResponse = serverCallsInstance.getShoppingList();
 
         if (listResponse != null && listResponse.getData() != null) {
@@ -669,24 +677,33 @@ public class DataProvider implements DataProviderInterface {
 
             if (items != null) {
                 currentShoppingList = items;
+                boolean selectedItemRemoved = false;
 
                 for (ListItem item : selectedItems) {
                     if (!currentShoppingList.contains(item)) {
                         selectedItems.remove(item);
+                        selectedItemRemoved = true;
                     }
                 }
 
                 callAllListeners(DataType.SHOPPING_LIST);
-                callAllListeners(DataType.SELECTED_ITEMS);
+
+                if (selectedItemRemoved && selectedItems.size() == 0) {
+                    callAllListeners(DataType.SELECTED_ITEMS);
+                }
 
             } else {
                 currentShoppingList = new ArrayList<>();
-                selectedItems = new ArrayList<>();
-
                 callAllListeners(DataType.SHOPPING_LIST);
-                callAllListeners(DataType.SELECTED_ITEMS);
+
+                if (selectedItems.size() > 0) {
+                    selectedItems.clear();
+                    callAllListeners(DataType.SELECTED_ITEMS);
+                }
             }
         }
+
+        return listResponse;
     }
 
     @Override
