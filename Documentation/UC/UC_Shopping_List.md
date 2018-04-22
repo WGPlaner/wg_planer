@@ -38,5 +38,11 @@ The main preconditions for this use case are:
 ### 5.1 Save changes / Sync with server
 If a product has been added, edited or removed, it must be synced with the server.
 
-# 6. Extension Points
-n/a
+# 6. Function Points
+To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
+
+For this use case we set a score of *20* function points. It took 790min to implement this use case.
+
+![Function Points 1](../FunctionPoints/ShoppingList_1.jpg)
+![Function Points 1](../FunctionPoints/ShoppingList_2.jpg)
+![Function Points 1](../FunctionPoints/ShoppingList_3.jpg)

@@ -37,5 +37,5 @@ If a note has been added, edited or removed, it must be synced with the server.
 ### 5.2 Chat is synced / Users get notified
 The chat has to be synced immediately so that other users may be notified. A push notification that a new message is available should be send to the other shared flat members.
 
-# 6. Extension Points
+# 6. Function Points
 n/a
