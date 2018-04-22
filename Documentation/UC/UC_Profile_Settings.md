@@ -45,10 +45,15 @@ The main preconditions for this use case are:
  2. The user is member of a group/shared flat.
  3. The user has started the app and has navigated to "Profile Settings".
 
-
 # 5. Postconditions
 ## 5.1 Save changes / Sync with server
 The users profile has been saved and stored on the server.
 
-# 6. Extension Points
-n/a
+# 6. Function Points
+To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
+
+For this use case we got a score of *30* function points. It took 730min to implement this use case.
+
+![Function Points 1](../FunctionPoints/ProfileSettings_1.jpg)
+![Function Points 1](../FunctionPoints/ProfileSettings_2.jpg)
+![Function Points 1](../FunctionPoints/ProfileSettings_3.jpg)
