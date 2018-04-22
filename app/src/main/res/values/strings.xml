@@ -108,7 +108,7 @@
     <string name="delete_currency_error"> You can not delete the Currency</string>
 
     <string name="load_profile_picture_error">Failed to load Picture</string>
-    
+
     <!-- UserDialog Strings -->
     <string name="joined_at_hint">Joined at</string>
     <string name="dialog_invite_friends_title">Access Key</string>
@@ -130,4 +130,5 @@
     <string name="sort_by_label_requested_by">Requested by</string>
     <string name="sort_by_label_category">Category</string>
     <string name="sort_by_label_name">Name</string>
+    <string name="search_title">Search</string>
 </resources>
