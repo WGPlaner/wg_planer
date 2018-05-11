@@ -2,7 +2,6 @@ package de.ameyering.wgplaner.wgplaner.section.home.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +9,6 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +18,6 @@ import org.joda.time.DateTime;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +29,11 @@ import io.swagger.client.model.ListItem;
 public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.BoughtItemsViewItem> {
     private static final int HEADER_VIEW_TYPE = 0;
     private static final int CONTENT_VIEW_TYPE = 1;
+
+    private ArrayList<Object> items = new ArrayList<>();
+    private SimpleDateFormat format = null;
+
+    private static DataProvider dataProvider = DataProvider.getInstance();
 
     public static abstract class BoughtItemsViewItem extends RecyclerView.ViewHolder {
 
@@ -162,16 +163,9 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
         }
     }
 
-    private ArrayList<Object> items = new ArrayList<>();
-    private Context context = null;
-    private SimpleDateFormat format = null;
-
-    private static DataProvider dataProvider = DataProvider.getInstance();
-
     public BoughtItemsAdapter(ArrayList<ListItem> items, Context context) {
         Collections.sort(items, (item, t1) -> item.getBoughtAt().compareTo(t1.getBoughtAt()) * -1);
 
-        this.context = context;
         format = new SimpleDateFormat("dd. MMMM yyyy", context.getResources().getConfiguration().locale);
         this.items.clear();
         this.items.addAll(transformItems(items));
