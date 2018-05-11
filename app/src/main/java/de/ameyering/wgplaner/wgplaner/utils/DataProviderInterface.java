@@ -6,10 +6,12 @@ import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 import io.swagger.client.ApiResponse;
+import io.swagger.client.model.Bill;
 import io.swagger.client.model.ListItem;
 import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.User;
@@ -60,7 +62,7 @@ public interface DataProviderInterface {
 
     Bitmap getCurrentGroupImage(Context context);
 
-    ArrayList<User> getCurrentGroupMembers();
+    List<User> getCurrentGroupMembers();
 
     User getUserByUid(String uid);
 
@@ -84,7 +86,11 @@ public interface DataProviderInterface {
 
     void buySelection();
 
-    ArrayList<ListItem> getCurrentShoppingList();
+    List<ListItem> getCurrentShoppingList();
+
+    List<Bill> getBills();
+
+    Bill getBill(String uid);
 
     boolean isSomethingSelected();
 
@@ -103,4 +109,8 @@ public interface DataProviderInterface {
     void syncGroupMemberPicture(String uid, Context context);
 
     void syncGroupPicture(Context context);
+
+    void syncBillList();
+
+    void syncBill(String uid);
 }

@@ -30,8 +30,8 @@ public class ShoppingListAdapter extends
     private static final int HEADER_VIEW_TYPE = 0;
     private static final int ITEM_VIEW_TYPE = 1;
 
-    private ArrayList<ListItem> items = new ArrayList<>();
-    private ArrayList<Object> viewItems = new ArrayList<>();
+    private List<ListItem> items = new ArrayList<>();
+    private List<Object> viewItems = new ArrayList<>();
     private static DataProvider dataProvider = DataProvider.getInstance();
     private int sortBy = 0;
 
@@ -168,7 +168,7 @@ public class ShoppingListAdapter extends
         }
     }
 
-    public ShoppingListAdapter(ArrayList<ListItem> items) {
+    public ShoppingListAdapter(List<ListItem> items) {
         this.items = items;
         viewItems = sortBy(items, sortBy);
     }
@@ -226,8 +226,8 @@ public class ShoppingListAdapter extends
         onNewData(items);
     }
 
-    public void onNewData(ArrayList<ListItem> items) {
-        ArrayList<Object> viewItems = sortBy(items, sortBy);
+    public void onNewData(List<ListItem> items) {
+        List<Object> viewItems = sortBy(items, sortBy);
 
         final DiffCallback callback = new DiffCallback(viewItems, this.viewItems);
         final DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback, true);
@@ -238,7 +238,7 @@ public class ShoppingListAdapter extends
         result.dispatchUpdatesTo(this);
     }
 
-    private ArrayList<Object> sortBy(ArrayList<ListItem> items, int sorting) {
+    private List<Object> sortBy(List<ListItem> items, int sorting) {
         switch (sorting) {
             case ShoppingListFragment.SORT_REQUESTED_FOR:
                 return sortByRequestedFor(items);
@@ -257,16 +257,16 @@ public class ShoppingListAdapter extends
         }
     }
 
-    private ArrayList<Object> sortByName(ArrayList<ListItem> items) {
+    private List<Object> sortByName(List<ListItem> items) {
         Collections.sort(items, (item, t1) -> item.getTitle().compareTo(t1.getTitle()));
 
-        ArrayList<Object> viewItems = new ArrayList<>();
+        List<Object> viewItems = new ArrayList<>();
         viewItems.addAll(items);
         return viewItems;
     }
 
-    private ArrayList<Object> sortByCategory(ArrayList<ListItem> items) {
-        HashMap<String, ArrayList<ListItem>> requestedBy = new HashMap<>();
+    private List<Object> sortByCategory(List<ListItem> items) {
+        HashMap<String, List<ListItem>> requestedBy = new HashMap<>();
 
         for (ListItem item : items) {
             String category = item.getCategory();
@@ -279,13 +279,13 @@ public class ShoppingListAdapter extends
                 requestedBy.get(category).add(item);
 
             } else {
-                ArrayList<ListItem> specificItems = new ArrayList<>();
+                List<ListItem> specificItems = new ArrayList<>();
                 specificItems.add(item);
                 requestedBy.put(category, specificItems);
             }
         }
 
-        ArrayList<Object> objects = new ArrayList<>();
+        List<Object> objects = new ArrayList<>();
 
         for (String category : requestedBy.keySet()) {
             objects.add(category);
@@ -295,8 +295,8 @@ public class ShoppingListAdapter extends
         return objects;
     }
 
-    private ArrayList<Object> sortByRequestedBy(ArrayList<ListItem> items) {
-        HashMap<String, ArrayList<ListItem>> requestedBy = new HashMap<>();
+    private List<Object> sortByRequestedBy(List<ListItem> items) {
+        HashMap<String, List<ListItem>> requestedBy = new HashMap<>();
 
         for (ListItem item : items) {
             String user = dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName();
@@ -305,13 +305,13 @@ public class ShoppingListAdapter extends
                 requestedBy.get(user).add(item);
 
             } else {
-                ArrayList<ListItem> specificItems = new ArrayList<>();
+                List<ListItem> specificItems = new ArrayList<>();
                 specificItems.add(item);
                 requestedBy.put(user, specificItems);
             }
         }
 
-        ArrayList<Object> objects = new ArrayList<>();
+        List<Object> objects = new ArrayList<>();
 
         for (String user : requestedBy.keySet()) {
             objects.add(user);
@@ -321,8 +321,8 @@ public class ShoppingListAdapter extends
         return objects;
     }
 
-    private ArrayList<Object> sortByRequestedFor(ArrayList<ListItem> items) {
-        HashMap<List<String>, ArrayList<ListItem>> requestedFor = new HashMap<>();
+    private List<Object> sortByRequestedFor(List<ListItem> items) {
+        HashMap<List<String>, List<ListItem>> requestedFor = new HashMap<>();
 
         for (ListItem item : items) {
             List<String> users = item.getRequestedFor();
@@ -332,13 +332,13 @@ public class ShoppingListAdapter extends
                 requestedFor.get(users).add(item);
 
             } else {
-                ArrayList<ListItem> specificItems = new ArrayList<>();
+                List<ListItem> specificItems = new ArrayList<>();
                 specificItems.add(item);
                 requestedFor.put(users, specificItems);
             }
         }
 
-        ArrayList<Object> viewItems = new ArrayList<>();
+        List<Object> viewItems = new ArrayList<>();
 
         for (List<String> uids : requestedFor.keySet()) {
             String header = "";
@@ -368,10 +368,10 @@ public class ShoppingListAdapter extends
     }
 
     private class DiffCallback extends DiffUtil.Callback {
-        private ArrayList<Object> newList = new ArrayList<>();
-        private ArrayList<Object> oldList = new ArrayList<>();
+        private List<Object> newList = new ArrayList<>();
+        private List<Object> oldList = new ArrayList<>();
 
-        DiffCallback(ArrayList<Object> newList, ArrayList<Object> oldList) {
+        DiffCallback(List<Object> newList, List<Object> oldList) {
             this.newList.clear();
             this.newList.addAll(newList);
 

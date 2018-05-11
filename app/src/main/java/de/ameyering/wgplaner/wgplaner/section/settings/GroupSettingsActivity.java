@@ -33,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
@@ -89,7 +90,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<User> users = dataProvider.getCurrentGroupMembers();
+                        List<User> users = dataProvider.getCurrentGroupMembers();
                         adapterMembers.onNewData(users);
                     }
                 });

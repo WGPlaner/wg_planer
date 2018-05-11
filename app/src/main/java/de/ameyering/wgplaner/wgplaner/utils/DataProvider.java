@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
+import io.swagger.client.model.Bill;
 import io.swagger.client.model.Group;
 import io.swagger.client.model.GroupCode;
 import io.swagger.client.model.ListItem;
@@ -56,6 +57,8 @@ public class DataProvider implements DataProviderInterface {
     private List<ListItem> currentShoppingList;
     private ArrayList<ListItem> selectedItems;
 
+    private List<Bill> bills;
+
     private ArrayList<OnDataChangeListener> mListeners;
 
     static {
@@ -92,6 +95,8 @@ public class DataProvider implements DataProviderInterface {
 
         currentShoppingList = new ArrayList<>();
         selectedItems = new ArrayList<>();
+
+        bills = new ArrayList<>();
 
         mListeners = new ArrayList<>();
     }
@@ -178,35 +183,6 @@ public class DataProvider implements DataProviderInterface {
                             imageStoreInstance.setGroupPicture(currentUserPicture);
                         }
                     });
-
-                    /*
-                    serverCallsInstance.getShoppingListAsync(new
-                    ServerCallsInterface.OnAsyncCallListener<ShoppingList>() {
-                        @Override
-                        public void onFailure(ApiException e) {
-                            DataProvider.this.currentShoppingList = new ArrayList<>();
-                            DataProvider.this.selectedItems = new ArrayList<>();
-                        }
-
-                        @Override
-                        public void onSuccess(ShoppingList result) {
-                            List<ListItem> items = result.getListItems();
-
-                            if (items == null) {
-                                DataProvider.this.currentShoppingList = new ArrayList<>();
-                                DataProvider.this.selectedItems = new ArrayList<>();
-                                callAllListeners(DataType.SHOPPING_LIST);
-                                callAllListeners(DataType.SELECTED_ITEMS);
-
-                            } else {
-                                DataProvider.this.currentShoppingList = items;
-                                DataProvider.this.selectedItems = new ArrayList<>();
-                                callAllListeners(DataType.SHOPPING_LIST);
-                                callAllListeners(DataType.SELECTED_ITEMS);
-                            }
-                        }
-                    });
-                    */
 
                     return SetUpState.SETUP_COMPLETED;
 
@@ -407,7 +383,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public ArrayList<User> getCurrentGroupMembers() {
+    public List<User> getCurrentGroupMembers() {
         return currentGroupMembers;
     }
 
@@ -600,7 +576,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public ArrayList<ListItem> getCurrentShoppingList() {
+    public List<ListItem> getCurrentShoppingList() {
         if (currentShoppingList != null) {
             ArrayList<ListItem> items = new ArrayList<>();
             items.addAll(currentShoppingList);
@@ -613,6 +589,22 @@ public class DataProvider implements DataProviderInterface {
     @Override
     public boolean isSomethingSelected() {
         return selectedItems != null && !selectedItems.isEmpty();
+    }
+
+    @Override
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    @Override
+    public Bill getBill(String uid) {
+        for(Bill bill: bills) {
+            if(bill.getUid().toString().equals(uid)) {
+                return bill;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -748,6 +740,14 @@ public class DataProvider implements DataProviderInterface {
     @Override
     public void syncGroupMembers() {
         //currently nothing implemented
+    }
+
+    public void syncBillList() {
+        //TODO: Implement this later...
+    }
+
+    public void syncBill(String uid) {
+        //TODO: Implement this later...
     }
 
     private ApiResponse<User> updateUser() {

@@ -103,7 +103,8 @@
         <activity
             android:name=".section.setup.SetUpActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".section.home.BillActivity"></activity>
     </application>
 
 </manifest>

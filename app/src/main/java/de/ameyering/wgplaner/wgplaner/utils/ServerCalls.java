@@ -14,11 +14,13 @@ import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
+import io.swagger.client.api.BillApi;
 import io.swagger.client.api.GroupApi;
 import io.swagger.client.api.ShoppinglistApi;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.Configuration;
+import io.swagger.client.model.BillList;
 import io.swagger.client.model.Group;
 import io.swagger.client.model.GroupCode;
 import io.swagger.client.model.ListItem;
@@ -1129,6 +1131,65 @@ public class ServerCalls implements ServerCallsInterface {
         return null;
     }
 
+    public void getBillListAsync(UUID groupUid, @Nullable final OnAsyncCallListener<BillList> listener) {
+        if(groupUid != null) {
+            setAuth(USER_ID_AUTH_LABEL);
+
+            BillApi api = new BillApi();
+
+            try {
+                api.getBillListAsync(groupUid, new ApiCallback<BillList>() {
+                    @Override
+                    public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                        if (listener != null) {
+                            listener.onFailure(e);
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(BillList result, int statusCode, Map<String, List<String>> responseHeaders) {
+                        if (listener != null) {
+                            listener.onSuccess(result);
+                        }
+                    }
+
+                    @Override
+                    public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+
+                    }
+
+                    @Override
+                    public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
+
+                    }
+                });
+            } catch (ApiException e) {
+                if (listener != null) {
+                    listener.onFailure(e);
+                }
+            }
+        } else {
+            if(listener != null) {
+                listener.onFailure(new ApiException());
+            }
+        }
+    }
+
+    public ApiResponse<BillList> getBillList(UUID groupUid) {
+        if(groupUid != null) {
+            try{
+                GetBillListTask task = new GetBillListTask();
+                return task.execute(groupUid).get();
+            } catch (ExecutionException e) {
+                return null;
+            } catch (InterruptedException e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     private static void logError(String name, String method) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(name).append(method);
@@ -1483,6 +1544,22 @@ public class ServerCalls implements ServerCallsInterface {
             }
 
             return null;
+        }
+    }
+
+    private static class GetBillListTask extends AsyncTask<UUID, Void, ApiResponse<BillList>> {
+
+        @Override
+        protected  ApiResponse<BillList> doInBackground(UUID... uuids) {
+            setAuth(USER_ID_AUTH_LABEL);
+
+            BillApi api = new BillApi();
+
+            try{
+                return api.getBillListWithHttpInfo(uuids[0]);
+            } catch (ApiException e) {
+                return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
+            }
         }
     }
 }

@@ -131,4 +131,9 @@
     <string name="sort_by_label_category">Category</string>
     <string name="sort_by_label_name">Name</string>
     <string name="search_title">Search</string>
+
+    <string name="bill_detail_cost_label">Costs</string>
+    <string name="bill_detail_items_label">Items</string>
+    <string name="bill_detail_action_pay">mark as paid</string>
+    <string name="bill_detail_action">complete billing</string>
 </resources>

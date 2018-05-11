@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
+import io.swagger.client.model.BillList;
 import io.swagger.client.model.Group;
 import io.swagger.client.model.GroupCode;
 import io.swagger.client.model.ListItem;
@@ -95,4 +96,8 @@ public interface ServerCallsInterface {
         @Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
     ApiResponse<SuccessResponse> buyListItems(List<UUID> items);
+
+    void getBillListAsync(UUID groupUid, @Nullable final OnAsyncCallListener<BillList> listener);
+
+    ApiResponse<BillList> getBillList(UUID groupUid);
 }

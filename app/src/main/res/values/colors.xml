@@ -6,7 +6,8 @@
     <color name="colorButtonDark">#b6b6b6</color>
     <color name="colorButtonLight">#e2e2e2</color>
     <color name="colorBackground">#FFFAFAFA</color>
-    <color name="colorDivider">#4a000000</color>
+    <color name="colorDividerDark">#4a000000</color>
+    <color name="colorDivider">#a0ffffff</color>
 
     <!-- Colors Navigation drawer gradient -->
 

@@ -13,16 +13,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 import io.swagger.client.model.User;
 
 public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.ViewHolder> {
-    ArrayList<User> users = new ArrayList<>();
+    List<User> users = new ArrayList<>();
     Context context;
 
-    public GroupMemberAdapter(ArrayList<User> users, Context context) {
+    public GroupMemberAdapter(List<User> users, Context context) {
         this.users.clear();
         this.users.addAll(users);
         this.context = context;
@@ -100,7 +101,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         return new ViewHolder(view);
     }
 
-    public void onNewData(ArrayList<User> users) {
+    public void onNewData(List<User> users) {
         UserCallback callback = new UserCallback(users, this.users);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback, true);
 
@@ -116,10 +117,10 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
     }
 
     private static class UserCallback extends DiffUtil.Callback {
-        private ArrayList<User> newUsers;
-        private ArrayList<User> oldUsers;
+        private List<User> newUsers;
+        private List<User> oldUsers;
 
-        public UserCallback(ArrayList<User> newUsers, ArrayList<User> oldUsers) {
+        public UserCallback(List<User> newUsers, List<User> oldUsers) {
             this.newUsers = newUsers;
             this.oldUsers = oldUsers;
         }
