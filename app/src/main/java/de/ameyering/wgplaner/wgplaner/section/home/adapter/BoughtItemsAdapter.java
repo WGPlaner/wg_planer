@@ -6,11 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -65,6 +67,7 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
         private TextView name = null;
 
         private CardView container = null;
+        private LinearLayout contentContainer = null;
 
         private LinearLayout containerNumber = null;
         private TextView displayNumber = null;
@@ -78,6 +81,10 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
         private LinearLayout containerPrice = null;
         private TextView price = null;
 
+        private LinearLayout actionContainer = null;
+        private Button addPriceButton = null;
+        private Button changePriceButton = null;
+
         private ListItem item = null;
 
         public BoughtItemsContentItem(View itemView) {
@@ -86,6 +93,7 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
             name = itemView.findViewById(R.id.bought_items_item_product_name);
 
             container = itemView.findViewById(R.id.bought_items_item_container);
+            contentContainer = itemView.findViewById(R.id.bought_items_content_container);
 
             containerNumber = itemView.findViewById(R.id.bought_items_item_product_attribute_number);
             displayNumber = itemView.findViewById(R.id.bought_items_item_product_number);
@@ -101,6 +109,10 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
             containerPrice = itemView.findViewById(R.id.bought_items_item_product_attribute_price);
             price = itemView.findViewById(R.id.bought_items_item_product_price);
 
+            actionContainer = itemView.findViewById(R.id.bought_items_action_container);
+            addPriceButton = itemView.findViewById(R.id.bought_items_action_add_price);
+            changePriceButton = itemView.findViewById(R.id.bought_items_action_change_price);
+
             container = itemView.findViewById(R.id.bought_items_item_container);
         }
 
@@ -111,139 +123,22 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
             }
 
             if(item != null) {
-                if (args == null) {
-                    name.setText(item.getTitle());
-                    displayNumber.setText(item.getCount());
-                    displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-                    displayRequestedFor.setText(buildRequestedFor(item.getRequestedFor()));
-                    price.setText(item.getPrice());
+                name.setText(item.getTitle());
+                displayNumber.setText(item.getCount());
+                displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
+                displayRequestedFor.setText(buildRequestedFor(item.getRequestedFor()));
+
+                Integer price = item.getPrice();
+
+                if(price == null) {
+                    TransitionManager.beginDelayedTransition(actionContainer);
+                    addPriceButton.setVisibility(View.VISIBLE);
+                    changePriceButton.setVisibility(View.GONE);
                 } else {
-                    if (args.getBoolean(DiffCallback.NAME)) {
-                        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                        anim.setDuration(200);
-                        anim.setRepeatCount(1);
-                        anim.setRepeatMode(Animation.REVERSE);
-
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                                name.setText(item.getTitle());
-                            }
-                        });
-                        name.startAnimation(anim);
-                    }
-
-                    if (args.getBoolean(DiffCallback.REQUESTED_BY)) {
-                        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                        anim.setDuration(200);
-                        anim.setRepeatCount(1);
-                        anim.setRepeatMode(Animation.REVERSE);
-
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                                displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-                            }
-                        });
-                        displayRequestedBy.startAnimation(anim);
-                    } else {
-                        displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-                    }
-
-                    if (args.getBoolean(DiffCallback.NUMBER)) {
-                        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                        anim.setDuration(200);
-                        anim.setRepeatCount(1);
-                        anim.setRepeatMode(Animation.REVERSE);
-
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                                displayNumber.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-                            }
-                        });
-                        displayNumber.startAnimation(anim);
-                    }
-
-                    if(args.getBoolean(DiffCallback.REQUESTED_FOR)) {
-                        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                        anim.setDuration(200);
-                        anim.setRepeatCount(1);
-                        anim.setRepeatMode(Animation.REVERSE);
-
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                                displayRequestedFor.setText(buildRequestedFor(item.getRequestedFor()));
-                            }
-                        });
-                        displayRequestedFor.startAnimation(anim);
-                    }
-
-                    if(args.getBoolean(DiffCallback.PRICE)) {
-                        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                        anim.setDuration(200);
-                        anim.setRepeatCount(1);
-                        anim.setRepeatMode(Animation.REVERSE);
-
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                                price.setText(item.getPrice());
-                            }
-                        });
-                        price.startAnimation(anim);
-                    }
+                    this.price.setText(price);
+                    TransitionManager.beginDelayedTransition(actionContainer);
+                    addPriceButton.setVisibility(View.GONE);
+                    changePriceButton.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -274,12 +169,7 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
     private static DataProvider dataProvider = DataProvider.getInstance();
 
     public BoughtItemsAdapter(ArrayList<ListItem> items, Context context) {
-        Collections.sort(items, new Comparator<ListItem>() {
-            @Override
-            public int compare(ListItem item, ListItem t1) {
-                return item.getBoughtAt().compareTo(t1.getBoughtAt()) * -1;
-            }
-        });
+        Collections.sort(items, (item, t1) -> item.getBoughtAt().compareTo(t1.getBoughtAt()) * -1);
 
         this.context = context;
         format = new SimpleDateFormat("dd. MMMM yyyy", context.getResources().getConfiguration().locale);
@@ -420,49 +310,6 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
             } else {
                 return oldItem instanceof String && ((String) oldItem).equals((String) newItem);
             }
-        }
-
-        @Nullable
-        @Override
-        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-            Object oldItem = oldList.get(oldItemPosition);
-            Object newItem = newList.get(newItemPosition);
-
-            if(oldItem.getClass() != newItem.getClass() || oldItem instanceof String) {
-                return null;
-            }
-
-            ListItem newListItem = (ListItem) newItem;
-            ListItem oldListItem = (ListItem) oldItem;
-
-            Bundle changes = new Bundle();
-
-            changes.putBoolean(
-                REQUESTED_BY,
-                !oldListItem.getRequestedBy().equals(newListItem.getRequestedBy())
-            );
-
-            changes.putBoolean(
-                NAME,
-                !oldListItem.getTitle().equals(newListItem.getTitle())
-            );
-
-            changes.putBoolean(
-                REQUESTED_FOR,
-                !oldListItem.getRequestedFor().equals(newListItem.getRequestedFor())
-            );
-
-            changes.putBoolean(
-                NUMBER,
-                oldListItem.getCount() != newListItem.getCount()
-            );
-
-            changes.putBoolean(
-                PRICE,
-                oldListItem.getPrice() != newListItem.getPrice()
-            );
-
-            return changes;
         }
     }
 }

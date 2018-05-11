@@ -16,15 +16,16 @@
         app:cardElevation="1dp">
 
         <LinearLayout
+            android:id="@+id/bought_items_content_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:gravity="end"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:orientation="vertical">
 
@@ -134,20 +135,27 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:id="@+id/bought_items_action_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="0.8"
+                android:gravity="end"
+                android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/add_item_requested_for_close"
-                    android:contentDescription="@string/add_item_requested_for_close_content_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.15"
-                    android:background="@color/cardview_light_background"
-                    android:src="@drawable/ic_attach_money_black" />
+                <Button
+                    android:id="@+id/bought_items_action_change_price"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_action_change_price" />
+
+                <Button
+                    android:id="@+id/bought_items_action_add_price"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_action_add_price" />
             </LinearLayout>
 
         </LinearLayout>
