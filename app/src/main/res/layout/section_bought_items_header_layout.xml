@@ -11,6 +11,6 @@
         android:layout_margin="10dp"
         android:text="TextView"
         android:textAlignment="center"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+        android:textSize="24sp" />
 </LinearLayout>
 
