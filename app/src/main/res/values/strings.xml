@@ -20,6 +20,7 @@
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_shopping_list">Shopping List</string>
     <string name="nav_accounting">Accounting</string>
+    <string name="nav_bought_items">Bought Items</string>
     <string name="nav_rosters">Rosters</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_pinboard">Pinboard</string>
@@ -77,11 +78,15 @@
     <string name="section_title_set_up_group">Group SetUp</string>
     <string name="section_title_shopping_list">Shopping List</string>
     <string name="section_title_pinboard">Pinboard</string>
+    <string name="section_title_bought_items">Bought Items</string>
 
     <!-- Product related strings -->
     <string name="product_attribute_number">Number</string>
     <string name="product_attribute_requested_by">Requested by</string>
     <string name="product_attribute_requested_for">Requested for</string>
+    <string name="product_attribute_price">Price</string>
+    <string name="product_action_add_price">Add Price</string>
+    <string name="product_action_change_price">Change Price</string>
 
     <string name="group_label">Group</string>
     <string name="asset_statements" translatable="false">[{\n  \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n  \"target\": {\n    \"namespace\": \"web\",\n    \"site\": \"https://api.wgplaner.ameyering.de\",\n  }\n}]</string>
