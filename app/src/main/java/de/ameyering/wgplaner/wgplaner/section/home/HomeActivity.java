@@ -125,11 +125,13 @@ public class HomeActivity extends AppCompatActivity
             transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
             transaction.replace(R.id.container, shoppingListFragment);
             transaction.commit();
+
         } else if (id == R.id.nav_bought_items) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
             transaction.replace(R.id.container, boughtItemsFragment);
             transaction.commit();
+
         } else if (id == R.id.nav_rosters) {
             // TODO
         } else if (id == R.id.nav_calendar) {

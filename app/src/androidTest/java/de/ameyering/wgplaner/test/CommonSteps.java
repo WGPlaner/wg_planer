@@ -57,10 +57,12 @@ public class CommonSteps {
         InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             @Override
             public void run() {
-                activity[0] = (Activity) ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED).toArray()[0];
+                activity[0] = (Activity) ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(
+                        Stage.RESUMED).toArray()[0];
             }
         });
 
-        onView(withText(text)).inRoot(withDecorView(not(is(activity[0].getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText(text)).inRoot(withDecorView(not(is(activity[0].getWindow().getDecorView())))).check(
+            matches(isDisplayed()));
     }
 }

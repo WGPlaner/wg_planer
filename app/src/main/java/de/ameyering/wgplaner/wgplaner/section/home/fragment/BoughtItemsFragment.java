@@ -21,7 +21,8 @@ public class BoughtItemsFragment extends SectionFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_bought_items, container, false);
 
         if (toolbar != null) {
@@ -37,13 +38,13 @@ public class BoughtItemsFragment extends SectionFragment {
             floatingActionButton.setVisibility(View.INVISIBLE);
         }
 
-        if(recycler == null) {
+        if (recycler == null) {
             recycler = view.findViewById(R.id.section_bought_items_list);
             recycler.setLayoutManager(new LinearLayoutManager(getContext()));
             recycler.setHasFixedSize(false);
         }
 
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new BoughtItemsAdapter(new ArrayList<ListItem>(), getContext());
             recycler.setAdapter(adapter);
         }

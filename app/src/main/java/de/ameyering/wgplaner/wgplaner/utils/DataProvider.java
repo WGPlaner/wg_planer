@@ -62,7 +62,7 @@ public class DataProvider implements DataProviderInterface {
         singleton = new DataProvider();
         singleton.setServerCallsInstance(ServerCalls.getInstance());
     }
-  
+
     public void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
         this.serverCallsInstance = serverCallsInstance;
     }
@@ -263,9 +263,11 @@ public class DataProvider implements DataProviderInterface {
     public void setFirebaseInstanceId(String token, Context context) {
         if (token != null) {
             this.currentUserFirebaseInstanceId = token;
-            if(Configuration.singleton == null) {
+
+            if (Configuration.singleton == null) {
                 Configuration.initConfig(context);
             }
+
             Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }
     }
@@ -444,7 +446,8 @@ public class DataProvider implements DataProviderInterface {
             imageStoreInstance.setGroupPicture(imagecr);
             serverCallsInstance.updateGroupImageAsync(imageStoreInstance.getGroupPictureFile(), null);
 
-            ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateGroupImage(imageStoreInstance.getGroupPictureFile());
+            ApiResponse<SuccessResponse> imageResponse = serverCallsInstance.updateGroupImage(
+                    imageStoreInstance.getGroupPictureFile());
 
             initializeMembers(context);
 

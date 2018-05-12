@@ -26,7 +26,8 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import io.swagger.client.model.ListItem;
 
 
-public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.BoughtItemsViewItem> {
+public class BoughtItemsAdapter extends
+    RecyclerView.Adapter<BoughtItemsAdapter.BoughtItemsViewItem> {
     private static final int HEADER_VIEW_TYPE = 0;
     private static final int CONTENT_VIEW_TYPE = 1;
 
@@ -100,11 +101,11 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
             displayNumber = itemView.findViewById(R.id.bought_items_item_product_number);
 
             containerRequestedBy = itemView.findViewById(
-                R.id.bought_items_item_product_attribute_requested_by);
+                    R.id.bought_items_item_product_attribute_requested_by);
             displayRequestedBy = itemView.findViewById(R.id.bought_items_item_product_requested_by);
 
             containerRequestedFor = itemView.findViewById(
-                R.id.bought_items_item_product_attribute_requested_for);
+                    R.id.bought_items_item_product_attribute_requested_for);
             displayRequestedFor = itemView.findViewById(R.id.bought_items_item_product_requested_for);
 
             containerPrice = itemView.findViewById(R.id.bought_items_item_product_attribute_price);
@@ -123,7 +124,7 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
                 item = (ListItem) object;
             }
 
-            if(item != null) {
+            if (item != null) {
                 name.setText(item.getTitle());
                 displayNumber.setText(item.getCount());
                 displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
@@ -131,10 +132,11 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
 
                 Integer price = item.getPrice();
 
-                if(price == null) {
+                if (price == null) {
                     TransitionManager.beginDelayedTransition(actionContainer);
                     addPriceButton.setVisibility(View.VISIBLE);
                     changePriceButton.setVisibility(View.GONE);
+
                 } else {
                     this.price.setText(price);
                     TransitionManager.beginDelayedTransition(actionContainer);
@@ -144,16 +146,17 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
             }
         }
 
-        private String buildRequestedFor(List<String> uids){
+        private String buildRequestedFor(List<String> uids) {
             StringBuilder requestedFor = new StringBuilder();
 
-            if(uids.size() == dataProvider.getCurrentGroupMembers().size()) {
+            if (uids.size() == dataProvider.getCurrentGroupMembers().size()) {
                 requestedFor.append("Group");
+
             } else {
-                for(int i = 0; i < uids.size(); i++) {
+                for (int i = 0; i < uids.size(); i++) {
                     requestedFor.append(uids.get(i));
 
-                    if(i != uids.size() - 1){
+                    if (i != uids.size() - 1) {
                         requestedFor.append(", ");
                     }
                 }
@@ -173,8 +176,9 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
 
     @Override
     public void onBindViewHolder(BoughtItemsViewItem holder, int position, List<Object> payloads) {
-        if(payloads != null) {
+        if (payloads != null) {
             holder.setData(items.get(position), (Bundle) payloads.get(0));
+
         } else {
             holder.setData(items.get(position));
         }
@@ -182,8 +186,9 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        if(items.get(position) instanceof DateTime) {
+        if (items.get(position) instanceof DateTime) {
             return HEADER_VIEW_TYPE;
+
         } else {
             return CONTENT_VIEW_TYPE;
         }
@@ -191,16 +196,18 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
 
     @Override
     public BoughtItemsViewItem onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == HEADER_VIEW_TYPE) {
+        if (viewType == HEADER_VIEW_TYPE) {
             View item = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.section_bought_items_header_layout, parent, false);
+                    R.layout.section_bought_items_header_layout, parent, false);
 
             return new BoughtItemsHeaderItem(item);
+
         } else if (viewType == CONTENT_VIEW_TYPE) {
             View item = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.section_bought_items_item_layout, parent, false);
+                    R.layout.section_bought_items_item_layout, parent, false);
 
             return new BoughtItemsContentItem(item);
+
         } else {
             return null;
         }
@@ -219,11 +226,12 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
     private ArrayList<Object> transformItems(ArrayList<ListItem> items) {
         HashMap<String, ArrayList<ListItem>> map = new HashMap<>();
 
-        for(ListItem item: items) {
+        for (ListItem item : items) {
             String date = format.format(item.getBoughtAt().toDate());
 
-            if(map.containsKey(date)) {
+            if (map.containsKey(date)) {
                 map.get(date).add(item);
+
             } else {
                 ArrayList<ListItem> list = new ArrayList<>();
                 list.add(item);
@@ -233,7 +241,7 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
 
         ArrayList<Object> viewItems = new ArrayList<>();
 
-        for(String time: map.keySet()) {
+        for (String time : map.keySet()) {
             viewItems.add(time);
             viewItems.addAll(map.get(time));
         }
@@ -285,7 +293,7 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
             Object newItem = newList.get(newItemPosition);
 
             return oldItem.getClass() == newItem.getClass() &&
-                    !(oldItem instanceof ListItem &&
+                !(oldItem instanceof ListItem &&
                     !((ListItem) oldItem).getId().equals(((ListItem) oldItem).getId()));
 
         }
@@ -295,12 +303,13 @@ public class BoughtItemsAdapter extends RecyclerView.Adapter<BoughtItemsAdapter.
             Object oldItem = oldList.get(oldItemPosition);
             Object newItem = newList.get(newItemPosition);
 
-            if(oldItem.getClass() != newItem.getClass()) {
+            if (oldItem.getClass() != newItem.getClass()) {
                 return false;
             }
 
             if (oldItem instanceof ListItem) {
                 return ((ListItem) oldItem).equals((ListItem) newItem);
+
             } else {
                 return oldItem instanceof String && ((String) oldItem).equals((String) newItem);
             }

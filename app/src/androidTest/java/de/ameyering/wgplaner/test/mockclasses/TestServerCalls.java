@@ -44,7 +44,7 @@ public class TestServerCalls implements ServerCallsInterface {
         List<String> uids = new ArrayList<>();
         Random random = new Random();
 
-        for(int i = 0; i < (random.nextInt(10) + 1); i++){
+        for (int i = 0; i < (random.nextInt(10) + 1); i++) {
             uids.add(random.nextInt(3000) + "UID");
         }
 
@@ -52,16 +52,16 @@ public class TestServerCalls implements ServerCallsInterface {
         DEFAULT_GROUP_ADMINS.addAll(uids);
     }
 
-    public static TestServerCalls getInstance(){
+    public static TestServerCalls getInstance() {
         return singleton;
     }
 
-    public static TestServerCalls getInstance(TestCase testCase){
+    public static TestServerCalls getInstance(TestCase testCase) {
         singleton.testCase = testCase;
         return singleton;
     }
 
-    private TestServerCalls(){
+    private TestServerCalls() {
         testCase = TestCase.SUCCESS;
     }
 
@@ -72,12 +72,13 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void createUserAsync(User user, @Nullable OnAsyncCallListener<User> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     listener.onSuccess(user);
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -92,9 +93,11 @@ public class TestServerCalls implements ServerCallsInterface {
             case SUCCESS: {
                 return new ApiResponse<User>(200, new ArrayMap<String, List<String>>(), user);
             }
+
             case FAILURE: {
                 return new ApiResponse<User>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -103,7 +106,7 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void getUserAsync(String uid, @Nullable OnAsyncCallListener<User> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     User result = new User();
@@ -113,6 +116,7 @@ public class TestServerCalls implements ServerCallsInterface {
                     listener.onSuccess(result);
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -131,9 +135,11 @@ public class TestServerCalls implements ServerCallsInterface {
                 result.setEmail(DEFAULT_EMAIL);
                 return new ApiResponse<User>(200, null, result);
             }
+
             case FAILURE: {
                 return new ApiResponse<User>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -142,12 +148,13 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void updateUserAsync(User user, @Nullable OnAsyncCallListener<User> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     listener.onSuccess(user);
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -162,9 +169,11 @@ public class TestServerCalls implements ServerCallsInterface {
             case SUCCESS: {
                 return new ApiResponse<User>(200, null, user);
             }
+
             case FAILURE: {
                 return new ApiResponse<User>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -173,7 +182,7 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void getUserImageAsync(String uid, @Nullable OnAsyncCallListener<byte[]> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     byte[] bytes = new byte[5000];
@@ -182,6 +191,7 @@ public class TestServerCalls implements ServerCallsInterface {
                     listener.onSuccess(bytes);
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -192,16 +202,18 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<byte[]> getUserImage(String uid) {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 byte[] bytes = new byte[5000];
                 new Random().nextBytes(bytes);
 
                 return new ApiResponse<byte[]>(200, null, bytes);
             }
+
             case FAILURE: {
                 return new ApiResponse<byte[]>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -209,13 +221,15 @@ public class TestServerCalls implements ServerCallsInterface {
     }
 
     @Override
-    public void updateUserImageAsync(File image, @Nullable OnAsyncCallListener<SuccessResponse> listener) {
-        if(listener != null) {
+    public void updateUserImageAsync(File image,
+        @Nullable OnAsyncCallListener<SuccessResponse> listener) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     listener.onSuccess(new SuccessResponse());
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -226,13 +240,15 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<SuccessResponse> updateUserImage(File image) {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 return new ApiResponse<>(200, null, new SuccessResponse());
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -241,12 +257,13 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void leaveGroupAsync(@Nullable OnAsyncCallListener<SuccessResponse> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     listener.onSuccess(new SuccessResponse());
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -257,13 +274,15 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<SuccessResponse> leaveGroup() {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 return new ApiResponse<>(200, null, new SuccessResponse());
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -272,7 +291,7 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void getGroupAsync(UUID groupUid, @Nullable OnAsyncCallListener<Group> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     Group group = new Group();
@@ -285,6 +304,7 @@ public class TestServerCalls implements ServerCallsInterface {
                     listener.onSuccess(group);
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -295,7 +315,7 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<Group> getGroup(UUID groupUid) {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 Group group = new Group();
                 group.setCurrency(DEFAULT_CURRENCY);
@@ -305,9 +325,11 @@ public class TestServerCalls implements ServerCallsInterface {
 
                 return new ApiResponse<>(200, null, group);
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -316,12 +338,13 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void updateGroupAsync(Group group, @Nullable OnAsyncCallListener<Group> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     listener.onSuccess(group);
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException());
                 }
@@ -336,9 +359,11 @@ public class TestServerCalls implements ServerCallsInterface {
             case SUCCESS: {
                 return new ApiResponse<Group>(200, null, group);
             }
+
             case FAILURE: {
                 return new ApiResponse<Group>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -347,14 +372,15 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void createGroupAsync(Group group, @Nullable OnAsyncCallListener<Group> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
-                        listener.onSuccess(group);
+                    listener.onSuccess(group);
                 }
                 break;
+
                 case FAILURE: {
-                        listener.onFailure(new ApiException(0, "Failure"));
+                    listener.onFailure(new ApiException(0, "Failure"));
                 }
                 break;
             }
@@ -363,13 +389,15 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<Group> createGroup(Group group) {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 return new ApiResponse<>(200, null, group);
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -378,7 +406,7 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void joinGroupAsync(String accessKey, @Nullable OnAsyncCallListener<Group> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     Group group = new Group();
@@ -391,6 +419,7 @@ public class TestServerCalls implements ServerCallsInterface {
                     listener.onSuccess(group);
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -401,7 +430,7 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<Group> joinGroup(String accessKey) {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 Group group = new Group();
                 group.setUid(new UUID(11111111111111L, 000000000001L));
@@ -412,9 +441,11 @@ public class TestServerCalls implements ServerCallsInterface {
 
                 return new ApiResponse<>(200, null, group);
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -423,7 +454,7 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void createGroupKeyAsync(@Nullable OnAsyncCallListener<GroupCode> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     GroupCode code = new GroupCode();
@@ -431,6 +462,7 @@ public class TestServerCalls implements ServerCallsInterface {
                     listener.onSuccess(code);
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -441,16 +473,18 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<GroupCode> createGroupKey() {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 GroupCode code = new GroupCode();
                 code.setCode("MYSUPERDUPER");
 
                 return new ApiResponse<>(200, null, (GroupCode) code);
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -459,7 +493,7 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public void getGroupImageAsync(@Nullable OnAsyncCallListener<byte[]> listener) {
-        if(listener != null) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     byte[] bytes = new byte[5000];
@@ -468,6 +502,7 @@ public class TestServerCalls implements ServerCallsInterface {
                     listener.onSuccess(bytes);
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -478,16 +513,18 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<byte[]> getGroupImage() {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 byte[] bytes = new byte[5000];
                 new Random().nextBytes(bytes);
 
                 return new ApiResponse<byte[]>(200, null, bytes);
             }
+
             case FAILURE: {
                 return new ApiResponse<byte[]>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -495,13 +532,15 @@ public class TestServerCalls implements ServerCallsInterface {
     }
 
     @Override
-    public void updateGroupImageAsync(File image, @Nullable OnAsyncCallListener<SuccessResponse> listener) {
-        if(listener != null) {
+    public void updateGroupImageAsync(File image,
+        @Nullable OnAsyncCallListener<SuccessResponse> listener) {
+        if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
                     listener.onSuccess(new SuccessResponse());
                 }
                 break;
+
                 case FAILURE: {
                     listener.onFailure(new ApiException(0, "Failure"));
                 }
@@ -512,13 +551,15 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<SuccessResponse> updateGroupImage(File image) {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 return new ApiResponse<>(200, null, new SuccessResponse());
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -534,6 +575,7 @@ public class TestServerCalls implements ServerCallsInterface {
                 listener.onSuccess(shoppingList);
             }
             break;
+
             case FAILURE: {
                 listener.onFailure(new ApiException(0, "Failure"));
             }
@@ -543,15 +585,17 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<ShoppingList> getShoppingList() {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 ShoppingList shoppingList = new ShoppingList();
                 shoppingList.setListItems(DEFAULT_LIST_ITEMS);
                 return new ApiResponse<>(200, null, shoppingList);
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -559,12 +603,14 @@ public class TestServerCalls implements ServerCallsInterface {
     }
 
     @Override
-    public void createShoppingListItemAsync(ListItem item, @Nullable OnAsyncCallListener<ListItem> listener) {
+    public void createShoppingListItemAsync(ListItem item,
+        @Nullable OnAsyncCallListener<ListItem> listener) {
         switch (testCase) {
             case SUCCESS: {
                 listener.onSuccess(item);
             }
             break;
+
             case FAILURE: {
                 listener.onFailure(new ApiException(0, "Failure"));
             }
@@ -574,13 +620,15 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<ListItem> createShoppingListItem(ListItem item) {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 return new ApiResponse<>(200, null, item);
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -588,12 +636,14 @@ public class TestServerCalls implements ServerCallsInterface {
     }
 
     @Override
-    public void updateShoppingListItemAsync(ListItem item, @Nullable OnAsyncCallListener<ListItem> listener) {
+    public void updateShoppingListItemAsync(ListItem item,
+        @Nullable OnAsyncCallListener<ListItem> listener) {
         switch (testCase) {
             case SUCCESS: {
                 listener.onSuccess(item);
             }
             break;
+
             case FAILURE: {
                 listener.onFailure(new ApiException(0, "Failure"));
             }
@@ -603,13 +653,15 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<ListItem> updateShoppingListItem(ListItem item) {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 return new ApiResponse<>(200, null, item);
             }
+
             case FAILURE: {
                 return new ApiResponse<>(0, null, null);
             }
+
             default: {
                 return null;
             }
@@ -617,12 +669,14 @@ public class TestServerCalls implements ServerCallsInterface {
     }
 
     @Override
-    public void buyListItemsAsync(List<UUID> items, @Nullable OnAsyncCallListener<SuccessResponse> listener) {
-        switch(testCase) {
+    public void buyListItemsAsync(List<UUID> items,
+        @Nullable OnAsyncCallListener<SuccessResponse> listener) {
+        switch (testCase) {
             case SUCCESS: {
                 listener.onSuccess(new SuccessResponse());
             }
             break;
+
             case FAILURE: {
                 listener.onFailure(new ApiException());
             }
@@ -632,13 +686,15 @@ public class TestServerCalls implements ServerCallsInterface {
 
     @Override
     public ApiResponse<SuccessResponse> buyListItems(List<UUID> items) {
-        switch(testCase) {
+        switch (testCase) {
             case SUCCESS: {
                 return new ApiResponse<SuccessResponse>(200, null, new SuccessResponse());
             }
+
             case FAILURE: {
                 return new ApiResponse<SuccessResponse>(0, null, null);
             }
+
             default: {
                 return null;
             }

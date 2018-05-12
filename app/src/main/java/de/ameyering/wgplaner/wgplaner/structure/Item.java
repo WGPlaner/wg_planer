@@ -16,6 +16,7 @@ public class Item {
         }
 
         name = name.trim();
+
         if (name.isEmpty()) {
             throw new MalformedItemException("name should not be empty");
         }
