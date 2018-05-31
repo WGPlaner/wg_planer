@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorBackground"
-        android:elevation="0dp"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        android:elevation="0dp" />
 
     <ScrollView
         android:layout_width="match_parent"

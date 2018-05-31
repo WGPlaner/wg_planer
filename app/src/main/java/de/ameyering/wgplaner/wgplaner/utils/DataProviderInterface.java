@@ -10,8 +10,10 @@ import java.util.Locale;
 import java.util.UUID;
 
 import io.swagger.client.ApiResponse;
+import io.swagger.client.model.Group;
 import io.swagger.client.model.ListItem;
 import io.swagger.client.model.ShoppingList;
+import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
 public interface DataProviderInterface {
@@ -22,19 +24,23 @@ public interface DataProviderInterface {
 
     SetUpState initialize(String uid, Context context);
 
-    boolean registerUser();
+    void registerUser(final ServerCallsInterface.OnAsyncCallListener<User> listener);
 
     void setFirebaseInstanceId(String token, Context context);
 
     String getFirebaseInstanceId();
 
-    void setCurrentUserDisplayName(String displayName);
+    void setCurrentUserDisplayName(String displayName,
+        final ServerCallsInterface.OnAsyncCallListener<User> listener);
 
-    void setCurrentUserImage(Bitmap bitmap);
+    void setCurrentUserImage(Bitmap bitmap,
+        final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener);
 
-    void setCurrentUserEmail(@Nullable String email);
+    void setCurrentUserEmail(@Nullable String email,
+        final ServerCallsInterface.OnAsyncCallListener<User> listener);
 
-    void setCurrentUserLocale(Locale locale);
+    void setCurrentUserLocale(Locale locale,
+        final ServerCallsInterface.OnAsyncCallListener<User> listener);
 
     String getCurrentUserUid();
 
@@ -46,11 +52,14 @@ public interface DataProviderInterface {
 
     Locale getCurrentUserLocale();
 
-    void setCurrentGroupName(String groupName);
+    void setCurrentGroupName(String groupName,
+        final ServerCallsInterface.OnAsyncCallListener<Group> listener);
 
-    void setCurrentGroupCurrency(Currency currency);
+    void setCurrentGroupCurrency(Currency currency,
+        final ServerCallsInterface.OnAsyncCallListener<Group> listener);
 
-    void setCurrentGroupImage(Bitmap bitmap);
+    void setCurrentGroupImage(Bitmap bitmap,
+        final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener);
 
     UUID getCurrentGroupUID();
 
@@ -66,15 +75,20 @@ public interface DataProviderInterface {
 
     boolean isAdmin(String uid);
 
-    boolean createGroup(String name, Currency currency, Bitmap image, Context context);
+    void createGroup(String name, String groupCountry, Bitmap image, Context context,
+        final ServerCallsInterface.OnAsyncCallListener<Group> listener);
 
-    boolean joinCurrentGroup(String accessKey, Context context);
+    void updateGroup(Group group, final ServerCallsInterface.OnAsyncCallListener<Group> listener);
 
-    boolean leaveCurrentGroup();
+    void joinCurrentGroup(String accessKey, Context context,
+        final ServerCallsInterface.OnAsyncCallListener<Group> listener);
+
+    void leaveCurrentGroup(final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener);
 
     String createGroupAccessKey();
 
-    boolean addShoppingListItem(ListItem item);
+    void addShoppingListItem(ListItem item,
+        final ServerCallsInterface.OnAsyncCallListener<ListItem> listener);
 
     void selectShoppingListItem(ListItem item);
 
@@ -82,11 +96,18 @@ public interface DataProviderInterface {
 
     boolean isItemSelected(ListItem item);
 
-    void buySelection();
+    void addPriceToListItem(ListItem item, String price,
+        final ServerCallsInterface.OnAsyncCallListener<ListItem> listener);
+
+    void buySelection(final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener);
+
+    ListItem getListItem(UUID uuid);
 
     ArrayList<ListItem> getCurrentShoppingList();
 
     boolean isSomethingSelected();
+
+    ArrayList<ListItem> getBoughtItems();
 
     ApiResponse<ShoppingList> syncShoppingList();
 
@@ -103,4 +124,6 @@ public interface DataProviderInterface {
     void syncGroupMemberPicture(String uid, Context context);
 
     void syncGroupPicture(Context context);
+
+    void syncBoughtItems();
 }

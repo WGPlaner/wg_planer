@@ -2,12 +2,12 @@ package de.ameyering.wgplaner.wgplaner.section.registration;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -23,6 +23,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private WelcomeFragment welcomeFragment;
+    private ProgressBar progressBar;
 
     private boolean toastWasShown = false;
     public static Intent joinGroupIntent = null;
@@ -32,28 +33,23 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
         toolbar.setNavigationContentDescription(getString(R.string.nav_back));
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popBackStack();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> popBackStack());
 
-        getSupportFragmentManager().addOnBackStackChangedListener(new
-        FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                    getSupportActionBar().hide();
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                getSupportActionBar()
+                .hide();
 
-                } else {
-                    getSupportActionBar().show();
-                }
+            } else {
+                getSupportActionBar().show();
             }
         });
 
@@ -117,5 +113,13 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         getSupportFragmentManager().putFragment(outState, WELCOME_FRAGMENT_ARGS, welcomeFragment);
+    }
+
+    public void startProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void stopProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 }

@@ -2,16 +2,16 @@ package de.ameyering.wgplaner.wgplaner.section.home.fragment;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.ActionBar;
 
 public abstract class SectionFragment extends Fragment {
-    public Toolbar toolbar;
+    public ActionBar actionBar;
     public FloatingActionButton floatingActionButton;
     public String title;
 
-    public void setToolbar(Toolbar toolbar) {
+    public void setActionBar(ActionBar toolbar) {
         if (toolbar != null) {
-            this.toolbar = toolbar;
+            this.actionBar = toolbar;
         }
     }
 
@@ -24,10 +24,6 @@ public abstract class SectionFragment extends Fragment {
     public void setTitle(String title) {
         if (title != null) {
             this.title = title;
-
-            if (toolbar != null) {
-                toolbar.setSubtitle(title);
-            }
         }
     }
 

@@ -36,19 +36,9 @@ public class DescriptionFragment extends Fragment {
         Button btnCreateGroup = view.findViewById(R.id.fragment_setup_description_btn_create);
         Button btnJoinGroup = view.findViewById(R.id.fragment_setup_description_btn_join);
 
-        btnCreateGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadCreateGroup();
-            }
-        });
+        btnCreateGroup.setOnClickListener(view1 -> loadCreateGroup());
 
-        btnJoinGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadJoinGroup();
-            }
-        });
+        btnJoinGroup.setOnClickListener(view12 -> loadJoinGroup());
 
         if (isInCreateGroup) {
             loadCreateGroup();

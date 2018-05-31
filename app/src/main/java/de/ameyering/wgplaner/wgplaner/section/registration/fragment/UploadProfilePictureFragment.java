@@ -53,14 +53,11 @@ public class UploadProfilePictureFragment extends NavigationFragment {
                 image.setImageBitmap(bitmap);
             }
         });
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
-            }
+        image.setOnClickListener(view1 -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
         });
 
         image.setImageBitmap(dataProvider.getCurrentUserImage(getContext()));
@@ -68,20 +65,12 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         Button buttonContinue = view.findViewById(R.id.btn_continue_upload_profile_picture);
         Button buttonSkip = view.findViewById(R.id.btn_skip_upload_profile_picture);
 
-        buttonContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dataProvider.setCurrentUserImage(bitmap);
-                loadNext();
-            }
+        buttonContinue.setOnClickListener(view12 -> {
+            dataProvider.setCurrentUserImage(bitmap, null);
+            loadNext();
         });
 
-        buttonSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadNext();
-            }
-        });
+        buttonSkip.setOnClickListener(view13 -> loadNext());
 
         return view;
     }

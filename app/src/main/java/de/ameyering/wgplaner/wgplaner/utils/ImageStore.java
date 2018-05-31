@@ -136,7 +136,7 @@ public class ImageStore {
         }
     }
 
-    private void writeGroupPicture(byte[] groupPictureBytes) {
+    public void writeGroupPicture(byte[] groupPictureBytes) {
         FileOutputStream fileOutputStream = null;
 
         try {

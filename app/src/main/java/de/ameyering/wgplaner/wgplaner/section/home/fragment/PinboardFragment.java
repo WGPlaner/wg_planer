@@ -22,12 +22,12 @@ public class PinboardFragment extends SectionFragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_pinboard, container, false);
 
-        if (toolbar != null) {
+        if (actionBar != null) {
             if (title != null) {
-                toolbar.setSubtitle(title);
+                actionBar.setSubtitle(title);
 
             } else {
-                toolbar.setSubtitle(getString(R.string.section_title_pinboard));
+                actionBar.setSubtitle(getString(R.string.section_title_pinboard));
             }
         }
 

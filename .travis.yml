@@ -1,24 +1,22 @@
-# Travis CI for WGPlaner. Not final, yet.
 language: android
-
 sudo: false
 jdk:
 - oraclejdk8
 os:
 - linux
-
 env:
   global:
   - ADB_INSTALL_TIMEOUT=8
   - ANDROID_API_LEVEL=26
-  - ANDROID_BUILD_TOOLS_VERSION=26.0.2
+  - ANDROID_BUILD_TOOLS_VERSION=27.0.3
   - EMULATOR_API_LEVEL=19
   - ANDROID_ABI=armeabi-v7a
   - JAVA7_HOME=/usr/lib/jvm/java-7-oracle
   - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
   - JAVA_HOME=$JAVA8_HOME
   - PWD=`pwd`
-
+  - secure: xnzj1rSgBfWpi7mBLqss1ebkfekbxLIvj4EhNrJsVgEhHnQjZpr9C48whh+6pKbOGTgvY/IudGJydXLEWMUrFjchPcX98MWhtYbWUwX+1qkm7ifvjtsdBiDM7i62Vq57G9IELKx4Z9SHlXknQSrUAuKexudWB+mXUKFF3XUo8Nc7xoiynFgiNfcQ+HaT9OQQJJE2h/unmrHqpzz3TKdXWUJ1Dl6Ge1/QWYMrVeXFv6PWZq7W0B5Lak/K0LfDID4Qne56xvlHO1rXSs4X/+vu30K+vec4DI7znqgCs61+qMaRKxr6sTvpBvLFQ3GOM63lTiTBYO52R2W0DE48O9xzfQuSUpeEyeOrfHxSzJTZcUxHMHGIUkRBuLaf6B1H3C7YCK14o0AxB/RiYEOEzD8SAbN4d0e6Jnny5j2nKZDKbDOyDG5Xzf3HGa0DPafIdHZ54MPyrJdN4qLicZtXA5BCMEWkD5gKHqjMPRQrhdJWbM7bq+fkoDNPr73xjRSWVMqecBsj0L5PqyM1HdCdm3MZaAfJ/e2kh4vBEFbXHiPTNkTCp4BOjD6o0vYbMhIr47ZfhZ1tP9xpA1wpmv23zlLXWUNdDgm5UaX2sb7uDpj0tEFY+quKovQh3iJsBlwinahQe0ZQ7d9GZD/Qs3WCmbLofEz1+avVlCLgU808VzfC49c=
+  - secure: PT0dqohiRXoPNQaIvAp6RTepXlVFhIKqVLs0q2A2IqAGEVbnErXpjSLXZLgdX7JeYl3+RptG5z0meOZCrGpjuMTutvl8VdB+YNNf+rA+P4zKxklOVYwfonb20IVYruzlq+BAEHvIWnB8XNQpXtKGzNYP81McHOECXeCEZPEk9NviGip2jf3UJ+paFkATUdufGAqmP2/jE8jlTcBX7knfqB4KrQVoMAPWMu8p+Q2zc/zVVuuuc/EL8fPTNiI9A0VfSr32WwCMsDinPOSszxsisgdJZNAA3qNJix0cht5RX8hxpld3+ymz25Cr1ZdojUt+pZPKGAClN1JZ2ErfEHBl2JCokuHgjAxWEP/HsCFU7nK5J6mNPFgz3witPNPM4AfUAcV+s7nb3V/9sylvTKkFsSXvoCUGkko6OBDlvpBj2fFQ3Xq6hANMiD9DhsB5L4z/uKYcGdAg/psT+f14J8npBI51enbzGKEI90kJ1g3NDUgem3AZaT5jJ0ulqV+Fgt4PZcKScEzF9pkObs3fNiez8PvB9uFV1tTKIiewCLNTS5t2FCSY4pEtW99tMQIOTSAAIEHAhD43ipUH+hLKF/LxnxqVkfwzLKBgfyy8faHSbUn1ElP+i5K/tHr56HMvARklUjFFbtgDPE4i5pmAhjAGxMsiH18aprq6Rlp+Gl7Zcu8=
 android:
   components:
   - tools
@@ -27,38 +25,27 @@ android:
   - tools
   - android-$ANDROID_API_LEVEL
   - android-$EMULATOR_API_LEVEL
-  # Support library
   - extra-android-support
-  # Latest artifacts in local repository
   - extra-google-m2repository
   - extra-android-m2repository
-  # Specify at least one system image
   - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
-
+  licenses:
+  - android-sdk-preview-license.*
+  - android-sdk-license.*
 before_install:
-- mkdir "$ANDROID_HOME/licenses" || true
-- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-- echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-
+- openssl aes-256-cbc -K $encrypted_33b0d72ee996_key -iv $encrypted_33b0d72ee996_iv
+  -in wgplaner_signed_apk_keystore.jks.enc -out wgplaner_signed_apk_keystore.jks -d
 install:
-# Converts the shallow clone to a full clone
-# This is necessary in order to determine the current app version code
 - git fetch --unshallow --tags
-
 before_script:
-- echo no | android create avd -f -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI -s WVGA800 -c 128M
+- echo no | android create avd -f -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI
+  -s WVGA800 -c 128M
 - emulator -avd test -no-audio -no-window &
-- ./gradlew clean
-
+- "./gradlew clean"
 script:
 - echo -e '\033[0;33mBuilding...\033[0m' && echo -en 'travis_fold:start:script.build\\r'
-- ./gradlew assembleRelease -PdisablePreDex
+- "./gradlew assembleRelease -PdisablePreDex"
 - echo -en 'travis_fold:end:script.build\\r'
-
-#- echo -e '\033[0;33mUnit tests...\033[0m' && echo -en 'travis_fold:start:script.unittest\\r'
-#- ./gradlew testReleaseUnitTest createDebugCoverageReport -PdisablePreDex
-#- echo -en 'travis_fold:end:script.unittest\\r'
-
 - echo -e '\033[0;33mUI tests...\033[0m' && echo -en 'travis_fold:start:script.uitest\\r'
 - android-wait-for-emulator
 - adb shell settings put global window_animation_scale 0
@@ -67,3 +54,20 @@ script:
 - adb shell input keyevent 82 &
 - adb logcat -c
 - echo -en 'travis_fold:end:script.uitest\\r'
+before_deploy:
+- cp $TRAVIS_BUILD_DIR/.keystore $HOME
+- cd app/build/outputs/apk/
+- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/keystore.jks
+  -storepass $storepass -keypass $keypass app-release-unsigned.apk wgplaner_android_signed_apk_key
+- jarsigner -verify app-release-unsigned.apk
+- "${ANDROID_HOME}/build-tools/24.0.2/zipalign -v 4 app-release-unsigned.apk wgplaner.apk"
+deploy:
+  provider: releases
+  file: wgplaner.apk
+  skip_cleanup: true
+  on:
+    repo: WGPlaner/wg_planer
+    tags: true
+    jdk: oraclejdk8
+  api_key:
+    secure: 1k82XNWaVXJrr3ByrRdk2oneUn/zxwCQtmwI93WJmkYWqw57+5d+WFEeHtevg8oRE5wHG5q3eI2MZ85HqqNFj2oZ9sdcjhfS2DmJz+s6nAjuNfizATEp8Pb7W8z+E9h3q5xv77G0rOHDXo56dwIrmlO0UcQr6drrrMyt+//kw9bxvFUuXc2m+4/AVTS5gXx47jYMk6XbwMXA+TnzXwzuVz/zK+7Dnv5YspPaQebDniwoB9+UTio9padLSiVDvjGQH2uuDa5u+R3xRd0ZWI5NFouQPZrJw0Nb0QOfl2zCe49zyF/8mX0oKawnUJWlu431uDJqze/O/jdkrTaXQ2eZ6zCEIdnUWU2F6/vonIZ5UKoWKq90lw3A5uAjXJg8X/l39Qnd1pWNyMeV/Ar+PdsYBqY+Al7TNvUejsZoVPU2P43uMCEY5+UmTSezt2scdzzVR8SvP1lrvTRAC7CSZxZeuu+8kBFOydNETItbPVOsXVimN7TcXriX1+zWEwxy0eGPvPuNW5UTQCLT32dV8xLTsyAUF5tfV98+WcAg/M2kq6LseEvVQ9Px9viZLc8NiquZDQC/OWy4qA4s+m2b/gHbE37q5WvaKTqksggzyEPrPGEbWdb4fRXxGR3TVzC+EoNTyAytbeK3nzL5lD0//rNV5FVSqNYXP/31HwuO9n36iJc=

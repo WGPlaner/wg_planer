@@ -48,7 +48,7 @@
             android:indeterminate="true"
             android:indeterminateBehavior="cycle"
             android:indeterminateDuration="@android:integer/config_longAnimTime"
-            android:indeterminateTint="@color/colorBackground"
+            android:indeterminateTint="@color/secondaryColor"
             android:visibility="visible"/>
     </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

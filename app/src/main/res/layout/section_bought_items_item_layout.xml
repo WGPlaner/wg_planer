@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bought_items_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/bought_items_checkbox_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <CheckBox
+            android:id="@+id/bought_items_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:checked="false" />
+    </LinearLayout>
 
     <android.support.v7.widget.CardView
         android:id="@+id/bought_items_item_container"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        app:cardElevation="1dp">
+        android:layout_weight="0.85"
+        app:cardElevation="1dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:stateListAnimator="@animator/lift_on_touch"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:id="@+id/bought_items_content_container"
@@ -102,11 +126,12 @@
                             android:layout_weight="0.5"
                             android:text="@string/product_attribute_requested_for" />
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/bought_items_item_product_requested_for"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5" />
+                            android:layout_weight="0.5"
+                            android:orientation="vertical" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -132,30 +157,6 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/bought_items_action_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="0.8"
-                android:gravity="end"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/bought_items_action_change_price"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/product_action_change_price" />
-
-                <Button
-                    android:id="@+id/bought_items_action_add_price"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/product_action_add_price" />
             </LinearLayout>
 
         </LinearLayout>
