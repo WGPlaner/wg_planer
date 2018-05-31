@@ -113,6 +113,8 @@ public class HomeActivity extends AppCompatActivity
                 case BOUGHT_ITEMS:
                     onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_bought_items));
                     break;
+                default:
+                    break;
             }
         }
     }

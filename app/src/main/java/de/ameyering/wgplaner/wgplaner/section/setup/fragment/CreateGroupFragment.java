@@ -73,12 +73,12 @@ public class CreateGroupFragment extends Fragment {
         editGroupCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                //Well, nothing happens so far... I hate Codacy
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                //Well, nothing happens so far... I hate Codacy
             }
         });
 
