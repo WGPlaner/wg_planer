@@ -91,6 +91,26 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         addPriceActionView = findViewById(R.id.item_detail_action_add_price);
 
+        initBoughtBy(item);
+
+        TextView requestedByNameView = findViewById(R.id.item_detail_item_requested_by_name);
+        CircularImageView requestedByPictureView = findViewById(R.id.item_detail_item_requested_by_picture);
+
+        requestedByNameView.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
+        Bitmap pic = imageStore.loadGroupMemberPicture(item.getRequestedBy(), this);
+        requestedByPictureView.setImageBitmap(pic);
+
+        itemPriceEditLayout = findViewById(R.id.item_detail_add_price_layout);
+        itemPriceEdit = findViewById(R.id.item_detail_add_price);
+
+        initActionView();
+
+        requestedForChildContainer = findViewById(R.id.item_detail_requested_for);
+
+        initRequestedFor(transformUidsToUsers(item.getRequestedFor()));
+    }
+
+    private void initBoughtBy(ListItem item) {
         LinearLayout boughtByContainerView = findViewById(R.id.item_detail_item_bought_by_container);
         LinearLayout boughtOnContainerView = findViewById(R.id.item_detail_item_bought_on_container);
 
@@ -114,17 +134,9 @@ public class ItemDetailActivity extends AppCompatActivity {
             boughtByContainerView.setVisibility(View.GONE);
             boughtOnContainerView.setVisibility(View.GONE);
         }
+    }
 
-        TextView requestedByNameView = findViewById(R.id.item_detail_item_requested_by_name);
-        CircularImageView requestedByPictureView = findViewById(R.id.item_detail_item_requested_by_picture);
-
-        requestedByNameView.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-        Bitmap pic = imageStore.loadGroupMemberPicture(item.getRequestedBy(), this);
-        requestedByPictureView.setImageBitmap(pic);
-
-        itemPriceEditLayout = findViewById(R.id.item_detail_add_price_layout);
-        itemPriceEdit = findViewById(R.id.item_detail_add_price);
-
+    private void initActionView() {
         addPriceActionView = findViewById(R.id.item_detail_action_add_price);
         addPriceActionView.setOnClickListener(view -> {
             if (!isInEditMode) {
@@ -137,47 +149,43 @@ public class ItemDetailActivity extends AppCompatActivity {
                 addPriceActionView.setEnabled(false);
                 itemPriceEdit.setEnabled(false);
                 dataProvider.addPriceToListItem(item, itemPriceEdit.getText().toString(),
-                new ServerCallsInterface.OnAsyncCallListener<ListItem>() {
-                    @Override
-                    public void onFailure(ApiException e) {
-                        if (e == null) {
-                            runOnUiThread(() -> {
-                                itemPriceEditLayout.setError(getString(R.string.dialog_add_price_error));
-                                itemPriceEdit.setEnabled(true);
-                                addPriceActionView.setEnabled(true);
-                            });
+                    new ServerCallsInterface.OnAsyncCallListener<ListItem>() {
+                        @Override
+                        public void onFailure(ApiException e) {
+                            if (e == null) {
+                                runOnUiThread(() -> {
+                                    itemPriceEditLayout.setError(getString(R.string.dialog_add_price_error));
+                                    itemPriceEdit.setEnabled(true);
+                                    addPriceActionView.setEnabled(true);
+                                });
 
-                        } else {
+                            } else {
+                                runOnUiThread(() -> {
+                                    Toast.makeText(ItemDetailActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                                    itemPriceEdit.setEnabled(true);
+                                    addPriceActionView.setEnabled(true);
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onSuccess(ListItem result) {
                             runOnUiThread(() -> {
-                                Toast.makeText(ItemDetailActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
                                 itemPriceEdit.setEnabled(true);
                                 addPriceActionView.setEnabled(true);
+                                addPriceActionView.setImageDrawable(ContextCompat.getDrawable(ItemDetailActivity.this, R.drawable.ic_attach_money_white));
+                                itemPriceView.setVisibility(View.VISIBLE);
+                                itemPriceEditLayout.setVisibility(View.GONE);
+                                itemPriceEditLayout.setError(null);
+                                NumberFormat format = NumberFormat.getCurrencyInstance();
+                                format.setCurrency(dataProvider.getCurrentGroupCurrency());
+                                itemPriceView.setText(format.format(((double) result.getPrice()) / 100));
+                                isInEditMode = false;
                             });
                         }
-                    }
-
-                    @Override
-                    public void onSuccess(ListItem result) {
-                        runOnUiThread(() -> {
-                            itemPriceEdit.setEnabled(true);
-                            addPriceActionView.setEnabled(true);
-                            addPriceActionView.setImageDrawable(ContextCompat.getDrawable(ItemDetailActivity.this, R.drawable.ic_attach_money_white));
-                            itemPriceView.setVisibility(View.VISIBLE);
-                            itemPriceEditLayout.setVisibility(View.GONE);
-                            itemPriceEditLayout.setError(null);
-                            NumberFormat format = NumberFormat.getCurrencyInstance();
-                            format.setCurrency(dataProvider.getCurrentGroupCurrency());
-                            itemPriceView.setText(format.format(((double) result.getPrice()) / 100));
-                            isInEditMode = false;
-                        });
-                    }
-                });
+                    });
             }
         });
-
-        requestedForChildContainer = findViewById(R.id.item_detail_requested_for);
-
-        initRequestedFor(transformUidsToUsers(item.getRequestedFor()));
     }
 
     private void initRequestedFor(List<User> users) {

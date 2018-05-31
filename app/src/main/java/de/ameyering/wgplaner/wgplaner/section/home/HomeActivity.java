@@ -23,7 +23,6 @@ import de.ameyering.wgplaner.wgplaner.section.settings.GroupSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.settings.ProfileSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
-import io.swagger.client.api.ShoppinglistApi;
 
 public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
