@@ -17,6 +17,7 @@ env:
   - PWD=`pwd`
   - secure: wwRISI0qJxlLZf86/mPDXg9ICOD/i2KXA0cChLFcnWHOI6mcx+SPgu4774kHzDpgqftqv2mmPMcv5Vaov13Gi4XB+x/kmBQHNJJ1Wctl/1KfHNAZNj6uZKiMmmIxbZwaiVicCD/7ucwLnkPzxyqWVbTKksNHFJqVMjOgYl4plRjzHzK7ajaz9PCz/tmgkLFmU8oqM4pKcGtJwTw2vbqso2A7+pNVuuoc/D1JjhfbLdOCq69R4cAOxJXSG/MVTnZyUXiPxWMiCmv97aBxhJ/fOawQQsjD/lMnZPv8I8gz0gPMx6k+Nf9vaMtBmwursZSTnph+BcCmydj0QkDkZjhqavZA8g43CDo5qWLQiY3R5H4CDJmxrsoaMb8qE4IGTRBm4VcrNLo8IuibD09guidMLy28FK+8gNjBujDZlkDB8Ojzuy+gwE3tdpBOZpC1dtKSTxkKcUJDX5acWraAYYwqb/AJ1Zoh60ev1PTOOFusczDo9wNwfXHnyKVciHkAgl+Qontr6lAwgtIx9BH5cIJGG3DIP+rLpddNIhaVD9jBI1w/3JnbYihfwxh/MDJcHqsHeSvBEbcMboaV1+2MhXwXSYu8gPVdbZjr+x32a2Oq3hxJ1ZH5u44fyDyqYxOp4dynuuVZ4vMUa2ARTAAOGRsGQoI/mztgm/eyP2KAGaWfcH0=
   - secure: PBw8GxCjvWFhaYnARuMabmz5Oe/CujjGXlewIeRVhNHbfHDryoZ6W8wI6QqUG5QFCfoQ2VZVotJX4yHj5myMX1Y7pF614sxJQx00CXqNSo484+ff6d2GPQukesth2XCu9x+RrKiG4KjWzzdunwxjhV59/r91upTq5kwbXf5gwuFeUSIAAg3hTJ71anQYvZsak66VBsnZ/1284DZy8+owvmytoIzuMWeKtpVCXF1Djjrova0EUo1cE0+8chpXxsDE9QVyVa5C/EqpjDtj/+7/ZRfzJOUrpMjFV6CYhPwruFX01F7IuI0Sw7dkpWVqCbBnUBgp/qsYCi48XZzA6UF6g3u5oY+5rEVXfPWTG2ckUbRko4WB6EdW7J8/srAhgAQRr06UsmFuHsqZZgPlJYTTGe1stiDQeas4Z0h1vXsTHTLbAqA3ZbCIfOFBOlEovNdHhB9mKCAHAfzkEX7I656Cq1OwEHsvPxwk3mQV3WwQqFQJTb95kXJ33WO71tFe59Si8Ki+N+ZkWbqFRPqkeQIvzezc/B4URqjVEDOAWPl8zfTxXw1WDK/Qhi1iLHbXRXfhM/GahxouyCO85YP3Cork/2VkNWpXGjRv9y1tu1rBxgzEHm+YmoD1Czl5XC5E8stPrDkaaVbLsmrvuuPPbHL92dsFuG8AQeJvgDlvH8eolaI=
+
 android:
   components:
   - tools
@@ -29,19 +30,19 @@ android:
   - extra-google-m2repository
   - extra-android-m2repository
   - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
-before_install:
-- openssl aes-256-cbc -K $encrypted_33b0d72ee996_key -iv $encrypted_33b0d72ee996_iv
-  -in wgplaner_signed_apk_keystore.jks.enc -out wgplaner_signed_apk_keystore.jks -d
-- mkdir "$ANDROID_HOME/licenses" || true
-- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-- echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+  licenses:
+  - 'android-sdk-preview-license.*'
+  - 'android-sdk-license.*'
+
 install:
 - git fetch --unshallow --tags
+
 before_script:
 - echo no | android create avd -f -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI
   -s WVGA800 -c 128M
 - emulator -avd test -no-audio -no-window &
 - "./gradlew clean"
+
 script:
 - echo -e '\033[0;33mBuilding...\033[0m' && echo -en 'travis_fold:start:script.build\\r'
 - "./gradlew assembleRelease -PdisablePreDex"
@@ -54,12 +55,14 @@ script:
 - adb shell input keyevent 82 &
 - adb logcat -c
 - echo -en 'travis_fold:end:script.uitest\\r'
+
 before_deploy:
 - cp $TRAVIS_BUILD_DIR/.keystore $HOME
 - cd app/build/outputs/apk/
 - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/keystore.jks -storepass $storepass -keypass $keypass app-release-unsigned.apk wgplaner_android_signed_apk_key
 - jarsigner -verify app-release-unsigned.apk
 - "${ANDROID_HOME}/build-tools/24.0.2/zipalign -v 4 app-release-unsigned.apk wgplaner.apk"
+
 deploy:
     provider: releases
     file: wgplaner.apk
