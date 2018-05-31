@@ -32,9 +32,6 @@ android:
   licenses:
   - android-sdk-preview-license.*
   - android-sdk-license.*
-before_install:
-- openssl aes-256-cbc -K $encrypted_33b0d72ee996_key -iv $encrypted_33b0d72ee996_iv
-  -in wgplaner_signed_apk_keystore.jks.enc -out wgplaner_signed_apk_keystore.jks -d
 install:
 - git fetch --unshallow --tags
 before_script:
@@ -55,19 +52,18 @@ script:
 - adb logcat -c
 - echo -en 'travis_fold:end:script.uitest\\r'
 before_deploy:
-- cp $TRAVIS_BUILD_DIR/.keystore $HOME
-- cd app/build/outputs/apk/
-- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/keystore.jks
-  -storepass $storepass -keypass $keypass app-release-unsigned.apk wgplaner_android_signed_apk_key
+- openssl aes-256-cbc -K $encrypted_657e27e4d3ee_key -iv $encrypted_657e27e4d3ee_iv -in keystore.jks.enc -out keystore.jks -d
+- cd app/build/outputs/apk/release
+- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${TRAVIS_BUILD_DIR}/keystore.jks -storepass $storepass -keypass $keypass app-release-unsigned.apk wgplaner_android_signed_apk_key
 - jarsigner -verify app-release-unsigned.apk
-- "${ANDROID_HOME}/build-tools/24.0.2/zipalign -v 4 app-release-unsigned.apk wgplaner.apk"
+- "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS}/zipalign -v 4 app-release-unsigned.apk WGPlaner.apk"
 deploy:
   provider: releases
-  file: wgplaner.apk
+  file: WGPlaner.apk
   skip_cleanup: true
   on:
     repo: WGPlaner/wg_planer
     tags: true
     jdk: oraclejdk8
   api_key:
-    secure: 1k82XNWaVXJrr3ByrRdk2oneUn/zxwCQtmwI93WJmkYWqw57+5d+WFEeHtevg8oRE5wHG5q3eI2MZ85HqqNFj2oZ9sdcjhfS2DmJz+s6nAjuNfizATEp8Pb7W8z+E9h3q5xv77G0rOHDXo56dwIrmlO0UcQr6drrrMyt+//kw9bxvFUuXc2m+4/AVTS5gXx47jYMk6XbwMXA+TnzXwzuVz/zK+7Dnv5YspPaQebDniwoB9+UTio9padLSiVDvjGQH2uuDa5u+R3xRd0ZWI5NFouQPZrJw0Nb0QOfl2zCe49zyF/8mX0oKawnUJWlu431uDJqze/O/jdkrTaXQ2eZ6zCEIdnUWU2F6/vonIZ5UKoWKq90lw3A5uAjXJg8X/l39Qnd1pWNyMeV/Ar+PdsYBqY+Al7TNvUejsZoVPU2P43uMCEY5+UmTSezt2scdzzVR8SvP1lrvTRAC7CSZxZeuu+8kBFOydNETItbPVOsXVimN7TcXriX1+zWEwxy0eGPvPuNW5UTQCLT32dV8xLTsyAUF5tfV98+WcAg/M2kq6LseEvVQ9Px9viZLc8NiquZDQC/OWy4qA4s+m2b/gHbE37q5WvaKTqksggzyEPrPGEbWdb4fRXxGR3TVzC+EoNTyAytbeK3nzL5lD0//rNV5FVSqNYXP/31HwuO9n36iJc=
+    secure: "CnUJV7iKOwA+BHP3/DpPDUuvpiXtwrYj5ZoQ5XukpyZNFf3ZEC2qzUIxz1cd6q7A2VB3mmQjazA3OAjcTM8GQ6ovwbRaD+SJVCbvp2DPgGLVaTAkDEwR4Uxtny26VKzMmOQIQFXcOlMJC7xph1kx/C2qBaRIz2E3Vf81RgV5jL9jS3yiJzU7gSkv6PeqzcuETn9gyUrA0K74FTjdLl+CwLOYM4xsHEIv9/a4R5mKFwe0xIPflmV3Rxx/1RcSOlcezC6XMOJVIIpe3L9ZqSRB2zAYUD1zSgFVnMpNT6oqsXP23IBInnIcKzfhV+JUgXmLismZ3FxWDkTco7tD52i8ZNrytCSVpQGRWA+zM6foOJTURMKPjX5QNkXDgmQVxEqcaMkGj/Ppbfdba1aAPBkVw1cI4AXqrDwEbJcZAMCm9MxjrIG39bljOOJw5SOXntmieFI1j5VmPbEJnXFlUBvtju1ocThIhYXFBtLll04I7/MtgrAX/n0NOj8k94NybFGf8s5z97TaU8HPU/5V0Iv9GopMMf4X8uo6SP6QOEMrGJPcLRQDfYaNwXGm6aJGncOQ+7SZwt08vnkjhZTH/6bPykPVmajZBrE3TMDPzOWGIGrG0vi14Ph4wPEv1WZ+n+5FYW+GctgPDJzVgScHfaPFXcX7SEORzN1T6TU5Es5pdLI="
