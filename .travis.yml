@@ -52,7 +52,7 @@ script:
 - adb logcat -c
 - echo -en 'travis_fold:end:script.uitest\\r'
 before_deploy:
-- openssl aes-256-cbc -K $encrypted_657e27e4d3ee_key -iv $encrypted_657e27e4d3ee_iv -in keystore.jks.enc -out keystore.jks -d
+- openssl aes-256-cbc -K $encrypted_657e27e4d3ee_key -iv $encrypted_657e27e4d3ee_iv -in wgplaner_signed_apk_keystore.jks.enc -out keystore.jks -d
 - cd app/build/outputs/apk/release
 - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${TRAVIS_BUILD_DIR}/keystore.jks -storepass $storepass -keypass $keypass app-release-unsigned.apk wgplaner_android_signed_apk_key
 - jarsigner -verify app-release-unsigned.apk
