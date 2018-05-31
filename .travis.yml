@@ -69,10 +69,10 @@ deploy:
         tags: true
         jdk: oraclejdk8
     api_key:
-         secure: "P6Tv9DHNMNqwDbDi8NoTnlj4aWWVpyrJtokoaVSzlpTdJizC9iQNophdivv8xDcC+xMn+caxQpoJxH7fSyJaWxIqelFvzI5JFIDqsYTguS
+         secure: P6Tv9DHNMNqwDbDi8NoTnlj4aWWVpyrJtokoaVSzlpTdJizC9iQNophdivv8xDcC+xMn+caxQpoJxH7fSyJaWxIqelFvzI5JFIDqsYTguS
         eEsCcMzDJaa79MYHry2xbk4zoFG568syPeHhI4X2YRnt1U2H23jiWmEEZkrt/Dk5m52AacZ7Vg7uHkEwJZgTt65Mt44E0JtdBZc5vQw7XR4as7Vl91FPV
         4+DJCEC9JvPrmu5op2leh9CYV6Gzdu/ACKBptDe959dIXMXhpLAJSaN6gXRZD/HMCsFgRwaGxUOKv2wt/vXXEMZk3z1dAQ7PX1C7sSUgl8XqjuNzNOv8b
         f2gnSsYkzQ3QULRbeHHm/myPlsxBDJp27PqahPXIB82nvOFkMKdnXWMyhOmGOESbea2pVO4CIDYfQJQdmMSkUNJ5vbR0lyjlVlNcREKFrMKQpH6TqG2y6
         Py29d1QEYDPCKs0eBM+z9v6oVzOKFf+5QSpQoA2XLGD7M1FpkxqgERm1kcFRktXFFYdpw4bgishnrpcCwI7OSaJPoUkQgScINlP4FOi/F+Xdb0gyxgUny
-        ZqsIplq3/xayKEQ0Y3w8OiyZ3jjLpLOtJxp+ia0KuyqN0Xnxrk9rAACq5QOVl1j+ILeCP5Qtrxv+xyEWmMY3aDGGC7BKqq9pzlMB65bDRcGls="
+        ZqsIplq3/xayKEQ0Y3w8OiyZ3jjLpLOtJxp+ia0KuyqN0Xnxrk9rAACq5QOVl1j+ILeCP5Qtrxv+xyEWmMY3aDGGC7BKqq9pzlMB65bDRcGls=
 
