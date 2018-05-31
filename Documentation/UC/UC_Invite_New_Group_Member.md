@@ -44,5 +44,11 @@ The main preconditions for this use case are:
 # 5. Postconditions
 The server has generated and stored the Access Key to invite new group members.
 
-# 6. Extension Points
-n/a
+# 6. Function Points
+To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
+
+For this use case we got a score of *22.56* function points. It took 520min to implement this use case.
+
+![Function Points 1](../FunctionPoints/InviteMember_1.jpg)
+![Function Points 1](../FunctionPoints/InviteMember_2.jpg)
+![Function Points 1](../FunctionPoints/InviteMember_3.jpg)

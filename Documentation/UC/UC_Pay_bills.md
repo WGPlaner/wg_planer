@@ -34,5 +34,5 @@ The main preconditions for this use case are:
 # 5. Postconditions
 As a result of this use case the user has marked a bill as paid or canceled the action.
 
-# 6. Extension Points
+# 6. Function Points
 n/a

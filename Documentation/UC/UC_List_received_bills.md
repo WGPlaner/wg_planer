@@ -43,5 +43,11 @@ The main preconditions for this use case are:
 # 5. Postconditions
 As a result of this use case the user can see the list of received bills.
 
-# 6. Extension Points
-n/a
+# 6. Function Points
+To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
+
+For this use case we got a score of *17.64* function points. It is estimated to take us 576min to implement this use case.
+
+![Function Points 1](../FunctionPoints/ListReceivedBills_1.jpg)
+![Function Points 1](../FunctionPoints/ListReceivedBills_2.jpg)
+![Function Points 1](../FunctionPoints/ListReceivedBills_3.jpg)

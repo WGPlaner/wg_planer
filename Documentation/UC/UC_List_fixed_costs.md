@@ -37,5 +37,11 @@ The main preconditions for this use case are:
 # 5. Postconditions
 As a result of this use case the user can see all fixed costs.
 
-# 6. Extension Points
-n/a
+# 6. Function Points
+To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
+
+For this use case we got a score of *18.06* function points. It is estimated to take us 590min to implement this use case.
+
+![Function Points 1](../FunctionPoints/ListFixedCosts_1.jpg)
+![Function Points 1](../FunctionPoints/ListFixedCosts_2.jpg)
+![Function Points 1](../FunctionPoints/ListFixedCosts_3.jpg)

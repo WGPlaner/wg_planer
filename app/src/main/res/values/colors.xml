@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#afb2c1</color>
-    <color name="colorPrimaryDark">#878993</color>
-    <color name="colorAccent">#4e4c4d</color>
-    <color name="colorButtonDark">#b6b6b6</color>
-    <color name="colorButtonLight">#e2e2e2</color>
+
+    <color name="primaryColor">#fafafa</color>
+    <color name="primaryLightColor">#ffffff</color>
+    <color name="primaryDarkColor">#c7c7c7</color>
+    <color name="secondaryColor">#2196f3</color>
+    <color name="secondaryLightColor">#6ec6ff</color>
+    <color name="secondaryDarkColor">#0069c0</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
+    <color name="colorButtonDark">@color/secondaryColor</color>
+    <color name="colorButtonLight">@color/secondaryLightColor</color>
     <color name="colorBackground">#FFFAFAFA</color>
     <color name="colorDividerDark">#4a000000</color>
     <color name="colorDivider">#a0ffffff</color>
 
+    <color name="textColorPrimary">#000000</color>
+    <color name="textColorAccent">#000000</color>
+
     <!-- Colors Navigation drawer gradient -->
 
-    <color name="navDrawerGradientDark">#4e4c4d</color>
-    <color name="navDrawerGradientLight">#afb2c1</color>
-    <color name="navDrawerGradientMedium">#878993</color>
+    <color name="navDrawerGradientDark">@color/secondaryDarkColor</color>
+    <color name="navDrawerGradientLight">@color/secondaryLightColor</color>
+    <color name="navDrawerGradientMedium">@color/secondaryColor</color>
 </resources>

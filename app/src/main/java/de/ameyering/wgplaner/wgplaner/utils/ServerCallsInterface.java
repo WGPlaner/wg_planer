@@ -49,9 +49,9 @@ public interface ServerCallsInterface {
 
     ApiResponse<SuccessResponse> leaveGroup();
 
-    void getGroupAsync(UUID groupUid, @Nullable final OnAsyncCallListener<Group> listener);
+    void getGroupAsync(@Nullable final OnAsyncCallListener<Group> listener);
 
-    ApiResponse<Group> getGroup(UUID groupUid);
+    ApiResponse<Group> getGroup();
 
     void updateGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
 
@@ -97,7 +97,11 @@ public interface ServerCallsInterface {
 
     ApiResponse<SuccessResponse> buyListItems(List<UUID> items);
 
-    void getBillListAsync(UUID groupUid, @Nullable final OnAsyncCallListener<BillList> listener);
+    void getBillListAsync(@Nullable final OnAsyncCallListener<BillList> listener);
 
-    ApiResponse<BillList> getBillList(UUID groupUid);
+    ApiResponse<BillList> getBillList();
+
+    void getBoughtItemsAsync(String uid, @Nullable final OnAsyncCallListener<ShoppingList> listener);
+
+    ApiResponse<ShoppingList> getBoughtItems(String uid);
 }

@@ -46,5 +46,5 @@ The main preconditions for this use case are:
 # 5. Postconditions
 As a result of this use case the user can see the list of received bills.
 
-# 6. Extension Points
+# 6. Function Points
 n/a

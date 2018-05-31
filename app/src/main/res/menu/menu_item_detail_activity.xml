@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_detail_activity_menu_redo"
+        android:icon="@drawable/ic_undo_black"
+        android:title="@string/bought_items_action_mode_menu_undo"
+        app:showAsAction="always" />
+</menu>

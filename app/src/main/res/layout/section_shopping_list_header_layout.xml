@@ -12,4 +12,5 @@
         android:text="TextView"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Medium" />
+
 </LinearLayout>

@@ -17,9 +17,13 @@ import java.util.regex.Pattern;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
+import io.swagger.client.ApiException;
+import io.swagger.client.model.Group;
 
 public class JoinGroupFragment extends Fragment {
-    EditText key;
+    private EditText key;
+    private Button btnJoinGroup;
 
     @Nullable
     @Override
@@ -29,13 +33,10 @@ public class JoinGroupFragment extends Fragment {
 
         key = view.findViewById(R.id.fragment_setup_join_group_input_access_key);
 
-        Button btnJoinGroup = view.findViewById(R.id.fragment_setup_join_group_btn_join);
-        btnJoinGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkInputAndReturn(key.getText().toString())) {
-                    joinGroup(key.getText().toString());
-                }
+        btnJoinGroup = view.findViewById(R.id.fragment_setup_join_group_btn_join);
+        btnJoinGroup.setOnClickListener(view1 -> {
+            if (checkInputAndReturn(key.getText().toString())) {
+                joinGroup(key.getText().toString());
             }
         });
 
@@ -54,19 +55,27 @@ public class JoinGroupFragment extends Fragment {
     }
 
     private void joinGroup(String key) {
-        if (DataProvider.getInstance().joinCurrentGroup(key, getContext())) {
-            Intent intent = new Intent(getActivity(), HomeActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-
-        } else {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+        DataProvider.getInstance().joinCurrentGroup(key, getContext(),
+        new ServerCallsInterface.OnAsyncCallListener<Group>() {
+            @Override
+            public void onFailure(ApiException e) {
+                getActivity().runOnUiThread(() ->  {
                     Toast.makeText(getContext(), getString(R.string.server_connection_failed),
                         Toast.LENGTH_LONG).show();
-                }
-            });
-        }
+                    btnJoinGroup.setEnabled(true);
+                    JoinGroupFragment.this.key.setEnabled(true);
+                });
+            }
+
+            @Override
+            public void onSuccess(Group result) {
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        btnJoinGroup.setEnabled(false);
+        this.key.setEnabled(false);
     }
 }

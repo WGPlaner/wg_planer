@@ -20,6 +20,7 @@
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_shopping_list">Shopping List</string>
     <string name="nav_accounting">Accounting</string>
+    <string name="nav_bought_items">Bought Items</string>
     <string name="nav_rosters">Rosters</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_pinboard">Pinboard</string>
@@ -55,9 +56,9 @@
 
     <!-- SetUp Strings -->
     <string name="set_up_group_name_hint">Group name</string>
+    <string name="set_up_group_currency_hint">Currency</string>
     <string name="set_up_group_name_error">Please enter a group name</string>
     <string name="set_up_group_currency_error">Please pick a currency</string>
-    <string name="set_up_group_currency_hint">Group currency</string>
     <string name="set_up_group_header">Dear %s</string>
     <string name="set_up_group_body_key">In order to use all available features of the WGPlaner Application you have to be member of a group.\n\nTherefore you can either join an existing group by entering the corresponding access key or create a new group</string>
     <string name="set_up_key_hint">Key</string>
@@ -77,11 +78,15 @@
     <string name="section_title_set_up_group">Group SetUp</string>
     <string name="section_title_shopping_list">Shopping List</string>
     <string name="section_title_pinboard">Pinboard</string>
+    <string name="section_title_bought_items">Bought Items</string>
 
     <!-- Product related strings -->
     <string name="product_attribute_number">Number</string>
     <string name="product_attribute_requested_by">Requested by</string>
     <string name="product_attribute_requested_for">Requested for</string>
+    <string name="product_attribute_price">Price</string>
+    <string name="product_action_add_price">Add Price</string>
+    <string name="product_action_change_price">Change Price</string>
 
     <string name="group_label">Group</string>
     <string name="asset_statements" translatable="false">[{\n  \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n  \"target\": {\n    \"namespace\": \"web\",\n    \"site\": \"https://api.wgplaner.ameyering.de\",\n  }\n}]</string>
@@ -130,10 +135,52 @@
     <string name="sort_by_label_requested_by">Requested by</string>
     <string name="sort_by_label_category">Category</string>
     <string name="sort_by_label_name">Name</string>
+
     <string name="search_title">Search</string>
 
     <string name="bill_detail_cost_label">Costs</string>
     <string name="bill_detail_items_label">Items</string>
     <string name="bill_detail_action_pay">mark as paid</string>
     <string name="bill_detail_action">complete billing</string>
+
+    <string name="bought_items_action_mode_menu_bill">bill items</string>
+    <string name="bought_items_action_mode_menu_undo">undo</string>
+    <string name="bought_items_action_mode_selected_label">selected</string>
+    <string name="bought_items_action_mode_price_not_set">not set</string>
+
+    <string name="item_detail_action_add_price">Add price</string>
+    <string name="item_detail_label_bought_on">Bought on</string>
+    <string name="item_detail_label_bought_by">Bought by</string>
+    <string name="item_detail_label_requested_by">Requested by</string>
+    <string name="item_detail_label_requested_for">Requested for</string>
+
+    <string name="error_invalid_currency">Please enter a valid currency</string>
+    <string name="error_group_name_invalid">Please enter a group name</string>
+
+    <string name="add_price_dialog">Add price</string>
+    <string name="add_price_hint">Price</string>
+    <string name="dialog_add_price_positive">Add Price</string>
+    <string name="dialog_add_price_negative">Cancel</string>
+    <string name="dialog_add_price_error">Please provide a price or cancel</string>
+
+    <string name="create_bill_add_due_date_hint">Due Date</string>
+    <string name="create_bill_due_date_error">Please select a date one week after today</string>
+    <string name="create_bill_title">Create Bill</string>
+    <string name="create_bill_items_label">Items</string>
+    <string name="create_bill_recipients_label">Recipients</string>
+    <string name="item_detail_label_amount">Amount</string>
+    <string name="item_detail_title">Item</string>
+    <string name="item_detail_amount_format">%s pieces</string>
+
+    <string name="group_settings_action_add_member">Add</string>
+    <string name="group_settings_action_remove_member">Remove</string>
+    <string name="group_settings_action_make_admin">Make Admin</string>
+    <string name="group_settings_label_members">Members</string>
+    <string name="group_settings_name_error">Please provide a name</string>
+    <string name="group_settings_currency_error">Please select a valid currency</string>
+
+    <string name="section_shopping_list_no_items">There are currently no items in the shopping list</string>
+    <string name="share_join_intent_chooser">Share access key</string>
+    <string name="share_join_intent_subject">Join our WGPlaner Group!</string>
+    <string name="share_join_intent_text">Click the link to join our WGPlaner Group: %s</string>
 </resources>

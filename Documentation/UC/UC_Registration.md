@@ -57,3 +57,12 @@ The main postconditions for this use case are:
 
 1. Future implementation may contain more possibilities to declare personal data
 2. Future implementation may contain a registration via a google account
+
+# 7. Function Points
+To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
+
+For this use case we got a score of *41.8* function points. It took 1625min to implement this use case.
+
+![Function Points 1](../FunctionPoints/Registration_1.jpg)
+![Function Points 1](../FunctionPoints/Registration_2.jpg)
+![Function Points 1](../FunctionPoints/Registration_3.jpg)

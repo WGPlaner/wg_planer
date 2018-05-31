@@ -24,18 +24,15 @@ public class WelcomeFragment extends NavigationFragment {
         }
 
         Button btnContinue = view.findViewById(R.id.btn_continue_welcome);
-        btnContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
-                    R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
-                    R.anim.anim_fragment_exit_to_right);
-                transaction.hide(WelcomeFragment.this);
-                transaction.add(R.id.container_registration, pickDisplayNameFragment);
-                transaction.addToBackStack("");
-                transaction.commit();
-            }
+        btnContinue.setOnClickListener(view1 -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+                R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+                R.anim.anim_fragment_exit_to_right);
+            transaction.hide(WelcomeFragment.this);
+            transaction.add(R.id.container_registration, pickDisplayNameFragment);
+            transaction.addToBackStack("");
+            transaction.commit();
         });
 
         return view;
