@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,9 +26,12 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.AddItemActivity;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.ShoppingListAdapter;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
+import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
 import io.swagger.client.model.ListItem;
 import io.swagger.client.model.ShoppingList;
+import io.swagger.client.model.SuccessResponse;
 
 public class ShoppingListFragment extends SectionFragment {
     private static final int REQ_CODE_ADD_ITEM = 0;
@@ -38,31 +42,28 @@ public class ShoppingListFragment extends SectionFragment {
 
     private RecyclerView categories;
     private ShoppingListAdapter adapter;
-    private DataProvider.OnDataChangeListener shoppingListListener = new
-    DataProvider.OnDataChangeListener() {
-
-        @Override
-        public void onDataChanged(final DataProvider.DataType type) {
-            if (getActivity() != null) {
-                getActivity().runOnUiThread(() -> {
-                    if (type == DataProvider.DataType.SELECTED_ITEMS) {
-                        if (floatingActionButton != null) {
-                            changeFloatingActionButton();
-                        }
-
-                    } else if (type == DataProvider.DataType.SHOPPING_LIST) {
-                        onNewData(dataProvider.getCurrentShoppingList());
-
-                    } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS) {
-                        onNewData(dataProvider.getCurrentShoppingList());
-                    }
-                });
-            }
-        }
-    };
     private SwipeRefreshLayout swipeToRefresh;
+    private TextView no_items;
 
     private DataProvider dataProvider = DataProvider.getInstance();
+
+    private DataProvider.OnDataChangeListener shoppingListListener = type -> {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (type == DataProvider.DataType.SELECTED_ITEMS) {
+                    if (floatingActionButton != null) {
+                        changeFloatingActionButton();
+                    }
+
+                } else if (type == DataProvider.DataType.SHOPPING_LIST) {
+                    onNewData(dataProvider.getCurrentShoppingList());
+
+                } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS) {
+                    onNewData(dataProvider.getCurrentShoppingList());
+                }
+            });
+        }
+    };
 
     private ArrayList<ListItem> items = new ArrayList<>();
 
@@ -72,8 +73,8 @@ public class ShoppingListFragment extends SectionFragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_shopping_list, container, false);
 
-        if (toolbar != null && title != null) {
-            toolbar.setSubtitle(title);
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.section_title_shopping_list);
         }
 
         if (floatingActionButton != null) {
@@ -84,9 +85,19 @@ public class ShoppingListFragment extends SectionFragment {
         categories.setLayoutManager(new LinearLayoutManager(getContext()));
         categories.setHasFixedSize(false);
 
+        no_items = view.findViewById(R.id.section_shopping_list_no_items);
+
         if (adapter == null) {
             items.clear();
             items.addAll(dataProvider.getCurrentShoppingList());
+
+            if (items.size() == 0) {
+                no_items.setVisibility(View.VISIBLE);
+
+            } else {
+                no_items.setVisibility(View.GONE);
+            }
+
             adapter = new ShoppingListAdapter(items);
         }
 
@@ -121,6 +132,7 @@ public class ShoppingListFragment extends SectionFragment {
     public void onResume() {
         onNewData(dataProvider.getCurrentShoppingList());
         dataProvider.addOnDataChangeListener(shoppingListListener);
+
         super.onResume();
     }
 
@@ -139,6 +151,15 @@ public class ShoppingListFragment extends SectionFragment {
     public void onNewData(ArrayList<ListItem> items) {
         this.items.clear();
         this.items.addAll(items);
+
+        getActivity().runOnUiThread(() -> {
+            if (items.size() == 0) {
+                no_items.setVisibility(View.VISIBLE);
+
+            } else {
+                no_items.setVisibility(View.GONE);
+            }
+        });
 
         if (adapter != null) {
             adapter.onNewData(this.items);
@@ -235,7 +256,22 @@ public class ShoppingListFragment extends SectionFragment {
                 public void onAnimationRepeat(Animation animation) {
                     floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                             R.drawable.ic_check_white));
-                    floatingActionButton.setOnClickListener(view -> dataProvider.buySelection());
+                    floatingActionButton.setOnClickListener(view -> {
+                        dataProvider.buySelection(new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
+                            @Override
+                            public void onFailure(ApiException e) {
+                                getActivity().runOnUiThread(() -> {
+                                    Toast.makeText(getContext(), getString(R.string.server_connection_failed), Toast.LENGTH_LONG)
+                                    .show();
+                                });
+                            }
+
+                            @Override
+                            public void onSuccess(SuccessResponse result) {
+                                return;
+                            }
+                        });
+                    });
                 }
             });
 

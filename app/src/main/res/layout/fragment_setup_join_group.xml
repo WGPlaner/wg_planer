@@ -22,9 +22,9 @@
 
     <Button
         android:id="@+id/fragment_setup_join_group_btn_join"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:backgroundTint="@color/colorButtonLight"
         android:text="@string/set_up_btn_join_group" />
 </LinearLayout>

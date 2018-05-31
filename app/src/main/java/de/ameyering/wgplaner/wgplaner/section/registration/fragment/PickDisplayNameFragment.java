@@ -37,27 +37,25 @@ public class PickDisplayNameFragment extends NavigationFragment {
             inputName.setText(displayName);
         }
 
-        btnContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String displayName = inputName.getText().toString();
+        btnContinue.setOnClickListener(view1 -> {
+            String displayName1 = inputName.getText().toString();
 
-                if (!displayName.isEmpty()) {
-                    DataProvider.getInstance().setCurrentUserDisplayName(displayName);
+            if (!displayName1.isEmpty()) {
+                DataProvider.getInstance()
+                .setCurrentUserDisplayName(displayName1, null);
 
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
-                        R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
-                        R.anim.anim_fragment_exit_to_right);
-                    transaction.hide(PickDisplayNameFragment.this);
-                    transaction.add(R.id.container_registration, uploadProfilePictureFragment);
-                    transaction.addToBackStack("");
-                    transaction.commit();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.anim_fragment_enter_from_right,
+                    R.anim.anim_fragment_exit_to_left, R.anim.anim_fragment_enter_from_left,
+                    R.anim.anim_fragment_exit_to_right);
+                transaction.hide(PickDisplayNameFragment.this);
+                transaction.add(R.id.container_registration, uploadProfilePictureFragment);
+                transaction.addToBackStack("");
+                transaction.commit();
 
-                } else {
-                    Toast.makeText(getContext(), PickDisplayNameFragment.this.getActivity().getString(
-                            R.string.warning_input_username_empty), Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                Toast.makeText(getContext(), PickDisplayNameFragment.this.getActivity().getString(
+                        R.string.warning_input_username_empty), Toast.LENGTH_SHORT).show();
             }
         });
 

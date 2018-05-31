@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,19 +23,25 @@ import de.ameyering.wgplaner.wgplaner.section.settings.GroupSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.settings.ProfileSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import io.swagger.client.api.ShoppinglistApi;
 
 public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQ_CODE_PROFILE_SETTINGS = 0;
     private static final int REQ_CODE_GROUP_SETTINGS = 1;
+    private static final String ACTIVE_ARGS = "ACTIVE_FRAGMENT";
+    private static final int SHOPPING_LIST = 0;
+    private static final int BOUGHT_ITEMS = 1;
 
     private DataProvider dataProvider;
 
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
-    private ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
-    private BoughtItemsFragment boughtItemsFragment = new BoughtItemsFragment();
+    private ShoppingListFragment shoppingListFragment;
+    private BoughtItemsFragment boughtItemsFragment;
+
+    private Fragment activeFragment = null;
 
     private NavigationView navigationView;
 
@@ -42,14 +49,19 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        if (toolbar == null) {
+            toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+        }
 
         if (dataProvider == null) {
             dataProvider = DataProvider.getInstance();
         }
 
-        fab = findViewById(R.id.fab);
+        if (fab == null) {
+            fab = findViewById(R.id.fab);
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,24 +72,49 @@ public class HomeActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        dataProvider.addOnDataChangeListener(new DataProvider.OnDataChangeListener() {
-            @Override
-            public void onDataChanged(DataProvider.DataType type) {
-                if (type == DataProvider.DataType.CURRENT_GROUP) {
-                    if (dataProvider.getCurrentGroupUID() == null) {
-                        Intent intent = new Intent(HomeActivity.this, SetUpActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
+        dataProvider.addOnDataChangeListener(type -> {
+            if (type == DataProvider.DataType.CURRENT_GROUP) {
+                if (dataProvider.getCurrentGroupUID() == null) {
+                    Intent intent = new Intent(HomeActivity.this, SetUpActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
 
-        boughtItemsFragment.setToolbar(toolbar);
+        if (boughtItemsFragment == null) {
+            boughtItemsFragment = new BoughtItemsFragment();
+        }
+
+        boughtItemsFragment.setActionBar(getSupportActionBar());
         boughtItemsFragment.setTitle(getString(R.string.section_title_bought_items));
         boughtItemsFragment.setFloatingActionButton(fab);
 
-        loadShoppingList();
+        if (shoppingListFragment == null) {
+            shoppingListFragment = new ShoppingListFragment();
+        }
+
+        shoppingListFragment.setActionBar(getSupportActionBar());
+        shoppingListFragment.setTitle(getString(R.string.section_title_shopping_list));
+        shoppingListFragment.setFloatingActionButton(fab);
+
+        if (savedInstanceState == null) {
+            loadActiveFragment();
+
+        } else {
+            int fragment = savedInstanceState.getInt(ACTIVE_ARGS);
+            activeFragment = getSupportFragmentManager().findFragmentById(R.id.container);
+
+            switch (fragment) {
+                case SHOPPING_LIST:
+                    onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_shopping_list));
+                    break;
+
+                case BOUGHT_ITEMS:
+                    onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_bought_items));
+                    break;
+            }
+        }
     }
 
     @Override
@@ -121,16 +158,24 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_dashboard) {
             // TODO
         } else if (id == R.id.nav_shopping_list) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-            transaction.replace(R.id.container, shoppingListFragment);
-            transaction.commit();
+            if (activeFragment != shoppingListFragment) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+                transaction.remove(activeFragment);
+                transaction.add(R.id.container, shoppingListFragment);
+                activeFragment = shoppingListFragment;
+                transaction.commit();
+            }
 
         } else if (id == R.id.nav_bought_items) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-            transaction.replace(R.id.container, boughtItemsFragment);
-            transaction.commit();
+            if (activeFragment != boughtItemsFragment) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+                transaction.remove(activeFragment);
+                transaction.add(R.id.container, boughtItemsFragment);
+                activeFragment = boughtItemsFragment;
+                transaction.commit();
+            }
 
         } else if (id == R.id.nav_rosters) {
             // TODO
@@ -141,7 +186,7 @@ public class HomeActivity extends AppCompatActivity
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
             PinboardFragment pinboard = new PinboardFragment();
-            pinboard.setToolbar(toolbar);
+            pinboard.setActionBar(getSupportActionBar());
             pinboard.setTitle(getString(R.string.section_title_pinboard));
             pinboard.setFloatingActionButton(fab);
 
@@ -165,16 +210,32 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    private void loadShoppingList() {
-        navigationView.setCheckedItem(R.id.nav_shopping_list);
+    private void loadActiveFragment() {
+        if (activeFragment == null) {
+            activeFragment = shoppingListFragment;
 
-        shoppingListFragment.setToolbar(toolbar);
-        shoppingListFragment.setTitle(getString(R.string.section_title_shopping_list));
-        shoppingListFragment.setFloatingActionButton(fab);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+            Fragment actual = getSupportFragmentManager().findFragmentById(R.id.container);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-        transaction.add(R.id.container, shoppingListFragment);
-        transaction.commit();
+            if (actual != null) {
+                transaction.remove(actual);
+            }
+
+            transaction.add(R.id.container, activeFragment);
+            transaction.commit();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (activeFragment instanceof ShoppingListFragment) {
+            outState.putInt(ACTIVE_ARGS, SHOPPING_LIST);
+
+        } else if (activeFragment instanceof BoughtItemsFragment) {
+            outState.putInt(ACTIVE_ARGS, BOUGHT_ITEMS);
+        }
     }
 }

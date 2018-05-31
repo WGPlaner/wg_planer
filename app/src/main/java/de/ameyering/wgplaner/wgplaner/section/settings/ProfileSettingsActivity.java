@@ -1,7 +1,6 @@
 package de.ameyering.wgplaner.wgplaner.section.settings;
 
 import android.animation.ObjectAnimator;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -14,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +24,9 @@ import java.util.regex.Pattern;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
+import io.swagger.client.ApiException;
+import io.swagger.client.model.SuccessResponse;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
     public static final int REQ_CODE_PICK_IMAGE = 0;
@@ -50,25 +51,18 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.profile_settings_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
         toolbar.setNavigationOnClickListener(view -> {
             if (isInEditMode) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
                 builder.setMessage(getString(R.string.dialog_discard_message));
-                builder.setPositiveButton(R.string.dialog_discard_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                        setResult(RESULT_CANCELED);
-                        finish();
-                    }
+                builder.setPositiveButton(R.string.dialog_discard_positive, (dialogInterface, i) -> {
+                    dialogInterface.cancel();
+                    setResult(RESULT_CANCELED);
+                    finish();
                 });
-                builder.setNegativeButton(R.string.dialog_discard_negative, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
+                builder.setNegativeButton(R.string.dialog_discard_negative, (dialogInterface,
+                        i) -> dialogInterface.cancel());
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
@@ -80,14 +74,11 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
         //Choose image
         image = findViewById(R.id.profile_settings_profile_picture);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
-            }
+        image.setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
         });
         image.setEnabled(false);
 
@@ -109,37 +100,35 @@ public class ProfileSettingsActivity extends AppCompatActivity {
             inputEmail.setText(email);
         }
 
-        btLeaveGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
-                builder.setTitle(getString(R.string.dialog_leave_group_title));
-                builder.setMessage(getString(R.string.dialog_leave_group_message));
+        btLeaveGroup.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
+            builder.setTitle(getString(R.string.dialog_leave_group_title));
+            builder.setMessage(getString(R.string.dialog_leave_group_message));
 
-                builder.setPositiveButton(R.string.dialog_leave_group_positive,
-                new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(R.string.dialog_leave_group_positive,
+            (dialogInterface, i) -> {
+                dataProvider.leaveCurrentGroup(new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (dataProvider.leaveCurrentGroup()) {
-                            setResult(RESULT_OK);
-                            finish();
-
-                        } else {
+                    public void onFailure(ApiException e) {
+                        runOnUiThread(() -> {
                             Toast.makeText(ProfileSettingsActivity.this, getString(R.string.server_connection_failed),
                                 Toast.LENGTH_LONG).show();
-                        }
+                        });
                     }
-                });
 
-                builder.setNegativeButton(R.string.dialog_discard_negative, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
+                    public void onSuccess(SuccessResponse result) {
+                        runOnUiThread(() -> {
+                            setResult(RESULT_OK);
+                            finish();
+                        });
                     }
                 });
+            });
 
-                builder.create().show();
-            }
+            builder.setNegativeButton(R.string.dialog_discard_negative, (dialogInterface1, i1) -> dialogInterface1.cancel());
+
+            builder.create().show();
         });
     }
 
@@ -203,9 +192,9 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.edit_fullscreen_save: {
                 if (checkInputAndReturn()) {
-                    dataProvider.setCurrentUserDisplayName(inputName.getText().toString());
-                    dataProvider.setCurrentUserEmail(inputEmail.getText().toString());
-                    dataProvider.setCurrentUserImage(bitmap);
+                    dataProvider.setCurrentUserDisplayName(inputName.getText().toString(), null);
+                    dataProvider.setCurrentUserEmail(inputEmail.getText().toString(), null);
+                    dataProvider.setCurrentUserImage(bitmap, null);
                     Intent data = new Intent();
                     setResult(RESULT_OK, data);
                     finish();

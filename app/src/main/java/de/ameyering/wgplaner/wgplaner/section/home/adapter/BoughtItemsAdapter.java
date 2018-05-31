@@ -5,21 +5,22 @@ import android.os.Bundle;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.transition.ChangeBounds;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.joda.time.DateTime;
-
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
@@ -34,9 +35,23 @@ public class BoughtItemsAdapter extends
     private ArrayList<Object> items = new ArrayList<>();
     private SimpleDateFormat format = null;
 
+    private boolean isActionModeActive = false;
+    private ArrayList<ListItem> selectedItems = new ArrayList<>();
+
     private static DataProvider dataProvider = DataProvider.getInstance();
 
-    public static abstract class BoughtItemsViewItem extends RecyclerView.ViewHolder {
+    private ArrayList<OnAdapterChangeListener> listeners = new ArrayList<>();
+
+    public interface OnAdapterChangeListener {
+
+        void onItemSelected(int selectedCount);
+
+        void onItemUnselected(int selectedCount);
+
+        void onItemClicked(UUID itemUid);
+    }
+
+    public abstract class BoughtItemsViewItem extends RecyclerView.ViewHolder {
 
         public BoughtItemsViewItem(View itemView) {
             super(itemView);
@@ -49,7 +64,7 @@ public class BoughtItemsAdapter extends
         public abstract void setData(Object object, Bundle args);
     }
 
-    public static class BoughtItemsHeaderItem extends BoughtItemsViewItem {
+    public class BoughtItemsHeaderItem extends BoughtItemsViewItem {
 
         private TextView header = null;
 
@@ -65,8 +80,10 @@ public class BoughtItemsAdapter extends
         }
     }
 
-    public static class BoughtItemsContentItem extends BoughtItemsViewItem {
+    public class BoughtItemsContentItem extends BoughtItemsViewItem {
         private TextView name = null;
+
+        private LinearLayout rootContainer = null;
 
         private CardView container = null;
         private LinearLayout contentContainer = null;
@@ -78,14 +95,13 @@ public class BoughtItemsAdapter extends
         private TextView displayRequestedBy = null;
 
         private LinearLayout containerRequestedFor = null;
-        private TextView displayRequestedFor = null;
+        private LinearLayout displayRequestedFor = null;
 
         private LinearLayout containerPrice = null;
         private TextView price = null;
 
-        private LinearLayout actionContainer = null;
-        private Button addPriceButton = null;
-        private Button changePriceButton = null;
+        private LinearLayout checkboxContainer = null;
+        private CheckBox checkBox = null;
 
         private ListItem item = null;
 
@@ -94,8 +110,46 @@ public class BoughtItemsAdapter extends
 
             name = itemView.findViewById(R.id.bought_items_item_product_name);
 
+            rootContainer = itemView.findViewById(R.id.bought_items_container);
+
             container = itemView.findViewById(R.id.bought_items_item_container);
             contentContainer = itemView.findViewById(R.id.bought_items_content_container);
+
+            container.setOnClickListener(view -> {
+                if (item != null && isActionModeActive && checkBox != null && item.getPrice() != null) {
+                    if (selectedItems.contains(item)) {
+                        selectedItems.remove(item);
+                        checkBox.setChecked(false);
+                        callAllListenersUnselected();
+
+                    } else {
+                        selectedItems.add(item);
+                        checkBox.setChecked(true);
+                        callAllListenersSelected();
+                    }
+
+                } else if (item != null) {
+                    callAllListenersClicked(item.getId());
+                }
+            });
+
+            container.setOnLongClickListener(view -> {
+                if (item != null && item.getPrice() != null) {
+                    if (selectedItems.contains(item)) {
+                        selectedItems.remove(item);
+                        checkBox.setChecked(false);
+                        callAllListenersUnselected();
+
+                    } else {
+                        selectedItems.add(item);
+                        checkBox.setChecked(true);
+                        callAllListenersSelected();
+                    }
+                }
+
+                return false;
+            });
+
 
             containerNumber = itemView.findViewById(R.id.bought_items_item_product_attribute_number);
             displayNumber = itemView.findViewById(R.id.bought_items_item_product_number);
@@ -111,9 +165,21 @@ public class BoughtItemsAdapter extends
             containerPrice = itemView.findViewById(R.id.bought_items_item_product_attribute_price);
             price = itemView.findViewById(R.id.bought_items_item_product_price);
 
-            actionContainer = itemView.findViewById(R.id.bought_items_action_container);
-            addPriceButton = itemView.findViewById(R.id.bought_items_action_add_price);
-            changePriceButton = itemView.findViewById(R.id.bought_items_action_change_price);
+            checkboxContainer = itemView.findViewById(R.id.bought_items_checkbox_container);
+            checkBox = itemView.findViewById(R.id.bought_items_checkbox);
+
+            checkBox.setOnClickListener(view -> {
+                if (isActionModeActive && item.getPrice() != null) {
+                    if (item != null && !selectedItems.contains(item)) {
+                        selectedItems.add(item);
+                        callAllListenersSelected();
+
+                    } else if (item != null) {
+                        selectedItems.remove(item);
+                        callAllListenersUnselected();
+                    }
+                }
+            });
 
             container = itemView.findViewById(R.id.bought_items_item_container);
         }
@@ -126,43 +192,47 @@ public class BoughtItemsAdapter extends
 
             if (item != null) {
                 name.setText(item.getTitle());
-                displayNumber.setText(item.getCount());
+                displayNumber.setText("" + item.getCount());
                 displayRequestedBy.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-                displayRequestedFor.setText(buildRequestedFor(item.getRequestedFor()));
+                createViews(LayoutInflater.from(displayRequestedFor.getContext()), displayRequestedFor,
+                    item.getRequestedFor());
+
+                boolean checked = selectedItems.contains(item);
+
+                checkBox.setChecked(checked);
 
                 Integer price = item.getPrice();
 
-                if (price == null) {
-                    TransitionManager.beginDelayedTransition(actionContainer);
-                    addPriceButton.setVisibility(View.VISIBLE);
-                    changePriceButton.setVisibility(View.GONE);
+                if (price != null) {
+                    NumberFormat format = NumberFormat.getCurrencyInstance();
+                    format.setCurrency(dataProvider.getCurrentGroupCurrency());
+                    this.price.setText(format.format(((double) item.getPrice()) / 100));
 
                 } else {
-                    this.price.setText(price);
-                    TransitionManager.beginDelayedTransition(actionContainer);
-                    addPriceButton.setVisibility(View.GONE);
-                    changePriceButton.setVisibility(View.VISIBLE);
+                    this.price.setText("");
+                }
+
+                if (isActionModeActive && price != null) {
+                    TransitionManager.beginDelayedTransition(rootContainer);
+                    checkboxContainer.setVisibility(View.VISIBLE);
+
+                } else {
+                    TransitionManager.beginDelayedTransition(rootContainer);
+                    checkboxContainer.setVisibility(View.GONE);
                 }
             }
         }
 
-        private String buildRequestedFor(List<String> uids) {
-            StringBuilder requestedFor = new StringBuilder();
+        private void createViews(LayoutInflater inflater, ViewGroup layout, List<String> users) {
+            TransitionManager.beginDelayedTransition(layout, new ChangeBounds());
+            layout.removeAllViews();
 
-            if (uids.size() == dataProvider.getCurrentGroupMembers().size()) {
-                requestedFor.append("Group");
-
-            } else {
-                for (int i = 0; i < uids.size(); i++) {
-                    requestedFor.append(uids.get(i));
-
-                    if (i != uids.size() - 1) {
-                        requestedFor.append(", ");
-                    }
-                }
+            for (String user : users) {
+                TextView requestedForUser = (TextView) inflater.inflate(
+                        R.layout.section_shopping_list_item_request_for_layout, layout, false);
+                requestedForUser.setText(dataProvider.getUserByUid(user).getDisplayName());
+                layout.addView(requestedForUser);
             }
-
-            return requestedFor.toString();
         }
     }
 
@@ -176,7 +246,7 @@ public class BoughtItemsAdapter extends
 
     @Override
     public void onBindViewHolder(BoughtItemsViewItem holder, int position, List<Object> payloads) {
-        if (payloads != null) {
+        if (payloads != null && payloads.size() > position) {
             holder.setData(items.get(position), (Bundle) payloads.get(0));
 
         } else {
@@ -186,7 +256,7 @@ public class BoughtItemsAdapter extends
 
     @Override
     public int getItemViewType(int position) {
-        if (items.get(position) instanceof DateTime) {
+        if (items.get(position) instanceof String) {
             return HEADER_VIEW_TYPE;
 
         } else {
@@ -261,12 +331,74 @@ public class BoughtItemsAdapter extends
         result.dispatchUpdatesTo(this);
     }
 
-    private static class DiffCallback extends DiffUtil.Callback {
-        public static final java.lang.String NAME = "NAME";
-        public static final java.lang.String REQUESTED_FOR = "REQUESTED_FOR";
-        public static final java.lang.String REQUESTED_BY = "REQUESTED_BY";
-        public static final java.lang.String NUMBER = "NUMBER";
-        public static final java.lang.String PRICE = "PRICE";
+    public void exitActionMode() {
+        if (!this.isActionModeActive) {
+            return;
+        }
+
+        isActionModeActive = false;
+
+        if (!selectedItems.isEmpty()) {
+            selectedItems.clear();
+        }
+
+        updateActionMode();
+    }
+
+    private void updateActionMode() {
+
+        final DiffCallback callback = new DiffCallback(this.items, this.items);
+        final DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback, true);
+
+        result.dispatchUpdatesTo(this);
+    }
+
+    public ArrayList<ListItem> getSelectedItems() {
+        return selectedItems;
+    }
+
+    public void addListener(OnAdapterChangeListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeListener(OnAdapterChangeListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void callAllListenersSelected() {
+        if (selectedItems.size() == 1) {
+            isActionModeActive = true;
+
+            updateActionMode();
+        }
+
+        for (OnAdapterChangeListener listener : listeners) {
+            listener.onItemSelected(selectedItems.size());
+        }
+    }
+
+    private void callAllListenersUnselected() {
+        if (selectedItems.size() == 0) {
+            isActionModeActive = false;
+
+            updateActionMode();
+        }
+
+        for (OnAdapterChangeListener listener : listeners) {
+            listener.onItemUnselected(selectedItems.size());
+        }
+    }
+
+    private void callAllListenersClicked(UUID itemUid) {
+        for (OnAdapterChangeListener listener : listeners) {
+            listener.onItemClicked(itemUid);
+        }
+    }
+
+    private class DiffCallback extends DiffUtil.Callback {
+        public static final String DISPLAY_CHECKBOX = "DisplayCheckbox";
         private ArrayList<Object> newList = new ArrayList<>();
         private ArrayList<Object> oldList = new ArrayList<>();
 
@@ -300,19 +432,7 @@ public class BoughtItemsAdapter extends
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            Object oldItem = oldList.get(oldItemPosition);
-            Object newItem = newList.get(newItemPosition);
-
-            if (oldItem.getClass() != newItem.getClass()) {
-                return false;
-            }
-
-            if (oldItem instanceof ListItem) {
-                return ((ListItem) oldItem).equals((ListItem) newItem);
-
-            } else {
-                return oldItem instanceof String && ((String) oldItem).equals((String) newItem);
-            }
+            return false;
         }
     }
 }

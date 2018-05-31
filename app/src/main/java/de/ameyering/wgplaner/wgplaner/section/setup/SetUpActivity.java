@@ -18,6 +18,9 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.fragment.DescriptionFragment;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
+import io.swagger.client.ApiException;
+import io.swagger.client.model.Group;
 
 public class SetUpActivity extends AppCompatActivity {
     private static final String DESCRIPTION_FRAGMENT_TAG = "DescriptionFragment";
@@ -40,20 +43,23 @@ public class SetUpActivity extends AppCompatActivity {
             Matcher matcher = pattern.matcher(data.toString());
 
             if (matcher.matches()) {
-                if (!DataProvider.getInstance().joinCurrentGroup(data.getLastPathSegment(), this)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(SetUpActivity.this, getString(R.string.server_connection_failed),
-                                Toast.LENGTH_LONG).show();
-                        }
-                    });
+                DataProvider.getInstance().joinCurrentGroup(data.getLastPathSegment(), this,
+                new ServerCallsInterface.OnAsyncCallListener<Group>() {
+                    @Override
+                    public void onFailure(ApiException e) {
+                        runOnUiThread(() -> Toast.makeText(SetUpActivity.this, getString(R.string.server_connection_failed),
+                                Toast.LENGTH_LONG).show());
+                    }
 
-                } else {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                    @Override
+                    public void onSuccess(Group result) {
+                        runOnUiThread(() -> {
+                            Intent intent = new Intent(SetUpActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        });
+                    }
+                });
             }
         }
 
@@ -61,24 +67,16 @@ public class SetUpActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
         toolbar.setNavigationContentDescription(getString(R.string.nav_back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popBackStack();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> popBackStack());
 
 
-        getSupportFragmentManager().addOnBackStackChangedListener(new
-        FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                    getSupportActionBar().hide();
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                getSupportActionBar()
+                .hide();
 
-                } else {
-                    getSupportActionBar().show();
-                }
+            } else {
+                getSupportActionBar().show();
             }
         });
 

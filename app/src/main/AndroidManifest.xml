@@ -58,11 +58,11 @@
         <activity
             android:name=".section.home.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".section.registration.RegistrationActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
 
         <service
             android:name=".utils.WGPlanerInstanceIdService"
@@ -82,27 +82,32 @@
         <activity
             android:name=".section.home.AddItemActivity"
             android:label="@string/add_item_activity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/web_hi_res_512" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent" />
+            android:resource="@color/secondaryColor" />
 
         <activity
             android:name=".section.settings.ProfileSettingsActivity"
             android:label="@string/profile_settings_activity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".section.settings.GroupSettingsActivity"
             android:label="@string/group_settings_activity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".section.setup.SetUpActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".section.home.ItemDetailActivity"
+            android:label=""
+            android:theme="@style/AppTheme" />
+        <activity android:name=".section.home.CreateBillActivity"></activity>
     </application>
 
 </manifest>

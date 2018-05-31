@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bought_items_action_mode_menu_bill"
+        android:icon="@drawable/ic_receipt_black"
+        android:title="@string/bought_items_action_mode_menu_bill"
+        app:showAsAction="always" />
+</menu>

@@ -5,7 +5,6 @@ import android.util.ArrayMap;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -314,7 +313,7 @@ public class TestServerCalls implements ServerCallsInterface {
     }
 
     @Override
-    public ApiResponse<Group> getGroup(UUID groupUid) {
+    public ApiResponse<Group> getGroup() {
         switch (testCase) {
             case SUCCESS: {
                 Group group = new Group();
