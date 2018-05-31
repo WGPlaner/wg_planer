@@ -58,8 +58,8 @@ before_deploy:
 - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${TRAVIS_BUILD_DIR}/wgplaner_signed_apk_keystore.jks
   -storepass $storepass -keypass $keypass app-release-unsigned.apk key0
 - jarsigner -verify app-release-unsigned.apk
-- "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS}/zipalign -v 4 app-release-unsigned.apk
-  WGPlaner.apk"
+- "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign -v 4 app-release-unsigned.apk"
+  WGPlaner.apk
 deploy:
   provider: releases
   file: WGPlaner.apk
