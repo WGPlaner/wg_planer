@@ -1088,12 +1088,12 @@ public class ServerCalls implements ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long l, long l1, boolean b) {
-
+                        //Nothing shall happen
                     }
 
                     @Override
                     public void onDownloadProgress(long l, long l1, boolean b) {
-
+                        //Nothing shall happen
                     }
                 });
 

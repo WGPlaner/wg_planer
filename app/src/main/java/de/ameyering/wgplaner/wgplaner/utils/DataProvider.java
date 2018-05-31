@@ -25,15 +25,6 @@ import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
 public class DataProvider implements DataProviderInterface {
-
-    public interface OnDataChangeListener {
-        void onDataChanged(final DataType type);
-    }
-
-    public enum DataType {
-        CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS, CURRENT_GROUP_MEMBERS, BOUGHT_ITEMS
-    }
-
     private static DataProvider singleton;
 
     private ImageStore imageStoreInstance = ImageStore.getInstance();
@@ -61,6 +52,14 @@ public class DataProvider implements DataProviderInterface {
     private List<ListItem> boughtItems;
 
     private ArrayList<OnDataChangeListener> mListeners;
+
+    public interface OnDataChangeListener {
+        void onDataChanged(final DataType type);
+    }
+
+    public enum DataType {
+        CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS, CURRENT_GROUP_MEMBERS, BOUGHT_ITEMS
+    }
 
     static {
         singleton = new DataProvider();
@@ -673,7 +672,7 @@ public class DataProvider implements DataProviderInterface {
         leaveGroup(new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
             @Override
             public void onFailure(ApiException e) {
-                return;
+                //Nothing happens
             }
 
             @Override
@@ -913,7 +912,7 @@ public class DataProvider implements DataProviderInterface {
         getGroup(new ServerCallsInterface.OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
-                return;
+                //Nothing happens
             }
 
             @Override
@@ -1107,10 +1106,12 @@ public class DataProvider implements DataProviderInterface {
         serverCallsInstance.createGroupAsync(group, listener);
     }
 
+    /*
     private void getShoppingList(final ServerCallsInterface.OnAsyncCallListener<ShoppingList>
         listener) {
         serverCallsInstance.getShoppingListAsync(listener);
     }
+    */
 
     private void addListItem(ListItem item,
         final ServerCallsInterface.OnAsyncCallListener<ListItem> listener) {
@@ -1130,7 +1131,7 @@ public class DataProvider implements DataProviderInterface {
                 getUser(uid, new ServerCallsInterface.OnAsyncCallListener<User>() {
                     @Override
                     public void onFailure(ApiException e) {
-                        return;
+                        //Nothing happens
                     }
 
                     @Override
@@ -1143,7 +1144,6 @@ public class DataProvider implements DataProviderInterface {
                                 @Override
                                 public void onFailure(ApiException e) {
                                     //nothing happens so far...
-                                    return;
                                 }
 
                                 @Override

@@ -35,30 +35,17 @@ public class ItemDetailActivity extends AppCompatActivity {
     private DataProvider dataProvider = DataProvider.getInstance();
     private ImageStore imageStore = ImageStore.getInstance();
 
-    private TextView itemNameView;
     private TextView itemPriceView;
     private TextInputLayout itemPriceEditLayout;
     private EditText itemPriceEdit;
-    private TextView itemNumberView;
 
     private FloatingActionButton addPriceActionView;
-
-    private LinearLayout boughtByContainerView;
-    private LinearLayout boughtOnContainerView;
-
-    private TextView boughtByNameView;
-    private CircularImageView boughtByPictureView;
-
-    private TextView boughtOnDateView;
-
-    private TextView requestedByNameView;
-    private CircularImageView requestedByPictureView;
 
     private LinearLayout requestedForChildContainer;
 
     private ListItem item;
 
-    boolean isInEditMode = false;
+    private boolean isInEditMode = false;
 
 
     @Override
@@ -82,9 +69,9 @@ public class ItemDetailActivity extends AppCompatActivity {
             finish();
         }
 
-        itemNameView = findViewById(R.id.item_detail_item_name);
+        TextView itemNameView = findViewById(R.id.item_detail_item_name);
         itemPriceView = findViewById(R.id.item_detail_item_price);
-        itemNumberView = findViewById(R.id.item_detail_item_number);
+        TextView itemNumberView = findViewById(R.id.item_detail_item_number);
 
         itemNameView.setText(item.getTitle());
 
@@ -104,21 +91,21 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         addPriceActionView = findViewById(R.id.item_detail_action_add_price);
 
-        boughtByContainerView = findViewById(R.id.item_detail_item_bought_by_container);
-        boughtOnContainerView = findViewById(R.id.item_detail_item_bought_on_container);
+        LinearLayout boughtByContainerView = findViewById(R.id.item_detail_item_bought_by_container);
+        LinearLayout boughtOnContainerView = findViewById(R.id.item_detail_item_bought_on_container);
 
         if (item.getBoughtBy() != null) {
             boughtByContainerView.setVisibility(View.VISIBLE);
             boughtOnContainerView.setVisibility(View.VISIBLE);
 
-            boughtByNameView = findViewById(R.id.item_detail_item_bought_by_name);
-            boughtByPictureView = findViewById(R.id.item_detail_item_bought_by_picture);
+            TextView boughtByNameView = findViewById(R.id.item_detail_item_bought_by_name);
+            CircularImageView boughtByPictureView = findViewById(R.id.item_detail_item_bought_by_picture);
 
             boughtByNameView.setText(dataProvider.getUserByUid(item.getBoughtBy()).getDisplayName());
             Bitmap pic = imageStore.loadGroupMemberPicture(item.getBoughtBy(), this);
             boughtByPictureView.setImageBitmap(pic);
 
-            boughtOnDateView = findViewById(R.id.item_detail_item_bought_on);
+            TextView boughtOnDateView = findViewById(R.id.item_detail_item_bought_on);
             SimpleDateFormat format = new SimpleDateFormat("dd. MMMM yyyy",
                 getResources().getConfiguration().locale);
             boughtOnDateView.setText(format.format(item.getBoughtAt().toDate()));
@@ -128,8 +115,8 @@ public class ItemDetailActivity extends AppCompatActivity {
             boughtOnContainerView.setVisibility(View.GONE);
         }
 
-        requestedByNameView = findViewById(R.id.item_detail_item_requested_by_name);
-        requestedByPictureView = findViewById(R.id.item_detail_item_requested_by_picture);
+        TextView requestedByNameView = findViewById(R.id.item_detail_item_requested_by_name);
+        CircularImageView requestedByPictureView = findViewById(R.id.item_detail_item_requested_by_picture);
 
         requestedByNameView.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
         Bitmap pic = imageStore.loadGroupMemberPicture(item.getRequestedBy(), this);

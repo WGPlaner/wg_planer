@@ -37,7 +37,6 @@ public class CreateGroupFragment extends Fragment {
     private static final int REQ_CODE_PICK_IMAGE = 0;
 
     private String groupName;
-    private String groupCountry;
     private Bitmap bitmap = null;
 
     private TextInputLayout editGroupNameLayout;
@@ -191,7 +190,7 @@ public class CreateGroupFragment extends Fragment {
 
     private boolean checkInputsAndReturn() {
         groupName = editGroupName.getText().toString();
-        groupCountry = editGroupCountry.getText().toString();
+        String groupCountry = editGroupCountry.getText().toString();
 
         if (groupName.trim().isEmpty()) {
             editGroupNameLayout.setError(getString(R.string.error_group_name_invalid));

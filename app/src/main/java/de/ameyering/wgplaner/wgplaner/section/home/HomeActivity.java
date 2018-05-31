@@ -158,7 +158,7 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_dashboard) {
             // TODO
         } else if (id == R.id.nav_shopping_list) {
-            if (activeFragment != shoppingListFragment) {
+            if (!activeFragment.equals(shoppingListFragment)) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
                 transaction.remove(activeFragment);
@@ -168,7 +168,7 @@ public class HomeActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_bought_items) {
-            if (activeFragment != boughtItemsFragment) {
+            if (!activeFragment.equals(boughtItemsFragment)) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
                 transaction.remove(activeFragment);

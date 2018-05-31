@@ -23,7 +23,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private static final String PATH_PATTERN =
         "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
 
-    private AppBarLayout appbar;
     private Toolbar toolbar;
     private WelcomeFragment welcomeFragment;
     private ProgressBar progressBar;
@@ -39,7 +38,6 @@ public class RegistrationActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
-        appbar = findViewById(R.id.appbar);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);

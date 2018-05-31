@@ -1,17 +1,13 @@
 package de.ameyering.wgplaner.wgplaner.section.settings;
 
-import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ShareCompat;
@@ -76,9 +72,6 @@ public class GroupSettingsActivity extends AppCompatActivity {
     private FloatingActionButton editGroupToggle;
 
     private LinearLayout actionContainer;
-    private Button actionAddMember;
-    private Button actionRemoveMember;
-    private Button actionMakeAdmin;
 
     private LinearLayout membersView;
 
@@ -133,9 +126,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
         editGroupToggle = findViewById(R.id.group_settings_edit_group);
 
         actionContainer = findViewById(R.id.group_settings_content_action_container);
-        actionAddMember = findViewById(R.id.group_settings_action_add_member);
-        actionRemoveMember = findViewById(R.id.group_settings_action_remove_member);
-        actionMakeAdmin = findViewById(R.id.group_settings_action_make_admin);
+        Button actionAddMember = findViewById(R.id.group_settings_action_add_member);
 
         membersView = findViewById(R.id.group_settings_members_container);
 

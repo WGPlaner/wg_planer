@@ -268,7 +268,7 @@ public class ShoppingListFragment extends SectionFragment {
 
                             @Override
                             public void onSuccess(SuccessResponse result) {
-                                return;
+
                             }
                         });
                     });

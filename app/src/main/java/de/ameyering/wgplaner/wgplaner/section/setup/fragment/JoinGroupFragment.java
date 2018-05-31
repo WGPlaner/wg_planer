@@ -22,8 +22,8 @@ import io.swagger.client.ApiException;
 import io.swagger.client.model.Group;
 
 public class JoinGroupFragment extends Fragment {
-    EditText key;
-    Button btnJoinGroup;
+    private EditText key;
+    private Button btnJoinGroup;
 
     @Nullable
     @Override

@@ -43,9 +43,6 @@ public class CreateBillActivity extends AppCompatActivity {
     private List<ListItem> items = new ArrayList<>();
     private HashMap<User, Double> recipientPriceMapping = new HashMap<>();
 
-    private Toolbar toolbar;
-    private FloatingActionButton save;
-
     private TextInputLayout layoutDueDate;
     private EditText editDueDate;
 
@@ -71,7 +68,7 @@ public class CreateBillActivity extends AppCompatActivity {
             prepareData();
         }
 
-        toolbar = findViewById(R.id.create_bill_toolbar);
+        Toolbar toolbar = findViewById(R.id.create_bill_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.create_bill_title);
         toolbar.setNavigationIcon(R.drawable.ic_close_black);
@@ -88,7 +85,7 @@ public class CreateBillActivity extends AppCompatActivity {
             dialog.show();
         });
 
-        save = findViewById(R.id.create_bill_action_save);
+        FloatingActionButton save = findViewById(R.id.create_bill_action_save);
         save.setOnClickListener(view -> {
             //TODO: Implement later
         });

@@ -27,8 +27,8 @@ public class StateEMailFragment extends NavigationFragment {
     private EditText inputEmail;
     private DataProvider dataProvider = DataProvider.getInstance();
 
-    Button btnContinue;
-    Button btnSkip;
+    private Button btnContinue;
+    private Button btnSkip;
 
     @Nullable
     @Override
