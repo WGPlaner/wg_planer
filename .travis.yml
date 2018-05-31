@@ -15,9 +15,8 @@ env:
   - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
   - JAVA_HOME=$JAVA8_HOME
   - PWD=`pwd`
-  - secure: "wwRISI0qJxlLZf86/mPDXg9ICOD/i2KXA0cChLFcnWHOI6mcx+SPgu4774kHzDpgqftqv2mmPMcv5Vaov13Gi4XB+x/kmBQHNJJ1Wctl/1KfHNAZNj6uZKiMmmIxbZwaiVicCD/7ucwLnkPzxyqWVbTKksNHFJqVMjOgYl4plRjzHzK7ajaz9PCz/tmgkLFmU8oqM4pKcGtJwTw2vbqso2A7+pNVuuoc/D1JjhfbLdOCq69R4cAOxJXSG/MVTnZyUXiPxWMiCmv97aBxhJ/fOawQQsjD/lMnZPv8I8gz0gPMx6k+Nf9vaMtBmwursZSTnph+BcCmydj0QkDkZjhqavZA8g43CDo5qWLQiY3R5H4CDJmxrsoaMb8qE4IGTRBm4VcrNLo8IuibD09guidMLy28FK+8gNjBujDZlkDB8Ojzuy+gwE3tdpBOZpC1dtKSTxkKcUJDX5acWraAYYwqb/AJ1Zoh60ev1PTOOFusczDo9wNwfXHnyKVciHkAgl+Qontr6lAwgtIx9BH5cIJGG3DIP+rLpddNIhaVD9jBI1w/3JnbYihfwxh/MDJcHqsHeSvBEbcMboaV1+2MhXwXSYu8gPVdbZjr+x32a2Oq3hxJ1ZH5u44fyDyqYxOp4dynuuVZ4vMUa2ARTAAOGRsGQoI/mztgm/eyP2KAGaWfcH0="
-  - secure: "PBw8GxCjvWFhaYnARuMabmz5Oe/CujjGXlewIeRVhNHbfHDryoZ6W8wI6QqUG5QFCfoQ2VZVotJX4yHj5myMX1Y7pF614sxJQx00CXqNSo484+ff6d2GPQukesth2XCu9x+RrKiG4KjWzzdunwxjhV59/r91upTq5kwbXf5gwuFeUSIAAg3hTJ71anQYvZsak66VBsnZ/1284DZy8+owvmytoIzuMWeKtpVCXF1Djjrova0EUo1cE0+8chpXxsDE9QVyVa5C/EqpjDtj/+7/ZRfzJOUrpMjFV6CYhPwruFX01F7IuI0Sw7dkpWVqCbBnUBgp/qsYCi48XZzA6UF6g3u5oY+5rEVXfPWTG2ckUbRko4WB6EdW7J8/srAhgAQRr06UsmFuHsqZZgPlJYTTGe1stiDQeas4Z0h1vXsTHTLbAqA3ZbCIfOFBOlEovNdHhB9mKCAHAfzkEX7I656Cq1OwEHsvPxwk3mQV3WwQqFQJTb95kXJ33WO71tFe59Si8Ki+N+ZkWbqFRPqkeQIvzezc/B4URqjVEDOAWPl8zfTxXw1WDK/Qhi1iLHbXRXfhM/GahxouyCO85YP3Cork/2VkNWpXGjRv9y1tu1rBxgzEHm+YmoD1Czl5XC5E8stPrDkaaVbLsmrvuuPPbHL92dsFuG8AQeJvgDlvH8eolaI="
-
+  - secure: "VeCvKrJlTBaQ8bZEde1ABrYU/yM/N/rRxys5aahugax9fL+388Pza9tvPXQ3xbw2YTnRr9ct8XFxoC1qmx+V9lKPPiOxt7zKwCDlQNer11+0kyHfC0RUVtLUjSbz/Nooqit2XQRxoGa2gcxFdNFvyvlbKCZpJGIP0hexLy5Nm5Ixp7f9v7IZVlD3sGnGBxMqznJWT6QNQiFFZmLQjxiWvExmpRYjPkn0TVkrf0Qi71HO23n/T7/oo+aD1iEBn60jqURKpMseTvbbYryItyJzSBdQhqx6VNJ0lFCgt7QYjVPgEVxf1H4/lTANFWb2CkTkJdaq328AxtK6gBBUbBChw/aDOtN9DtjF5XIP62iEoQ97ffQQOnlSndTzpk4NODg7/TCNftTK1PDCHsLVtIKIuaWm7ERiT1bUWJ2S6ovZ6Wl/2VRlnwjB4dK+Kq62erX93CFppUPsj/Ah5wr2yJ/I3gQRRNJOYQZEBRCuPmB7hW+1kilhNP5AloUNIjBkKu+311nDJODKpa/YOF9gUFvpEvP3J1g0Ugr1tu35rQ68VFx+2ymeTx7wWr3xkYTpUeptXV6VEHPrwzt6EJAQCG0bfke386cKotX4xcsfU2n6NSjdOPxf+C+QTyGwSlQP66wiXZxvTUziITcnElUTbldilvpkAKG3J2icXTIKdG+VFkM="
+  - secure: "MJD7zGWkeS/9lqCQYG62pvp3cCBAPz3PvsqX/WsAesQiY0B4F0wicxPFNMFbId7PbfXnlQ+G7mhIVCw/Rwf9hGI9ZwiXsy3jS3IQrwZGE61atZZzEEsp3zGfZ9T5bXU+P6QHmcMgGqcPwtH6kdNT0JWa88xwMhDm66GkeZZ5nnsvDgbRIl4znIFk24Co9Jgw7jkp2ns3U7IgoSIGPvEu+oiKvsnxQJTjkSbui9/tFsdo5WVMfYFAkZeEBhc217iTlpEyUH3oPpvOrG+80wY7Kl9LPkIAyGERy15XT91CyWlV5WJQ1A6AJZE8RxZg1YW7Ie9rxZwwz7zCxzgiAUstDOg1HS4+3SH04TBd6efrp0upTMJDl2FM+YGBthJWS1M+F7hQEwDdK4fbQUeEgk/Z5JLPuv9/Uz+/zS6RoTfL9MaI0DrHiGZp5670wSqEilUr3htsj4iTZqzLHBxkUaZpgctKWMX4iQ+WmopvT+OGcwZVBA0JqBnt55bI73qe8RzEJHAumkAvG6hW9CJE2mXI3qHX1xoUmGc31GZjavbonsDSmZnaP1MfJkt++pPdZL3A2bbXZUlHmLg4XqW3ZTtzQJMmFd+sSQQL/1GHomUeSxm04KjfeNVMfRBd0au4gu/hM65ASdjqA/US05AXVWV6XKisrQKMMgu8ufE0+4M367U="
 android:
   components:
   - tools
@@ -31,18 +30,18 @@ android:
   - extra-android-m2repository
   - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
   licenses:
-  - 'android-sdk-preview-license.*'
-  - 'android-sdk-license.*'
-
+  - android-sdk-preview-license.*
+  - android-sdk-license.*
+before_install:
+- openssl aes-256-cbc -K $encrypted_33b0d72ee996_key -iv $encrypted_33b0d72ee996_iv
+  -in wgplaner_signed_apk_keystore.jks.enc -out wgplaner_signed_apk_keystore.jks -d
 install:
 - git fetch --unshallow --tags
-
 before_script:
 - echo no | android create avd -f -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI
   -s WVGA800 -c 128M
 - emulator -avd test -no-audio -no-window &
 - "./gradlew clean"
-
 script:
 - echo -e '\033[0;33mBuilding...\033[0m' && echo -en 'travis_fold:start:script.build\\r'
 - "./gradlew assembleRelease -PdisablePreDex"
@@ -55,27 +54,20 @@ script:
 - adb shell input keyevent 82 &
 - adb logcat -c
 - echo -en 'travis_fold:end:script.uitest\\r'
-
 before_deploy:
 - cp $TRAVIS_BUILD_DIR/.keystore $HOME
 - cd app/build/outputs/apk/
-- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/keystore.jks -storepass $storepass -keypass $keypass app-release-unsigned.apk wgplaner_android_signed_apk_key
+- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/keystore.jks
+  -storepass $storepass -keypass $keypass app-release-unsigned.apk wgplaner_android_signed_apk_key
 - jarsigner -verify app-release-unsigned.apk
 - "${ANDROID_HOME}/build-tools/24.0.2/zipalign -v 4 app-release-unsigned.apk wgplaner.apk"
-
 deploy:
-    provider: releases
-    file: wgplaner.apk
-    skip_cleanup: true
-    on:
-        repo: WGPlaner/wg_planer
-        tags: true
-        jdk: oraclejdk8
-    api_key:
-         secure: "P6Tv9DHNMNqwDbDi8NoTnlj4aWWVpyrJtokoaVSzlpTdJizC9iQNophdivv8xDcC+xMn+caxQpoJxH7fSyJaWxIqelFvzI5JFIDqsYTguS
-        eEsCcMzDJaa79MYHry2xbk4zoFG568syPeHhI4X2YRnt1U2H23jiWmEEZkrt/Dk5m52AacZ7Vg7uHkEwJZgTt65Mt44E0JtdBZc5vQw7XR4as7Vl91FPV
-        4+DJCEC9JvPrmu5op2leh9CYV6Gzdu/ACKBptDe959dIXMXhpLAJSaN6gXRZD/HMCsFgRwaGxUOKv2wt/vXXEMZk3z1dAQ7PX1C7sSUgl8XqjuNzNOv8b
-        f2gnSsYkzQ3QULRbeHHm/myPlsxBDJp27PqahPXIB82nvOFkMKdnXWMyhOmGOESbea2pVO4CIDYfQJQdmMSkUNJ5vbR0lyjlVlNcREKFrMKQpH6TqG2y6
-        Py29d1QEYDPCKs0eBM+z9v6oVzOKFf+5QSpQoA2XLGD7M1FpkxqgERm1kcFRktXFFYdpw4bgishnrpcCwI7OSaJPoUkQgScINlP4FOi/F+Xdb0gyxgUny
-        ZqsIplq3/xayKEQ0Y3w8OiyZ3jjLpLOtJxp+ia0KuyqN0Xnxrk9rAACq5QOVl1j+ILeCP5Qtrxv+xyEWmMY3aDGGC7BKqq9pzlMB65bDRcGls="
-
+  provider: releases
+  file: wgplaner.apk
+  skip_cleanup: true
+  on:
+    repo: WGPlaner/wg_planer
+    tags: true
+    jdk: oraclejdk8
+  api_key:
+    secure: "1k82XNWaVXJrr3ByrRdk2oneUn/zxwCQtmwI93WJmkYWqw57+5d+WFEeHtevg8oRE5wHG5q3eI2MZ85HqqNFj2oZ9sdcjhfS2DmJz+s6nAjuNfizATEp8Pb7W8z+E9h3q5xv77G0rOHDXo56dwIrmlO0UcQr6drrrMyt+//kw9bxvFUuXc2m+4/AVTS5gXx47jYMk6XbwMXA+TnzXwzuVz/zK+7Dnv5YspPaQebDniwoB9+UTio9padLSiVDvjGQH2uuDa5u+R3xRd0ZWI5NFouQPZrJw0Nb0QOfl2zCe49zyF/8mX0oKawnUJWlu431uDJqze/O/jdkrTaXQ2eZ6zCEIdnUWU2F6/vonIZ5UKoWKq90lw3A5uAjXJg8X/l39Qnd1pWNyMeV/Ar+PdsYBqY+Al7TNvUejsZoVPU2P43uMCEY5+UmTSezt2scdzzVR8SvP1lrvTRAC7CSZxZeuu+8kBFOydNETItbPVOsXVimN7TcXriX1+zWEwxy0eGPvPuNW5UTQCLT32dV8xLTsyAUF5tfV98+WcAg/M2kq6LseEvVQ9Px9viZLc8NiquZDQC/OWy4qA4s+m2b/gHbE37q5WvaKTqksggzyEPrPGEbWdb4fRXxGR3TVzC+EoNTyAytbeK3nzL5lD0//rNV5FVSqNYXP/31HwuO9n36iJc="
