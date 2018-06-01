@@ -19,7 +19,7 @@ env:
   - PWD=`pwd`
   - secure: kXPldTDvPorfZIDdQk3NQ/6chlNYuW8rHPczwjX/FbUL73+N0Wo0ytZHn0ZFNwERAMZwalx/R/8S80Hih3hOvPMEhgw7pB5MPaL2mzO5H2JqdyBmC+pcJhswSXz8dFnoffejzOYEZdz5tZmHjjxhhwwFalX1noqSF0fHWPKUMvn59x2YRLi4tuNsnRQqaSep8PqbSATY5xvUEQoLjW+hwc1Y+/nPG+xDYVaKH3/YyNdq/0dppyl8WTSomHIA6w/yY/5xcztNRQpDDWgkSmZUdCkjSbdCu6xmjcdKJ3XpiA4RvsAnG0mrf6n8zsqVapE65kTy79x90+0giwKexOyzgiP9TvwZ12P7HAfk2NFQAasFhblqF5103yCM7+8CAhuWuAEYqGVlI0BQjDki8NvHPGEjfFwfghUlOEqiLTygS+SkDLl9KOJKRysQQa2I9E7IyMJJDsqH/42tbQVu82bDk7M7EnvVbmjlNzkntzmilD7FSAGr8B0IhPgypO6Fyq1VdiLiLiDAyOl5r19ffQfJchbCQMtbFVTtjMXB37ca9jezOvsbAK8hOfPstitZthxkAOu4K4oP3e5qyDxmN60WVV0XdiUZqtI6ThHkr9HOl2U4bnFNVEqDdyNwXF6I1j7jiIcjrFS4qbcpZ2h3pFhbAd8z92hYB1I7QQrEBcgc/jM=
   - secure: jt+4JvMeXIsrixL1ibHWhBTfUkDvphSw+0yPeq1vL4NhrBSR4wqcQ3l6UFsZU/8GE/1ZVjHieE/BjzGh4P49NJUdvkVhJTUThn4nOEDldMe7bPvNPWp3gcnLixArXyyObsDv7mKx0hc9bmXsDWDGHvyMEwhA/pTswdk8noLERZlGhATUB9ZpW7Gi28YwA6VVbslhyqoGU0UuwzakdgvK5I2foddgiX6pTMRX4E5uIYMQkEbn5sSoZX/S65/TmsZW49vNBM6/JXUufFbGDi7bHKIGlqqkNvTcSWIdgwXU9zJ5CLLuyNsH0Bjv/n7cX3v/2rg0c+qvgEHILA6TEwz7rb0Vx/We8m9zEIMIK2mYDRtZR7OqKUgtvKVP9MMwP8YFxtNT/Qg5K4RT/DimC7FDeg2cBfMN2OmMe+0USofXufP/nY/8/dWJabKx6OQmEVd/5yva07h3iZvD4vrMMB5vI3UW9Kinh5yeRwCtqGwuCd8wHdt6g7jiD/FqfY79uOV3A8D1pLlC4IjCQdMCPQcRTpDTVbUqeklAY23U9RrHWc8kOq1OONaLqfzcmTOqUE241ZtV3dSYDfBGq0N35vA28kjPbf5Kml50YfRqF7g0zftwIT/PmjUY1rpD30/rR2sTvTbzMF806PdXCD2T9WbJMIH6fZlgR38kddu/4JAzZmk=
-  - secure: TGQsZ7Tc7CpZUQ7uLHKSPJix/M2aNmXxKaOWcIReCoSsM6X7rVds5/LM5iDUtg8L0lVN0r9dtkoBoq9OrMFJPL6soqvNPTfOownu2qclfjvmMX0vJRIBS+Jm++83VefOBpF6RSouhDPv9G/kWjG0585OCWzqNS4+BqJs2HxPnE1qcukCB97aGjiVqtkZvU5D3AwNEjLZQaOOLRMCUbB8msWu4wxbqam3135O+aD3492gUjQwUmR9Y5YowAam73ariVe7XzGKwjSYPTk7L9Wr9X97rt7YBZbOOduaRtzUYIrAj8unXKmB2oREsQY5XlxavOvEPgg3oiyQLqqyNAvdzSgAdHHN6cjhZTak6S0k8SCdBreL3qZXLm37b0wRPrqoX+cGpXOR5aqy2nNtzzU2klNJPTUDvElqcbHmqoCxsXjWbI2iRPZhbluH54lJhvRChxhO8lznsMeXYzikk8QqRg8xEeduZ2FbTfLuMXCjNnkBNSDrZzNVwbkLjOKkZCoqazX5nJfH4nv6rA8QL3Gd9u96u0n7HYA9/XfAQKUl8e0UcoJgGV/BNRST5d+ekA6AZxlCh6NLU1wrYioLpNWjL8Rg4uZt1DIaXQQRkEjuvS03hCA08MvjKeqA3hb4+d38pPKdmXgI7XbT0rj+7Gv/0pakclKh5aXWQ/MeLSRALJ8=
+  - secure: jfOZw6Rb9pLsPqe+hPbMbfAndDwAZ18qSpZ3sO6m5su17zK9GiTVJx52ZO0F+nzuXLGdcBtFto3l2VZvaOS03Yz4KTOnwCuAnXE5V1mQuweBCrfCJsYPt5/3R0+WYrGsOrLE21ChHLGVvqxq4H+27IyU9Wz17poMBoIUmjB0JNtKJGMiIw3RCwlDnFQ/ptgXHB+BiHcE+/ewiq5jcEi0ojwFX4uglf0pmG04KGC0muhe6uB64LbbWvicim1EGoqBBpDQTt12m57XJu6v/pFapLazGHaMkfdAL40Apvqrq1n6Oy7l3Gg4exCiyvGyDTySgG3CxD7o6EetIjJjOhckWQEDYWI2nFMssnVGDlMBvBxbFft2eDhJKaOkYzXICvb1bjB61iChYvOihRBs+eemuWTYlzBiztDr57vMuFOOykkmCtO4uucUSROnljkodOO4vhvyyQQj4StbX9m5w/Wwu0YOTJPrQLv/iJpcSVaowSJmXYX+0ZZlJ/6VkaaDZ/yPuJxH5/f+cRwzI6JomY+l0HZKqhKhypvxYIpUBQlMipNpOXoIa+C/EKZCO8Gpp8HqUDDtRTsRWBlUYyyhxt5oPdnMcfRe/aMj1K2m6TIVBkTfQpeQPvWjBMYKQ9FpAMuk871rOMd9ILCCHKFtTt7T+mrHFaHcv9ooGGvTundgavo=
 
 android:
   components:
@@ -50,19 +50,10 @@ script:
 - "./gradlew assembleRelease -PdisablePreDex"
 - echo -en 'travis_fold:end:script.build\\r'
 
-- echo -e '\033[0;33mUnit tests...\033[0m' && echo -en 'travis_fold:start:script.unittest\\r'
+- echo -e '\033[0;33mSonar tests...\033[0m' && echo -en 'travis_fold:start:script.sonar\\r'
 - ls $ANDROID_HOME/platforms
-- ./gradlew testReleaseUnitTest sonarqube -PdisablePreDex -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_TOKEN} --info
-- echo -en 'travis_fold:end:script.unittest\\r'
-
-- echo -e '\033[0;33mUI tests...\033[0m' && echo -en 'travis_fold:start:script.uitest\\r'
-- android-wait-for-emulator
-- adb shell settings put global window_animation_scale 0
-- adb shell settings put global transition_animation_scale 0
-- adb shell settings put global animator_duration_scale 0
-- adb shell input keyevent 82 &
-- adb logcat -c
-- echo -en 'travis_fold:end:script.uitest\\r'
+- ./gradlew testReleaseUnitTest sonarqube -PdisablePreDex -Dsonar.organization=bugwelle-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_TOKEN}
+- echo -en 'travis_fold:end:script.sonar\\r'
 
 before_deploy:
 - openssl aes-256-cbc -K $encrypted_33b0d72ee996_key -iv $encrypted_33b0d72ee996_iv
