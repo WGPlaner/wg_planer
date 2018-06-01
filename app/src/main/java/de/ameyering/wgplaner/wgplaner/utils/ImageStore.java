@@ -91,9 +91,9 @@ public class ImageStore {
         if (profilePictureBytes != null && profilePictureBytes.length > 0) {
             return BitmapFactory.decodeByteArray(profilePictureBytes, 0, profilePictureBytes.length);
 
-        } else {
-            return BitmapFactory.decodeResource(context.getResources(), R.drawable.profile_picture_dummy);
         }
+
+        return null;
     }
 
     public Bitmap getGroupBitmap(Context context) {

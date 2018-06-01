@@ -179,8 +179,8 @@ public class DataProvider implements DataProviderInterface {
 
                         @Override
                         public void onSuccess(byte[] result) {
-                            currentUserPicture = BitmapFactory.decodeByteArray(result, 0, result.length);
-                            imageStoreInstance.setGroupPicture(currentUserPicture);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(result, 0, result.length);
+                            imageStoreInstance.setGroupPicture(bitmap);
                         }
                     });
 
@@ -495,6 +495,8 @@ public class DataProvider implements DataProviderInterface {
     @Override
     public void setCurrentGroupImage(Bitmap bitmap,
         final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener) {
+        imageStoreInstance.setGroupPicture(bitmap);
+
         serverCallsInstance.updateGroupImageAsync(imageStoreInstance.getGroupPictureFile(),
         new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
             @Override
@@ -510,7 +512,7 @@ public class DataProvider implements DataProviderInterface {
                     listener.onSuccess(result);
                 }
 
-                imageStoreInstance.setGroupPicture(bitmap);
+                callAllListeners(DataType.CURRENT_GROUP);
             }
         });
     }
@@ -926,6 +928,20 @@ public class DataProvider implements DataProviderInterface {
                 callAllListeners(DataType.CURRENT_GROUP);
             }
         });
+
+        serverCallsInstance.getGroupImageAsync(new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+            @Override
+            public void onFailure(ApiException e) {
+                //Do nothing
+            }
+
+            @Override
+            public void onSuccess(byte[] result) {
+                imageStoreInstance.writeGroupPicture(result);
+
+                callAllListeners(DataType.CURRENT_GROUP);
+            }
+        });
     }
 
     @Override
@@ -1024,8 +1040,7 @@ public class DataProvider implements DataProviderInterface {
         ApiResponse<byte[]> imageResponse = serverCallsInstance.getGroupImage();
 
         if (imageResponse != null && imageResponse.getData() != null) {
-            imageStoreInstance.setGroupPicture(BitmapFactory.decodeByteArray(imageResponse.getData(), 0,
-                    imageResponse.getData().length));
+            imageStoreInstance.writeGroupPicture(imageResponse.getData());
 
             callAllListeners(DataType.CURRENT_GROUP);
         }

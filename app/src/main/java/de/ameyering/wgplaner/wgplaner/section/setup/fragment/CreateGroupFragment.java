@@ -2,6 +2,9 @@ package de.ameyering.wgplaner.wgplaner.section.setup.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +27,7 @@ import java.io.IOException;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Random;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
@@ -32,9 +36,12 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.Group;
+import io.swagger.client.model.SuccessResponse;
 
 public class CreateGroupFragment extends Fragment {
     private static final int REQ_CODE_PICK_IMAGE = 0;
+    private static int standard_width = 512;
+    private static int standard_text_size = 300;
 
     private String groupName;
     private Bitmap bitmap = null;
@@ -69,18 +76,6 @@ public class CreateGroupFragment extends Fragment {
 
         editGroupNameLayout = view.findViewById(R.id.fragment_setup_create_group_name_input_layout);
         editGroupNameLayout.setErrorEnabled(true);
-
-        editGroupCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //Well, nothing happens so far... I hate Codacy
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //Well, nothing happens so far... I hate Codacy
-            }
-        });
 
         editGroupName = view.findViewById(R.id.fragment_setup_create_input_group_name);
         groupPicture = view.findViewById(R.id.fragment_setup_create_group_picture);
@@ -176,6 +171,12 @@ public class CreateGroupFragment extends Fragment {
 
             @Override
             public void onSuccess(Group result) {
+                if(bitmap == null) {
+                    bitmap = createStandardBitmap(result.getDisplayName());
+                }
+
+                DataProvider.getInstance().setCurrentGroupImage(bitmap, null);
+
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
                 startActivity(intent);
                 getActivity().finish();
@@ -209,5 +210,35 @@ public class CreateGroupFragment extends Fragment {
         }
 
         return true;
+    }
+
+    private Bitmap createStandardBitmap(String displayName) {
+        Bitmap standard = Bitmap.createBitmap(standard_width, standard_width, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(standard);
+        Paint paint = new Paint();
+
+        Random random = new Random();
+        int randomRed = random.nextInt(230);
+        int randomGreen = random.nextInt(230);
+        int randomBlue = random.nextInt(230);
+
+        int color = Color.argb(255, randomRed, randomGreen, randomBlue);
+
+        paint.setColor(color);
+
+        canvas.drawRect(0, 0, standard_width, standard_width,paint);
+
+
+        Paint textPaint = new Paint();
+        textPaint.setARGB(255, 255, 255, 255);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setTextSize(standard_text_size);
+
+        int xPos = (canvas.getWidth() / 2);
+        int yPos = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2)) ;
+
+        canvas.drawText(displayName.substring(0, 1), xPos, yPos, textPaint);
+
+        return standard;
     }
 }

@@ -175,4 +175,7 @@
     <string name="share_join_intent_chooser">Share access key</string>
     <string name="share_join_intent_subject">Join our WGPlaner Group!</string>
     <string name="share_join_intent_text">Click the link to join our WGPlaner Group: %s</string>
+
+    <string name="pick_image">Pick image</string>
+    <string name="generate_image">Generate standard Image</string>
 </resources>
