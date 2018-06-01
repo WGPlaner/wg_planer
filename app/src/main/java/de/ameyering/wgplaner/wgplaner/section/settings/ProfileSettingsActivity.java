@@ -4,6 +4,9 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
@@ -30,6 +34,8 @@ import io.swagger.client.model.SuccessResponse;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
     public static final int REQ_CODE_PICK_IMAGE = 0;
+    private static int standard_width = 512;
+    private static int standard_text_size = 300;
 
     private DataProvider dataProvider = DataProvider.getInstance();
 
@@ -75,10 +81,29 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         //Choose image
         image = findViewById(R.id.profile_settings_profile_picture);
         image.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            CharSequence[] options = new CharSequence[2];
+            options[0] = getString(R.string.pick_image);
+            options[1] = getString(R.string.generate_image);
+            builder.setItems(options, (dialogInterface, i) -> {
+                if (i == 0) {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
+
+                } else if (i == 1) {
+                    bitmap = createStandardBitmap(dataProvider.getCurrentUserDisplayName());
+
+                    runOnUiThread(() -> {
+                        image.setImageBitmap(bitmap);
+                        image.startAnimation(AnimationUtils.loadAnimation(this,
+                                R.anim.anim_load_new_profile_picture));
+                    });
+                }
+            });
+
+            builder.show();
         });
         image.setEnabled(false);
 
@@ -130,6 +155,36 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
             builder.create().show();
         });
+    }
+
+    private Bitmap createStandardBitmap(String displayName) {
+        Bitmap standard = Bitmap.createBitmap(standard_width, standard_width, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(standard);
+        Paint paint = new Paint();
+
+        Random random = new Random();
+        int randomRed = random.nextInt(230);
+        int randomGreen = random.nextInt(230);
+        int randomBlue = random.nextInt(230);
+
+        int color = Color.argb(255, randomRed, randomGreen, randomBlue);
+
+        paint.setColor(color);
+
+        canvas.drawRect(0, 0, standard_width, standard_width, paint);
+
+
+        Paint textPaint = new Paint();
+        textPaint.setARGB(255, 255, 255, 255);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setTextSize(standard_text_size);
+
+        int xPos = (canvas.getWidth() / 2);
+        int yPos = (int)((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
+
+        canvas.drawText(displayName.substring(0, 1), xPos, yPos, textPaint);
+
+        return standard;
     }
 
     @Override
