@@ -2,8 +2,7 @@ sonarqube {
     //noinspection GroovyAssignabilityCheck
     properties {
 
-        // Update your android version
-        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-27/android.jar"
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-26/android.jar"
         if (project.plugins.hasPlugin('com.android.application')) {
             "build/intermediates/exploded-aar/**/classes.jar"
         }

@@ -51,7 +51,8 @@ script:
 - echo -en 'travis_fold:end:script.build\\r'
 
 - echo -e '\033[0;33mUnit tests...\033[0m' && echo -en 'travis_fold:start:script.unittest\\r'
-- ./gradlew testReleaseUnitTest sonarqube -PdisablePreDex -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_TOKEN}
+- ls $ANDROID_HOME/platforms
+- ./gradlew testReleaseUnitTest sonarqube -PdisablePreDex -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_TOKEN} --info
 - echo -en 'travis_fold:end:script.unittest\\r'
 
 - echo -e '\033[0;33mUI tests...\033[0m' && echo -en 'travis_fold:start:script.uitest\\r'
