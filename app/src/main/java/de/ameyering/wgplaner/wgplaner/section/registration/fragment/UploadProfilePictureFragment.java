@@ -41,9 +41,9 @@ public class UploadProfilePictureFragment extends NavigationFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_upload_profile_picture_registration, container,
-            false);
+                false);
 
         if (stateEMailFragment == null) {
             stateEMailFragment = new StateEMailFragment();
@@ -72,13 +72,14 @@ public class UploadProfilePictureFragment extends NavigationFragment {
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
+
                 } else if (i == 1) {
                     bitmap = createStandardBitmap(dataProvider.getCurrentUserDisplayName());
 
                     getActivity().runOnUiThread(() -> {
                         image.setImageBitmap(bitmap);
                         image.startAnimation(AnimationUtils.loadAnimation(getContext(),
-                            R.anim.anim_load_new_profile_picture));
+                                R.anim.anim_load_new_profile_picture));
                     });
                 }
             });
@@ -119,7 +120,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
                         bitmap = scaleBitmap(bitmap);
                         image.setImageBitmap(bitmap);
                         image.startAnimation(AnimationUtils.loadAnimation(getContext(),
-                            R.anim.anim_load_new_profile_picture));
+                                R.anim.anim_load_new_profile_picture));
 
                     } catch (IOException e) {
                         Toast.makeText(getContext(), getString(R.string.load_profile_picture_error),
@@ -175,7 +176,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         textPaint.setTextSize(standard_text_size);
 
         int xPos = (canvas.getWidth() / 2);
-        int yPos = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
+        int yPos = (int)((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
 
         canvas.drawText(displayName.substring(0, 1), xPos, yPos, textPaint);
 

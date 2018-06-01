@@ -307,13 +307,14 @@ public class GroupSettingsActivity extends AppCompatActivity {
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_PICK_IMAGE);
+
                 } else if (i == 1) {
                     bitmap = createStandardBitmap(dataProvider.getCurrentGroupName());
 
                     runOnUiThread(() -> {
                         groupImage.setImageBitmap(bitmap);
                         groupImage.startAnimation(AnimationUtils.loadAnimation(this,
-                            R.anim.anim_load_new_profile_picture));
+                                R.anim.anim_load_new_profile_picture));
                     });
                 }
             });
@@ -483,7 +484,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
         textPaint.setTextSize(standard_text_size);
 
         int xPos = (canvas.getWidth() / 2);
-        int yPos = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
+        int yPos = (int)((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
 
         canvas.drawText(displayName.substring(0, 1), xPos, yPos, textPaint);
 

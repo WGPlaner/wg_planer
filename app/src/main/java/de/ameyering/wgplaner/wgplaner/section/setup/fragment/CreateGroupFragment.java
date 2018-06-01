@@ -171,7 +171,7 @@ public class CreateGroupFragment extends Fragment {
 
             @Override
             public void onSuccess(Group result) {
-                if(bitmap == null) {
+                if (bitmap == null) {
                     bitmap = createStandardBitmap(result.getDisplayName());
                 }
 
@@ -226,7 +226,7 @@ public class CreateGroupFragment extends Fragment {
 
         paint.setColor(color);
 
-        canvas.drawRect(0, 0, standard_width, standard_width,paint);
+        canvas.drawRect(0, 0, standard_width, standard_width, paint);
 
 
         Paint textPaint = new Paint();
@@ -235,7 +235,7 @@ public class CreateGroupFragment extends Fragment {
         textPaint.setTextSize(standard_text_size);
 
         int xPos = (canvas.getWidth() / 2);
-        int yPos = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2)) ;
+        int yPos = (int)((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2)) ;
 
         canvas.drawText(displayName.substring(0, 1), xPos, yPos, textPaint);
 
