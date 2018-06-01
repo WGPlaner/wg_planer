@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -36,7 +35,6 @@ import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.Group;
-import io.swagger.client.model.SuccessResponse;
 
 public class CreateGroupFragment extends Fragment {
     private static final int REQ_CODE_PICK_IMAGE = 0;

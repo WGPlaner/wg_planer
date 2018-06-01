@@ -136,7 +136,7 @@
     <string name="section_shopping_list_no_items">Im Moment gibt es keine Produkte auf der Einkaufsliste</string>
     <string name="share_join_intent_chooser">Teile den Einladungscode</string>
     <string name="share_join_intent_subject">Tritt unser WGPlaner-Gruppe bei!</string>
-    <string name="share_join_intent_text">Klicke auf den Link um unser WGPlaner-Gruppe beizutreten</string>
+    <string name="share_join_intent_text">Klicke auf den Link um unser WGPlaner-Gruppe beizutreten: %s</string>
     <string name="pick_image">Bild auswählen</string>
     <string name="generate_image">Standardbild generieren</string>
 </resources>

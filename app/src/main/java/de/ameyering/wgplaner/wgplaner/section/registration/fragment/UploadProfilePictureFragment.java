@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.section.registration.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
