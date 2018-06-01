@@ -11,7 +11,6 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import de.ameyering.wgplaner.test.mockclasses.TestServerCalls;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
-import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
@@ -24,7 +23,6 @@ public class ShoppingListActivitySteps {
 
     private void initActivity(Activity activity) {
         Context appContext = activity.getBaseContext();
-        Money.initialize(Locale.getDefault());
         ImageStore.initialize(appContext);
         Configuration.initConfig(appContext);
         DataProvider.getInstance().setServerCallsInstance(TestServerCalls.getInstance());

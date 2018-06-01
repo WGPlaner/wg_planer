@@ -289,7 +289,7 @@ public class TestServerCalls implements ServerCallsInterface {
     }
 
     @Override
-    public void getGroupAsync(UUID groupUid, @Nullable OnAsyncCallListener<Group> listener) {
+    public void getGroupAsync(@Nullable OnAsyncCallListener<Group> listener) {
         if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
@@ -298,7 +298,6 @@ public class TestServerCalls implements ServerCallsInterface {
                     group.setDisplayName(DEFAULT_GROUP_NAME);
                     group.setMembers(DEFAULT_GROUP_MEMBERS);
                     group.setAdmins(DEFAULT_GROUP_ADMINS);
-
 
                     listener.onSuccess(group);
                 }
@@ -432,7 +431,6 @@ public class TestServerCalls implements ServerCallsInterface {
         switch (testCase) {
             case SUCCESS: {
                 Group group = new Group();
-                group.setUid(new UUID(11111111111111L, 000000000001L));
                 group.setCurrency(DEFAULT_CURRENCY);
                 group.setDisplayName(DEFAULT_GROUP_NAME);
                 group.setMembers(DEFAULT_GROUP_MEMBERS);
@@ -451,14 +449,13 @@ public class TestServerCalls implements ServerCallsInterface {
         }
     }
 
+
     @Override
     public void createGroupKeyAsync(@Nullable OnAsyncCallListener<GroupCode> listener) {
         if (listener != null) {
             switch (testCase) {
                 case SUCCESS: {
-                    GroupCode code = new GroupCode();
-                    code.setCode("MYSUPERDUPER");
-                    listener.onSuccess(code);
+                    // TODO
                 }
                 break;
 
@@ -474,10 +471,8 @@ public class TestServerCalls implements ServerCallsInterface {
     public ApiResponse<GroupCode> createGroupKey() {
         switch (testCase) {
             case SUCCESS: {
-                GroupCode code = new GroupCode();
-                code.setCode("MYSUPERDUPER");
-
-                return new ApiResponse<>(200, null, (GroupCode) code);
+                // TODO
+                return null;
             }
 
             case FAILURE: {
@@ -698,5 +693,16 @@ public class TestServerCalls implements ServerCallsInterface {
                 return null;
             }
         }
+    }
+
+    @Override
+    public void getBoughtItemsAsync(String uid, @Nullable OnAsyncCallListener<ShoppingList> listener) {
+        // TODO
+    }
+
+    @Override
+    public ApiResponse<ShoppingList> getBoughtItems(String uid) {
+        // TODO
+        return null;
     }
 }

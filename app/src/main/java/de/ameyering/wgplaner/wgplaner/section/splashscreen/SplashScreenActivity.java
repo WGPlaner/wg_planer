@@ -27,7 +27,6 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
-import de.ameyering.wgplaner.wgplaner.structure.Money;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
@@ -168,7 +167,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void initialize() {
         ImageStore.initialize(this);
         Configuration.initConfig(this);
-        Money.initialize(Locale.getDefault());
     }
 
     private void loadHome() {
