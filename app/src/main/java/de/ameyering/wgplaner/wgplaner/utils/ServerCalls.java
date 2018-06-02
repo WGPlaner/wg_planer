@@ -61,7 +61,7 @@ public class ServerCalls extends ServerCallsInterface {
     }
 
     @Override
-    boolean isInitialized() {
+    public boolean isInitialized() {
         return currentUserUid != null && !currentUserUid.trim().isEmpty();
     }
 

@@ -3,7 +3,6 @@ package de.ameyering.wgplaner.wgplaner.section.splashscreen;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,9 +25,7 @@ import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
-import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
-import de.ameyering.wgplaner.wgplaner.utils.WGPlanerInstanceIdService;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";

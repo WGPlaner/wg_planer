@@ -12,7 +12,6 @@ import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
-import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import io.swagger.client.model.User;
 
