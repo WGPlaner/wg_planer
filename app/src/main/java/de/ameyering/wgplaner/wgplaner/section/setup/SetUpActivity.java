@@ -31,8 +31,6 @@ public class SetUpActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private boolean toastWasShown = false;
 
-    private DataProviderInterface dataProvider;
-
     private Fragment descriptionFragment = new DescriptionFragment();
 
     @Override
@@ -41,7 +39,7 @@ public class SetUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_set_up);
 
         WGPlanerApplication application = (WGPlanerApplication) getApplication();
-        dataProvider = application.getDataProviderInterface();
+        DataProviderInterface dataProvider = application.getDataProviderInterface();
 
         if (getIntent() != null && getIntent().getData() != null) {
             Uri data = getIntent().getData();

@@ -33,85 +33,85 @@ public abstract class ServerCallsInterface {
             );
     }
 
-    abstract void setCurrentUserUid(@NonNull String uid);
+    public abstract void setCurrentUserUid(@NonNull String uid);
 
-    abstract boolean isInitialized();
+    public abstract boolean isInitialized();
 
-    abstract void createUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener);
+    public abstract void createUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener);
 
-    abstract ApiResponse<User> createUser(User user);
+    public abstract ApiResponse<User> createUser(User user);
 
-    abstract void getUserAsync(String uid, @Nullable final OnAsyncCallListener<User> listener);
+    public abstract void getUserAsync(String uid, @Nullable final OnAsyncCallListener<User> listener);
 
-    abstract ApiResponse<User> getUser(String uid);
+    public abstract ApiResponse<User> getUser(String uid);
 
-    abstract void updateUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener);
+    public abstract void updateUserAsync(User user, @Nullable final OnAsyncCallListener<User> listener);
 
-    abstract ApiResponse<User> updateUser(User user);
+    public abstract ApiResponse<User> updateUser(User user);
 
-    abstract void getUserImageAsync(String uid, @Nullable final OnAsyncCallListener<byte[]> listener);
+    public abstract void getUserImageAsync(String uid, @Nullable final OnAsyncCallListener<byte[]> listener);
 
-    abstract ApiResponse<byte[]> getUserImage(String uid);
+    public abstract ApiResponse<byte[]> getUserImage(String uid);
 
-    abstract void updateUserImageAsync(File image,
+    public abstract void updateUserImageAsync(File image,
         @Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
-    abstract ApiResponse<SuccessResponse> updateUserImage(File image);
+    public abstract ApiResponse<SuccessResponse> updateUserImage(File image);
 
-    abstract void leaveGroupAsync(@Nullable final OnAsyncCallListener<SuccessResponse> listener);
+    public abstract void leaveGroupAsync(@Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
-    abstract ApiResponse<SuccessResponse> leaveGroup();
+    public abstract ApiResponse<SuccessResponse> leaveGroup();
 
-    abstract void getGroupAsync(@Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void getGroupAsync(@Nullable final OnAsyncCallListener<Group> listener);
 
-    abstract ApiResponse<Group> getGroup();
+    public abstract ApiResponse<Group> getGroup();
 
-    abstract void updateGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void updateGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
 
-    abstract ApiResponse<Group> updateGroup(Group group);
+    public abstract ApiResponse<Group> updateGroup(Group group);
 
-    abstract void createGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void createGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
 
-    abstract ApiResponse<Group> createGroup(Group group);
+    public abstract ApiResponse<Group> createGroup(Group group);
 
-    abstract void joinGroupAsync(String accessKey, @Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void joinGroupAsync(String accessKey, @Nullable final OnAsyncCallListener<Group> listener);
 
-    abstract ApiResponse<Group> joinGroup(String accessKey);
+    public abstract ApiResponse<Group> joinGroup(String accessKey);
 
-    abstract void createGroupKeyAsync(@Nullable final OnAsyncCallListener<GroupCode> listener);
+    public abstract void createGroupKeyAsync(@Nullable final OnAsyncCallListener<GroupCode> listener);
 
-    abstract ApiResponse<GroupCode> createGroupKey();
+    public abstract ApiResponse<GroupCode> createGroupKey();
 
-    abstract void getGroupImageAsync(@Nullable final OnAsyncCallListener<byte[]> listener);
+    public abstract void getGroupImageAsync(@Nullable final OnAsyncCallListener<byte[]> listener);
 
-    abstract ApiResponse<byte[]> getGroupImage();
+    public abstract ApiResponse<byte[]> getGroupImage();
 
-    abstract void updateGroupImageAsync(File image,
+    public abstract void updateGroupImageAsync(File image,
         @Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
-    abstract ApiResponse<SuccessResponse> updateGroupImage(File image);
+    public abstract ApiResponse<SuccessResponse> updateGroupImage(File image);
 
-    abstract void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList> listener);
+    public abstract void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList> listener);
 
-    abstract ApiResponse<ShoppingList> getShoppingList();
+    public abstract ApiResponse<ShoppingList> getShoppingList();
 
-    abstract void createShoppingListItemAsync(ListItem item,
+    public abstract void createShoppingListItemAsync(ListItem item,
         @Nullable final OnAsyncCallListener<ListItem> listener);
 
-    abstract ApiResponse<ListItem> createShoppingListItem(ListItem item);
+    public abstract ApiResponse<ListItem> createShoppingListItem(ListItem item);
 
-    abstract void updateShoppingListItemAsync(ListItem item,
+    public abstract void updateShoppingListItemAsync(ListItem item,
         @Nullable final OnAsyncCallListener<ListItem> listener);
 
-    abstract ApiResponse<ListItem> updateShoppingListItem(ListItem item);
+    public abstract ApiResponse<ListItem> updateShoppingListItem(ListItem item);
 
-    abstract void buyListItemsAsync(List<UUID> items,
+    public abstract void buyListItemsAsync(List<UUID> items,
         @Nullable final OnAsyncCallListener<SuccessResponse> listener);
 
-    abstract ApiResponse<SuccessResponse> buyListItems(List<UUID> items);
+    public abstract ApiResponse<SuccessResponse> buyListItems(List<UUID> items);
 
-    abstract void getBoughtItemsAsync(String uid,
+    public abstract void getBoughtItemsAsync(String uid,
         @Nullable final OnAsyncCallListener<ShoppingList> listener);
 
-    abstract ApiResponse<ShoppingList> getBoughtItems(String uid);
+    public abstract ApiResponse<ShoppingList> getBoughtItems(String uid);
 }
