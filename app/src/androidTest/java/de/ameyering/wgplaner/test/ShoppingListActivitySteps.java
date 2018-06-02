@@ -4,16 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.test.rule.ActivityTestRule;
 
-import java.util.Locale;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import de.ameyering.wgplaner.test.mockclasses.TestServerCalls;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
-import de.ameyering.wgplaner.wgplaner.utils.Configuration;
-import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
-import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 
 public class ShoppingListActivitySteps {
     private ActivityTestRule<HomeActivity> mActivityRule = new ActivityTestRule<>(HomeActivity.class);
