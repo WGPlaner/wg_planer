@@ -11,13 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
-import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import io.swagger.client.model.User;
 
 public class AddItemAddUserDialogFragment extends DialogFragment {
     private ArrayList<User> mSelectedItems = new ArrayList<>();
     private OnResultListener mOnResultListener;
     private User[] list;
+
+    private DataProviderInterface dataProvider;
 
     public interface OnResultListener {
 
@@ -31,7 +34,10 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.add_item_add_requested_for_pick_users));
 
-        List<User> all = DataProvider.getInstance().getCurrentGroupMembers();
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        dataProvider = application.getDataProviderInterface();
+
+        List<User> all = dataProvider.getCurrentGroupMembers();
         list = new User[all.size()];
 
         for (int i = 0; i < all.size(); i++) {

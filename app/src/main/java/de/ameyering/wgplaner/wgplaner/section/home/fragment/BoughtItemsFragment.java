@@ -20,10 +20,13 @@ import java.util.List;
 import java.util.UUID;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.home.CreateBillActivity;
 import de.ameyering.wgplaner.wgplaner.section.home.ItemDetailActivity;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.BoughtItemsAdapter;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
+import de.ameyering.wgplaner.wgplaner.utils.OnDataChangeListener;
 import io.swagger.client.model.ListItem;
 
 public class BoughtItemsFragment extends SectionFragment implements ActionMode.Callback {
@@ -31,7 +34,7 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
     private RecyclerView recycler = null;
     private BoughtItemsAdapter adapter = null;
 
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
 
     private ActionMode actionMode = null;
 
@@ -70,8 +73,8 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
         }
     };
 
-    private DataProvider.OnDataChangeListener onDataChangeListener = type -> {
-        if (type == DataProvider.DataType.BOUGHT_ITEMS && adapter != null) {
+    private OnDataChangeListener onDataChangeListener = type -> {
+        if (type == DataProviderInterface.DataType.BOUGHT_ITEMS && adapter != null) {
             onNewData(dataProvider.getBoughtItems());
         }
     };
@@ -81,6 +84,9 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_bought_items, container, false);
+
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         if (actionBar != null) {
             actionBar.setTitle(R.string.section_title_bought_items);
@@ -107,7 +113,7 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
         recycler.setHasFixedSize(false);
 
         if (adapter == null) {
-            adapter = new BoughtItemsAdapter(dataProvider.getBoughtItems(), getContext());
+            adapter = new BoughtItemsAdapter(dataProvider.getBoughtItems(), getContext(), dataProvider);
         }
 
         recycler.setAdapter(adapter);

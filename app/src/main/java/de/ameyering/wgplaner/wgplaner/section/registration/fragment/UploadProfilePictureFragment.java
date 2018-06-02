@@ -23,8 +23,10 @@ import java.io.IOException;
 import java.util.Random;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 
 public class UploadProfilePictureFragment extends NavigationFragment {
     public static final int REQ_CODE_PICK_IMAGE = 0;
@@ -33,7 +35,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
     private CircularImageView image;
     private Bitmap bitmap;
     private Uri selectedImage;
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
 
     private StateEMailFragment stateEMailFragment;
 
@@ -43,6 +45,9 @@ public class UploadProfilePictureFragment extends NavigationFragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_upload_profile_picture_registration, container,
                 false);
+
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         if (stateEMailFragment == null) {
             stateEMailFragment = new StateEMailFragment();

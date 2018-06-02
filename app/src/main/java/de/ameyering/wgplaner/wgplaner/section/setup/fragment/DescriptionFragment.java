@@ -11,17 +11,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 
 public class DescriptionFragment extends Fragment {
     private static final String JOIN_GROUP_FRAGMENT_TAG = "JoinGroupFragment";
     private static final String CREATE_GROUP_FRAGMENT_TAG = "CreateGroupFragment";
 
-    public CreateGroupFragment createGroupFragment = new CreateGroupFragment();
-    public JoinGroupFragment joinGroupFragment = new JoinGroupFragment();
+    private final CreateGroupFragment createGroupFragment = new CreateGroupFragment();
+    private final JoinGroupFragment joinGroupFragment = new JoinGroupFragment();
 
     private boolean isInCreateGroup = false;
     private boolean isInJoinGroup = false;
+
 
     @Nullable
     @Override
@@ -29,9 +32,12 @@ public class DescriptionFragment extends Fragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setup_description, container, false);
 
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        DataProviderInterface dataProvider = application.getDataProviderInterface();
+
         TextView header = view.findViewById(R.id.fragment_setup_description_header);
         header.setText(String.format(getString(R.string.set_up_group_header),
-                DataProvider.getInstance().getCurrentUserDisplayName()));
+                dataProvider.getCurrentUserDisplayName()));
 
         Button btnCreateGroup = view.findViewById(R.id.fragment_setup_description_btn_create);
         Button btnJoinGroup = view.findViewById(R.id.fragment_setup_description_btn_join);

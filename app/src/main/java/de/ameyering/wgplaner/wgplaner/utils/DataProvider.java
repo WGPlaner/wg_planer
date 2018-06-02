@@ -24,11 +24,9 @@ import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
-public class DataProvider implements DataProviderInterface {
-    private static DataProvider singleton;
-
-    private ImageStore imageStoreInstance = ImageStore.getInstance();
-    private ServerCallsInterface serverCallsInstance;
+public class DataProvider extends DataProviderInterface {
+    private final ImageStore imageStoreInstance;
+    private final ServerCallsInterface serverCallsInstance;
 
     private String currentUserUid;
     private String currentUserFirebaseInstanceId;
@@ -53,32 +51,10 @@ public class DataProvider implements DataProviderInterface {
 
     private ArrayList<OnDataChangeListener> mListeners;
 
-    public interface OnDataChangeListener {
-        void onDataChanged(final DataType type);
-    }
+    public DataProvider(ServerCallsInterface serverCallsInterface, ImageStore imageStore) {
+        imageStoreInstance = imageStore;
+        serverCallsInstance = serverCallsInterface;
 
-    public enum DataType {
-        CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS, CURRENT_GROUP_MEMBERS, BOUGHT_ITEMS
-    }
-
-    static {
-        singleton = new DataProvider();
-        singleton.setServerCallsInstance(ServerCalls.getInstance());
-    }
-
-    public void setServerCallsInstance(ServerCallsInterface serverCallsInstance) {
-        this.serverCallsInstance = serverCallsInstance;
-    }
-
-    public static boolean isInitialized() {
-        return singleton.serverCallsInstance != null;
-    }
-
-    public static DataProvider getInstance() {
-        return singleton;
-    }
-
-    private DataProvider() {
         currentUserUid = "";
         currentUserDisplayName = "";
         currentUserEmail = null;
@@ -102,8 +78,11 @@ public class DataProvider implements DataProviderInterface {
     }
 
     public SetUpState initialize(String uid, Context context) {
-        if (uid != null && !uid.isEmpty()) {
+        if (uid != null && !uid.trim().isEmpty()) {
             currentUserUid = uid;
+
+            serverCallsInstance.setCurrentUserUid(currentUserUid);
+
             Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
             ApiResponse<User> userResponse = serverCallsInstance.getUser(uid);
 
@@ -128,7 +107,7 @@ public class DataProvider implements DataProviderInterface {
 
                 if (imageStoreInstance.getProfilePictureFile().length() < 5000L) {
                     serverCallsInstance.getUserImageAsync(currentUserUid,
-                    new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+                    new OnAsyncCallListener<byte[]>() {
                         @Override
                         public void onFailure(ApiException e) {
                             //TODO: Implement failure
@@ -171,7 +150,7 @@ public class DataProvider implements DataProviderInterface {
                     currentGroupAdminsUids = group.getAdmins();
                     initializeMembers(context);
 
-                    serverCallsInstance.getGroupImageAsync(new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+                    serverCallsInstance.getGroupImageAsync(new OnAsyncCallListener<byte[]>() {
                         @Override
                         public void onFailure(ApiException e) {
                             //TODO: Implement on failure
@@ -199,15 +178,16 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public void registerUser(final ServerCallsInterface.OnAsyncCallListener<User> listener) {
+    public void registerUser(final OnAsyncCallListener<User> listener) {
         if (currentUserDisplayName != null && !currentUserDisplayName.isEmpty()) {
             User user = new User();
             user.setUid(currentUserUid);
             user.setDisplayName(currentUserDisplayName);
             user.setEmail(currentUserEmail);
+
             user.setFirebaseInstanceID(FirebaseInstanceId.getInstance().getToken());
 
-            serverCallsInstance.createUserAsync(user, new ServerCallsInterface.OnAsyncCallListener<User>() {
+            serverCallsInstance.createUserAsync(user, new OnAsyncCallListener<User>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -258,6 +238,8 @@ public class DataProvider implements DataProviderInterface {
                 Configuration.initConfig(context);
             }
 
+            updateUser(null);
+
             Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }
     }
@@ -269,12 +251,12 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentUserDisplayName(String displayName,
-        final ServerCallsInterface.OnAsyncCallListener<User> listener) {
+        final OnAsyncCallListener<User> listener) {
         if (displayName != null && !currentUserDisplayName.equals(displayName)) {
             this.currentUserDisplayName = displayName;
             Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
 
-            updateUser(new ServerCallsInterface.OnAsyncCallListener<User>() {
+            updateUser(new OnAsyncCallListener<User>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -301,11 +283,11 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentUserImage(Bitmap bitmap,
-        final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener) {
+        final OnAsyncCallListener<SuccessResponse> listener) {
         if (bitmap != null) {
             currentUserPicture = bitmap;
             imageStoreInstance.setProfilePicture(bitmap);
-            updateUserImage(new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
+            updateUserImage(new OnAsyncCallListener<SuccessResponse>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -330,12 +312,12 @@ public class DataProvider implements DataProviderInterface {
         }
     }
 
-    private void updateUserImage(final ServerCallsInterface.OnAsyncCallListener<SuccessResponse>
+    private void updateUserImage(final OnAsyncCallListener<SuccessResponse>
         listener) {
         File file = imageStoreInstance.getProfilePictureFile();
 
         serverCallsInstance.updateUserImageAsync(file,
-        new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
+        new OnAsyncCallListener<SuccessResponse>() {
             @Override
             public void onFailure(ApiException e) {
                 if (listener != null) {
@@ -356,11 +338,11 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentUserEmail(@Nullable String email,
-        final ServerCallsInterface.OnAsyncCallListener<User> listener) {
+        final OnAsyncCallListener<User> listener) {
         this.currentUserEmail = email;
         Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, email);
 
-        updateUser(new ServerCallsInterface.OnAsyncCallListener<User>() {
+        updateUser(new OnAsyncCallListener<User>() {
             @Override
             public void onFailure(ApiException e) {
                 if (listener != null) {
@@ -381,10 +363,10 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentUserLocale(Locale locale,
-        final ServerCallsInterface.OnAsyncCallListener<User> listener) {
+        final OnAsyncCallListener<User> listener) {
         if (locale != null && !currentUserLocale.equals(locale)) {
             this.currentUserLocale = locale;
-            updateUser(new ServerCallsInterface.OnAsyncCallListener<User>() {
+            updateUser(new OnAsyncCallListener<User>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -437,11 +419,11 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentGroupName(String groupName,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener) {
+        final OnAsyncCallListener<Group> listener) {
         if (groupName != null && !groupName.isEmpty()) {
             this.currentGroupName = groupName;
 
-            updateGroup(new ServerCallsInterface.OnAsyncCallListener<Group>() {
+            updateGroup(new OnAsyncCallListener<Group>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -468,11 +450,11 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentGroupCurrency(Currency currency,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener) {
+        final OnAsyncCallListener<Group> listener) {
         if (currency != null) {
             this.currentGroupCurrency = currency;
 
-            updateGroup(new ServerCallsInterface.OnAsyncCallListener<Group>() {
+            updateGroup(new OnAsyncCallListener<Group>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -494,11 +476,11 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void setCurrentGroupImage(Bitmap bitmap,
-        final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener) {
+        final OnAsyncCallListener<SuccessResponse> listener) {
         imageStoreInstance.setGroupPicture(bitmap);
 
         serverCallsInstance.updateGroupImageAsync(imageStoreInstance.getGroupPictureFile(),
-        new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
+        new OnAsyncCallListener<SuccessResponse>() {
             @Override
             public void onFailure(ApiException e) {
                 if (listener != null) {
@@ -561,8 +543,8 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public void updateGroup(Group group, ServerCallsInterface.OnAsyncCallListener<Group> listener) {
-        serverCallsInstance.updateGroupAsync(group, new ServerCallsInterface.OnAsyncCallListener<Group>() {
+    public void updateGroup(Group group, OnAsyncCallListener<Group> listener) {
+        serverCallsInstance.updateGroupAsync(group, new OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
                 if (listener != null) {
@@ -587,13 +569,13 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void createGroup(String name, String groupCurrency, Bitmap imagescr, Context context,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener) {
+        final OnAsyncCallListener<Group> listener) {
         Group group = new Group();
         group.setDisplayName(name);
         group.setCurrency(groupCurrency);
         imageStoreInstance.setGroupPicture(imagescr);
 
-        createGroup(group, new ServerCallsInterface.OnAsyncCallListener<Group>() {
+        createGroup(group, new OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
                 if (listener != null) {
@@ -628,8 +610,8 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void joinCurrentGroup(String accessKey, final Context context,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener) {
-        joinGroup(accessKey, new ServerCallsInterface.OnAsyncCallListener<Group>() {
+        final OnAsyncCallListener<Group> listener) {
+        joinGroup(accessKey, new OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
                 if (listener != null) {
@@ -646,7 +628,7 @@ public class DataProvider implements DataProviderInterface {
                 currentGroupAdminsUids = group.getAdmins();
                 initializeMembers(context);
 
-                serverCallsInstance.getGroupImageAsync(new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+                serverCallsInstance.getGroupImageAsync(new OnAsyncCallListener<byte[]>() {
                     @Override
                     public void onFailure(ApiException e) {
                         Log.e("GroupImage", ":GetFailure");
@@ -669,9 +651,9 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public void leaveCurrentGroup(final ServerCallsInterface.OnAsyncCallListener<SuccessResponse>
+    public void leaveCurrentGroup(final OnAsyncCallListener<SuccessResponse>
         listener) {
-        leaveGroup(new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
+        leaveGroup(new OnAsyncCallListener<SuccessResponse>() {
             @Override
             public void onFailure(ApiException e) {
                 //Nothing happens
@@ -714,7 +696,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void addShoppingListItem(ListItem item,
-        final ServerCallsInterface.OnAsyncCallListener<ListItem> listener) {
+        final OnAsyncCallListener<ListItem> listener) {
         if (item != null && currentShoppingList != null) {
             boolean wasUpdated = false;
 
@@ -725,7 +707,7 @@ public class DataProvider implements DataProviderInterface {
 
                     currentItem.setCount(currentItem.getCount() + item.getCount());
 
-                    updateListItem(item, new ServerCallsInterface.OnAsyncCallListener<ListItem>() {
+                    updateListItem(item, new OnAsyncCallListener<ListItem>() {
                         @Override
                         public void onFailure(ApiException e) {
                             if (listener != null) {
@@ -751,7 +733,7 @@ public class DataProvider implements DataProviderInterface {
             }
 
             if (!wasUpdated) {
-                addListItem(item, new ServerCallsInterface.OnAsyncCallListener<ListItem>() {
+                addListItem(item, new OnAsyncCallListener<ListItem>() {
                     @Override
                     public void onFailure(ApiException e) {
                         if (listener != null) {
@@ -803,7 +785,7 @@ public class DataProvider implements DataProviderInterface {
     }
 
     @Override
-    public void buySelection(final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener) {
+    public void buySelection(final OnAsyncCallListener<SuccessResponse> listener) {
         ArrayList<UUID> items = new ArrayList<>();
 
         for (ListItem item : selectedItems) {
@@ -811,7 +793,7 @@ public class DataProvider implements DataProviderInterface {
         }
 
         serverCallsInstance.buyListItemsAsync(items,
-        new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
+        new OnAsyncCallListener<SuccessResponse>() {
             @Override
             public void onFailure(ApiException e) {
                 if (listener != null) {
@@ -826,6 +808,7 @@ public class DataProvider implements DataProviderInterface {
                 }
 
                 selectedItems.clear();
+                syncShoppingList();
                 callAllListeners(DataType.SELECTED_ITEMS);
             }
         });
@@ -844,14 +827,14 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void addPriceToListItem(ListItem item, String price,
-        final ServerCallsInterface.OnAsyncCallListener<ListItem> listener) {
+        final OnAsyncCallListener<ListItem> listener) {
         try {
             Double priceDouble = Double.parseDouble(price) * 100;
             Integer priceInt = priceDouble.intValue();
 
             item.setPrice(priceInt);
 
-            updateListItem(item, new ServerCallsInterface.OnAsyncCallListener<ListItem>() {
+            updateListItem(item, new OnAsyncCallListener<ListItem>() {
                 @Override
                 public void onFailure(ApiException e) {
                     if (listener != null) {
@@ -911,7 +894,7 @@ public class DataProvider implements DataProviderInterface {
 
     @Override
     public void syncGroup() {
-        getGroup(new ServerCallsInterface.OnAsyncCallListener<Group>() {
+        getGroup(new OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
                 //Nothing happens
@@ -929,7 +912,7 @@ public class DataProvider implements DataProviderInterface {
             }
         });
 
-        serverCallsInstance.getGroupImageAsync(new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+        serverCallsInstance.getGroupImageAsync(new OnAsyncCallListener<byte[]>() {
             @Override
             public void onFailure(ApiException e) {
                 //Do nothing
@@ -1078,7 +1061,7 @@ public class DataProvider implements DataProviderInterface {
         //currently nothing implemented
     }
 
-    private void updateUser(final ServerCallsInterface.OnAsyncCallListener<User> listener) {
+    private void updateUser(final OnAsyncCallListener<User> listener) {
         User user = new User();
         user.setUid(currentUserUid);
         user.setDisplayName(currentUserDisplayName);
@@ -1089,15 +1072,15 @@ public class DataProvider implements DataProviderInterface {
         serverCallsInstance.updateUserAsync(user, listener);
     }
 
-    private void getUser(String uid, final ServerCallsInterface.OnAsyncCallListener<User> listener) {
+    private void getUser(String uid, final OnAsyncCallListener<User> listener) {
         serverCallsInstance.getUserAsync(uid, listener);
     }
 
-    private void getGroup(final ServerCallsInterface.OnAsyncCallListener<Group> listener) {
+    private void getGroup(final OnAsyncCallListener<Group> listener) {
         serverCallsInstance.getGroupAsync(listener);
     }
 
-    private void updateGroup(final ServerCallsInterface.OnAsyncCallListener<Group> listener) {
+    private void updateGroup(final OnAsyncCallListener<Group> listener) {
         Group group = new Group();
         group.setDisplayName(currentGroupName);
         group.setCurrency(currentGroupCurrency.getCurrencyCode());
@@ -1108,16 +1091,16 @@ public class DataProvider implements DataProviderInterface {
     }
 
     private void joinGroup(String accessKey,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener) {
+        final OnAsyncCallListener<Group> listener) {
         serverCallsInstance.joinGroupAsync(accessKey, listener);
     }
 
-    private void leaveGroup(final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener) {
+    private void leaveGroup(final OnAsyncCallListener<SuccessResponse> listener) {
         serverCallsInstance.leaveGroupAsync(listener);
     }
 
     private void createGroup(Group group,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener) {
+        final OnAsyncCallListener<Group> listener) {
         serverCallsInstance.createGroupAsync(group, listener);
     }
 
@@ -1129,12 +1112,12 @@ public class DataProvider implements DataProviderInterface {
     */
 
     private void addListItem(ListItem item,
-        final ServerCallsInterface.OnAsyncCallListener<ListItem> listener) {
+        final OnAsyncCallListener<ListItem> listener) {
         serverCallsInstance.createShoppingListItemAsync(item, listener);
     }
 
     private void updateListItem(ListItem item,
-        final ServerCallsInterface.OnAsyncCallListener<ListItem> listener) {
+        final OnAsyncCallListener<ListItem> listener) {
         serverCallsInstance.updateShoppingListItemAsync(item, listener);
     }
 
@@ -1143,7 +1126,7 @@ public class DataProvider implements DataProviderInterface {
 
         for (String uid : currentGroupMembersUids) {
             if (uid != null) {
-                getUser(uid, new ServerCallsInterface.OnAsyncCallListener<User>() {
+                getUser(uid, new OnAsyncCallListener<User>() {
                     @Override
                     public void onFailure(ApiException e) {
                         //Nothing happens
@@ -1155,7 +1138,7 @@ public class DataProvider implements DataProviderInterface {
 
                         if (imageStoreInstance.loadGroupMemberPicture(user.getUid(), context) == null) {
                             serverCallsInstance.getUserImageAsync(user.getUid(),
-                            new ServerCallsInterface.OnAsyncCallListener<byte[]>() {
+                            new OnAsyncCallListener<byte[]>() {
                                 @Override
                                 public void onFailure(ApiException e) {
                                     //nothing happens so far...
@@ -1179,12 +1162,14 @@ public class DataProvider implements DataProviderInterface {
         }
     }
 
+    @Override
     public void addOnDataChangeListener(OnDataChangeListener listener) {
         if (listener != null) {
             mListeners.add(listener);
         }
     }
 
+    @Override
     public void removeOnDataChangeListener(OnDataChangeListener listener) {
         if (listener != null) {
             mListeners.remove(listener);

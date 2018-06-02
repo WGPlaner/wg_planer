@@ -23,9 +23,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.home.AddItemActivity;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.ShoppingListAdapter;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
+import de.ameyering.wgplaner.wgplaner.utils.OnDataChangeListener;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
@@ -45,20 +49,20 @@ public class ShoppingListFragment extends SectionFragment {
     private SwipeRefreshLayout swipeToRefresh;
     private TextView no_items;
 
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
 
-    private DataProvider.OnDataChangeListener shoppingListListener = type -> {
+    private OnDataChangeListener shoppingListListener = type -> {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
-                if (type == DataProvider.DataType.SELECTED_ITEMS) {
+                if (type == DataProviderInterface.DataType.SELECTED_ITEMS) {
                     if (floatingActionButton != null) {
                         changeFloatingActionButton();
                     }
 
-                } else if (type == DataProvider.DataType.SHOPPING_LIST) {
+                } else if (type == DataProviderInterface.DataType.SHOPPING_LIST) {
                     onNewData(dataProvider.getCurrentShoppingList());
 
-                } else if (type == DataProvider.DataType.CURRENT_GROUP_MEMBERS) {
+                } else if (type == DataProviderInterface.DataType.CURRENT_GROUP_MEMBERS) {
                     onNewData(dataProvider.getCurrentShoppingList());
                 }
             });
@@ -72,6 +76,9 @@ public class ShoppingListFragment extends SectionFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_shopping_list, container, false);
+
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         if (actionBar != null) {
             actionBar.setTitle(R.string.section_title_shopping_list);
@@ -98,7 +105,7 @@ public class ShoppingListFragment extends SectionFragment {
                 no_items.setVisibility(View.GONE);
             }
 
-            adapter = new ShoppingListAdapter(items);
+            adapter = new ShoppingListAdapter(items, dataProvider);
         }
 
         categories.setAdapter(adapter);
@@ -119,7 +126,7 @@ public class ShoppingListFragment extends SectionFragment {
             }
         }).start());
 
-        if (shoppingListListener == null) {
+        if (shoppingListListener != null) {
             dataProvider.addOnDataChangeListener(shoppingListListener);
         }
 
@@ -257,7 +264,7 @@ public class ShoppingListFragment extends SectionFragment {
                     floatingActionButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                             R.drawable.ic_check_white));
                     floatingActionButton.setOnClickListener(view -> {
-                        dataProvider.buySelection(new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
+                        dataProvider.buySelection(new OnAsyncCallListener<SuccessResponse>() {
                             @Override
                             public void onFailure(ApiException e) {
                                 getActivity().runOnUiThread(() -> {
