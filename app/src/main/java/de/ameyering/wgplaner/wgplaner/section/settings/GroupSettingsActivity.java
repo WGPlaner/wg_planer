@@ -38,9 +38,13 @@ import java.util.Locale;
 import java.util.Random;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
+import de.ameyering.wgplaner.wgplaner.utils.OnDataChangeListener;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.Group;
@@ -52,7 +56,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
     private static int standard_width = 512;
     private static int standard_text_size = 300;
 
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
     private ImageStore imageStore = ImageStore.getInstance();
 
     private Bitmap bitmap;
@@ -83,8 +87,8 @@ public class GroupSettingsActivity extends AppCompatActivity {
 
     private AlertDialog alertDialog = null;
 
-    private DataProvider.OnDataChangeListener groupListener = type -> {
-        if (type == DataProvider.DataType.CURRENT_GROUP || type == DataProvider.DataType.CURRENT_GROUP_MEMBERS) {
+    private OnDataChangeListener groupListener = type -> {
+        if (type == DataProviderInterface.DataType.CURRENT_GROUP || type == DataProviderInterface.DataType.CURRENT_GROUP_MEMBERS) {
             runOnUiThread(this::setEditModeDisabled);
         }
     };
@@ -93,6 +97,9 @@ public class GroupSettingsActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_settings);
+
+        WGPlanerApplication application = (WGPlanerApplication) getApplicationContext();
+        dataProvider = application.getDataProviderInterface();
 
         Toolbar toolbar = findViewById(R.id.group_settings_toolbar);
         setSupportActionBar(toolbar);
@@ -337,7 +344,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
                             editGroupToggle.setClickable(false);
                         });
 
-                        dataProvider.updateGroup(group, new ServerCallsInterface.OnAsyncCallListener<Group>() {
+                        dataProvider.updateGroup(group, new OnAsyncCallListener<Group>() {
                             @Override
                             public void onFailure(ApiException e) {
                                 runOnUiThread(() -> {

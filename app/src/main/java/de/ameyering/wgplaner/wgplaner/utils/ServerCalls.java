@@ -1,6 +1,7 @@
 package de.ameyering.wgplaner.wgplaner.utils;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -14,7 +15,6 @@ import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
-import io.swagger.client.Configuration;
 import io.swagger.client.api.GroupApi;
 import io.swagger.client.api.ShoppinglistApi;
 import io.swagger.client.api.UserApi;
@@ -26,51 +26,50 @@ import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
-public class ServerCalls implements ServerCallsInterface {
-    private static final String USER_ID_AUTH_LABEL = "UserIDAuth";
-    private static final String FIREBASE_ID_AUTH_LABEL = "FirebaseIDAuth";
+public class ServerCalls extends ServerCallsInterface {
+    private final String USER_ID_AUTH_LABEL = "UserIDAuth";
+    private final String FIREBASE_ID_AUTH_LABEL = "FirebaseIDAuth";
 
-    private static final String BASE_URL = "https://api.wgplaner.ameyering.de";
+    private final String SERVER_CONNECTION_SUCCEEDED_TAG = "ServerConnectionSuccess";
+    private final String SERVER_CONNECTION_FAILED_TAG = "ServerConnectionFail";
 
-    private static final String SERVER_CONNECTION_SUCCEEDED_TAG = "ServerConnectionSuccess";
-    private static final String SERVER_CONNECTION_FAILED_TAG = "ServerConnectionFail";
+    private final String ASYNCHRONOUS_FLAG = ":Asynchronous";
+    private final String WAIT_FOR_RESULT_FLAG = ":WaitForResult";
 
-    private static final String ASYNCHRONOUS_FLAG = ":Asynchronous";
-    private static final String WAIT_FOR_RESULT_FLAG = ":WaitForResult";
+    private final String CREATE_USER_NAME = "CreateUser";
+    private final String UPDATE_USER_NAME = "UpdateUser";
+    private final String GET_USER_NAME = "GetUser";
+    private final String CREATE_GROUP_NAME = "CreateGroup";
+    private final String GET_GROUP_NAME = "GetGroup";
+    private final String JOIN_GROUP_NAME = "JoinGroup";
+    private final String GET_SHOPPING_LIST_NAME = "GetShoppingList";
+    private final String CREATE_SHOPPING_LIST_ITEM_NAME = "CreateShoppingListItem";
 
-    private static final String CREATE_USER_NAME = "CreateUser";
-    private static final String UPDATE_USER_NAME = "UpdateUser";
-    private static final String GET_USER_NAME = "GetUser";
-    private static final String CREATE_GROUP_NAME = "CreateGroup";
-    private static final String GET_GROUP_NAME = "GetGroup";
-    private static final String JOIN_GROUP_NAME = "JoinGroup";
-    private static final String GET_SHOPPING_LIST_NAME = "GetShoppingList";
-    private static final String CREATE_SHOPPING_LIST_ITEM_NAME = "CreateShoppingListItem";
+    private ApiClient client;
+    private String currentUserUid;
 
-    private static ApiClient client;
-
-    private static ServerCalls singleton;
-
-    private static DataProvider dataProvider = DataProvider.getInstance();
-
-    static {
-        singleton = new ServerCalls();
-        client = Configuration.getDefaultApiClient();
-        client.setBasePath(BASE_URL);
+    public ServerCalls(ApiClient client, String basePath) {
+        this.client = client;
+        this.client.setBasePath(basePath);
     }
 
-    private static boolean setAuth(String method) {
+    @Override
+    public void setCurrentUserUid(@NonNull String currentUserUid) {
+        if(currentUserUid != null && !currentUserUid.trim().isEmpty()) {
+            this.currentUserUid = currentUserUid;
+        }
+    }
+
+    @Override
+    boolean isInitialized() {
+        return currentUserUid != null && !currentUserUid.trim().isEmpty();
+    }
+
+    private void setAuth(String method) {
         if (method != null && !method.isEmpty()) {
             ApiKeyAuth auth = (ApiKeyAuth) client.getAuthentication(method);
-            auth.setApiKey(dataProvider.getCurrentUserUid());
-            return true;
+            auth.setApiKey(currentUserUid);
         }
-
-        return false;
-    }
-
-    public static ServerCallsInterface getInstance() {
-        return singleton;
     }
 
     @Override
@@ -315,7 +314,7 @@ public class ServerCalls implements ServerCallsInterface {
 
             try {
                 UserApi api = new UserApi();
-                api.updateUserImageAsync(dataProvider.getCurrentUserUid(), image,
+                api.updateUserImageAsync(currentUserUid, image,
                 new ApiCallback<SuccessResponse>() {
                     @Override
                     public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
@@ -1121,19 +1120,19 @@ public class ServerCalls implements ServerCallsInterface {
         return null;
     }
 
-    private static void logError(String name, String method) {
+    private void logError(String name, String method) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(name).append(method);
         Log.e(SERVER_CONNECTION_FAILED_TAG, buffer.toString());
     }
 
-    private static void logSuccess(String name, String method) {
+    private void logSuccess(String name, String method) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(name).append(method);
         Log.i(SERVER_CONNECTION_SUCCEEDED_TAG, buffer.toString());
     }
 
-    private static class CreateUser extends AsyncTask<User, Void, ApiResponse<User>> {
+    private class CreateUser extends AsyncTask<User, Void, ApiResponse<User>> {
 
         @Override
         protected ApiResponse<User> doInBackground(User... users) {
@@ -1154,7 +1153,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class GetUser extends AsyncTask<String, Void, ApiResponse<User>> {
+    private class GetUser extends AsyncTask<String, Void, ApiResponse<User>> {
 
         @Override
         protected ApiResponse<User> doInBackground(String... strings) {
@@ -1175,7 +1174,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class UpdateUser extends AsyncTask<User, Void, ApiResponse<User>> {
+    private class UpdateUser extends AsyncTask<User, Void, ApiResponse<User>> {
 
         @Override
         protected ApiResponse<User> doInBackground(User... users) {
@@ -1196,7 +1195,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class GetUserImage extends AsyncTask<String, Void, ApiResponse<byte[]>> {
+    private class GetUserImage extends AsyncTask<String, Void, ApiResponse<byte[]>> {
 
         @Override
         protected ApiResponse<byte[]> doInBackground(String... strings) {
@@ -1216,7 +1215,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class UpdateUserImage extends AsyncTask<File, Void, ApiResponse<SuccessResponse>> {
+    private class UpdateUserImage extends AsyncTask<File, Void, ApiResponse<SuccessResponse>> {
 
         @Override
         protected ApiResponse<SuccessResponse> doInBackground(File... files) {
@@ -1225,7 +1224,7 @@ public class ServerCalls implements ServerCallsInterface {
                 UserApi api = new UserApi();
 
                 try {
-                    return api.updateUserImageWithHttpInfo(dataProvider.getCurrentUserUid(), files[0]);
+                    return api.updateUserImageWithHttpInfo(currentUserUid, files[0]);
 
                 } catch (ApiException e) {
                     return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
@@ -1236,7 +1235,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class LeaveGroup extends AsyncTask<Void, Void, ApiResponse<SuccessResponse>> {
+    private class LeaveGroup extends AsyncTask<Void, Void, ApiResponse<SuccessResponse>> {
 
         @Override
         protected ApiResponse<SuccessResponse> doInBackground(Void... voids) {
@@ -1252,7 +1251,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class GetGroup extends AsyncTask<Void, Void, ApiResponse<Group>> {
+    private class GetGroup extends AsyncTask<Void, Void, ApiResponse<Group>> {
 
         @Override
         protected ApiResponse<Group> doInBackground(Void... voids) {
@@ -1269,7 +1268,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class UpdateGroup extends AsyncTask<Group, Void, ApiResponse<Group>> {
+    private class UpdateGroup extends AsyncTask<Group, Void, ApiResponse<Group>> {
 
         @Override
         protected ApiResponse<Group> doInBackground(Group... groups) {
@@ -1289,7 +1288,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class CreateGroup extends AsyncTask<Group, Void, ApiResponse<Group>> {
+    private class CreateGroup extends AsyncTask<Group, Void, ApiResponse<Group>> {
 
         @Override
         protected ApiResponse<Group> doInBackground(Group... groups) {
@@ -1310,7 +1309,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class JoinGroup extends AsyncTask<String, Void, ApiResponse<Group>> {
+    private class JoinGroup extends AsyncTask<String, Void, ApiResponse<Group>> {
 
         @Override
         protected ApiResponse<Group> doInBackground(String... strings) {
@@ -1331,7 +1330,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class CreateGroupKey extends AsyncTask<Void, Void, ApiResponse<GroupCode>> {
+    private class CreateGroupKey extends AsyncTask<Void, Void, ApiResponse<GroupCode>> {
 
         @Override
         protected ApiResponse<GroupCode> doInBackground(Void... voids) {
@@ -1348,7 +1347,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class GetGroupImage extends AsyncTask<Void, Void, ApiResponse<byte[]>> {
+    private class GetGroupImage extends AsyncTask<Void, Void, ApiResponse<byte[]>> {
 
         @Override
         protected ApiResponse<byte[]> doInBackground(Void... voids) {
@@ -1365,7 +1364,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class UpdateGroupImage extends AsyncTask<File, Void, ApiResponse<SuccessResponse>> {
+    private class UpdateGroupImage extends AsyncTask<File, Void, ApiResponse<SuccessResponse>> {
 
         @Override
         protected ApiResponse<SuccessResponse> doInBackground(File... files) {
@@ -1386,7 +1385,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class GetShoppingList extends AsyncTask<Void, Void, ApiResponse<ShoppingList>> {
+    private class GetShoppingList extends AsyncTask<Void, Void, ApiResponse<ShoppingList>> {
 
         @Override
         protected ApiResponse<ShoppingList> doInBackground(Void... voids) {
@@ -1403,7 +1402,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class CreateShoppingListItem extends
+    private class CreateShoppingListItem extends
         AsyncTask<ListItem, Void, ApiResponse<ListItem>> {
 
         @Override
@@ -1425,7 +1424,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class UpdateShoppingListItem extends
+    private class UpdateShoppingListItem extends
         AsyncTask<ListItem, Void, ApiResponse<ListItem>> {
 
         @Override
@@ -1446,7 +1445,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class BuyListItems extends
+    private class BuyListItems extends
         AsyncTask<List<UUID>, Void, ApiResponse<SuccessResponse>> {
 
         @Override
@@ -1468,7 +1467,7 @@ public class ServerCalls implements ServerCallsInterface {
         }
     }
 
-    private static class GetBoughtItems extends AsyncTask<String, Void, ApiResponse<ShoppingList>> {
+    private class GetBoughtItems extends AsyncTask<String, Void, ApiResponse<ShoppingList>> {
 
         @Override
         protected ApiResponse<ShoppingList> doInBackground(String... uids) {

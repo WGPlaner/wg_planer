@@ -15,8 +15,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.Group;
@@ -25,11 +28,16 @@ public class JoinGroupFragment extends Fragment {
     private EditText key;
     private Button btnJoinGroup;
 
+    private DataProviderInterface dataProvider;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setup_join_group, container, false);
+
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         key = view.findViewById(R.id.fragment_setup_join_group_input_access_key);
 
@@ -55,8 +63,8 @@ public class JoinGroupFragment extends Fragment {
     }
 
     private void joinGroup(String key) {
-        DataProvider.getInstance().joinCurrentGroup(key, getContext(),
-        new ServerCallsInterface.OnAsyncCallListener<Group>() {
+        dataProvider.joinCurrentGroup(key, getContext(),
+        new OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
                 getActivity().runOnUiThread(() ->  {

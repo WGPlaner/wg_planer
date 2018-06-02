@@ -16,13 +16,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.BoughtItemsFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
 import de.ameyering.wgplaner.wgplaner.section.settings.GroupSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.settings.ProfileSettingsActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
+import de.ameyering.wgplaner.wgplaner.section.splashscreen.SplashScreenActivity;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 
 public class HomeActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,7 +35,7 @@ public class HomeActivity extends AppCompatActivity
     private static final int SHOPPING_LIST = 0;
     private static final int BOUGHT_ITEMS = 1;
 
-    private DataProvider dataProvider;
+    private DataProviderInterface dataProvider;
 
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -54,9 +57,8 @@ public class HomeActivity extends AppCompatActivity
             setSupportActionBar(toolbar);
         }
 
-        if (dataProvider == null) {
-            dataProvider = DataProvider.getInstance();
-        }
+        WGPlanerApplication application = (WGPlanerApplication) getApplicationContext();
+        dataProvider = application.getDataProviderInterface();
 
         if (fab == null) {
             fab = findViewById(R.id.fab);
@@ -72,7 +74,7 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         dataProvider.addOnDataChangeListener(type -> {
-            if (type == DataProvider.DataType.CURRENT_GROUP) {
+            if (type == DataProviderInterface.DataType.CURRENT_GROUP) {
                 if (dataProvider.getCurrentGroupUID() == null) {
                     Intent intent = new Intent(HomeActivity.this, SetUpActivity.class);
                     startActivity(intent);

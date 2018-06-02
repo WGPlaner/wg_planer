@@ -11,18 +11,25 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 
 public class PickDisplayNameFragment extends NavigationFragment {
     private EditText inputName;
     private UploadProfilePictureFragment uploadProfilePictureFragment;
+
+    private DataProviderInterface dataProvider;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pick_display_name_registration, container, false);
+
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         Button btnContinue = view.findViewById(R.id.btn_continue_pick_display_name);
         inputName = view.findViewById(R.id.input_username);
@@ -41,7 +48,7 @@ public class PickDisplayNameFragment extends NavigationFragment {
             String displayName1 = inputName.getText().toString();
 
             if (!displayName1.isEmpty()) {
-                DataProvider.getInstance()
+                dataProvider
                 .setCurrentUserDisplayName(displayName1, null);
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

@@ -7,6 +7,8 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
+
 public class NotificationService extends FirebaseMessagingService {
     private static final String SHOPPING_LIST_ADD = "ShoppingList-Add";
     private static final String SHOPPING_LIST_UPDATE = "ShoppingList-Update";
@@ -21,13 +23,14 @@ public class NotificationService extends FirebaseMessagingService {
     private static final String TYPE_KEY = "Type";
     private static final String UPDATED_KEY = "Updated";
 
-    private static DataProviderInterface dataProvider = DataProvider.getInstance();
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
 
-        if (DataProvider.isInitialized() && dataProvider.getCurrentGroupUID() != null) {
+        WGPlanerApplication application = (WGPlanerApplication) getApplication();
+        DataProviderInterface dataProvider = application.getDataProviderInterface();
+
+        if (dataProvider.getCurrentUserUid() != null && dataProvider.getCurrentGroupUID() != null) {
 
             switch (data.get(TYPE_KEY)) {
                 case GROUP_DATA: {

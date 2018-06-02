@@ -11,17 +11,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 
 public class DescriptionFragment extends Fragment {
     private static final String JOIN_GROUP_FRAGMENT_TAG = "JoinGroupFragment";
     private static final String CREATE_GROUP_FRAGMENT_TAG = "CreateGroupFragment";
 
-    public CreateGroupFragment createGroupFragment = new CreateGroupFragment();
-    public JoinGroupFragment joinGroupFragment = new JoinGroupFragment();
+    private final CreateGroupFragment createGroupFragment = new CreateGroupFragment();
+    private final JoinGroupFragment joinGroupFragment = new JoinGroupFragment();
 
     private boolean isInCreateGroup = false;
     private boolean isInJoinGroup = false;
+
 
     @Nullable
     @Override

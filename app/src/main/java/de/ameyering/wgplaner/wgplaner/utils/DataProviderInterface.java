@@ -16,114 +16,138 @@ import io.swagger.client.model.ShoppingList;
 import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
-public interface DataProviderInterface {
+public abstract class DataProviderInterface {
 
-    enum SetUpState {
+    public static DataProviderInterface getInstance() {
+        return new DataProvider(
+            ServerCallsInterface.getInstance(),
+            ImageStore.getInstance()
+        );
+    }
+
+    public static DataProviderInterface getInstance(ServerCallsInterface serverCallsInterface, ImageStore imageStore) {
+        return new DataProvider(
+          serverCallsInterface,
+          imageStore
+        );
+    }
+
+    public enum SetUpState {
         UNREGISTERED, REGISTERED, SETUP_COMPLETED, GET_USER_FAILED, GET_GROUP_FAILED, CONNECTION_FAILED
     }
 
-    SetUpState initialize(String uid, Context context);
+    public enum DataType {
+        CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS, CURRENT_GROUP_MEMBERS, BOUGHT_ITEMS
+    }
 
-    void registerUser(final ServerCallsInterface.OnAsyncCallListener<User> listener);
 
-    void setFirebaseInstanceId(String token, Context context);
 
-    String getFirebaseInstanceId();
+    public abstract SetUpState initialize(String uid, Context context);
 
-    void setCurrentUserDisplayName(String displayName,
-        final ServerCallsInterface.OnAsyncCallListener<User> listener);
+    public abstract void registerUser(final OnAsyncCallListener<User> listener);
 
-    void setCurrentUserImage(Bitmap bitmap,
-        final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener);
+    public abstract void setFirebaseInstanceId(String token, Context context);
 
-    void setCurrentUserEmail(@Nullable String email,
-        final ServerCallsInterface.OnAsyncCallListener<User> listener);
+    public abstract String getFirebaseInstanceId();
 
-    void setCurrentUserLocale(Locale locale,
-        final ServerCallsInterface.OnAsyncCallListener<User> listener);
+    public abstract void setCurrentUserDisplayName(String displayName,
+        final OnAsyncCallListener<User> listener);
 
-    String getCurrentUserUid();
+    public abstract void setCurrentUserImage(Bitmap bitmap,
+        final OnAsyncCallListener<SuccessResponse> listener);
 
-    String getCurrentUserDisplayName();
+    public abstract void setCurrentUserEmail(@Nullable String email,
+        final OnAsyncCallListener<User> listener);
 
-    Bitmap getCurrentUserImage(Context context);
+    public abstract void setCurrentUserLocale(Locale locale,
+        final OnAsyncCallListener<User> listener);
 
-    String getCurrentUserEmail();
+    public abstract String getCurrentUserUid();
 
-    Locale getCurrentUserLocale();
+    public abstract String getCurrentUserDisplayName();
 
-    void setCurrentGroupName(String groupName,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener);
+    public abstract Bitmap getCurrentUserImage(Context context);
 
-    void setCurrentGroupCurrency(Currency currency,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener);
+    public abstract String getCurrentUserEmail();
 
-    void setCurrentGroupImage(Bitmap bitmap,
-        final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener);
+    public abstract Locale getCurrentUserLocale();
 
-    UUID getCurrentGroupUID();
+    public abstract void setCurrentGroupName(String groupName,
+        final OnAsyncCallListener<Group> listener);
 
-    String getCurrentGroupName();
+    public abstract void setCurrentGroupCurrency(Currency currency,
+        final OnAsyncCallListener<Group> listener);
 
-    Currency getCurrentGroupCurrency();
+    public abstract void setCurrentGroupImage(Bitmap bitmap,
+        final OnAsyncCallListener<SuccessResponse> listener);
 
-    Bitmap getCurrentGroupImage(Context context);
+    public abstract UUID getCurrentGroupUID();
 
-    ArrayList<User> getCurrentGroupMembers();
+    public abstract String getCurrentGroupName();
 
-    User getUserByUid(String uid);
+    public abstract Currency getCurrentGroupCurrency();
 
-    boolean isAdmin(String uid);
+    public abstract Bitmap getCurrentGroupImage(Context context);
 
-    void createGroup(String name, String groupCountry, Bitmap image, Context context,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener);
+    public abstract ArrayList<User> getCurrentGroupMembers();
 
-    void updateGroup(Group group, final ServerCallsInterface.OnAsyncCallListener<Group> listener);
+    public abstract User getUserByUid(String uid);
 
-    void joinCurrentGroup(String accessKey, Context context,
-        final ServerCallsInterface.OnAsyncCallListener<Group> listener);
+    public abstract boolean isAdmin(String uid);
 
-    void leaveCurrentGroup(final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener);
+    public abstract void createGroup(String name, String groupCountry, Bitmap image, Context context,
+        final OnAsyncCallListener<Group> listener);
 
-    String createGroupAccessKey();
+    public abstract void updateGroup(Group group, final OnAsyncCallListener<Group> listener);
 
-    void addShoppingListItem(ListItem item,
-        final ServerCallsInterface.OnAsyncCallListener<ListItem> listener);
+    public abstract void joinCurrentGroup(String accessKey, Context context,
+        final OnAsyncCallListener<Group> listener);
 
-    void selectShoppingListItem(ListItem item);
+    public abstract void leaveCurrentGroup(final OnAsyncCallListener<SuccessResponse> listener);
 
-    void unselectShoppingListItem(ListItem item);
+    public abstract String createGroupAccessKey();
 
-    boolean isItemSelected(ListItem item);
+    public abstract void addShoppingListItem(ListItem item,
+        final OnAsyncCallListener<ListItem> listener);
 
-    void addPriceToListItem(ListItem item, String price,
-        final ServerCallsInterface.OnAsyncCallListener<ListItem> listener);
+    public abstract void selectShoppingListItem(ListItem item);
 
-    void buySelection(final ServerCallsInterface.OnAsyncCallListener<SuccessResponse> listener);
+    public abstract void unselectShoppingListItem(ListItem item);
 
-    ListItem getListItem(UUID uuid);
+    public abstract boolean isItemSelected(ListItem item);
 
-    ArrayList<ListItem> getCurrentShoppingList();
+    public abstract void addPriceToListItem(ListItem item, String price,
+        final OnAsyncCallListener<ListItem> listener);
 
-    boolean isSomethingSelected();
+    public abstract void buySelection(final OnAsyncCallListener<SuccessResponse> listener);
 
-    ArrayList<ListItem> getBoughtItems();
+    public abstract ListItem getListItem(UUID uuid);
 
-    ApiResponse<ShoppingList> syncShoppingList();
+    public abstract ArrayList<ListItem> getCurrentShoppingList();
 
-    void syncGroup();
+    public abstract boolean isSomethingSelected();
 
-    void syncGroupMembers();
+    public abstract ArrayList<ListItem> getBoughtItems();
 
-    void syncGroupNewMember(String uid, Context context);
+    public abstract ApiResponse<ShoppingList> syncShoppingList();
 
-    void syncGroupMemberLeft(String uid, Context context);
+    public abstract void syncGroup();
 
-    void syncGroupMember(String uid);
+    public abstract void syncGroupMembers();
 
-    void syncGroupMemberPicture(String uid, Context context);
+    public abstract void syncGroupNewMember(String uid, Context context);
 
-    void syncGroupPicture(Context context);
+    public abstract void syncGroupMemberLeft(String uid, Context context);
 
-    void syncBoughtItems();
+    public abstract void syncGroupMember(String uid);
+
+    public abstract void syncGroupMemberPicture(String uid, Context context);
+
+    public abstract void syncGroupPicture(Context context);
+
+    public abstract void syncBoughtItems();
+
+    public abstract void addOnDataChangeListener(OnDataChangeListener listener);
+
+    public abstract void removeOnDataChangeListener(OnDataChangeListener listener);
 }

@@ -29,9 +29,12 @@ import java.util.Locale;
 import java.util.Random;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.Group;
@@ -55,11 +58,16 @@ public class CreateGroupFragment extends Fragment {
     private Locale[] locales = Locale.getAvailableLocales();
     private HashMap<String, String> currencyMapping = new HashMap<>();
 
+    private DataProviderInterface dataProvider;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setup_create_group, container, false);
+
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         editGroupCountry = view.findViewById(R.id.fragment_setup_create_group_country);
         transformCurrencies(locales);
@@ -154,8 +162,8 @@ public class CreateGroupFragment extends Fragment {
     private void createGroup() {
         String code = currencyMapping.get(editGroupCountry.getText().toString());
 
-        DataProvider.getInstance().createGroup(groupName, code, bitmap, getContext(),
-        new ServerCallsInterface.OnAsyncCallListener<Group>() {
+        dataProvider.createGroup(groupName, code, bitmap, getContext(),
+        new OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
                 getActivity().runOnUiThread(() -> {
@@ -173,7 +181,7 @@ public class CreateGroupFragment extends Fragment {
                     bitmap = createStandardBitmap(result.getDisplayName());
                 }
 
-                DataProvider.getInstance().setCurrentGroupImage(bitmap, null);
+                dataProvider.setCurrentGroupImage(bitmap, null);
 
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
                 startActivity(intent);

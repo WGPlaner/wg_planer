@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
@@ -36,7 +37,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private static final String FIREBASE_AUTH_TAG = "FIREBASE_AUTH";
     private static final String PATH_PATTERN =
         "^(http|https)://api.wgplaner.ameyering.de/groups/join/[A-Z0-9]{12}";
-    private DataProvider dataProvider;
+    private DataProviderInterface dataProvider;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -51,6 +52,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        WGPlanerApplication application = (WGPlanerApplication) getApplicationContext();
+        dataProvider = application.getDataProviderInterface();
 
         Intent intent = getIntent();
         Uri data = intent.getData();
@@ -73,35 +77,24 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         swipeToRefresh = findViewById(R.id.splash_screen_swipe_to_refresh);
         swipeToRefresh.setEnabled(false);
-        swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                retryAnim();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initializeUser(dataProvider.getCurrentUserUid());
-                    }
-                }).start();
-            }
+        swipeToRefresh.setOnRefreshListener(() -> {
+            retryAnim();
+            new Thread(() -> initializeUser(dataProvider.getCurrentUserUid())).start();
         });
 
 
-        mAuth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    if (currentUser == null) {
-                        Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:success");
-                        FirebaseUser currentUser = mAuth.getCurrentUser();
-                        onUser(currentUser);
-                    }
-
-                } else {
-                    Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:failure");
-                    Toast.makeText(SplashScreenActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-                    onUser(null);
+        mAuth.signInAnonymously().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (currentUser == null) {
+                    Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:success");
+                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                    onUser(currentUser);
                 }
+
+            } else {
+                Log.d(FIREBASE_AUTH_TAG, "logInAnonymously:failure");
+                Toast.makeText(SplashScreenActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                onUser(null);
             }
         });
     }
@@ -109,12 +102,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                currentUser = mAuth.getCurrentUser();
-                onUser(currentUser);
-            }
+        new Thread(() -> {
+            currentUser = mAuth.getCurrentUser();
+            onUser(currentUser);
         }).start();
     }
 
@@ -123,7 +113,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         if (user != null) {
             String uid = user.getUid();
-            dataProvider = DataProvider.getInstance();
             initializeUser(uid);
         }
     }
@@ -170,75 +159,60 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void loadHome() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        runOnUiThread(() -> {
+            Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
     private void loadRegistration() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+        runOnUiThread(() -> {
+            Intent intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
 
-                if (joinGroupIntent != null) {
-                    intent.setData(intent.getData());
-                }
-
-                startActivity(intent);
-                finish();
+            if (joinGroupIntent != null) {
+                intent.setData(intent.getData());
             }
+
+            startActivity(intent);
+            finish();
         });
     }
 
     private void loadSetUp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this, SetUpActivity.class);
+        runOnUiThread(() -> {
+            Intent intent = new Intent(SplashScreenActivity.this, SetUpActivity.class);
 
-                if (joinGroupIntent != null) {
-                    intent.setData(joinGroupIntent.getData());
-                }
-
-                startActivity(intent);
-                finish();
+            if (joinGroupIntent != null) {
+                intent.setData(joinGroupIntent.getData());
             }
+
+            startActivity(intent);
+            finish();
         });
     }
 
     private void failStateAnim() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.animate().alpha(0f);
-                progressBar.setVisibility(View.INVISIBLE);
-                swipeToRefresh.setRefreshing(false);
-                swipeToRefresh.setEnabled(true);
-                errorContainer.setAlpha(0f);
-                errorContainer.setVisibility(View.VISIBLE);
-                errorContainer.animate().alpha(1f);
-                errorMessage.setText(getString(R.string.splash_screen_connection_timeout) + "\n" + getString(
-                        R.string.splash_screen_swipe_to_refresh));
-            }
+        runOnUiThread(() -> {
+            progressBar.animate().alpha(0f);
+            progressBar.setVisibility(View.INVISIBLE);
+            swipeToRefresh.setRefreshing(false);
+            swipeToRefresh.setEnabled(true);
+            errorContainer.setAlpha(0f);
+            errorContainer.setVisibility(View.VISIBLE);
+            errorContainer.animate().alpha(1f);
+            errorMessage.setText(getString(R.string.splash_screen_connection_timeout) + "\n" + getString(
+                    R.string.splash_screen_swipe_to_refresh));
         });
     }
 
     private void retryAnim() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.VISIBLE);
-                progressBar.animate().alpha(1f);
-                swipeToRefresh.setEnabled(false);
-                errorContainer.animate().alpha(0f);
-                errorContainer.setVisibility(View.INVISIBLE);
-            }
+        runOnUiThread(() -> {
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.animate().alpha(1f);
+            swipeToRefresh.setEnabled(false);
+            errorContainer.animate().alpha(0f);
+            errorContainer.setVisibility(View.INVISIBLE);
         });
     }
 }

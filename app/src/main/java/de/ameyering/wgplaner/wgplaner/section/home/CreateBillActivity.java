@@ -25,8 +25,10 @@ import java.util.List;
 import java.util.UUID;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 import io.swagger.client.model.ListItem;
 import io.swagger.client.model.User;
@@ -34,7 +36,7 @@ import io.swagger.client.model.User;
 public class CreateBillActivity extends AppCompatActivity {
 
     private static Calendar now = new GregorianCalendar();
-    private static DataProvider dataProvider = DataProvider.getInstance();
+    private static DataProviderInterface dataProvider;
     private static ImageStore imageStore = ImageStore.getInstance();
 
     private Calendar dueDateCalendar = new GregorianCalendar();
@@ -57,6 +59,9 @@ public class CreateBillActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bill);
+
+        WGPlanerApplication application = (WGPlanerApplication) getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         uids = getIntent().getStringArrayListExtra(Intent.EXTRA_UID);
 

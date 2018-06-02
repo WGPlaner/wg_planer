@@ -26,8 +26,11 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.SuccessResponse;
@@ -37,7 +40,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
     private static int standard_width = 512;
     private static int standard_text_size = 300;
 
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
 
     private Button btLeaveGroup;
     private EditText inputName;
@@ -54,6 +57,9 @@ public class ProfileSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_settings);
+
+        WGPlanerApplication application = (WGPlanerApplication) getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         Toolbar toolbar = findViewById(R.id.profile_settings_toolbar);
         setSupportActionBar(toolbar);
@@ -132,7 +138,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
             builder.setPositiveButton(R.string.dialog_leave_group_positive,
             (dialogInterface, i) -> {
-                dataProvider.leaveCurrentGroup(new ServerCallsInterface.OnAsyncCallListener<SuccessResponse>() {
+                dataProvider.leaveCurrentGroup(new OnAsyncCallListener<SuccessResponse>() {
                     @Override
                     public void onFailure(ApiException e) {
                         runOnUiThread(() -> {

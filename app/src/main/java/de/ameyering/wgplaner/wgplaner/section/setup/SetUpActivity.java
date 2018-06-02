@@ -15,10 +15,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.home.HomeActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.fragment.DescriptionFragment;
-import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
-import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.Group;
 
@@ -30,6 +31,8 @@ public class SetUpActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private boolean toastWasShown = false;
 
+    private DataProviderInterface dataProvider;
+
     private Fragment descriptionFragment = new DescriptionFragment();
 
     @Override
@@ -37,14 +40,17 @@ public class SetUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up);
 
+        WGPlanerApplication application = (WGPlanerApplication) getApplication();
+        dataProvider = application.getDataProviderInterface();
+
         if (getIntent() != null && getIntent().getData() != null) {
             Uri data = getIntent().getData();
             Pattern pattern = Pattern.compile(PATH_PATTERN);
             Matcher matcher = pattern.matcher(data.toString());
 
             if (matcher.matches()) {
-                DataProvider.getInstance().joinCurrentGroup(data.getLastPathSegment(), this,
-                new ServerCallsInterface.OnAsyncCallListener<Group>() {
+                dataProvider.joinCurrentGroup(data.getLastPathSegment(), this,
+                new OnAsyncCallListener<Group>() {
                     @Override
                     public void onFailure(ApiException e) {
                         runOnUiThread(() -> Toast.makeText(SetUpActivity.this, getString(R.string.server_connection_failed),
