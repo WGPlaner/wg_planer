@@ -21,16 +21,16 @@ public abstract class ServerCallsInterface {
 
     public static ServerCallsInterface getInstance() {
         return new ServerCalls(
-            Configuration.getDefaultApiClient(),
-            "https://api.wgplaner.ameyering.de"
-        );
+                Configuration.getDefaultApiClient(),
+                "https://api.wgplaner.ameyering.de"
+            );
     }
 
     public static  ServerCallsInterface getInstance(ApiClient client, String basePath) {
         return new ServerCalls(
-            client,
-            basePath
-        );
+                client,
+                basePath
+            );
     }
 
     abstract void setCurrentUserUid(@NonNull String uid);
@@ -110,7 +110,8 @@ public abstract class ServerCallsInterface {
 
     abstract ApiResponse<SuccessResponse> buyListItems(List<UUID> items);
 
-    abstract void getBoughtItemsAsync(String uid, @Nullable final OnAsyncCallListener<ShoppingList> listener);
+    abstract void getBoughtItemsAsync(String uid,
+        @Nullable final OnAsyncCallListener<ShoppingList> listener);
 
     abstract ApiResponse<ShoppingList> getBoughtItems(String uid);
 }

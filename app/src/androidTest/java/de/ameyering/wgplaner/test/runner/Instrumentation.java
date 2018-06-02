@@ -29,7 +29,8 @@ public class Instrumentation extends android.support.test.runner.AndroidJUnitRun
     }
 
     @Override
-    public Application newApplication(ClassLoader cl, String className, Context context) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public Application newApplication(ClassLoader cl, String className,
+        Context context) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         DataProviderInterface dataProviderInterface = Mockito.mock(DataProviderInterface.class);
         TestVars.setMockInterface(dataProviderInterface);
 

@@ -31,29 +31,30 @@ public class WGPlanerInstanceIdService extends FirebaseInstanceIdService {
 
     private void sendRegistrationToServer(String refreshedToken) {
         if (refreshedToken != null) {
-            DataProviderInterface dataProvider = ((WGPlanerApplication) getApplication()).getDataProviderInterface();
+            DataProviderInterface dataProvider = ((WGPlanerApplication)
+                    getApplication()).getDataProviderInterface();
             dataProvider.setFirebaseInstanceId(refreshedToken, getApplicationContext());
         }
     }
 
     private void callAllListeners() {
-        for(TokenListener listener: listeners) {
+        for (TokenListener listener : listeners) {
             listener.onTokenReceived();
         }
     }
 
     public static void addListener(TokenListener listener) {
-        if(listener != null && !listeners.contains(listener)) {
+        if (listener != null && !listeners.contains(listener)) {
             listeners.add(listener);
 
-            if(tokenReceived) {
+            if (tokenReceived) {
                 listener.onTokenReceived();
             }
         }
     }
 
     public static void removeListener(TokenListener listener) {
-        if(listener != null) {
+        if (listener != null) {
             listeners.remove(listener);
         }
     }

@@ -55,7 +55,7 @@ public class ServerCalls extends ServerCallsInterface {
 
     @Override
     public void setCurrentUserUid(@NonNull String currentUserUid) {
-        if(currentUserUid != null && !currentUserUid.trim().isEmpty()) {
+        if (currentUserUid != null && !currentUserUid.trim().isEmpty()) {
             this.currentUserUid = currentUserUid;
         }
     }

@@ -237,7 +237,8 @@ public class BoughtItemsAdapter extends
         }
     }
 
-    public BoughtItemsAdapter(ArrayList<ListItem> items, Context context, DataProviderInterface dataProvider) {
+    public BoughtItemsAdapter(ArrayList<ListItem> items, Context context,
+        DataProviderInterface dataProvider) {
         this.dataProvider = dataProvider;
 
         Collections.sort(items, (item, t1) -> item.getBoughtAt().compareTo(t1.getBoughtAt()) * -1);

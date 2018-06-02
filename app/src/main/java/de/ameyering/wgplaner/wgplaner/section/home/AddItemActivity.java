@@ -39,7 +39,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     private ArrayList<User> selected = new ArrayList<>();
     private ListItem newItem = new ListItem();
-    
+
     private DataProviderInterface dataProvider;
 
     @Override

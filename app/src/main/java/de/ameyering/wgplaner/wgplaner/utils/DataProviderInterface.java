@@ -20,16 +20,17 @@ public abstract class DataProviderInterface {
 
     public static DataProviderInterface getInstance() {
         return new DataProvider(
-            ServerCallsInterface.getInstance(),
-            ImageStore.getInstance()
-        );
+                ServerCallsInterface.getInstance(),
+                ImageStore.getInstance()
+            );
     }
 
-    public static DataProviderInterface getInstance(ServerCallsInterface serverCallsInterface, ImageStore imageStore) {
+    public static DataProviderInterface getInstance(ServerCallsInterface serverCallsInterface,
+        ImageStore imageStore) {
         return new DataProvider(
-          serverCallsInterface,
-          imageStore
-        );
+                serverCallsInterface,
+                imageStore
+            );
     }
 
     public enum SetUpState {

@@ -20,7 +20,7 @@ public class AddItemAddUserDialogFragment extends DialogFragment {
     private ArrayList<User> mSelectedItems = new ArrayList<>();
     private OnResultListener mOnResultListener;
     private User[] list;
-    
+
     private DataProviderInterface dataProvider;
 
     public interface OnResultListener {
