@@ -32,9 +32,12 @@ public class DescriptionFragment extends Fragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setup_description, container, false);
 
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        DataProviderInterface dataProvider = application.getDataProviderInterface();
+
         TextView header = view.findViewById(R.id.fragment_setup_description_header);
         header.setText(String.format(getString(R.string.set_up_group_header),
-                DataProvider.getInstance().getCurrentUserDisplayName()));
+                dataProvider.getCurrentUserDisplayName()));
 
         Button btnCreateGroup = view.findViewById(R.id.fragment_setup_description_btn_create);
         Button btnJoinGroup = view.findViewById(R.id.fragment_setup_description_btn_join);

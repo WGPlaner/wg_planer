@@ -184,6 +184,7 @@ public class DataProvider extends DataProviderInterface {
             user.setUid(currentUserUid);
             user.setDisplayName(currentUserDisplayName);
             user.setEmail(currentUserEmail);
+
             user.setFirebaseInstanceID(FirebaseInstanceId.getInstance().getToken());
 
             serverCallsInstance.createUserAsync(user, new OnAsyncCallListener<User>() {
@@ -236,6 +237,8 @@ public class DataProvider extends DataProviderInterface {
             if (Configuration.singleton == null) {
                 Configuration.initConfig(context);
             }
+
+            updateUser(null);
 
             Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }

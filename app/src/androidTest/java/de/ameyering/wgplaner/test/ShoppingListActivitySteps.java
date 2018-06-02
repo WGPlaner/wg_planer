@@ -23,9 +23,6 @@ public class ShoppingListActivitySteps {
 
     private void initActivity(Activity activity) {
         Context appContext = activity.getBaseContext();
-        ImageStore.initialize(appContext);
-        Configuration.initConfig(appContext);
-        DataProvider.getInstance().setServerCallsInstance(TestServerCalls.getInstance());
     }
 
     @Before
