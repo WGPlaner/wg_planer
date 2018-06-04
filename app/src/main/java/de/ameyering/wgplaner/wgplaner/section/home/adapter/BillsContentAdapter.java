@@ -2,7 +2,6 @@ package de.ameyering.wgplaner.wgplaner.section.home.adapter;
 
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,12 +16,11 @@ import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
-import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 import io.swagger.client.model.Bill;
 
-public class ReceivedBillsAdapter extends RecyclerView.Adapter<ReceivedBillsAdapter.ViewHolder>{
-    private ArrayList<Bill> bills = new ArrayList<>();
+public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapter.ViewHolder>{
+    private List<Bill> bills = new ArrayList<>();
     private Context context = null;
 
     private static ImageStore imageStore = ImageStore.getInstance();
@@ -60,7 +58,7 @@ public class ReceivedBillsAdapter extends RecyclerView.Adapter<ReceivedBillsAdap
                 case "paid":
                     icon.setImageResource(R.drawable.ic_done_black_);
                     break;
-                case "confimred paid":
+                case "confirmed paid":
                     icon.setImageResource(R.drawable.ic_done_all_black);
                     break;
                 default:
@@ -71,7 +69,7 @@ public class ReceivedBillsAdapter extends RecyclerView.Adapter<ReceivedBillsAdap
         }
     }
 
-    public ReceivedBillsAdapter(ArrayList<Bill> bills, Context context) {
+    public BillsContentAdapter(List<Bill> bills, Context context) {
         this.bills.clear();
         this.bills.addAll(bills);
         this.context = context;
@@ -80,7 +78,7 @@ public class ReceivedBillsAdapter extends RecyclerView.Adapter<ReceivedBillsAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(
-            R.layout.section_received_bills_item, parent, false);
+            R.layout.section_bills_item, parent, false);
 
         return new ViewHolder(item);
     }
@@ -100,7 +98,7 @@ public class ReceivedBillsAdapter extends RecyclerView.Adapter<ReceivedBillsAdap
         return bills.size();
     }
 
-    public void onNewData(ArrayList<Bill> bills) {
+    public void onNewData(List<Bill> bills) {
         final DiffCallback callback = new DiffCallback(bills, this.bills);
         final DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback, true);
 
@@ -111,10 +109,10 @@ public class ReceivedBillsAdapter extends RecyclerView.Adapter<ReceivedBillsAdap
     }
 
     private class DiffCallback extends DiffUtil.Callback {
-        private ArrayList<Bill> newList = new ArrayList<>();
-        private ArrayList<Bill> oldList = new ArrayList<>();
+        private List<Bill> newList = new ArrayList<>();
+        private List<Bill> oldList = new ArrayList<>();
 
-        public DiffCallback(ArrayList<Bill> newList, ArrayList<Bill> oldList) {
+        public DiffCallback(List<Bill> newList, List<Bill> oldList) {
             this.newList.clear();
             this.newList.addAll(newList);
             this.oldList.clear();
@@ -141,10 +139,7 @@ public class ReceivedBillsAdapter extends RecyclerView.Adapter<ReceivedBillsAdap
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            Bill newBill = newList.get(newItemPosition);
-            Bill oldBill = oldList.get(oldItemPosition);
-
-            return newBill.equals(oldBill);
+            return false;
         }
     }
 }

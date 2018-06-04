@@ -35,8 +35,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
-                        android:textAlignment="viewEnd"
-                        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+                        android:textAlignment="viewEnd" />
 
                     <TextView
                         android:id="@+id/bill_detail_owner"
@@ -46,8 +45,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
-                        android:textAlignment="viewEnd"
-                        android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                        android:textAlignment="viewEnd" />
                 </LinearLayout>
 
                 <View
@@ -78,7 +76,6 @@
                 android:id="@+id/bill_cost_objects_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
                 android:orientation="vertical"
                 android:padding="5dp">
 
@@ -87,8 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="@string/bill_detail_cost_label"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium.Inverse" />
+                    android:text="@string/bill_detail_cost_label" />
             </LinearLayout>
 
             <LinearLayout
@@ -103,8 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="@string/bill_detail_items_label"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                    android:text="@string/bill_detail_items_label" />
             </LinearLayout>
 
         </LinearLayout>

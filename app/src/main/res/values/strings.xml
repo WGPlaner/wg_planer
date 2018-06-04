@@ -183,4 +183,8 @@
     <string name="share_join_intent_chooser">Share access key</string>
     <string name="share_join_intent_subject">Join our WGPlaner Group!</string>
     <string name="share_join_intent_text">Click the link to join our WGPlaner Group: %s</string>
+
+    <string name="section_bills_received_bills_tab">Received</string>
+    <string name="section_bills_sent_bills_tab">Sent</string>
+    <string name="section_title_bills">Bills</string>
 </resources>

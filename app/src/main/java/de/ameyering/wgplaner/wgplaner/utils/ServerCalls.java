@@ -20,6 +20,7 @@ import io.swagger.client.api.GroupApi;
 import io.swagger.client.api.ShoppinglistApi;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
+import io.swagger.client.model.Bill;
 import io.swagger.client.model.BillList;
 import io.swagger.client.model.Group;
 import io.swagger.client.model.GroupCode;
