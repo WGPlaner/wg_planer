@@ -18,6 +18,7 @@ import java.util.UUID;
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
 import io.swagger.client.model.Bill;
+import io.swagger.client.model.BillList;
 import io.swagger.client.model.Group;
 import io.swagger.client.model.GroupCode;
 import io.swagger.client.model.ListItem;
@@ -28,6 +29,8 @@ import io.swagger.client.model.User;
 public class DataProvider extends DataProviderInterface {
     private final ImageStore imageStoreInstance;
     private final ServerCallsInterface serverCallsInstance;
+    private final Configuration configuration;
+    private final FirebaseInstanceId firebaseInstanceIdInstance;
 
     private String currentUserUid;
     private String currentUserFirebaseInstanceId;
@@ -53,9 +56,11 @@ public class DataProvider extends DataProviderInterface {
 
     private ArrayList<OnDataChangeListener> mListeners;
 
-    public DataProvider(ServerCallsInterface serverCallsInterface, ImageStore imageStore) {
-        imageStoreInstance = imageStore;
-        serverCallsInstance = serverCallsInterface;
+    public DataProvider(ServerCallsInterface serverCallsInterface, ImageStore imageStore, Configuration configuration, FirebaseInstanceId firebaseInstanceIdInstance) {
+        this.imageStoreInstance = imageStore;
+        this.serverCallsInstance = serverCallsInterface;
+        this.configuration = configuration;
+        this.firebaseInstanceIdInstance = firebaseInstanceIdInstance;
 
         currentUserUid = "";
         currentUserDisplayName = "";
@@ -86,7 +91,7 @@ public class DataProvider extends DataProviderInterface {
 
             serverCallsInstance.setCurrentUserUid(currentUserUid);
 
-            Configuration.singleton.addConfig(Configuration.Type.USER_UID, uid);
+            configuration.addConfig(Configuration.Type.USER_UID, uid);
             ApiResponse<User> userResponse = serverCallsInstance.getUser(uid);
 
             if (userResponse != null && userResponse.getData() != null) {
@@ -101,7 +106,7 @@ public class DataProvider extends DataProviderInterface {
                     currentUserFirebaseInstanceId = user.getFirebaseInstanceID();
 
                     if (!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())) {
-                        currentUserFirebaseInstanceId = Configuration.singleton.getConfig(
+                        currentUserFirebaseInstanceId = configuration.getConfig(
                                 Configuration.Type.FIREBASE_INSTANCE_ID);
 
                         updateUser(null);
@@ -129,8 +134,8 @@ public class DataProvider extends DataProviderInterface {
             } else if (userResponse != null && userResponse.getData() == null) {
                 if (userResponse.getStatusCode() == 404) {
                     return SetUpState.UNREGISTERED;
-
                 } else if (userResponse.getStatusCode() != 0) {
+
                     return SetUpState.GET_USER_FAILED;
 
                 } else {
@@ -188,7 +193,11 @@ public class DataProvider extends DataProviderInterface {
             user.setDisplayName(currentUserDisplayName);
             user.setEmail(currentUserEmail);
 
-            user.setFirebaseInstanceID(FirebaseInstanceId.getInstance().getToken());
+            try {
+                user.setFirebaseInstanceID(firebaseInstanceIdInstance.getToken());
+            } catch (Exception e) {
+                user.setFirebaseInstanceID(null);
+            }
 
             serverCallsInstance.createUserAsync(user, new OnAsyncCallListener<User>() {
                 @Override
@@ -208,7 +217,7 @@ public class DataProvider extends DataProviderInterface {
                         currentUserFirebaseInstanceId = getFirebaseInstanceId();
 
                         if (!(currentUserFirebaseInstanceId != null && !currentUserFirebaseInstanceId.isEmpty())) {
-                            currentUserFirebaseInstanceId = Configuration.singleton.getConfig(
+                            currentUserFirebaseInstanceId = configuration.getConfig(
                                     Configuration.Type.FIREBASE_INSTANCE_ID);
 
                             updateUser(null);
@@ -233,17 +242,13 @@ public class DataProvider extends DataProviderInterface {
     }
 
     @Override
-    public void setFirebaseInstanceId(String token, Context context) {
+    public void setFirebaseInstanceId(String token) {
         if (token != null) {
             this.currentUserFirebaseInstanceId = token;
 
-            if (Configuration.singleton == null) {
-                Configuration.initConfig(context);
-            }
-
             updateUser(null);
 
-            Configuration.singleton.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
+            configuration.addConfig(Configuration.Type.FIREBASE_INSTANCE_ID, token);
         }
     }
 
@@ -257,7 +262,7 @@ public class DataProvider extends DataProviderInterface {
         final OnAsyncCallListener<User> listener) {
         if (displayName != null && !currentUserDisplayName.equals(displayName)) {
             this.currentUserDisplayName = displayName;
-            Configuration.singleton.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
+            configuration.addConfig(Configuration.Type.USER_DISPLAY_NAME, displayName);
 
             updateUser(new OnAsyncCallListener<User>() {
                 @Override
@@ -343,7 +348,7 @@ public class DataProvider extends DataProviderInterface {
     public void setCurrentUserEmail(@Nullable String email,
         final OnAsyncCallListener<User> listener) {
         this.currentUserEmail = email;
-        Configuration.singleton.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, email);
+        configuration.addConfig(Configuration.Type.USER_EMAIL_ADDRESS, email);
 
         updateUser(new OnAsyncCallListener<User>() {
             @Override
@@ -874,6 +879,28 @@ public class DataProvider extends DataProviderInterface {
     }
 
     @Override
+    public List<Bill> getReceivedBills() {
+        List<Bill> receivedBills = new ArrayList<>();
+
+        for(Bill bill: bills) {
+            if(!bill.getCreatedBy().equals(currentUserUid)) receivedBills.add(bill);
+        }
+
+        return receivedBills;
+    }
+
+    @Override
+    public List<Bill> getSentBills() {
+        List<Bill> sentBills = new ArrayList<>();
+
+        for(Bill bill: bills) {
+            if(bill.getCreatedBy().equals(currentUserUid)) sentBills.add(bill);
+        }
+
+        return sentBills;
+    }
+
+    @Override
     public Bill getBill(String uid) {
         for (Bill bill : bills) {
             if (bill.getUid().toString().equals(uid)) {
@@ -885,9 +912,7 @@ public class DataProvider extends DataProviderInterface {
     }
     public ArrayList<ListItem> getBoughtItems() {
         if (boughtItems != null) {
-            ArrayList<ListItem> items = new ArrayList<>();
-            items.addAll(boughtItems);
-            return items;
+            return new ArrayList<>(boughtItems);
         }
 
         return new ArrayList<>();
@@ -1079,7 +1104,16 @@ public class DataProvider extends DataProviderInterface {
     }
 
     public void syncBillList() {
-        //TODO: Implement this later...
+        ApiResponse<BillList> billsResponse = serverCallsInstance.getBillList();
+
+        if (billsResponse != null && billsResponse.getData() != null) {
+            BillList billList = billsResponse.getData();
+
+            bills.clear();
+            bills.addAll(billList.getBills());
+
+            callAllListeners(DataType.BILLS);
+        }
     }
 
     public void syncBill(String uid) {
@@ -1090,7 +1124,11 @@ public class DataProvider extends DataProviderInterface {
         User user = new User();
         user.setUid(currentUserUid);
         user.setDisplayName(currentUserDisplayName);
-        user.setFirebaseInstanceID(FirebaseInstanceId.getInstance().getToken());
+        try {
+            user.setFirebaseInstanceID(firebaseInstanceIdInstance.getToken());
+        } catch (Exception e) {
+            //Do nothing
+        }
         user.setEmail(currentUserEmail);
         user.setGroupUID(currentGroupUID);
 

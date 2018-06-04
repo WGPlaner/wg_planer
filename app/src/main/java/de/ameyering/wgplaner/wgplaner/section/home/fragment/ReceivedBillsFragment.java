@@ -13,13 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.BillsContentAdapter;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import io.swagger.client.model.Bill;
 
 
 public class ReceivedBillsFragment extends Fragment {
     private RecyclerView recyclerView;
     private BillsContentAdapter adapter;
+    private DataProviderInterface dataProvider;
 
 
     @Nullable
@@ -27,12 +30,15 @@ public class ReceivedBillsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_bills_content, container, false);
 
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        dataProvider = application.getDataProviderInterface();
+
         if(recyclerView == null) {
             recyclerView = view.findViewById(R.id.section_bills_content_recycler);
         }
 
         if(adapter == null) {
-            adapter = new BillsContentAdapter(new ArrayList<>(), getContext());
+            adapter = new BillsContentAdapter(dataProvider.getBills(), getContext());
         }
 
         recyclerView.setAdapter(adapter);

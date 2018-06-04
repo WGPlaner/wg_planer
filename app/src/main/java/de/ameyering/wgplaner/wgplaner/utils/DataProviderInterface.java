@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
@@ -23,15 +25,19 @@ public abstract class DataProviderInterface {
     public static DataProviderInterface getInstance() {
         return new DataProvider(
                 ServerCallsInterface.getInstance(),
-                ImageStore.getInstance()
+                ImageStore.getInstance(),
+                Configuration.singleton,
+                FirebaseInstanceId.getInstance()
             );
     }
 
     public static DataProviderInterface getInstance(ServerCallsInterface serverCallsInterface,
-        ImageStore imageStore) {
+        ImageStore imageStore, Configuration configuration, FirebaseInstanceId firebaseInstanceId) {
         return new DataProvider(
                 serverCallsInterface,
-                imageStore
+                imageStore,
+                configuration,
+                firebaseInstanceId
             );
     }
 
@@ -40,7 +46,7 @@ public abstract class DataProviderInterface {
     }
 
     public enum DataType {
-        CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS, CURRENT_GROUP_MEMBERS, BOUGHT_ITEMS
+        CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS, CURRENT_GROUP_MEMBERS, BOUGHT_ITEMS, BILLS
     }
 
 
@@ -49,7 +55,7 @@ public abstract class DataProviderInterface {
 
     public abstract void registerUser(final OnAsyncCallListener<User> listener);
 
-    public abstract void setFirebaseInstanceId(String token, Context context);
+    public abstract void setFirebaseInstanceId(String token);
 
     public abstract String getFirebaseInstanceId();
 
@@ -131,6 +137,10 @@ public abstract class DataProviderInterface {
     public abstract boolean isSomethingSelected();
 
     public abstract List<Bill> getBills();
+
+    public abstract List<Bill> getReceivedBills();
+
+    public abstract List<Bill> getSentBills();
 
     public abstract Bill getBill(String uid);
 

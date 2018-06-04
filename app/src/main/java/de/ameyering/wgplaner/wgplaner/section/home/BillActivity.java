@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
@@ -36,13 +37,16 @@ public class BillActivity extends AppCompatActivity {
     private LinearLayout costsContainer;
     private LinearLayout itemsContainer;
 
-    private DataProviderInterface dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
     private ImageStore imageStore = ImageStore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
+
+        WGPlanerApplication application = (WGPlanerApplication) getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         billUid = getIntent().getStringExtra(Intent.EXTRA_UID);
         bill = dataProvider.getBill(billUid);
