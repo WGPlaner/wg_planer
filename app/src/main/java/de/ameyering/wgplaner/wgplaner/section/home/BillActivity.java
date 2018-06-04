@@ -17,6 +17,7 @@ import java.util.Locale;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 import io.swagger.client.model.Bill;
 import io.swagger.client.model.ListItem;
@@ -35,7 +36,7 @@ public class BillActivity extends AppCompatActivity {
     private LinearLayout costsContainer;
     private LinearLayout itemsContainer;
 
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider = DataProvider.getInstance();
     private ImageStore imageStore = ImageStore.getInstance();
 
     @Override

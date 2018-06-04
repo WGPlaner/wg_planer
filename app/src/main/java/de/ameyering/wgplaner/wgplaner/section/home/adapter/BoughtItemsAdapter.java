@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import io.swagger.client.model.ListItem;
 
 
@@ -38,7 +39,7 @@ public class BoughtItemsAdapter extends
     private boolean isActionModeActive = false;
     private ArrayList<ListItem> selectedItems = new ArrayList<>();
 
-    private static DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
 
     private ArrayList<OnAdapterChangeListener> listeners = new ArrayList<>();
 
@@ -236,7 +237,10 @@ public class BoughtItemsAdapter extends
         }
     }
 
-    public BoughtItemsAdapter(ArrayList<ListItem> items, Context context) {
+    public BoughtItemsAdapter(ArrayList<ListItem> items, Context context,
+        DataProviderInterface dataProvider) {
+        this.dataProvider = dataProvider;
+
         Collections.sort(items, (item, t1) -> item.getBoughtAt().compareTo(t1.getBoughtAt()) * -1);
 
         format = new SimpleDateFormat("dd. MMMM yyyy", context.getResources().getConfiguration().locale);

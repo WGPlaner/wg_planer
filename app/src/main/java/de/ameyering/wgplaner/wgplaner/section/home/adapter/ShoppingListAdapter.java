@@ -23,6 +23,7 @@ import java.util.List;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import io.swagger.client.model.ListItem;
 
 public class ShoppingListAdapter extends
@@ -32,7 +33,7 @@ public class ShoppingListAdapter extends
 
     private List<ListItem> items = new ArrayList<>();
     private List<Object> viewItems = new ArrayList<>();
-    private static DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
     private int sortBy = 0;
 
     public abstract class ShoppingListViewItem extends RecyclerView.ViewHolder {
@@ -168,7 +169,8 @@ public class ShoppingListAdapter extends
         }
     }
 
-    public ShoppingListAdapter(List<ListItem> items) {
+    public ShoppingListAdapter(List<ListItem> items, DataProviderInterface dataProvider) {
+        this.dataProvider = dataProvider;
         this.items = items;
         viewItems = sortBy(items, sortBy);
     }

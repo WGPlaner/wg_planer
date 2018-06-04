@@ -23,16 +23,19 @@ import java.util.List;
 import java.util.UUID;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.ListItem;
 import io.swagger.client.model.User;
 
 public class ItemDetailActivity extends AppCompatActivity {
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
     private ImageStore imageStore = ImageStore.getInstance();
 
     private TextView itemPriceView;
@@ -52,6 +55,9 @@ public class ItemDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail);
+
+        WGPlanerApplication application = (WGPlanerApplication) getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         Toolbar activityToolbar = findViewById(R.id.item_detail_toolbar);
         setSupportActionBar(activityToolbar);
@@ -149,41 +155,41 @@ public class ItemDetailActivity extends AppCompatActivity {
                 addPriceActionView.setEnabled(false);
                 itemPriceEdit.setEnabled(false);
                 dataProvider.addPriceToListItem(item, itemPriceEdit.getText().toString(),
-                    new ServerCallsInterface.OnAsyncCallListener<ListItem>() {
-                        @Override
-                        public void onFailure(ApiException e) {
-                            if (e == null) {
-                                runOnUiThread(() -> {
-                                    itemPriceEditLayout.setError(getString(R.string.dialog_add_price_error));
-                                    itemPriceEdit.setEnabled(true);
-                                    addPriceActionView.setEnabled(true);
-                                });
-
-                            } else {
-                                runOnUiThread(() -> {
-                                    Toast.makeText(ItemDetailActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
-                                    itemPriceEdit.setEnabled(true);
-                                    addPriceActionView.setEnabled(true);
-                                });
-                            }
-                        }
-
-                        @Override
-                        public void onSuccess(ListItem result) {
+                new OnAsyncCallListener<ListItem>() {
+                    @Override
+                    public void onFailure(ApiException e) {
+                        if (e == null) {
                             runOnUiThread(() -> {
+                                itemPriceEditLayout.setError(getString(R.string.dialog_add_price_error));
                                 itemPriceEdit.setEnabled(true);
                                 addPriceActionView.setEnabled(true);
-                                addPriceActionView.setImageDrawable(ContextCompat.getDrawable(ItemDetailActivity.this, R.drawable.ic_attach_money_white));
-                                itemPriceView.setVisibility(View.VISIBLE);
-                                itemPriceEditLayout.setVisibility(View.GONE);
-                                itemPriceEditLayout.setError(null);
-                                NumberFormat format = NumberFormat.getCurrencyInstance();
-                                format.setCurrency(dataProvider.getCurrentGroupCurrency());
-                                itemPriceView.setText(format.format(((double) result.getPrice()) / 100));
-                                isInEditMode = false;
+                            });
+
+                        } else {
+                            runOnUiThread(() -> {
+                                Toast.makeText(ItemDetailActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                                itemPriceEdit.setEnabled(true);
+                                addPriceActionView.setEnabled(true);
                             });
                         }
-                    });
+                    }
+
+                    @Override
+                    public void onSuccess(ListItem result) {
+                        runOnUiThread(() -> {
+                            itemPriceEdit.setEnabled(true);
+                            addPriceActionView.setEnabled(true);
+                            addPriceActionView.setImageDrawable(ContextCompat.getDrawable(ItemDetailActivity.this, R.drawable.ic_attach_money_white));
+                            itemPriceView.setVisibility(View.VISIBLE);
+                            itemPriceEditLayout.setVisibility(View.GONE);
+                            itemPriceEditLayout.setError(null);
+                            NumberFormat format = NumberFormat.getCurrencyInstance();
+                            format.setCurrency(dataProvider.getCurrentGroupCurrency());
+                            itemPriceView.setText(format.format(((double) result.getPrice()) / 100));
+                            isInEditMode = false;
+                        });
+                    }
+                });
             }
         });
     }

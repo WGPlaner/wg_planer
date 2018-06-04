@@ -15,17 +15,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.registration.RegistrationActivity;
 import de.ameyering.wgplaner.wgplaner.section.setup.SetUpActivity;
 import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.User;
 
 public class StateEMailFragment extends NavigationFragment {
     private EditText inputEmail;
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProviderInterface dataProvider;
 
     private Button btnContinue;
     private Button btnSkip;
@@ -35,6 +38,9 @@ public class StateEMailFragment extends NavigationFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_state_email_address, container, false);
+
+        WGPlanerApplication application = (WGPlanerApplication) getActivity().getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         inputEmail = view.findViewById(R.id.input_email);
 
@@ -77,7 +83,7 @@ public class StateEMailFragment extends NavigationFragment {
     }
 
     private void finish() {
-        dataProvider.registerUser(new ServerCallsInterface.OnAsyncCallListener<User>() {
+        dataProvider.registerUser(new OnAsyncCallListener<User>() {
             @Override
             public void onFailure(ApiException e) {
                 FragmentActivity activity = getActivity();

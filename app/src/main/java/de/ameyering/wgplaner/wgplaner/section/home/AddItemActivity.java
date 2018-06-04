@@ -19,9 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
+import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.AddItemRequestedForAdapter;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.AddItemAddUserDialogFragment;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.User;
@@ -37,10 +40,15 @@ public class AddItemActivity extends AppCompatActivity {
     private ArrayList<User> selected = new ArrayList<>();
     private ListItem newItem = new ListItem();
 
+    private DataProviderInterface dataProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+
+        WGPlanerApplication application = (WGPlanerApplication) getApplication();
+        dataProvider = application.getDataProviderInterface();
 
         Toolbar toolbar = findViewById(R.id.add_item_toolbar);
         setSupportActionBar(toolbar);
@@ -66,7 +74,7 @@ public class AddItemActivity extends AppCompatActivity {
 
             if (selectedUids != null && !selectedUids.isEmpty()) {
                 for (String uid : selectedUids) {
-                    selected.add(DataProvider.getInstance().getUserByUid(uid));
+                    selected.add(dataProvider.getUserByUid(uid));
                 }
             }
 
@@ -115,8 +123,8 @@ public class AddItemActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_item_save: {
                 if (checkInputAndReturn()) {
-                    DataProvider.getInstance().addShoppingListItem(newItem,
-                    new ServerCallsInterface.OnAsyncCallListener<ListItem>() {
+                    dataProvider.addShoppingListItem(newItem,
+                    new OnAsyncCallListener<ListItem>() {
                         @Override
                         public void onFailure(ApiException e) {
                             runOnUiThread(() -> {
