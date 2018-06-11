@@ -3,10 +3,10 @@
 # 1. See sent bills
 
 ## 1.1 Brief Description
-This use case allows users to list their sent bills. A bill contains bought items and costs.
+This use case allows users to list their sent bills. A bill contains bought items.
 
 ## 1.2 Mockup
-### Page listing pending 
+### Page listing pending
 ![Page see pending sent bills](../Mockups/uc_see_sent_bills_pending_list.png)
 
 ### Page showing archived sent bills
@@ -20,10 +20,10 @@ This use case allows users to list their sent bills. A bill contains bought item
 
 ## 1.3 Screenshot
 ### List sent bills - No bill
-*tbd*
+![Sent bills without bill](../Screenshots/sent_bills_empty.png)
 
 ### List sent bills - With bills
-*tbd*
+![Sent bills with bills](../Screenshots/sent_bills_bill.png)
 
 # 2. Flow of Events
 

@@ -7,7 +7,7 @@ This use case allows users to register for the WGPlaner Android Application. To 
 
 ## 1.2 Mockup
 ### "Welcome" Screen
-![uc_registration_welcome.png](../Mockups/uc_registration_welcome.png "Welcome-Screen") 
+![uc_registration_welcome.png](../Mockups/uc_registration_welcome.png "Welcome-Screen")
 ### "Pick Display Name" Screen
 ![uc_registration_pick_display_name.png](../Mockups/uc_registration_pick_display_name.png "Pick-Display-Name-Screen")
 ### "Upload Profile Picture" Screen
@@ -17,13 +17,20 @@ This use case allows users to register for the WGPlaner Android Application. To 
 
 ## 1.2 Screenshot
 ### "Welcome" Screen
-[![UC Welcome Screen](../Screenshots/uc_registration_welcome_200px.png)](../Screenshots/uc_registration_welcome.png)
+![UC Welcome Screen](../Screenshots/welcome_screenshot.png)
 
 ### "Pick Display Name" Screen
-[![Pick-Display-Name-Screen](../Screenshots/uc_registration_pick_display_name_200px.png)](../Screenshots/uc_registration_pick_display_name.png)
+![Pick-Display-Name-Screen](../Screenshots/pick_name_screenshot.png)
 
 ### "Upload Profile Picture" Screen
-[![Upload-Profile-Picture-Screen](../Screenshots/uc_registration_upload_profile_picture_200px.png)](../Screenshots/uc_registration_upload_profile_picture.png)
+![Upload-Profile-Picture-Screen](../Screenshots/pick_image.png)
+
+### "Upload Profile Picture Dialog" Screen
+![Upload Profile Picture Dialog](../Screenshots/pick_image_dialog.png)
+
+### "State Email Address" Screen
+![State Email Address Screen](../Screenshots/state_email_screenshot.png)
+![State Email Address Input Screen](../Screenshots/state_email_input.png)
 
 # 2. Flow of Events
 
