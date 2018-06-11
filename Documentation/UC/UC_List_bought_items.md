@@ -19,7 +19,7 @@ This use case allows users to list their bought items/products. A product has a 
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-*tbd*
+![Activity Diagram SeeBoughtItems](../ActivityDiagrams/uc_see_bought_items.png)
 
 ## 2.2 Alternative Flows
 n/a

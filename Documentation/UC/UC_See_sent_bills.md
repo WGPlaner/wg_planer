@@ -28,7 +28,7 @@ This use case allows users to list their sent bills. A bill contains bought item
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-*tbd*
+![Activity Diagram SeeSentBills](../ActivityDiagrams/uc_see_sent_bills.png)
 
 ## 2.2 Alternative Flows
 n/a

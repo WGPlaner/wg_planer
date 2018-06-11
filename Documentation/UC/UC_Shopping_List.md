@@ -22,10 +22,11 @@ This use case allows users to list all items which are currently in the shopping
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-Here is the activity diagram for managing the shopping list.
-![Activity Diagram](../ActivityDiagrams/uc_shopping_list_activity_diagramm.png)
 
-And here is a screenshot of the `.feature` file for this use case:
+### Activity Diagram
+![Activity Diagram](../ActivityDiagrams/uc_shopping_list_activity_diagram.png)
+
+### .feature File
 ![.feature file](./FeatureFiles/feature_file_manage_shopping_list.png)
 
 
