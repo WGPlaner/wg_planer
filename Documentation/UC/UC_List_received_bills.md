@@ -17,7 +17,7 @@ This use case allows users to list their received bills. A bill contains bought 
 
 ## 1.3 Screenshot
 ### List received bills - No bill
-*tbd*
+![Received bills without bill](../Screenshots/received_bills_empty.png)
 
 ### List received bills - With bills
 *tbd*

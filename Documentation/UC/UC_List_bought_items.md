@@ -11,10 +11,10 @@ This use case allows users to list their bought items/products. A product has a 
 
 ## 1.3 Screenshot
 ### List bought items - No items
-*tbd*
+![Screenshot Bought items without items](../Screenshots/bought_items_no_items.png)
 
 ### List bought items - With items
-*tbd*
+![Screenshot Bought items with items](../Screenshots/bought_items_screenshot_item.png)
 
 # 2. Flow of Events
 
