@@ -1,6 +1,5 @@
 package de.ameyering.wgplaner.wgplaner.section.home;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,20 +20,18 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.AddItemRequestedForAdapter;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.AddItemAddUserDialogFragment;
-import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
-import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.User;
 import io.swagger.client.model.ListItem;
 
 public class AddItemActivity extends AppCompatActivity {
-    public RecyclerView requestedFor;
-    public AddItemRequestedForAdapter adapter;
+    private RecyclerView requestedFor;
+    private AddItemRequestedForAdapter adapter;
 
-    public EditText nameInput;
-    public EditText numberInput;
+    private EditText nameInput;
+    private EditText numberInput;
 
     private ArrayList<User> selected = new ArrayList<>();
     private ListItem newItem = new ListItem();
@@ -101,9 +97,9 @@ public class AddItemActivity extends AppCompatActivity {
         buttonAddUser.setOnClickListener(view -> {
             AddItemAddUserDialogFragment dialog = new AddItemAddUserDialogFragment();
             dialog.setSelectedItems(selected);
-            dialog.setOnResultListener(selected -> {
+            dialog.setOnResultListener(result -> {
                 AddItemActivity.this.selected.clear();
-                AddItemActivity.this.selected.addAll(selected);
+                AddItemActivity.this.selected.addAll(result);
 
                 adapter.updateSelection(AddItemActivity.this.selected);
                 adapter.notifyDataSetChanged();
@@ -120,33 +116,27 @@ public class AddItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_item_save: {
-                if (checkInputAndReturn()) {
-                    dataProvider.addShoppingListItem(newItem,
-                    new OnAsyncCallListener<ListItem>() {
-                        @Override
-                        public void onFailure(ApiException e) {
-                            runOnUiThread(() -> {
-                                Toast.makeText(AddItemActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
-                            });
-                        }
+        if(item.getItemId() == R.id.add_item_save && checkInputAndReturn()) {
+            dataProvider.addShoppingListItem(newItem,
+                new OnAsyncCallListener<ListItem>() {
+                    @Override
+                    public void onFailure(ApiException e) {
+                        runOnUiThread(() -> Toast.makeText(AddItemActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show());
+                    }
 
-                        @Override
-                        public void onSuccess(ListItem result) {
-                            runOnUiThread(() -> {
-                                setResult(RESULT_OK, new Intent());
-                                finish();
-                            });
-                        }
-                    });
+                    @Override
+                    public void onSuccess(ListItem result) {
+                        runOnUiThread(() -> {
+                            setResult(RESULT_OK, new Intent());
+                            finish();
+                        });
+                    }
+                });
 
-                    return true;
-                }
-            }
+            return true;
+        } else {
+            return false;
         }
-
-        return false;
     }
 
     @Override
@@ -193,13 +183,8 @@ public class AddItemActivity extends AppCompatActivity {
             return true;
 
         } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(AddItemActivity.this, getString(R.string.fill_out_all_fields),
-                        Toast.LENGTH_LONG).show();
-                }
-            });
+            runOnUiThread(() -> Toast.makeText(AddItemActivity.this, getString(R.string.fill_out_all_fields),
+                Toast.LENGTH_LONG).show());
             return false;
         }
     }
