@@ -246,7 +246,7 @@ differentiate between UI and the actual logic.
 The server's operating system must support MySQL and programs compiled using Go. A RESTful API shall be used to communicate between client and server.
 
 Therefore following platforms and language must be supported.
- - Android 4.0 and above
+ - Android 4.4 and above
  - Java SE 7 and above
  - Go 1.9 and above
 
@@ -288,8 +288,8 @@ The client will connect to the server over `HTTPS` on port `443`. An unencrypted
 Under [MIT license][license].
 
 ### 3.11 Legal, Copyright, and Other Notices
-The “WGPlaner” team will not take any responsibility for incorrect bills or lost data. The “WGPlaner” logo
-may only be used for the official “WGPlaner” android application.
+The "WGPlaner" team will not take any responsibility for incorrect bills or lost data. The "WGPlaner" logo
+may only be used for the official "WGPlaner" android application.
 
 ### 3.12 Applicable Standards
 The following Clean Code standards are going to be applied to the code as far as possible:
@@ -307,7 +307,7 @@ The following Clean Code standards are going to be applied to the code as far as
 **For more information contact:**
  - Andre Meyering
  - Arne Schulze
- - Nina Wieland
+ - ~~Nina Wieland~~ (has left the team)
 
 [UseCaseDiagram]:   use_case_diagram.png
 [GoogleGuidelines]: https://google.github.io/styleguide/javaguide.html
