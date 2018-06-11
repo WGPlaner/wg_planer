@@ -79,7 +79,7 @@ Android MVP-Pattern:
 Both client and server use the MVC/MVP pattern. We seperate models from controllers and views as described in the following paragraphs.
 
 ### Server-side
-The server-side is written in (go)[https://golang.org/] and uses the (goswagger)[https://goswagger.io/] framework to create a RESTful API and the firebase SDK to authenticate users. The REST API, presented to the client itself, returns a JSON-"View" of models. The communication with the client happens over HTTP `POST`/`GET` requests which are handled by controllers. This way the server uses an MVC-like structure.
+The server-side is written in [go](https://golang.org/) and uses the [goswagger](https://goswagger.io/) framework to create a RESTful API and the firebase SDK to authenticate users. The REST API, presented to the client itself, returns a JSON-"View" of models. The communication with the client happens over HTTP `POST`/`GET` requests which are handled by controllers. This way the server uses an MVC-like structure.
 
 ### Client-side
 On the client side, which will be written in Java, we use the Android MVP framework and an API framework which is auto-generated using [swagger-codegen](https://swagger.io/swagger-codegen/). The API framework is used to communicate with the WGPlaner server. Furthermore, the firebase SDK is used to authenticate users.
@@ -109,7 +109,7 @@ Android Client:
 ![Class diagram with MVP-Pattern](../UC/ClassDiagrams/class_diagram_android_min.png)
 
 ## 6. Process View
-n/a
+![Android Process View](./ProcessView.png)
 
 ## 7. Deployment View
 ![Deployment View](./DeploymentView.png)
@@ -119,10 +119,20 @@ n/a
 ## 8. Implementation View
 
 ### 8.1 Overview
-n/a
 
 ### 8.2 Layers
-n/a
+
+### 8.3 Android - Observer Pattern
+We decided to use the observer pattern because it fits into the android eco system. In this pattern an object (subject) maintains a list of its dependents (observers) and notifies them automatically of any state changes.  
+For the android application we use it for notifying the UI about data changes, as callbacks for network operations and of course for button clicks, etc.
+
+### 8.4 Server - Builder Pattern
+We use the builder pattern because of Go's limitations as it is not an object oriented programming language. By using a builder, we can assure that all fields are set when the object is created. For Information can be found on [Wikipedia](https://en.wikipedia.org/wiki/Builder_pattern).
+
+### Links to Code
+You can find a commit, that implements the builder pattern here (before/after):
+https://github.com/WGPlaner/wg_planer_server/commit/308833bc14828ea5cd1afecdd9b75b62005ba885
+
 
 ## 9. Data View
 Database ER-Diagram:
@@ -132,5 +142,17 @@ Database ER-Diagram:
 ## 10. Size and Performance
 n/a
 
-## 11. Quality
-n/a
+## 11. Quality/Metrics
+We made sure that a metrics tool is used as part of our deployment process on GitHub. Each pull request/commit is checked by codacy as described in our [Test Plan](../TestPlan/TestPlan.md). Furthermore each commit is checked by sonarqube. The overview page of sonarqube can be found on [sonarcloud.io](https://sonarcloud.io/dashboard?id=wg_planer%3Aapp)
+
+Because of codacy and sonarqube, we were able to improve our code quality. We focused on:
+
+ - Incrementing Test Coverage. We ensure that already implemented use cases don’t break while developing new ones. That's because we regularly execute our unit tests during development using continuous integration.
+ - Reducing the number of Bugs/Issues raised by SonarQube.
+ - Reducing the amount of Code Smells which make code more difficult to maintain.
+
+The SonarQube Metrics as well as the codacy issues were very helpful with finding our problem spots!
+
+TODO: Before/After sonarqube.
+
+Sonarqube gives us lots of metrics we did not regard every one of them, e.g. "Comment Density" has proven to be unuseful as it can lead to bad and duplicated code, e.g. `int nol = 0; // number of lines`.
