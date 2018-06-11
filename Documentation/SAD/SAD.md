@@ -49,14 +49,22 @@ This document describes the architecture of the WGPlaner project.
 | Title                                                              | Date       | Publishing organization   |
 | -------------------------------------------------------------------|:----------:| ------------------------- |
 | [WGPlaner Blog](http://wgplanerblog.wordpress.com/)                | 2017-11-26 | WGPlaner Team             |
-| [SRS](../SRS/SRS.md)                                               | 2017-11-26 | WGPlaner Team             |
-| [UC Pinboard](../UC/UC_Pinboard.md)                                | 2017-11-26 | WGPlaner Team             |
-| [UC Registration](../UC/UC_Registration.md)                        | 2017-11-26 | WGPlaner Team             |
-| [UC Shopping List](../UC/UC_Shopping_List.md)                      | 2017-11-26 | WGPlaner Team             |
+| [GitHub - Server](http://github.com/WGPlaner/wg_planer_server)     | 2018-06-11 | WGPlaner Team             |
+| [GitHub - Client](http://github.com/WGPlaner/wg_planer)            | 2018-06-11 | WGPlaner Team             |
 | [UC Add Item](../UC/UC_Add_Item.md)                                | 2017-12-06 | WGPlaner Team             |
 | [UC Buy Item](../UC/UC_Buy_Item.md)                                | 2017-12-06 | WGPlaner Team             |
+| [UC Invite New Group Member](../UC/UC_Invite_New_Group_Member.md)  | 2017-12-06 | WGPlaner Team             |
+| [UC List Bought Items](../UC/UC_List_bought_items.md)              | 2018-06-11 | WGPlaner Team             |
+| [UC List Fixed Costs](../UC/UC_List_fixed_costs.md)                | 2018-06-11 | WGPlaner Team             |
+| [UC List Received Bills](../UC/UC_List_received_bills.md)          | 2018-06-11 | WGPlaner Team             |
+| [UC Pay Bills](../UC/UC_Pay_bills.md)                              | 2018-06-11 | WGPlaner Team             |
+| [UC Pinboard](../UC/UC_Pinboard.md)                                | 2017-11-26 | WGPlaner Team             |
 | [UC Profile Settings](../UC/UC_Profile_Settings.md)                | 2017-12-06 | WGPlaner Team             |
-| [UC Invite New Group Member](../UC/UC_Invite_New_Group_Member.md)   | 2017-12-06 | WGPlaner Team             |
+| [UC Registration](../UC/UC_Registration.md)                        | 2017-11-26 | WGPlaner Team             |
+| [UC List Sent Bills](../UC/UC_sent_bills.md)                       | 2018-06-11 | WGPlaner Team             |
+| [UC Shopping List](../UC/UC_Shopping_List.md)                      | 2017-11-26 | WGPlaner Team             |
+| [Test Plan](../TestPlan/TestPlan.md)                               | 2018-06-11 | WGPlaner Team             |
+| [SRS](../SRS/SRS.md)                                               | 2017-11-26 | WGPlaner Team             |
 
 ### 1.5 Overview
 This document contains the Architectural Representation, Goals and Constraints as well 
@@ -81,7 +89,7 @@ The main goal of the MVP architecture is to separate the view from the logic. Th
 Models contain the data that is displayed in the views.
 
 ## 4. Use-Case View
- ![Overall-Use-Case-Diagram](../SRS/use_case_diagram.png)
+![Overall-Use-Case-Diagram](../SRS/use_case_diagram.png)
 
 ### 4.1 Use-Case Realizations
 n/a

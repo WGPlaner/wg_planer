@@ -34,24 +34,26 @@ This test plan is intended for technically advanced readers and developers. It d
 | UI   | User Interface                      |
 
 ### 1.5  References
- - [GitHub - Server](http://github.com/WGPlaner/wg_planer_server)
- - [GitHub - Client](http://github.com/WGPlaner/wg_planer)
- - [Blog](http://wgplanerblog.wordpress.com/)
- - [Overall Use case diagram](../SRS/use_case_diagram.png)
- - [Software Requirements Specification](../SRS/SRS.md)
- - [Software Architecture Document](../SAD/SAD.MD)
- - [UC Add Item](../UC/UC_Add_Item.md)
- - [UC Buy Item](../UC/UC_Buy_Item.md)
- - [UC Invite New Group Member](../UC/UC_Invite_New_Group_Member.md)
- - [UC List bought items](../UC/UC_List_bought_items.md)
- - [UC List fixed costs](../UC/UC_List_fixed_costs.md)
- - [UC List received bills](../UC/UC_List_received_bills.md)
- - [UC Pay bills](../UC/UC_Pay_bills.md)
- - [UC Pinboard](../UC/UC_Pinboard.md)
- - [UC Profile Settings](../UC/UC_Profile_Settings.md)
- - [UC Registration](../UC/UC_Registration.md)
- - [UC See sent bills](../UC/UC_See_sent_bills.md)
- - [UC Shopping List](../UC/UC_Shopping_List.md)
+
+| Title                                                              | Date       | Publishing organization   |
+| -------------------------------------------------------------------|:----------:| ------------------------- |
+| [WGPlaner Blog](http://wgplanerblog.wordpress.com/)                | 2017-11-26 | WGPlaner Team             |
+| [GitHub - Server](http://github.com/WGPlaner/wg_planer_server)     | 2018-06-11 | WGPlaner Team             |
+| [GitHub - Client](http://github.com/WGPlaner/wg_planer)            | 2018-06-11 | WGPlaner Team             |
+| [UC Add Item](../UC/UC_Add_Item.md)                                | 2017-12-06 | WGPlaner Team             |
+| [UC Buy Item](../UC/UC_Buy_Item.md)                                | 2017-12-06 | WGPlaner Team             |
+| [UC Invite New Group Member](../UC/UC_Invite_New_Group_Member.md)  | 2017-12-06 | WGPlaner Team             |
+| [UC List Bought Items](../UC/UC_List_bought_items.md)              | 2018-06-11 | WGPlaner Team             |
+| [UC List Fixed Costs](../UC/UC_List_fixed_costs.md)                | 2018-06-11 | WGPlaner Team             |
+| [UC List Received Bills](../UC/UC_List_received_bills.md)          | 2018-06-11 | WGPlaner Team             |
+| [UC Pay Bills](../UC/UC_Pay_bills.md)                              | 2018-06-11 | WGPlaner Team             |
+| [UC Pinboard](../UC/UC_Pinboard.md)                                | 2017-11-26 | WGPlaner Team             |
+| [UC Profile Settings](../UC/UC_Profile_Settings.md)                | 2017-12-06 | WGPlaner Team             |
+| [UC Registration](../UC/UC_Registration.md)                        | 2017-11-26 | WGPlaner Team             |
+| [UC List Sent Bills](../UC/UC_sent_bills.md)                       | 2018-06-11 | WGPlaner Team             |
+| [UC Shopping List](../UC/UC_Shopping_List.md)                      | 2017-11-26 | WGPlaner Team             |
+| [Test Plan](../TestPlan/TestPlan.md)                               | 2018-06-11 | WGPlaner Team             |
+| [SRS](../SRS/SRS.md)                                               | 2017-11-26 | WGPlaner Team             |
 
 ## 2. Evaluation Mission and Test Motivation
 ### 2.1 Background
