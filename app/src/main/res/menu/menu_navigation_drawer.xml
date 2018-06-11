@@ -16,6 +16,10 @@
                 android:icon="@drawable/ic_shopping_cart_black"
                 android:title="@string/nav_bought_items" />
             <item
+                android:id="@+id/nav_bills"
+                android:icon="@drawable/ic_receipt_black"
+                android:title="@string/section_title_bills" />
+            <item
                 android:id="@+id/nav_rosters"
                 android:icon="@drawable/ic_nav_rosters"
                 android:title="@string/nav_rosters"

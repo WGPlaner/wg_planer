@@ -9,6 +9,8 @@ import java.util.UUID;
 
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiResponse;
+import io.swagger.client.model.Bill;
+import io.swagger.client.model.BillList;
 import io.swagger.client.model.Group;
 import io.swagger.client.model.GroupCode;
 import io.swagger.client.model.ListItem;
@@ -49,7 +51,8 @@ public abstract class ServerCallsInterface {
 
     public abstract ApiResponse<User> updateUser(User user);
 
-    public abstract void getUserImageAsync(String uid, @Nullable final OnAsyncCallListener<byte[]> listener);
+    public abstract void getUserImageAsync(String uid,
+        @Nullable final OnAsyncCallListener<byte[]> listener);
 
     public abstract ApiResponse<byte[]> getUserImage(String uid);
 
@@ -66,15 +69,18 @@ public abstract class ServerCallsInterface {
 
     public abstract ApiResponse<Group> getGroup();
 
-    public abstract void updateGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void updateGroupAsync(Group group,
+        @Nullable final OnAsyncCallListener<Group> listener);
 
     public abstract ApiResponse<Group> updateGroup(Group group);
 
-    public abstract void createGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void createGroupAsync(Group group,
+        @Nullable final OnAsyncCallListener<Group> listener);
 
     public abstract ApiResponse<Group> createGroup(Group group);
 
-    public abstract void joinGroupAsync(String accessKey, @Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void joinGroupAsync(String accessKey,
+        @Nullable final OnAsyncCallListener<Group> listener);
 
     public abstract ApiResponse<Group> joinGroup(String accessKey);
 
@@ -91,7 +97,8 @@ public abstract class ServerCallsInterface {
 
     public abstract ApiResponse<SuccessResponse> updateGroupImage(File image);
 
-    public abstract void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList> listener);
+    public abstract void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList>
+        listener);
 
     public abstract ApiResponse<ShoppingList> getShoppingList();
 
@@ -110,8 +117,16 @@ public abstract class ServerCallsInterface {
 
     public abstract ApiResponse<SuccessResponse> buyListItems(List<UUID> items);
 
+    public abstract void getBillListAsync(@Nullable final OnAsyncCallListener<BillList> listener);
+
+    public abstract ApiResponse<BillList> getBillList();
+
     public abstract void getBoughtItemsAsync(String uid,
         @Nullable final OnAsyncCallListener<ShoppingList> listener);
 
     public abstract ApiResponse<ShoppingList> getBoughtItems(String uid);
+
+    public abstract void createBillAsync(Bill bill, @Nullable final OnAsyncCallListener<Bill> listener);
+
+    public abstract ApiResponse<Bill> createBill(Bill bill);
 }

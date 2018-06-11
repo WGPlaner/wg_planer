@@ -15,10 +15,13 @@ import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
+import io.swagger.client.api.BillApi;
 import io.swagger.client.api.GroupApi;
 import io.swagger.client.api.ShoppinglistApi;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
+import io.swagger.client.model.Bill;
+import io.swagger.client.model.BillList;
 import io.swagger.client.model.Group;
 import io.swagger.client.model.GroupCode;
 import io.swagger.client.model.ListItem;
@@ -102,12 +105,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -160,12 +163,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -218,12 +221,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -274,12 +277,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -314,8 +317,7 @@ public class ServerCalls extends ServerCallsInterface {
 
             try {
                 UserApi api = new UserApi();
-                api.updateUserImageAsync(currentUserUid, image,
-                new ApiCallback<SuccessResponse>() {
+                api.updateUserImageAsync(currentUserUid, image, new ApiCallback<SuccessResponse>() {
                     @Override
                     public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
                         if (listener != null) {
@@ -333,12 +335,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -388,12 +390,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    // do nothing
                 }
             });
 
@@ -441,12 +443,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    // do nothing
                 }
             });
 
@@ -499,12 +501,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        // do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -559,12 +561,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -625,12 +627,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -687,12 +689,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -737,12 +739,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -792,12 +794,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -854,12 +856,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -910,12 +912,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -968,12 +970,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -1028,12 +1030,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -1118,6 +1120,123 @@ public class ServerCalls extends ServerCallsInterface {
         }
 
         return null;
+    }
+
+    public void getBillListAsync(@Nullable final OnAsyncCallListener<BillList> listener) {
+        setAuth(USER_ID_AUTH_LABEL);
+
+        BillApi api = new BillApi();
+
+        try {
+            api.getBillListAsync(new ApiCallback<BillList>() {
+                @Override
+                public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                    if (listener != null) {
+                        listener.onFailure(e);
+                    }
+                }
+
+                @Override
+                public void onSuccess(BillList result, int statusCode, Map<String, List<String>> responseHeaders) {
+                    if (listener != null) {
+                        listener.onSuccess(result);
+                    }
+                }
+
+                @Override
+                public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+                    //do nothing
+                }
+
+                @Override
+                public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
+                    //do nothing
+                }
+            });
+
+        } catch (ApiException e) {
+            if (listener != null) {
+                listener.onFailure(e);
+            }
+        }
+    }
+
+    public ApiResponse<BillList> getBillList() {
+        try {
+            GetBillList task = new GetBillList();
+            return task.execute().get();
+
+        } catch (ExecutionException e) {
+            return null;
+
+        } catch (InterruptedException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void createBillAsync(Bill bill, @Nullable final OnAsyncCallListener<Bill> listener) {
+        if (bill != null) {
+            setAuth(USER_ID_AUTH_LABEL);
+
+            try {
+                BillApi api = new BillApi();
+                api.createBillAsync(bill, new ApiCallback<Bill>() {
+                    @Override
+                    public void onFailure(ApiException e, int i, Map<String, List<String>> map) {
+                        if (listener != null) {
+                            listener.onFailure(e);
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(Bill bill, int i, Map<String, List<String>> map) {
+                        if (listener != null) {
+                            listener.onSuccess(bill);
+                        }
+                    }
+
+                    @Override
+                    public void onUploadProgress(long l, long l1, boolean b) {
+                        //do nothing
+                    }
+
+                    @Override
+                    public void onDownloadProgress(long l, long l1, boolean b) {
+                        //do nothing
+                    }
+                });
+
+            } catch (ApiException e) {
+                if (listener != null) {
+                    listener.onFailure(e);
+                }
+            }
+
+        } else {
+            if (listener != null) {
+                listener.onFailure(null);
+            }
+        }
+    }
+
+    @Override
+    public ApiResponse<Bill> createBill(Bill bill) {
+        if (bill != null) {
+            try {
+                CreateBill task = new CreateBill();
+                return task.execute(bill).get();
+
+            } catch (ExecutionException e) {
+                return null;
+
+            } catch (InterruptedException e) {
+                return null;
+            }
+
+        } else {
+            return null;
+        }
     }
 
     private void logError(String name, String method) {
@@ -1485,6 +1604,45 @@ public class ServerCalls extends ServerCallsInterface {
             }
 
             return null;
+        }
+    }
+
+    private class GetBillList extends AsyncTask<Void, Void, ApiResponse<BillList>> {
+
+        @Override
+        protected ApiResponse<BillList> doInBackground(Void... voids) {
+            setAuth(USER_ID_AUTH_LABEL);
+
+            BillApi api = new BillApi();
+
+            try {
+                return api.getBillListWithHttpInfo();
+
+            } catch (ApiException e) {
+                return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
+            }
+        }
+    }
+
+    private class CreateBill extends AsyncTask<Bill, Void, ApiResponse<Bill>> {
+
+        @Override
+        protected ApiResponse<Bill> doInBackground(Bill... bills) {
+            if (bills != null && bills.length > 0 && bills[0] != null) {
+                setAuth(USER_ID_AUTH_LABEL);
+
+                try {
+                    BillApi api = new BillApi();
+
+                    return api.createBillWithHttpInfo(bills[0]);
+
+                } catch (ApiException e) {
+                    return  new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
+                }
+
+            } else {
+                return null;
+            }
         }
     }
 }

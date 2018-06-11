@@ -47,7 +47,7 @@ public class SetUpActivity extends AppCompatActivity {
             Matcher matcher = pattern.matcher(data.toString());
 
             if (matcher.matches()) {
-                dataProvider.joinCurrentGroup(data.getLastPathSegment(), this,
+                dataProvider.joinCurrentGroup(data.getLastPathSegment(),
                 new OnAsyncCallListener<Group>() {
                     @Override
                     public void onFailure(ApiException e) {

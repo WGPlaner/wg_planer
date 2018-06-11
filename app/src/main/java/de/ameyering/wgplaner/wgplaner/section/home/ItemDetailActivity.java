@@ -36,7 +36,6 @@ import io.swagger.client.model.User;
 
 public class ItemDetailActivity extends AppCompatActivity {
     private DataProviderInterface dataProvider;
-    private ImageStore imageStore = ImageStore.getInstance();
 
     private TextView itemPriceView;
     private TextInputLayout itemPriceEditLayout;
@@ -103,7 +102,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         CircularImageView requestedByPictureView = findViewById(R.id.item_detail_item_requested_by_picture);
 
         requestedByNameView.setText(dataProvider.getUserByUid(item.getRequestedBy()).getDisplayName());
-        Bitmap pic = imageStore.loadGroupMemberPicture(item.getRequestedBy(), this);
+        Bitmap pic = dataProvider.getGroupMemberPicture(item.getRequestedBy());
         requestedByPictureView.setImageBitmap(pic);
 
         itemPriceEditLayout = findViewById(R.id.item_detail_add_price_layout);
@@ -128,7 +127,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             CircularImageView boughtByPictureView = findViewById(R.id.item_detail_item_bought_by_picture);
 
             boughtByNameView.setText(dataProvider.getUserByUid(item.getBoughtBy()).getDisplayName());
-            Bitmap pic = imageStore.loadGroupMemberPicture(item.getBoughtBy(), this);
+            Bitmap pic = dataProvider.getGroupMemberPicture(item.getBoughtBy());
             boughtByPictureView.setImageBitmap(pic);
 
             TextView boughtOnDateView = findViewById(R.id.item_detail_item_bought_on);
@@ -225,7 +224,7 @@ public class ItemDetailActivity extends AppCompatActivity {
                             R.id.item_detail_requested_for_picture);
 
                     requestedForChildName.setText(user.getDisplayName());
-                    Bitmap pic = imageStore.loadGroupMemberPicture(user.getUid(), this);
+                    Bitmap pic = dataProvider.getGroupMemberPicture(user.getUid());
 
                     requestedForChildPicture.setImageBitmap(pic);
                     layout.addView(requestedForChild);

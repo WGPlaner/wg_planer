@@ -13,6 +13,7 @@
     <color name="colorButtonLight">@color/secondaryLightColor</color>
     <color name="colorBackground">#FFFAFAFA</color>
     <color name="colorDivider">#4a000000</color>
+    <color name="colorDividerLight">#a0ffffff</color>
 
     <color name="textColorPrimary">#000000</color>
     <color name="textColorAccent">#000000</color>

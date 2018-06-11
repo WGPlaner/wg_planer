@@ -113,7 +113,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void initializeUser(String uid) {
-        DataProviderInterface.SetUpState state = dataProvider.initialize(uid, this);
+        DataProviderInterface.SetUpState state = dataProvider.initialize(uid);
 
         switch (state) {
             case GET_USER_FAILED: {
@@ -149,7 +149,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        ImageStore.initialize(this);
         Configuration.initConfig(this);
     }
 

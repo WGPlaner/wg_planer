@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
@@ -155,7 +156,7 @@ public class ShoppingListFragment extends SectionFragment {
         super.onPause();
     }
 
-    public void onNewData(ArrayList<ListItem> items) {
+    public void onNewData(List<ListItem> items) {
         this.items.clear();
         this.items.addAll(items);
 

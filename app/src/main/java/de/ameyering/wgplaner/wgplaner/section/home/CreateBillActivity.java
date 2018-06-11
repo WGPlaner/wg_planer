@@ -3,22 +3,26 @@ package de.ameyering.wgplaner.wgplaner.section.home;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +31,10 @@ import java.util.UUID;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
-import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
-import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
+import de.ameyering.wgplaner.wgplaner.utils.OnAsyncCallListener;
+import io.swagger.client.ApiException;
+import io.swagger.client.model.Bill;
 import io.swagger.client.model.ListItem;
 import io.swagger.client.model.User;
 
@@ -37,11 +42,10 @@ public class CreateBillActivity extends AppCompatActivity {
 
     private static Calendar now = new GregorianCalendar();
     private static DataProviderInterface dataProvider;
-    private static ImageStore imageStore = ImageStore.getInstance();
 
     private Calendar dueDateCalendar = new GregorianCalendar();
 
-    private List<String> uids;
+    private List<String> itemUids;
     private List<ListItem> items = new ArrayList<>();
     private HashMap<User, Double> recipientPriceMapping = new HashMap<>();
 
@@ -50,6 +54,8 @@ public class CreateBillActivity extends AppCompatActivity {
 
     private LinearLayout itemsView;
     private LinearLayout recipientsView;
+
+    private Date dueDate = null;
 
     static {
         now.add(Calendar.WEEK_OF_YEAR, 1);
@@ -63,9 +69,9 @@ public class CreateBillActivity extends AppCompatActivity {
         WGPlanerApplication application = (WGPlanerApplication) getApplication();
         dataProvider = application.getDataProviderInterface();
 
-        uids = getIntent().getStringArrayListExtra(Intent.EXTRA_UID);
+        itemUids = getIntent().getStringArrayListExtra(Intent.EXTRA_UID);
 
-        if (uids == null || uids.isEmpty()) {
+        if (itemUids == null || itemUids.isEmpty()) {
             setResult(RESULT_CANCELED);
             finish();
 
@@ -92,7 +98,56 @@ public class CreateBillActivity extends AppCompatActivity {
 
         FloatingActionButton save = findViewById(R.id.create_bill_action_save);
         save.setOnClickListener(view -> {
-            //TODO: Implement later
+            editDueDate.setEnabled(false);
+            save.setClickable(false);
+
+            if (layoutDueDate.getError() == null && dueDate != null) {
+                Bill bill = new Bill();
+                bill.setDueDate(new DateTime(dueDate.getTime()));
+                bill.setBoughtItems(itemUids);
+                List<String> sentTo = new ArrayList<>();
+                Integer sum = 0;
+
+                for (User user : recipientPriceMapping.keySet()) {
+                    sentTo.add(user.getUid());
+                }
+
+                for (ListItem item : items) {
+                    sum += item.getPrice();
+                }
+
+                bill.setSentTo(sentTo);
+                bill.setCreatedBy(dataProvider.getCurrentUserUid());
+                bill.setSum(sum);
+
+                dataProvider.createBill(bill, new OnAsyncCallListener<Bill>() {
+                    @Override
+                    public void onFailure(ApiException e) {
+                        CreateBillActivity.this.runOnUiThread(() -> {
+                            Toast.makeText(CreateBillActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                            editDueDate.setEnabled(true);
+                            save.setClickable(true);
+                        });
+                    }
+
+                    @Override
+                    public void onSuccess(Bill result) {
+                        CreateBillActivity.this.runOnUiThread(() -> {
+                            editDueDate.setEnabled(true);
+                            save.setClickable(true);
+
+                            setResult(RESULT_OK);
+                            finish();
+                        });
+                    }
+                });
+
+            } else {
+                editDueDate.setEnabled(true);
+                save.setClickable(true);
+
+                layoutDueDate.setError(getString(R.string.create_bill_due_date_error));
+            }
         });
 
         layoutDueDate = findViewById(R.id.create_bill_container_master_input);
@@ -104,12 +159,14 @@ public class CreateBillActivity extends AppCompatActivity {
             dueDateCalendar.set(Calendar.DAY_OF_MONTH, i2);
 
             DateFormat format = DateFormat.getDateInstance();
-            editDueDate.setText(format.format(dueDateCalendar.getTime()));
+            Date date = dueDateCalendar.getTime();
+            editDueDate.setText(format.format(date));
 
             if (dueDateCalendar.before(now)) {
                 layoutDueDate.setError(getString(R.string.create_bill_due_date_error));
 
             } else {
+                dueDate = date;
                 layoutDueDate.setError(null);
             }
         };
@@ -128,7 +185,7 @@ public class CreateBillActivity extends AppCompatActivity {
     }
 
     private void prepareData() {
-        for (String itemUid : uids) {
+        for (String itemUid : itemUids) {
             ListItem item = dataProvider.getListItem(UUID.fromString(itemUid));
 
             if (item.getPrice() != null) {
@@ -136,17 +193,15 @@ public class CreateBillActivity extends AppCompatActivity {
                 double pricePerRecipient = price / item.getRequestedFor().size();
 
                 for (String userUid : item.getRequestedFor()) {
-                    if (!userUid.equals(item.getBoughtBy())) {
-                        User user = dataProvider.getUserByUid(userUid);
+                    User user = dataProvider.getUserByUid(userUid);
 
-                        if (!recipientPriceMapping.containsKey(user)) {
-                            recipientPriceMapping.put(user, pricePerRecipient);
+                    if (!recipientPriceMapping.containsKey(user)) {
+                        recipientPriceMapping.put(user, pricePerRecipient);
 
-                        } else {
-                            double actual = recipientPriceMapping.get(user);
-                            actual += pricePerRecipient;
-                            recipientPriceMapping.put(user, actual);
-                        }
+                    } else {
+                        double actual = recipientPriceMapping.get(user);
+                        actual += pricePerRecipient;
+                        recipientPriceMapping.put(user, actual);
                     }
                 }
 
@@ -160,7 +215,7 @@ public class CreateBillActivity extends AppCompatActivity {
         itemsView.removeAllViews();
 
         for (ListItem item : items) {
-            View view = getLayoutInflater().inflate(R.layout.bill_items_list_layout, itemsView, false);
+            View view = getLayoutInflater().inflate(R.layout.bill_detail_items_layout, itemsView, false);
 
             TextView itemName = view.findViewById(R.id.bill_list_item_name);
             TextView itemPrice = view.findViewById(R.id.bill_list_item_price);
@@ -190,7 +245,7 @@ public class CreateBillActivity extends AppCompatActivity {
             TextView recipientName = view.findViewById(R.id.bill_list_recipient_name);
             TextView recipientPrice = view.findViewById(R.id.bill_list_recipient_price);
 
-            Bitmap pic = imageStore.loadGroupMemberPicture(user.getUid(), this);
+            Bitmap pic = dataProvider.getGroupMemberPicture(user.getUid());
 
             recipientImage.setImageBitmap(pic);
             recipientName.setText(user.getDisplayName());

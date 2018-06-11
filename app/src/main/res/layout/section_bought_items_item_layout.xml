@@ -35,6 +35,7 @@
         android:layout_weight="0.85"
         app:cardElevation="1dp"
         android:clickable="true"
+        android:focusable="true"
         app:cardUseCompatPadding="true">
 
         <LinearLayout

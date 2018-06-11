@@ -39,7 +39,7 @@ public class Configuration implements Serializable {
         }
     }
 
-    private Configuration() {
+    public Configuration() {
         configs = new HashMap<>();
     }
 

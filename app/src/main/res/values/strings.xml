@@ -135,6 +135,14 @@
     <string name="sort_by_label_requested_by">Requested by</string>
     <string name="sort_by_label_category">Category</string>
     <string name="sort_by_label_name">Name</string>
+
+    <string name="search_title">Search</string>
+
+    <string name="bill_detail_cost_label">Costs</string>
+    <string name="bill_detail_items_label">Items</string>
+    <string name="bill_detail_action_pay">mark as paid</string>
+    <string name="bill_detail_action">complete billing</string>
+
     <string name="bought_items_action_mode_menu_bill">bill items</string>
     <string name="bought_items_action_mode_menu_undo">undo</string>
     <string name="bought_items_action_mode_selected_label">selected</string>
@@ -176,6 +184,26 @@
     <string name="share_join_intent_subject">Join our WGPlaner Group!</string>
     <string name="share_join_intent_text">Click the link to join our WGPlaner Group: %s</string>
 
+    <string name="section_bills_received_bills_tab">Received</string>
+    <string name="section_bills_sent_bills_tab">Sent</string>
+    <string name="section_title_bills">Bills</string>
+
     <string name="pick_image">Pick image</string>
     <string name="generate_image">Generate standard Image</string>
+
+    <string name="cost_recipient_sum_label">Sum</string>
+    <string name="cost_recipient_status_label">Status</string>
+    <string name="cost_recipient_action_confirm">Confirm Payment</string>
+    <string name="bill_detail_owner_label">Owner</string>
+    <string name="bill_detail_recipients_label">Recipients</string>
+
+    <string name="bought_items_empty">There are currently no bought Items which aren\'t billed yet</string>
+    <string name="bill_list_empty">There are currently no bills to display</string>
+
+    <string name="user_attribute_name">Name</string>
+    <string name="user_attribute_email">Email</string>
+    <string name="user_attribute_created_at">Joined at</string>
+    <string name="edit_display_name_title">Edit Name</string>
+    <string name="edit_email_title">Edit Email</string>
+    <string name="load_image_failed">Loading of image failed</string>
 </resources>

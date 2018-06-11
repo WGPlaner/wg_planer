@@ -33,7 +33,7 @@ public class WGPlanerInstanceIdService extends FirebaseInstanceIdService {
         if (refreshedToken != null) {
             DataProviderInterface dataProvider = ((WGPlanerApplication)
                     getApplication()).getDataProviderInterface();
-            dataProvider.setFirebaseInstanceId(refreshedToken, getApplicationContext());
+            dataProvider.setFirebaseInstanceId(refreshedToken);
         }
     }
 
