@@ -79,6 +79,7 @@ Items for Testing:
 *Android Client*:
  - UI testing of views/fragments
  - unit testing
+ - installation testing
 
 *Server*:
  - integration testing (database API testing)
@@ -139,6 +140,26 @@ For our integration tests we use [test fixtures](https://en.wikipedia.org/wiki/T
 |                       | Server: [TravisCI](https://travis-ci.org/WGPlaner/wg_planer_server)  |
 |Special Considerations | -                                                                    |
 
+#### 5.1.4 Installation Tests
+The primary goal of installation testing is to ensure that installing the application on real devices with real users works.
+
+|                       | Description                                                          |
+|-----------------------|----------------------------------------------------------------------|
+|Technique Objective    | Quality assurance based on customers feedback on the installation and set up processes.              |
+|Technique              |  The test participants run an install program (package software) on their machines. All the possible configurations should receive an appropriate level of testing, so that the software can be released to a wide range of customers. |
+|Oracles                | Test is successful if the user is able to install and run the software on his or her machine |
+|Required Tools         | No specific tools required. |
+|Success Criteria       | Successfull installation is confirmed by the user. User did not run into fatal problems trying to install the application.  |
+|Special Considerations | -                                                                    |
+
+The confirmations can be found below (comments on our blog):
+
+|             | Date       | Link    |
+|-------------|:----------:|---------|
+| Malte       | 2018-16-11 | [Comment](https://wgplanerblog.wordpress.com/2018/06/09/continuous-delivery-installation/#comment-98) |
+| Christopher | 2018-16-11 | [Comment](https://wgplanerblog.wordpress.com/2018/06/09/continuous-delivery-installation/#comment-99) |
+
+
 ## 6. Entry and Exit Criteria
 ### 6.1 Test Plan
 
@@ -158,7 +179,7 @@ The project (client + server) has over 100 tests which are passing. We use multi
 | **Client** | [TeamCity](https://teamcity.ameyering.de/viewType.html?buildTypeId=WgPlaner_BuildClient&guest=1) | [![Build Status TeamCity](https://teamcity.ameyering.de/app/rest/builds/buildType:(id:WgPlaner_BuildClient)/statusIcon)](https://teamcity.ameyering.de/viewType.html?buildTypeId=WgPlaner_BuildClient&guest=1) |
 |            | [TravisCI](https://travis-ci.org/WGPlaner/wg_planer)        | [![Build Status Travis](https://travis-ci.org/WGPlaner/wg_planer.svg?branch=master)](https://travis-ci.org/WGPlaner/wg_planer) |
 | **Server** | [TravisCI](https://travis-ci.org/WGPlaner/wg_planer_server) | [![Build Status Travis](https://travis-ci.org/WGPlaner/wg_planer_server.svg?branch=master)](https://travis-ci.org/WGPlaner/wg_planer_server) |
-|            | [AppVeyor](https://www.appveyor.com/docs/) (*on hold because a framework does not support windows) | [![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/ok5rq84eh6sx8lxd/branch/master?svg=true)](https://ci.appveyor.com/project/archer96/wg-planer-server/branch/master) |
+|            | [AppVeyor](https://www.appveyor.com/docs/) <br/> (*on hold because a framework does not support windows) | [![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/ok5rq84eh6sx8lxd/branch/master?svg=true)](https://ci.appveyor.com/project/archer96/wg-planer-server/branch/master) |
 
 The first picture shows our server tests running in GoLand. The second shows the build history of the server on TravisCI and the third the build history of our client on TeamCity.
 
@@ -185,6 +206,9 @@ Following badges show the current report status:
 | Server      | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/492b2e1e8ce9415fa826016952baaa15)](https://www.codacy.com/app/archer96/wg_planer_server?utm_source=github.com&utm_medium=referral&utm_content=WGPlaner/wg_planer_server&utm_campaign=badger) |
 |             | [![Go Report Card](https://goreportcard.com/badge/github.com/wgplaner/wg_planer_server)](https://goreportcard.com/report/github.com/wgplaner/wg_planer_server) |
 | Client      | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/566d7b24441a47d1a0b360f1e18d9ae0)](https://www.codacy.com/app/archer96/wg_planer?utm_source=github.com&utm_medium=referral&utm_content=WGPlaner/wg_planer&utm_campaign=badger) |
+
+On Android we use SonarQube as well. It shows the amount of issues in the code as well as several metrics.
+SonarQube reports can be found on  [sonarcloud.io](https://sonarcloud.io/dashboard?id=wg_planer%3Aapp).
 
 ## 7.4 Incident Logs and Change Requests
 We integrated the tools mentioned above into our GitHub pull request workflow. If a build fails (or a reviewer dismisses the PR), merging the PR is blocked. See the screenshot below:
