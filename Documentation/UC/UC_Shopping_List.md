@@ -3,20 +3,30 @@
 # 1. Shopping List
 
 ## 1.1 Brief Description
-This use case allows users to add products/items to a shopping list and manage them. A product has a title and may contain information the number of items and who the product shall be bought for. Bought items shall be removed from the list.
+This use case allows users to list all items which are currently in the shopping list. A item has a title and may contain information the number of items and who the product shall be bought for. Bought items shall be removed from the list. Furthermore the user can sort the items regarding their attributes.
 
 ## 1.2 Mockup
 [![Mockup CheckedList](../Mockups/uc_shopping_list_CheckedList_200px.png)](../Mockups/uc_shopping_list_CheckedList.PNG)
-[![Mockup DialogWindow](../Mockups/uc_shopping_list_DialogWindow_200px.png)](../Mockups/uc_shopping_list_DialogWindow.PNG)
-[![Mockup FirstPage](../Mockups/uc_shopping_list_FirstPage_200px.png)](../Mockups/uc_shopping_list_FirstPage.PNG)
+
+## 1.3 Screenshot
+
+### Empty Shopping List
+![Shopping List without items](../Screenshots/shopping_list_no_items_screenshot.png)
+### Shopping List with items
+![Shopping List with items](../Screenshots/shopping_list_screenshot_items.png)
+### Shopping List selected items
+![Shopping List selected items](../Screenshots/shopping_list_screenshot_selected.png)
+### Shopping List sort items dialog
+![Shopping List sort items dialog](../Screenshots/shopping_list_screenshot_sort.png)
 
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-Here is the activity diagram for managing the shopping list.
-![Activity Diagram](../ActivityDiagrams/uc_shopping_list_activity_diagramm.png)
 
-And here is a screenshot of the `.feature` file for this use case:
+### Activity Diagram
+![Activity Diagram](../ActivityDiagrams/uc_shopping_list_activity_diagram.png)
+
+### .feature File
 ![.feature file](./FeatureFiles/feature_file_manage_shopping_list.png)
 
 

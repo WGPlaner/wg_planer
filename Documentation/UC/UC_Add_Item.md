@@ -3,7 +3,7 @@
 # 1. Add Item
 
 ## 1.1 Brief Description
-This use case allows users to add products/items to a shopping list. 
+This use case allows users to add products/items to a shopping list.
 A product has a title and may contain information like the number of items and who the product shall be bought for.
 
 ## 1.2 Mockup
@@ -11,14 +11,17 @@ A product has a title and may contain information like the number of items and w
 ![Mockup AddItem](../Mockups/uc_add_item.PNG)
 
 ## 1.3 Screenshot
-### Add Item Page "blank"
-![Add Item Page "blank"](../Screenshots/uc_add_item_blank.png)
+### Add Item functionality "blank"
+![Add Item functionality "blank"](../Screenshots/add_item_screenshot_blank.png)
 
-### Add Item Page "filled"
-![Add Item Page "Filled"](../Screenshots/uc_add_item_filled.png)
+### Add Item functionality "input"
+![Add Item functionality "input"](../Screenshots/add_item_screenshot_input.png)
+
+### Add Item functionality "select users"
+![Add Item functionality "select users"](../Screenshots/add_item_screenshot_select.png)
 
 ### Updated Shopping List
-![Updated Shopping List](../Screenshots/uc_add_item_shopping_list.png)
+![Updated Shopping List](../Screenshots/shopping_list_screenshot_items.png)
 
 # 2. Flow of Events
 

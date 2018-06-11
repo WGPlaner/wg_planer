@@ -17,7 +17,7 @@ This use case allows users to list their received bills. A bill contains bought 
 
 ## 1.3 Screenshot
 ### List received bills - No bill
-*tbd*
+![Received bills without bill](../Screenshots/received_bills_empty.png)
 
 ### List received bills - With bills
 *tbd*
@@ -25,7 +25,7 @@ This use case allows users to list their received bills. A bill contains bought 
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-*tbd*
+![Use Case SeeReceivedBills](../ActivityDiagrams/uc_see_received_bills.png)
 
 ## 2.2 Alternative Flows
 n/a

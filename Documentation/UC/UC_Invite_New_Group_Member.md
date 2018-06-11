@@ -3,7 +3,7 @@
 # 1. Invite new group member
 
 ## 1.1 Brief Description
-This use case allows admins to invite new group members to the shared flat. 
+This use case allows admins to invite new group members to the shared flat.
 A group has at minimum one admin who can call up the access key to join a group.
 
 ## 1.2 Mockup
@@ -15,10 +15,10 @@ A group has at minimum one admin who can call up the access key to join a group.
 
 ## 1.3 Screenshot
 ### Group Settings Page, if admin
-![Group Settings Page, if admin](../Screenshots/uc_invite_new_group_member_group_settings.png)
+![Group Settings Page, if admin](../Screenshots/group_detail_screenshot_admin.png)
 
 ### Dialog Window which opens at the button pressure
-![Dialog Window which opens at the button pressure](../Screenshots/uc_invite_new_group_member_dialog_window.png)
+![Dialog Window which opens at the button pressure](../Screenshots/group_detail_invite_member_screenshot.png)
 
 # 2. Flow of Events
 

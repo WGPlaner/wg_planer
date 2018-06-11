@@ -4,7 +4,7 @@
 
 ## 1.1 Brief Description
 This use case allows users to buy products/items.
-A product has a title and may contain information like the number of items and who the product shall be bought for. 
+A product has a title and may contain information like the number of items and who the product shall be bought for.
 Bought items shall be removed from the list.
 
 ## 1.2 Mockup
@@ -13,10 +13,10 @@ Bought items shall be removed from the list.
 
 ## 1.3 Screenshot
 ### Shopping List with checked products
-![Shopping List with checked products](../Screenshots/uc_buy_item_checked_boxes.png)
+![Shopping List with checked products](../Screenshots/shopping_list_screenshot_selected.png)
 
 ### Shopping List after the products were bought
-![Shopping List after the products were bought](../Screenshots/uc_buy_item_bougt_products.png)
+![Shopping List after the products were bought](../Screenshots/shopping_list_no_items_screenshot.png)
 
 # 2. Flow of Events
 
