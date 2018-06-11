@@ -153,13 +153,14 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
             getActivity().runOnUiThread(() -> {
                 adapter.onNewData(items);
 
-                if(items.size() == 0) {
+                if (items.size() == 0) {
                     isEmptyView.setVisibility(View.VISIBLE);
 
-                    if(actionMode != null) {
+                    if (actionMode != null) {
                         actionMode.finish();
                         actionMode = null;
                     }
+
                 } else {
                     isEmptyView.setVisibility(View.GONE);
                 }

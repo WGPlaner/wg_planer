@@ -34,7 +34,7 @@ public class SentBillsFragment extends Fragment {
     private DataProviderInterface dataProvider;
 
     private OnDataChangeListener billsListener = type -> {
-        if(type == DataProviderInterface.DataType.BILLS) {
+        if (type == DataProviderInterface.DataType.BILLS) {
             onNewData(dataProvider.getSentBills());
         }
     };
@@ -58,14 +58,15 @@ public class SentBillsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_bills_content, container, false);
 
-        if(recyclerView == null) {
+        if (recyclerView == null) {
             recyclerView = view.findViewById(R.id.section_bills_content_recycler);
         }
 
-        if(swipeRefreshLayout == null) {
+        if (swipeRefreshLayout == null) {
             swipeRefreshLayout = view.findViewById(R.id.bills_content_swipe_refresh_layout);
             swipeRefreshLayout.setOnRefreshListener(() -> new Thread(() -> {
                 dataProvider.syncBillList();
@@ -76,11 +77,11 @@ public class SentBillsFragment extends Fragment {
             }).start());
         }
 
-        if(isEmptyView == null) {
+        if (isEmptyView == null) {
             isEmptyView = view.findViewById(R.id.bills_content_empty);
         }
 
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new BillsContentAdapter(new ArrayList<>(), getContext(), dataProvider);
             onNewData(dataProvider.getSentBills());
             adapter.addOnTouchListener(listener);
@@ -106,12 +107,13 @@ public class SentBillsFragment extends Fragment {
     }
 
     private void onNewData(List<Bill> bills) {
-        if(bills != null) {
+        if (bills != null) {
             getActivity().runOnUiThread(() -> {
                 adapter.onNewData(sort(bills));
 
-                if(bills.size() == 0) {
+                if (bills.size() == 0) {
                     isEmptyView.setVisibility(View.VISIBLE);
+
                 } else {
                     isEmptyView.setVisibility(View.GONE);
                 }
@@ -120,18 +122,22 @@ public class SentBillsFragment extends Fragment {
     }
 
     private List<Bill> sort(List<Bill> bills) {
-         Collections.sort(bills, (bill, t1) ->  {
-            if(bill.getDueDate().compareTo(t1.getDueDate()) == 0) {
-                if(bill.getState().equals(t1.getState())) {
+        Collections.sort(bills, (bill, t1) ->  {
+            if (bill.getDueDate().compareTo(t1.getDueDate()) == 0) {
+                if (bill.getState().equals(t1.getState())) {
                     return 0;
+
                 } else if (bill.getState().equals("confirmed paid")) {
                     return 1;
+
                 } else if (bill.getState().equals("paid")) {
-                    if(t1.getState().equals("confirmed paid")) {
+                    if (t1.getState().equals("confirmed paid")) {
                         return -1;
+
                     } else {
                         return 1;
                     }
+
                 } else {
                     return -1;
                 }
@@ -140,6 +146,6 @@ public class SentBillsFragment extends Fragment {
             return bill.getDueDate().compareTo(t1.getDueDate());
         });
 
-         return bills;
+        return bills;
     }
 }

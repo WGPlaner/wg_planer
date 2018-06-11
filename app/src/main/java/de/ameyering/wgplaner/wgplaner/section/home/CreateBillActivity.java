@@ -141,6 +141,7 @@ public class CreateBillActivity extends AppCompatActivity {
                         });
                     }
                 });
+
             } else {
                 editDueDate.setEnabled(true);
                 save.setClickable(true);
@@ -238,7 +239,7 @@ public class CreateBillActivity extends AppCompatActivity {
             double price = recipientPriceMapping.get(user);
 
             View view = getLayoutInflater().inflate(R.layout.bill_recipients_list_layout, recipientsView,
-                false);
+                    false);
 
             CircularImageView recipientImage = view.findViewById(R.id.bill_list_recipient_picture);
             TextView recipientName = view.findViewById(R.id.bill_list_recipient_name);

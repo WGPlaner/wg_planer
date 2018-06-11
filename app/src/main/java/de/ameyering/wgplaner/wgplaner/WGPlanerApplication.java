@@ -1,13 +1,7 @@
 package de.ameyering.wgplaner.wgplaner;
 
 import android.app.Application;
-
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import de.ameyering.wgplaner.wgplaner.utils.Configuration;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
-import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 
 
 public class WGPlanerApplication extends Application {
@@ -23,7 +17,7 @@ public class WGPlanerApplication extends Application {
 
     @Override
     public void onCreate() {
-        if(dataProviderInterface == null) {
+        if (dataProviderInterface == null) {
             dataProviderInterface = DataProviderInterface.getInstance(getApplicationContext());
         }
 

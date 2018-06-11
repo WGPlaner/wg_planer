@@ -105,12 +105,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -163,12 +163,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -221,12 +221,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -277,12 +277,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -311,7 +311,7 @@ public class ServerCalls extends ServerCallsInterface {
     }
 
     public void updateUserImageAsync(File image,
-                                     @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
+        @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
         if (image != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
@@ -327,7 +327,7 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onSuccess(SuccessResponse result, int statusCode,
-                                          Map<String, List<String>> responseHeaders) {
+                        Map<String, List<String>> responseHeaders) {
                         if (listener != null) {
                             listener.onSuccess(result);
                         }
@@ -335,12 +335,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -382,7 +382,7 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onSuccess(SuccessResponse result, int statusCode,
-                                      Map<String, List<String>> responseHeaders) {
+                    Map<String, List<String>> responseHeaders) {
                     if (listener != null) {
                         listener.onSuccess(result);
                     }
@@ -390,12 +390,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    // do nothing
                 }
             });
 
@@ -443,12 +443,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    // do nothing
                 }
             });
 
@@ -501,12 +501,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        // do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -535,7 +535,7 @@ public class ServerCalls extends ServerCallsInterface {
     }
 
     public void createGroupAsync(Group group,
-                                 @Nullable final OnAsyncCallListener<Group> listener) {
+        @Nullable final OnAsyncCallListener<Group> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
         try {
@@ -561,12 +561,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -601,7 +601,7 @@ public class ServerCalls extends ServerCallsInterface {
     }
 
     public void joinGroupAsync(String accessKey,
-                               @Nullable final OnAsyncCallListener<Group> listener) {
+        @Nullable final OnAsyncCallListener<Group> listener) {
         setAuth(USER_ID_AUTH_LABEL);
 
         try {
@@ -627,12 +627,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -689,12 +689,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -739,12 +739,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -768,7 +768,7 @@ public class ServerCalls extends ServerCallsInterface {
 
     @Override
     public void updateGroupImageAsync(File image,
-                                      @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
+        @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
         if (image != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
@@ -776,32 +776,32 @@ public class ServerCalls extends ServerCallsInterface {
 
             try {
                 api.updateGroupImageAsync(image,
-                    new ApiCallback<SuccessResponse>() {
-                        @Override
-                        public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-                            if (listener != null) {
-                                listener.onFailure(e);
-                            }
+                new ApiCallback<SuccessResponse>() {
+                    @Override
+                    public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
+                        if (listener != null) {
+                            listener.onFailure(e);
                         }
+                    }
 
-                        @Override
-                        public void onSuccess(SuccessResponse result, int statusCode,
-                                              Map<String, List<String>> responseHeaders) {
-                            if (listener != null) {
-                                listener.onSuccess(result);
-                            }
+                    @Override
+                    public void onSuccess(SuccessResponse result, int statusCode,
+                        Map<String, List<String>> responseHeaders) {
+                        if (listener != null) {
+                            listener.onSuccess(result);
                         }
+                    }
 
-                        @Override
-                        public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+                    @Override
+                    public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
+                        //do nothing
+                    }
 
-                        }
-
-                        @Override
-                        public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
-                        }
-                    });
+                    @Override
+                    public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
+                        //do nothing
+                    }
+                });
 
             } catch (ApiException e) {
                 if (listener != null) {
@@ -829,7 +829,7 @@ public class ServerCalls extends ServerCallsInterface {
     }
 
     public void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList>
-                                         listener) {
+        listener) {
         setAuth(FIREBASE_ID_AUTH_LABEL);
 
         try {
@@ -846,7 +846,7 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onSuccess(ShoppingList result, int statusCode,
-                                      Map<String, List<String>> responseHeaders) {
+                    Map<String, List<String>> responseHeaders) {
                     logSuccess(GET_SHOPPING_LIST_NAME, ASYNCHRONOUS_FLAG);
 
                     if (result != null && listener != null) {
@@ -856,12 +856,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -886,7 +886,7 @@ public class ServerCalls extends ServerCallsInterface {
     }
 
     public void createShoppingListItemAsync(ListItem item,
-                                            @Nullable final OnAsyncCallListener<ListItem> listener) {
+        @Nullable final OnAsyncCallListener<ListItem> listener) {
         setAuth(FIREBASE_ID_AUTH_LABEL);
 
         try {
@@ -912,12 +912,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
 
@@ -947,7 +947,7 @@ public class ServerCalls extends ServerCallsInterface {
 
     @Override
     public void updateShoppingListItemAsync(ListItem item,
-                                            @Nullable final OnAsyncCallListener<ListItem> listener) {
+        @Nullable final OnAsyncCallListener<ListItem> listener) {
         if (item != null) {
             setAuth(FIREBASE_ID_AUTH_LABEL);
 
@@ -970,12 +970,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -1005,7 +1005,7 @@ public class ServerCalls extends ServerCallsInterface {
 
     @Override
     public void buyListItemsAsync(List<UUID> items,
-                                  @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
+        @Nullable final OnAsyncCallListener<SuccessResponse> listener) {
         if (items != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
@@ -1022,7 +1022,7 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onSuccess(SuccessResponse result, int statusCode,
-                                          Map<String, List<String>> responseHeaders) {
+                        Map<String, List<String>> responseHeaders) {
                         if (listener != null) {
                             listener.onSuccess(result);
                         }
@@ -1030,12 +1030,12 @@ public class ServerCalls extends ServerCallsInterface {
 
                     @Override
                     public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                        //do nothing
                     }
                 });
 
@@ -1065,7 +1065,7 @@ public class ServerCalls extends ServerCallsInterface {
     }
 
     public void getBoughtItemsAsync(String uid,
-                                    @Nullable final OnAsyncCallListener<ShoppingList> listener) {
+        @Nullable final OnAsyncCallListener<ShoppingList> listener) {
         if (uid != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
@@ -1145,14 +1145,15 @@ public class ServerCalls extends ServerCallsInterface {
 
                 @Override
                 public void onUploadProgress(long bytesWritten, long contentLength, boolean done) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onDownloadProgress(long bytesRead, long contentLength, boolean done) {
-
+                    //do nothing
                 }
             });
+
         } catch (ApiException e) {
             if (listener != null) {
                 listener.onFailure(e);
@@ -1164,8 +1165,10 @@ public class ServerCalls extends ServerCallsInterface {
         try {
             GetBillList task = new GetBillList();
             return task.execute().get();
+
         } catch (ExecutionException e) {
             return null;
+
         } catch (InterruptedException e) {
             return null;
         }
@@ -1173,7 +1176,7 @@ public class ServerCalls extends ServerCallsInterface {
 
     @Override
     public void createBillAsync(Bill bill, @Nullable final OnAsyncCallListener<Bill> listener) {
-        if(bill != null) {
+        if (bill != null) {
             setAuth(USER_ID_AUTH_LABEL);
 
             try {
@@ -1181,35 +1184,37 @@ public class ServerCalls extends ServerCallsInterface {
                 api.createBillAsync(bill, new ApiCallback<Bill>() {
                     @Override
                     public void onFailure(ApiException e, int i, Map<String, List<String>> map) {
-                        if(listener != null) {
+                        if (listener != null) {
                             listener.onFailure(e);
                         }
                     }
 
                     @Override
                     public void onSuccess(Bill bill, int i, Map<String, List<String>> map) {
-                        if(listener != null) {
+                        if (listener != null) {
                             listener.onSuccess(bill);
                         }
                     }
 
                     @Override
                     public void onUploadProgress(long l, long l1, boolean b) {
-
+                        //do nothing
                     }
 
                     @Override
                     public void onDownloadProgress(long l, long l1, boolean b) {
-
+                        //do nothing
                     }
                 });
+
             } catch (ApiException e) {
-                if(listener != null) {
+                if (listener != null) {
                     listener.onFailure(e);
                 }
             }
+
         } else {
-            if(listener != null) {
+            if (listener != null) {
                 listener.onFailure(null);
             }
         }
@@ -1217,15 +1222,18 @@ public class ServerCalls extends ServerCallsInterface {
 
     @Override
     public ApiResponse<Bill> createBill(Bill bill) {
-        if(bill != null) {
-            try{
+        if (bill != null) {
+            try {
                 CreateBill task = new CreateBill();
                 return task.execute(bill).get();
+
             } catch (ExecutionException e) {
                 return null;
+
             } catch (InterruptedException e) {
                 return null;
             }
+
         } else {
             return null;
         }
@@ -1609,6 +1617,7 @@ public class ServerCalls extends ServerCallsInterface {
 
             try {
                 return api.getBillListWithHttpInfo();
+
             } catch (ApiException e) {
                 return new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
             }
@@ -1626,9 +1635,11 @@ public class ServerCalls extends ServerCallsInterface {
                     BillApi api = new BillApi();
 
                     return api.createBillWithHttpInfo(bills[0]);
+
                 } catch (ApiException e) {
                     return  new ApiResponse<>(e.getCode(), e.getResponseHeaders(), null);
                 }
+
             } else {
                 return null;
             }

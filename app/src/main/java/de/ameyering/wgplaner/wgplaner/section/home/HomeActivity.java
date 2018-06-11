@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity
         shoppingListFragment.setTitle(getString(R.string.section_title_shopping_list));
         shoppingListFragment.setFloatingActionButton(fab);
 
-        if(billsFragment == null) {
+        if (billsFragment == null) {
             billsFragment = new BillsFragment();
         }
 
@@ -197,7 +197,7 @@ public class HomeActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_bills) {
-            if(!activeFragment.equals(billsFragment)) {
+            if (!activeFragment.equals(billsFragment)) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
                 transaction.remove(activeFragment);
@@ -205,6 +205,7 @@ public class HomeActivity extends AppCompatActivity
                 activeFragment = billsFragment;
                 transaction.commit();
             }
+
         } else if (id == R.id.nav_rosters) {
             // TODO
         } else if (id == R.id.nav_calendar) {

@@ -16,7 +16,8 @@ public class BillsFragment extends SectionFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_bills, container, false);
 
         if (actionBar != null) {
@@ -43,12 +44,12 @@ public class BillsFragment extends SectionFragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                //do nothing
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                //do nothing
             }
         });
 

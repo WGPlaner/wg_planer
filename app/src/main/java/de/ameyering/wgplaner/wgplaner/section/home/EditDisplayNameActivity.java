@@ -17,7 +17,6 @@ import io.swagger.client.ApiException;
 import io.swagger.client.model.User;
 
 public class EditDisplayNameActivity extends AppCompatActivity {
-    private Toolbar toolbar;
     private TextInputLayout editLayout;
     private EditText edit;
     private Button save;
@@ -33,7 +32,7 @@ public class EditDisplayNameActivity extends AppCompatActivity {
         WGPlanerApplication application = (WGPlanerApplication) getApplication();
         dataProviderInterface = application.getDataProviderInterface();
 
-        toolbar = findViewById(R.id.edit_display_name_toolbar);
+        Toolbar toolbar = findViewById(R.id.edit_display_name_toolbar);
         editLayout = findViewById(R.id.edit_display_name_layout);
         edit = findViewById(R.id.edit_deisplay_name_view);
         save = findViewById(R.id.edit_display_name_save);
@@ -49,7 +48,7 @@ public class EditDisplayNameActivity extends AppCompatActivity {
         save.setOnClickListener(view -> {
             String name = edit.getText().toString();
 
-            if(!name.trim().isEmpty()) {
+            if (!name.trim().isEmpty()) {
                 runOnUiThread(() -> {
                     editLayout.setError(null);
 
@@ -78,6 +77,7 @@ public class EditDisplayNameActivity extends AppCompatActivity {
                         });
                     }
                 });
+
             } else {
                 runOnUiThread(() -> editLayout.setError(getString(R.string.delete_display_name_error)));
             }

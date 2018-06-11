@@ -116,24 +116,26 @@ public class AddItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.add_item_save && checkInputAndReturn()) {
+        if (item.getItemId() == R.id.add_item_save && checkInputAndReturn()) {
             dataProvider.addShoppingListItem(newItem,
-                new OnAsyncCallListener<ListItem>() {
-                    @Override
-                    public void onFailure(ApiException e) {
-                        runOnUiThread(() -> Toast.makeText(AddItemActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show());
-                    }
+            new OnAsyncCallListener<ListItem>() {
+                @Override
+                public void onFailure(ApiException e) {
+                    runOnUiThread(() -> Toast.makeText(AddItemActivity.this,
+                            getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show());
+                }
 
-                    @Override
-                    public void onSuccess(ListItem result) {
-                        runOnUiThread(() -> {
-                            setResult(RESULT_OK, new Intent());
-                            finish();
-                        });
-                    }
-                });
+                @Override
+                public void onSuccess(ListItem result) {
+                    runOnUiThread(() -> {
+                        setResult(RESULT_OK, new Intent());
+                        finish();
+                    });
+                }
+            });
 
             return true;
+
         } else {
             return false;
         }
@@ -184,7 +186,7 @@ public class AddItemActivity extends AppCompatActivity {
 
         } else {
             runOnUiThread(() -> Toast.makeText(AddItemActivity.this, getString(R.string.fill_out_all_fields),
-                Toast.LENGTH_LONG).show());
+                    Toast.LENGTH_LONG).show());
             return false;
         }
     }

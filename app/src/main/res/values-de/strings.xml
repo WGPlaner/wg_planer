@@ -139,4 +139,25 @@
     <string name="share_join_intent_text">Klicke auf den Link um unser WGPlaner-Gruppe beizutreten: %s</string>
     <string name="pick_image">Bild auswählen</string>
     <string name="generate_image">Standardbild generieren</string>
+    <string name="search_title">Suche</string>
+    <string name="bill_detail_cost_label">Kosten</string>
+    <string name="bill_detail_items_label">Positionen</string>
+    <string name="bill_detail_action_pay">Als bezahlt markieren</string>
+    <string name="bill_detail_action">Rechnung abschließen</string>
+    <string name="section_bills_received_bills_tab">Erhalten</string>
+    <string name="section_bills_sent_bills_tab">Gesendet</string>
+    <string name="section_title_bills">Rechnungen</string>
+    <string name="cost_recipient_sum_label">Summe</string>
+    <string name="cost_recipient_status_label">Status</string>
+    <string name="cost_recipient_action_confirm">Bezahlung bestätigen</string>
+    <string name="bill_detail_owner_label">Erstellt von</string>
+    <string name="bill_detail_recipients_label">Rechnungsnehmer</string>
+    <string name="bought_items_empty">Im Moment gibt es keine gekauften Produkte die nicht schon einer Rechnung zugewiesen wurden</string>
+    <string name="bill_list_empty">Im Moment gibt es keine Rechnungen</string>
+    <string name="user_attribute_name">Name</string>
+    <string name="user_attribute_email">Email</string>
+    <string name="user_attribute_created_at">Beigetreten am</string>
+    <string name="edit_display_name_title">Name bearbeiten</string>
+    <string name="edit_email_title">Email bearbeiten</string>
+    <string name="load_image_failed">Laden des Bildes fehlgeschlagen</string>
 </resources>

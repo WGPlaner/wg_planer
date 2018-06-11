@@ -20,7 +20,6 @@ import io.swagger.client.ApiException;
 import io.swagger.client.model.User;
 
 public class EditEmailActivity extends AppCompatActivity {
-    private Toolbar toolbar;
     private TextInputLayout editLayout;
     private EditText edit;
     private Button save;
@@ -36,7 +35,7 @@ public class EditEmailActivity extends AppCompatActivity {
         WGPlanerApplication application = (WGPlanerApplication) getApplication();
         dataProviderInterface = application.getDataProviderInterface();
 
-        toolbar = findViewById(R.id.edit_email_toolbar);
+        Toolbar toolbar = findViewById(R.id.edit_email_toolbar);
         editLayout = findViewById(R.id.edit_email_layout);
         edit = findViewById(R.id.edit_email_view);
         save = findViewById(R.id.edit_email_save);
@@ -55,7 +54,7 @@ public class EditEmailActivity extends AppCompatActivity {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(email);
 
-            if(matcher.matches()) {
+            if (matcher.matches()) {
                 runOnUiThread(() -> {
                     editLayout.setError(null);
 
@@ -84,6 +83,7 @@ public class EditEmailActivity extends AppCompatActivity {
                         });
                     }
                 });
+
             } else {
                 runOnUiThread(() -> editLayout.setError(getString(R.string.invalid_email)));
             }

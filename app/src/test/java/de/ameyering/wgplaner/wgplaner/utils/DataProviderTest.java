@@ -61,11 +61,12 @@ public class DataProviderTest {
         try {
             URL url = DataProvider.class.getClassLoader().getResource("blank_profile_picture.png");
             standardImage = new File(url.toURI());
+
         } catch (URISyntaxException e) {
             standardImage = null;
         }
 
-        if(standardImage != null && standardImage.exists()) {
+        if (standardImage != null && standardImage.exists()) {
             FileInputStream fileInputStream = null;
 
             try {
@@ -87,12 +88,13 @@ public class DataProviderTest {
                     Log.e("GroupPicture", ":InputStreamCloseFailed");
                 }
             }
+
         } else {
             standardImage = null;
             standardImageBytes = null;
         }
 
-        if(standardImage == null || standardImageBytes == null) {
+        if (standardImage == null || standardImageBytes == null) {
             throw new IllegalStateException();
         }
     }
@@ -157,7 +159,8 @@ public class DataProviderTest {
         );
 
         doNothing().when(mockServerCallsInterface).setCurrentUserUid(eq(testCurrentUserUid));
-        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID), eq(testCurrentUserUid));
+        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID),
+            eq(testCurrentUserUid));
 
         ApiResponse<User> mockUserResponse = mock(ApiResponse.class);
 
@@ -165,7 +168,8 @@ public class DataProviderTest {
 
         doReturn(testCurrentUser).when(mockUserResponse).getData();
 
-        doReturn(standardImage).when(mockImageStoreInterface).getGroupMemberPictureFile(eq(testCurrentUserUid));
+        doReturn(standardImage).when(mockImageStoreInterface).getGroupMemberPictureFile(eq(
+                testCurrentUserUid));
         doReturn(standardImage).when(mockImageStoreInterface).getGroupPictureFile();
 
         ApiResponse<Group> mockGroupResponse = mock(ApiResponse.class);
@@ -174,22 +178,26 @@ public class DataProviderTest {
         doReturn(testCurrentGroup).when(mockGroupResponse).getData();
 
         //Everything works as expected
-        assertEquals(DataProviderInterface.SetUpState.SETUP_COMPLETED, objectUnderTest.initialize(testCurrentUserUid));
+        assertEquals(DataProviderInterface.SetUpState.SETUP_COMPLETED,
+            objectUnderTest.initialize(testCurrentUserUid));
         verify(mockServerCallsInterface, times(1)).setCurrentUserUid(eq(testCurrentUserUid));
-        verify(mockConfiguration, times(1)).addConfig(eq(Configuration.Type.USER_UID), eq(testCurrentUserUid));
+        verify(mockConfiguration, times(1)).addConfig(eq(Configuration.Type.USER_UID),
+            eq(testCurrentUserUid));
         verify(mockServerCallsInterface, times(1)).getUser(eq(testCurrentUserUid));
         verify(mockImageStoreInterface, times(1)).getGroupMemberPictureFile(eq(testCurrentUserUid));
         verify(mockServerCallsInterface, times(1)).getGroup();
         verify(mockServerCallsInterface, times(1)).getGroupImageAsync(any());
         verify(mockServerCallsInterface, times(1)).getUserAsync(eq(testCurrentUserUid), any());
 
-        ArgumentCaptor<OnAsyncCallListener<byte[]>> groupImageCaptor = ArgumentCaptor.forClass(OnAsyncCallListener.class);
+        ArgumentCaptor<OnAsyncCallListener<byte[]>> groupImageCaptor = ArgumentCaptor.forClass(
+                OnAsyncCallListener.class);
         verify(mockServerCallsInterface).getGroupImageAsync(groupImageCaptor.capture());
 
         groupImageCaptor.getValue().onFailure(null);
 
 
-        ArgumentCaptor<OnAsyncCallListener<User>> userCaptor = ArgumentCaptor.forClass(OnAsyncCallListener.class);
+        ArgumentCaptor<OnAsyncCallListener<User>> userCaptor = ArgumentCaptor.forClass(
+                OnAsyncCallListener.class);
         verify(mockServerCallsInterface).getUserAsync(anyString(), userCaptor.capture());
 
         userCaptor.getValue().onFailure(null);
@@ -205,7 +213,8 @@ public class DataProviderTest {
         );
 
         doNothing().when(mockServerCallsInterface).setCurrentUserUid(eq(testCurrentUserUid));
-        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID), eq(testCurrentUserUid));
+        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID),
+            eq(testCurrentUserUid));
 
         ApiResponse<User> mockUserResponse = mock(ApiResponse.class);
 
@@ -217,7 +226,8 @@ public class DataProviderTest {
 
         //user has no group
         doReturn(null).when(testCurrentUser).getGroupUID();
-        assertEquals(DataProviderInterface.SetUpState.REGISTERED, objectUnderTest.initialize(testCurrentUserUid));
+        assertEquals(DataProviderInterface.SetUpState.REGISTERED,
+            objectUnderTest.initialize(testCurrentUserUid));
     }
 
     @Test
@@ -232,7 +242,8 @@ public class DataProviderTest {
         Context context = mock(Context.class);
 
         doNothing().when(mockServerCallsInterface).setCurrentUserUid(eq(testCurrentUserUid));
-        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID), eq(testCurrentUserUid));
+        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID),
+            eq(testCurrentUserUid));
 
         ApiResponse<User> mockUserResponse = mock(ApiResponse.class);
 
@@ -242,7 +253,8 @@ public class DataProviderTest {
         doReturn(null).when(mockUserResponse).getData();
         doReturn(404).when(mockUserResponse).getStatusCode();
 
-        assertEquals(DataProviderInterface.SetUpState.UNREGISTERED, objectUnderTest.initialize(testCurrentUserUid));
+        assertEquals(DataProviderInterface.SetUpState.UNREGISTERED,
+            objectUnderTest.initialize(testCurrentUserUid));
     }
 
     @Test
@@ -257,7 +269,8 @@ public class DataProviderTest {
         Context context = mock(Context.class);
 
         doNothing().when(mockServerCallsInterface).setCurrentUserUid(eq(testCurrentUserUid));
-        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID), eq(testCurrentUserUid));
+        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID),
+            eq(testCurrentUserUid));
 
         ApiResponse<User> mockUserResponse = mock(ApiResponse.class);
 
@@ -267,18 +280,21 @@ public class DataProviderTest {
         doReturn(null).when(mockUserResponse).getData();
         doReturn(303).when(mockUserResponse).getStatusCode();
 
-        assertEquals(DataProviderInterface.SetUpState.GET_USER_FAILED, objectUnderTest.initialize(testCurrentUserUid));
+        assertEquals(DataProviderInterface.SetUpState.GET_USER_FAILED,
+            objectUnderTest.initialize(testCurrentUserUid));
 
         //get user call failed
         doReturn(null).when(mockUserResponse).getData();
         doReturn(0).when(mockUserResponse).getStatusCode();
 
-        assertEquals(DataProviderInterface.SetUpState.CONNECTION_FAILED, objectUnderTest.initialize(testCurrentUserUid));
+        assertEquals(DataProviderInterface.SetUpState.CONNECTION_FAILED,
+            objectUnderTest.initialize(testCurrentUserUid));
 
         //get user call failed
         doReturn(null).when(mockServerCallsInterface).getUser(eq(testCurrentUserUid));
 
-        assertEquals(DataProviderInterface.SetUpState.CONNECTION_FAILED, objectUnderTest.initialize(testCurrentUserUid));
+        assertEquals(DataProviderInterface.SetUpState.CONNECTION_FAILED,
+            objectUnderTest.initialize(testCurrentUserUid));
 
         //uid is null or empty
         assertEquals(DataProviderInterface.SetUpState.GET_USER_FAILED, objectUnderTest.initialize(null));
@@ -295,7 +311,8 @@ public class DataProviderTest {
         );
 
         doNothing().when(mockServerCallsInterface).setCurrentUserUid(eq(testCurrentUserUid));
-        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID), eq(testCurrentUserUid));
+        doNothing().when(mockConfiguration).addConfig(eq(Configuration.Type.USER_UID),
+            eq(testCurrentUserUid));
 
         ApiResponse<User> mockUserResponse = mock(ApiResponse.class);
 
@@ -303,7 +320,8 @@ public class DataProviderTest {
 
         doReturn(testCurrentUser).when(mockUserResponse).getData();
 
-        doReturn(standardImage).when(mockImageStoreInterface).getGroupMemberPictureFile(eq(testCurrentUserUid));
+        doReturn(standardImage).when(mockImageStoreInterface).getGroupMemberPictureFile(eq(
+                testCurrentUserUid));
 
         ApiResponse<Group> mockGroupResponse = mock(ApiResponse.class);
 
@@ -311,16 +329,19 @@ public class DataProviderTest {
 
         //Group call failed
         doReturn(null).when(mockGroupResponse).getData();
-        assertEquals(DataProviderInterface.SetUpState.GET_GROUP_FAILED, objectUnderTest.initialize(testCurrentUserUid));
+        assertEquals(DataProviderInterface.SetUpState.GET_GROUP_FAILED,
+            objectUnderTest.initialize(testCurrentUserUid));
     }
 
     @Test
     public void testRegisterUser() {
-        DataProvider objectUnderTest = new DataProvider(mockServerCallsInterface, mockImageStoreInterface, mockConfiguration, mockFirebaseInstanceId);
+        DataProvider objectUnderTest = new DataProvider(mockServerCallsInterface, mockImageStoreInterface,
+            mockConfiguration, mockFirebaseInstanceId);
         objectUnderTest.setCurrentUserDisplayName(testCurrentUserDisplayName, null);
         objectUnderTest.setCurrentUserEmail(testCurrentUserEmail, null);
 
-        ArgumentCaptor<OnAsyncCallListener<User>> userCaptor = ArgumentCaptor.forClass(OnAsyncCallListener.class);
+        ArgumentCaptor<OnAsyncCallListener<User>> userCaptor = ArgumentCaptor.forClass(
+                OnAsyncCallListener.class);
 
         objectUnderTest.registerUser(null);
 
@@ -341,7 +362,8 @@ public class DataProviderTest {
         objectUnderTest.setFirebaseInstanceId(testCurrentUserFirebaseInstanceId);
         assertEquals(testCurrentUserFirebaseInstanceId, objectUnderTest.getFirebaseInstanceId());
         verify(mockServerCallsInterface, times(1)).updateUserAsync(any(), any());
-        verify(mockConfiguration, times(1)).addConfig(eq(Configuration.Type.FIREBASE_INSTANCE_ID), eq(testCurrentUserFirebaseInstanceId));
+        verify(mockConfiguration, times(1)).addConfig(eq(Configuration.Type.FIREBASE_INSTANCE_ID),
+            eq(testCurrentUserFirebaseInstanceId));
     }
 
     @Test
@@ -364,7 +386,8 @@ public class DataProviderTest {
 
         objectUnderTest.setCurrentUserDisplayName("another", mockListener);
 
-        ArgumentCaptor<OnAsyncCallListener<User>> userCaptor = ArgumentCaptor.forClass(OnAsyncCallListener.class);
+        ArgumentCaptor<OnAsyncCallListener<User>> userCaptor = ArgumentCaptor.forClass(
+                OnAsyncCallListener.class);
         verify(mockServerCallsInterface).updateUserAsync(any(), userCaptor.capture());
 
         userCaptor.getValue().onSuccess(null);
@@ -394,7 +417,8 @@ public class DataProviderTest {
         verify(mockImageStoreInterface, times(1)).setGroupMemberPicture(anyString(), eq(mockBitmap));
         verify(mockImageStoreInterface, times(1)).getGroupMemberPictureFile(anyString());
 
-        ArgumentCaptor<OnAsyncCallListener<SuccessResponse>> captor = ArgumentCaptor.forClass(OnAsyncCallListener.class);
+        ArgumentCaptor<OnAsyncCallListener<SuccessResponse>> captor = ArgumentCaptor.forClass(
+                OnAsyncCallListener.class);
 
         verify(mockServerCallsInterface).updateUserImageAsync(eq(standardImage), captor.capture());
         captor.getValue().onFailure(null);
@@ -414,6 +438,7 @@ public class DataProviderTest {
 
         objectUnderTest.setCurrentUserEmail(testCurrentUserEmail, null);
         verify(mockServerCallsInterface, times(1)).updateUserAsync(any(), any());
-        verify(mockConfiguration, times(1)).addConfig(eq(Configuration.Type.USER_EMAIL_ADDRESS), eq(testCurrentUserEmail));
+        verify(mockConfiguration, times(1)).addConfig(eq(Configuration.Type.USER_EMAIL_ADDRESS),
+            eq(testCurrentUserEmail));
     }
 }

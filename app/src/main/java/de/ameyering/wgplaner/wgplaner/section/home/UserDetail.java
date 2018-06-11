@@ -8,27 +8,19 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.transition.TransitionManager;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
@@ -71,10 +63,10 @@ public class UserDetail extends AppCompatActivity {
         Intent intent = getIntent();
         userUid = intent.getStringExtra(Intent.EXTRA_UID);
 
-        if(userUid != null) {
+        if (userUid != null) {
             user = dataProvider.getUserByUid(userUid);
 
-            if(user != null) {
+            if (user != null) {
                 toolbar = findViewById(R.id.toolbar);
                 toolbarImage = findViewById(R.id.app_bar_image);
                 pickImage = findViewById(R.id.user_detail_edit);
@@ -105,17 +97,23 @@ public class UserDetail extends AppCompatActivity {
 
         userAttributeNameView.setText(user.getDisplayName());
 
-        if(user.getEmail() != null && !user.getEmail().trim().isEmpty()) {
+        if (user.getEmail() != null && !user.getEmail().trim().isEmpty()) {
             userAttributeEmailView.setText(user.getEmail());
+
         } else {
             userAttributeEmailView.setText(R.string.user_detail_email_default);
         }
 
-        if(editable) {
-            userAttributeNameView.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, R.drawable.ic_mode_edit_black), null);
-            userAttributeNameView.setOnClickListener(view -> startActivityForResult(new Intent(UserDetail.this, EditDisplayNameActivity.class), CODE_DISPLAY_NAME));
-            userAttributeEmailView.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, R.drawable.ic_mode_edit_black), null);
-            userAttributeEmailView.setOnClickListener(view -> startActivityForResult(new Intent(UserDetail.this, EditEmailActivity.class), CODE_EMAIL));
+        if (editable) {
+            userAttributeNameView.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                ContextCompat.getDrawable(this, R.drawable.ic_mode_edit_black), null);
+            userAttributeNameView.setOnClickListener(view -> startActivityForResult(new Intent(UserDetail.this,
+                        EditDisplayNameActivity.class), CODE_DISPLAY_NAME));
+            userAttributeEmailView.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                ContextCompat.getDrawable(this, R.drawable.ic_mode_edit_black), null);
+            userAttributeEmailView.setOnClickListener(view -> startActivityForResult(new Intent(UserDetail.this,
+                        EditEmailActivity.class), CODE_EMAIL));
+
         } else {
             userAttributeNameView.setCompoundDrawables(null, null, null, null);
             userAttributeEmailView.setCompoundDrawables(null, null, null, null);
@@ -136,7 +134,7 @@ public class UserDetail extends AppCompatActivity {
 
         toolbarImage.setImageBitmap(bitmap);
 
-        if(editable) {
+        if (editable) {
             pickImage.setVisibility(View.VISIBLE);
             pickImage.setOnClickListener(view -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -171,6 +169,7 @@ public class UserDetail extends AppCompatActivity {
 
                 builder.show();
             });
+
         } else {
             pickImage.setVisibility(View.GONE);
         }
@@ -180,12 +179,12 @@ public class UserDetail extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == CODE_DISPLAY_NAME && resultCode == RESULT_OK) {
+        if (requestCode == CODE_DISPLAY_NAME && resultCode == RESULT_OK) {
             user.setDisplayName(dataProvider.getCurrentUserDisplayName());
             initViews();
         }
 
-        if(requestCode == CODE_EMAIL && resultCode == RESULT_OK) {
+        if (requestCode == CODE_EMAIL && resultCode == RESULT_OK) {
             user.setEmail(dataProvider.getCurrentUserEmail());
             initViews();
         }

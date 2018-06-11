@@ -17,10 +17,12 @@ public class BillsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if(position == 0) {
+        if (position == 0) {
             return receivedBillsFragment;
+
         } else if (position == 1) {
             return sentBillsFragment;
+
         } else {
             return null;
         }

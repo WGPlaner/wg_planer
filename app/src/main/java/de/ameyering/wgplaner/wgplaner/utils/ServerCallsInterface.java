@@ -51,7 +51,8 @@ public abstract class ServerCallsInterface {
 
     public abstract ApiResponse<User> updateUser(User user);
 
-    public abstract void getUserImageAsync(String uid, @Nullable final OnAsyncCallListener<byte[]> listener);
+    public abstract void getUserImageAsync(String uid,
+        @Nullable final OnAsyncCallListener<byte[]> listener);
 
     public abstract ApiResponse<byte[]> getUserImage(String uid);
 
@@ -68,15 +69,18 @@ public abstract class ServerCallsInterface {
 
     public abstract ApiResponse<Group> getGroup();
 
-    public abstract void updateGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void updateGroupAsync(Group group,
+        @Nullable final OnAsyncCallListener<Group> listener);
 
     public abstract ApiResponse<Group> updateGroup(Group group);
 
-    public abstract void createGroupAsync(Group group, @Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void createGroupAsync(Group group,
+        @Nullable final OnAsyncCallListener<Group> listener);
 
     public abstract ApiResponse<Group> createGroup(Group group);
 
-    public abstract void joinGroupAsync(String accessKey, @Nullable final OnAsyncCallListener<Group> listener);
+    public abstract void joinGroupAsync(String accessKey,
+        @Nullable final OnAsyncCallListener<Group> listener);
 
     public abstract ApiResponse<Group> joinGroup(String accessKey);
 
@@ -93,7 +97,8 @@ public abstract class ServerCallsInterface {
 
     public abstract ApiResponse<SuccessResponse> updateGroupImage(File image);
 
-    public abstract void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList> listener);
+    public abstract void getShoppingListAsync(@Nullable final OnAsyncCallListener<ShoppingList>
+        listener);
 
     public abstract ApiResponse<ShoppingList> getShoppingList();
 

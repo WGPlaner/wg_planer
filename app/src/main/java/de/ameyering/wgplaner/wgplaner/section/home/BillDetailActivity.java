@@ -15,14 +15,11 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.UUID;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
-import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 import de.ameyering.wgplaner.wgplaner.utils.OnDataChangeListener;
 import io.swagger.client.model.Bill;
 import io.swagger.client.model.ListItem;
@@ -51,18 +48,19 @@ public class BillDetailActivity extends AppCompatActivity {
     private NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
 
     private OnDataChangeListener billListener = type -> {
-      if(type == DataProviderInterface.DataType.BILLS) {
-          this.bill = dataProvider.getBill(this.billUid);
+        if (type == DataProviderInterface.DataType.BILLS) {
+            this.bill = dataProvider.getBill(this.billUid);
 
-          if(this.bill == null) {
-              runOnUiThread(() -> {
-                  setResult(RESULT_CANCELED);
-                  finish();
-              });
-          } else {
-              runOnUiThread(this::setUpViews);
-          }
-      }
+            if (this.bill == null) {
+                runOnUiThread(() -> {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                });
+
+            } else {
+                runOnUiThread(this::setUpViews);
+            }
+        }
     };
 
     @Override
@@ -78,7 +76,7 @@ public class BillDetailActivity extends AppCompatActivity {
         billUid = getIntent().getStringExtra(Intent.EXTRA_UID);
         bill = dataProvider.getBill(billUid);
 
-        if(bill != null) {
+        if (bill != null) {
             toolbar = findViewById(R.id.bill_detail_toolbar);
             actionPay = findViewById(R.id.bill_detail_action_pay);
 
@@ -91,6 +89,7 @@ public class BillDetailActivity extends AppCompatActivity {
             itemsContainer = findViewById(R.id.bill_detail_items_container);
 
             setUpViews();
+
         } else {
             setResult(RESULT_CANCELED);
             finish();
@@ -114,15 +113,16 @@ public class BillDetailActivity extends AppCompatActivity {
 
         Double amount = 0d;
 
-        for(ListItem item: bill.getBoughtListItems()) {
+        for (ListItem item : bill.getBoughtListItems()) {
             Double price = ((double) item.getPrice()) / 100;
             amount += price;
 
             int requestedForSize = item.getRequestedFor().size();
-            for(String userUid: item.getRequestedFor()) {
+
+            for (String userUid : item.getRequestedFor()) {
                 Double pricePerUser = 0d;
 
-                if(recipientsCosts.containsKey(userUid)) {
+                if (recipientsCosts.containsKey(userUid)) {
                     pricePerUser = recipientsCosts.get(userUid);
                 }
 
@@ -161,8 +161,9 @@ public class BillDetailActivity extends AppCompatActivity {
             finish();
         });
 
-        if(bill.getCreatedBy().equals(dataProvider.getCurrentUserUid())) {
+        if (bill.getCreatedBy().equals(dataProvider.getCurrentUserUid())) {
             actionPay.setVisibility(View.GONE);
+
         } else {
             actionPay.setVisibility(View.VISIBLE);
             actionPay.setOnClickListener(view -> {
@@ -175,8 +176,8 @@ public class BillDetailActivity extends AppCompatActivity {
         TransitionManager.beginDelayedTransition(itemsContainer);
         itemsContainer.removeAllViews();
 
-        for(ListItem item: bill.getBoughtListItems()) {
-            if(item != null) {
+        for (ListItem item : bill.getBoughtListItems()) {
+            if (item != null) {
                 View view = getLayoutInflater().inflate(R.layout.bill_detail_items_layout, itemsContainer, false);
 
                 TextView itemName = view.findViewById(R.id.bill_list_item_name);
@@ -194,13 +195,14 @@ public class BillDetailActivity extends AppCompatActivity {
         TransitionManager.beginDelayedTransition(recipientsContainer);
         recipientsContainer.removeAllViews();
 
-        for(String uid: recipientCosts.keySet()) {
+        for (String uid : recipientCosts.keySet()) {
             User user = dataProvider.getUserByUid(uid);
 
-            if(user != null) {
+            if (user != null) {
                 Double pricePerUser = recipientCosts.get(uid);
 
-                View view = getLayoutInflater().inflate(R.layout.bill_detail_cost_recipient_layout, recipientsContainer, false);
+                View view = getLayoutInflater().inflate(R.layout.bill_detail_cost_recipient_layout,
+                        recipientsContainer, false);
 
                 CircularImageView recipientImage = view.findViewById(R.id.cost_recipient_image);
                 TextView recipientName = view.findViewById(R.id.cost_recipient_name);
@@ -219,6 +221,7 @@ public class BillDetailActivity extends AppCompatActivity {
 
                 if (bill.getPayedBy() != null && bill.getPayedBy().contains(uid)) {
                     paymentStatus.setImageResource(R.drawable.ic_check_black);
+
                 } else {
                     paymentStatus.setImageResource(R.drawable.ic_access_time_black);
                 }

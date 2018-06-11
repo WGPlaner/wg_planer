@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import de.ameyering.wgplaner.wgplaner.R;
 
-public class ImageStore extends ImageStoreInterface{
+public class ImageStore extends ImageStoreInterface {
     private static final String groupPictureName = "gImage.jpg";
 
     private File filesDir;
@@ -42,7 +42,7 @@ public class ImageStore extends ImageStoreInterface{
     public Bitmap getGroupPicture() {
         byte[] image =  loadGroupPicture();
 
-        if(image != null) {
+        if (image != null) {
             return BitmapFactory.decodeByteArray(image, 0, image.length);
         }
 
@@ -65,16 +65,16 @@ public class ImageStore extends ImageStoreInterface{
     }
 
     public void setGroupMemberPicture(String uid, byte[] bytes) {
-        if(bytes != null && uid != null && !uid.trim().isEmpty()) {
+        if (bytes != null && uid != null && !uid.trim().isEmpty()) {
             writeGroupMemberPicture(uid, bytes);
         }
     }
 
     public Bitmap getGroupMemberPicture(String uid) {
-        if(uid != null && !uid.trim().isEmpty()) {
+        if (uid != null && !uid.trim().isEmpty()) {
             byte[] image = loadGroupMemberPicture(uid);
 
-            if(image != null) {
+            if (image != null) {
                 return BitmapFactory.decodeByteArray(image, 0, image.length);
             }
         }
@@ -83,7 +83,7 @@ public class ImageStore extends ImageStoreInterface{
     }
 
     public File getGroupMemberPictureFile(String uid) {
-        if(uid != null && !uid.trim().isEmpty()) {
+        if (uid != null && !uid.trim().isEmpty()) {
             return new File(filesDir, uid + ".jpg");
         }
 
@@ -116,18 +116,17 @@ public class ImageStore extends ImageStoreInterface{
         if (!image.exists()) {
             try {
                 image.createNewFile();
+
             } catch (IOException e) {
                 return;
             }
         }
 
         FileOutputStream fileOutputStream = null;
-        boolean success = false;
 
         try {
             fileOutputStream = new FileOutputStream(image);
             fileOutputStream.write(imageBytes);
-            success = true;
 
         } catch (IOException e) {
             //do nothing
@@ -139,8 +138,6 @@ public class ImageStore extends ImageStoreInterface{
                 Log.e("GroupMemberPicture", ":FailedToCloseOutputStream");
             }
         }
-
-        return;
     }
 
     public void deleteGroupMemberPicture(String uid) {
@@ -161,8 +158,10 @@ public class ImageStore extends ImageStoreInterface{
         try {
             fileInputStream = new FileInputStream(image);
             fileInputStream.read(imageBytes);
+
         } catch (IOException e) {
             imageBytes = null;
+
         } finally {
             try {
                 fileInputStream.close();
@@ -183,8 +182,10 @@ public class ImageStore extends ImageStoreInterface{
         try {
             fileInputStream = new FileInputStream(groupPicture);
             fileInputStream.read(groupPictureBytes);
+
         } catch (IOException e) {
             groupPictureBytes = null;
+
         } finally {
             try {
                 fileInputStream.close();

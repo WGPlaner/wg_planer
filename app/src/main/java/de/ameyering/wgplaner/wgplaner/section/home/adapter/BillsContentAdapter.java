@@ -20,7 +20,6 @@ import java.util.UUID;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
-import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 import io.swagger.client.model.Bill;
 
 public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapter.ViewHolder> {
@@ -36,7 +35,8 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private SimpleDateFormat format = new SimpleDateFormat("dd. MMMM yyyy", context.getResources().getConfiguration().locale);
+        private SimpleDateFormat format = new SimpleDateFormat("dd. MMMM yyyy",
+            context.getResources().getConfiguration().locale);
 
         private Bill bill;
 
@@ -65,24 +65,25 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
 
                 DateFormat format = DateFormat.getDateInstance();
                 header.setText(format.format(bill.getDueDate().toDate()));
-                if(bill.getSum() != null) {
+
+                if (bill.getSum() != null) {
                     subHeader.setVisibility(View.VISIBLE);
                     subHeader.setText(Double.valueOf(((double) bill.getSum()) / 100).toString());
+
                 } else {
                     subHeader.setVisibility(View.GONE);
                 }
 
                 container.setOnClickListener(view -> callAllListeners(bill.getUid()));
 
-                switch (bill.getState()) {
-                    case "paid":
-                        icon.setImageResource(R.drawable.ic_done_black_);
-                        break;
-                    case "confirmed paid":
-                        icon.setImageResource(R.drawable.ic_done_all_black);
-                        break;
-                    default:
-                        icon.setImageResource(R.drawable.ic_access_time_black);
+                if (bill.getState().equals("paid")) {
+                    icon.setImageResource(R.drawable.ic_done_black_);
+
+                } else if (bill.getState().equals("confirmed paid")) {
+                    icon.setImageResource(R.drawable.ic_done_all_black);
+
+                } else {
+                    icon.setImageResource(R.drawable.ic_access_time_black);
                 }
 
                 profilePicture.setImageBitmap(dataProviderInterface.getGroupMemberPicture(bill.getCreatedBy()));
@@ -90,7 +91,8 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
         }
     }
 
-    public BillsContentAdapter(List<Bill> bills, Context context, DataProviderInterface dataProviderInterface) {
+    public BillsContentAdapter(List<Bill> bills, Context context,
+        DataProviderInterface dataProviderInterface) {
         this.bills.clear();
         this.bills.addAll(bills);
         this.context = context;
@@ -100,7 +102,7 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(
-            R.layout.section_bills_item, parent, false);
+                R.layout.section_bills_item, parent, false);
 
         return new ViewHolder(item);
     }
@@ -131,7 +133,7 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
     }
 
     private void callAllListeners(UUID uuid) {
-        for(OnItemTouchListener listener: listeners) {
+        for (OnItemTouchListener listener : listeners) {
             listener.onItemTouch(uuid);
         }
     }

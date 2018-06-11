@@ -10,14 +10,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickerFragment extends DialogFragment implements
+    DatePickerDialog.OnDateSetListener {
+    private OnDatePickedListener listener = null;
 
     public interface OnDatePickedListener {
 
         void onDatePicked(Date date);
     }
-
-    private OnDatePickedListener listener = null;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-        if(listener != null) {
+        if (listener != null) {
             final Calendar c = Calendar.getInstance();
             c.set(Calendar.YEAR, year);
             c.set(Calendar.MONTH, month);
