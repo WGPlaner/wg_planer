@@ -13,10 +13,6 @@ import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.section.home.adapter.BillsPagerAdapter;
 
 public class BillsFragment extends SectionFragment {
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private BillsPagerAdapter adapter;
-
 
     @Nullable
     @Override
@@ -31,21 +27,30 @@ public class BillsFragment extends SectionFragment {
             floatingActionButton.setVisibility(View.GONE);
         }
 
-        if(tabLayout == null) {
-            tabLayout = view.findViewById(R.id.section_bills_tab_layout);
-        }
+        BillsPagerAdapter adapter = new BillsPagerAdapter(getChildFragmentManager());
 
-        if(viewPager == null) {
-            viewPager = view.findViewById(R.id.section_bills_view_pager);
-        }
-
-        if(adapter == null) {
-            adapter = new BillsPagerAdapter(getChildFragmentManager());
-        }
-
+        TabLayout tabLayout = view.findViewById(R.id.section_bills_tab_layout);
+        ViewPager viewPager = view.findViewById(R.id.section_bills_view_pager);
         viewPager.setAdapter(adapter);
         viewPager.setSaveEnabled(false);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.setCurrentItem(0);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         return view;
     }

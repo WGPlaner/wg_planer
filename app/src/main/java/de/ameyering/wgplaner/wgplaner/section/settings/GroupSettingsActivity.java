@@ -40,6 +40,7 @@ import java.util.Random;
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
+import de.ameyering.wgplaner.wgplaner.section.home.UserDetail;
 import de.ameyering.wgplaner.wgplaner.utils.DataProvider;
 import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
@@ -48,6 +49,7 @@ import de.ameyering.wgplaner.wgplaner.utils.OnDataChangeListener;
 import de.ameyering.wgplaner.wgplaner.utils.ServerCallsInterface;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.Group;
+import io.swagger.client.model.SuccessResponse;
 import io.swagger.client.model.User;
 
 public class GroupSettingsActivity extends AppCompatActivity {
@@ -57,7 +59,6 @@ public class GroupSettingsActivity extends AppCompatActivity {
     private static int standard_text_size = 300;
 
     private DataProviderInterface dataProvider;
-    private ImageStore imageStore = ImageStore.getInstance();
 
     private Bitmap bitmap;
     private Uri selectedImage;
@@ -85,6 +86,8 @@ public class GroupSettingsActivity extends AppCompatActivity {
     private LinearLayout membersView;
 
     private AlertDialog alertDialog = null;
+
+    private Button leaveGroup;
 
     private OnDataChangeListener groupListener = type -> {
         if (type == DataProviderInterface.DataType.CURRENT_GROUP || type == DataProviderInterface.DataType.CURRENT_GROUP_MEMBERS) {
@@ -195,6 +198,8 @@ public class GroupSettingsActivity extends AppCompatActivity {
             countries);
         editGroupCurrency.setAdapter(adapter);
 
+        leaveGroup = findViewById(R.id.group_settings_leave_group);
+
 
         initViews();
     }
@@ -223,6 +228,25 @@ public class GroupSettingsActivity extends AppCompatActivity {
         isInEditMode = false;
 
         setEditModeDisabled();
+
+        leaveGroup.setOnClickListener(view -> {
+            dataProvider.leaveCurrentGroup(new OnAsyncCallListener<SuccessResponse>() {
+                @Override
+                public void onFailure(ApiException e) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(GroupSettingsActivity.this, getString(R.string.server_connection_failed), Toast.LENGTH_LONG).show();
+                    });
+                }
+
+                @Override
+                public void onSuccess(SuccessResponse result) {
+                    runOnUiThread(() -> {
+                        setResult(RESULT_OK);
+                        finish();
+                    });
+                }
+            });
+        });
     }
 
     private void initMemberViews() {
@@ -236,12 +260,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
             TextView name = view.findViewById(R.id.name);
             TextView email = view.findViewById(R.id.email);
 
-            if (user.getUid().equals(dataProvider.getCurrentUserUid())) {
-                image.setImageBitmap(imageStore.getProfileBitmap(this));
-
-            } else {
-                image.setImageBitmap(imageStore.loadGroupMemberPicture(user.getUid(), this));
-            }
+            image.setImageBitmap(dataProvider.getGroupMemberPicture(user.getUid()));
 
             name.setText(user.getDisplayName());
 
@@ -258,7 +277,10 @@ public class GroupSettingsActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(View view) {
-                    //Implement later
+                    Intent intent = new Intent(GroupSettingsActivity.this, UserDetail.class);
+                    intent.putExtra(Intent.EXTRA_UID, uid);
+
+                    startActivityForResult(intent, 0);
                 }
             });
 
@@ -286,7 +308,7 @@ public class GroupSettingsActivity extends AppCompatActivity {
             actionContainer.setVisibility(View.GONE);
         }
 
-        groupImage.setImageBitmap(dataProvider.getCurrentGroupImage(this));
+        groupImage.setImageBitmap(dataProvider.getCurrentGroupImage());
 
         displayGroupName.setText(dataProvider.getCurrentGroupName());
 

@@ -36,6 +36,7 @@
         app:cardElevation="1dp"
         android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:clickable="true"
+        android:focusable="true"
         android:stateListAnimator="@animator/lift_on_touch"
         app:cardUseCompatPadding="true">
 

@@ -91,7 +91,7 @@ public class UploadProfilePictureFragment extends NavigationFragment {
             builder.show();
         });
 
-        bitmap = dataProvider.getCurrentUserImage(getContext());
+        bitmap = dataProvider.getCurrentUserImage();
 
         if (bitmap == null) {
             bitmap = createStandardBitmap(dataProvider.getCurrentUserDisplayName());

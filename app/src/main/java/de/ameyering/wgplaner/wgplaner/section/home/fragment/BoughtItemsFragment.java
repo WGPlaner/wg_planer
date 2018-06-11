@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
     private SwipeRefreshLayout swipeRefreshLayout = null;
     private RecyclerView recycler = null;
     private BoughtItemsAdapter adapter = null;
+    private TextView isEmptyView = null;
 
     private DataProviderInterface dataProvider;
 
@@ -96,6 +98,10 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
             floatingActionButton.setVisibility(View.GONE);
         }
 
+        if (isEmptyView == null) {
+            isEmptyView = view.findViewById(R.id.section_bought_items_empty);
+        }
+
         swipeRefreshLayout = view.findViewById(R.id.bought_items_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> new Thread(() -> {
             dataProvider.syncBoughtItems();
@@ -103,7 +109,7 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
                 if (actionMode != null) {
                     actionMode.finish();
                 }
-                adapter.onNewData(dataProvider.getBoughtItems());
+                onNewData(dataProvider.getBoughtItems());
                 swipeRefreshLayout.setRefreshing(false);
             });
         }).start());
@@ -144,7 +150,20 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
 
     public void onNewData(ArrayList<ListItem> items) {
         if (adapter != null) {
-            getActivity().runOnUiThread(() -> adapter.onNewData(items));
+            getActivity().runOnUiThread(() -> {
+                adapter.onNewData(items);
+
+                if(items.size() == 0) {
+                    isEmptyView.setVisibility(View.VISIBLE);
+
+                    if(actionMode != null) {
+                        actionMode.finish();
+                        actionMode = null;
+                    }
+                } else {
+                    isEmptyView.setVisibility(View.GONE);
+                }
+            });
         }
     }
 

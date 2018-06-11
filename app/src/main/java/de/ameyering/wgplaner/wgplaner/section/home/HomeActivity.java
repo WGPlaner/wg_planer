@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.WGPlanerApplication;
+import de.ameyering.wgplaner.wgplaner.section.home.fragment.BillsFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.BoughtItemsFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.PinboardFragment;
 import de.ameyering.wgplaner.wgplaner.section.home.fragment.ShoppingListFragment;
@@ -34,6 +35,7 @@ public class HomeActivity extends AppCompatActivity
     private static final String ACTIVE_ARGS = "ACTIVE_FRAGMENT";
     private static final int SHOPPING_LIST = 0;
     private static final int BOUGHT_ITEMS = 1;
+    private static final int BILLS_FRAGMENT = 2;
 
     private DataProviderInterface dataProvider;
 
@@ -42,6 +44,7 @@ public class HomeActivity extends AppCompatActivity
 
     private ShoppingListFragment shoppingListFragment;
     private BoughtItemsFragment boughtItemsFragment;
+    private BillsFragment billsFragment;
 
     private Fragment activeFragment = null;
 
@@ -99,6 +102,14 @@ public class HomeActivity extends AppCompatActivity
         shoppingListFragment.setTitle(getString(R.string.section_title_shopping_list));
         shoppingListFragment.setFloatingActionButton(fab);
 
+        if(billsFragment == null) {
+            billsFragment = new BillsFragment();
+        }
+
+        billsFragment.setActionBar(getSupportActionBar());
+        billsFragment.setTitle(getString(R.string.section_title_bills));
+        billsFragment.setFloatingActionButton(fab);
+
         if (savedInstanceState == null) {
             loadActiveFragment();
 
@@ -113,6 +124,10 @@ public class HomeActivity extends AppCompatActivity
 
                 case BOUGHT_ITEMS:
                     onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_bought_items));
+                    break;
+
+                case BILLS_FRAGMENT:
+                    onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_bills));
                     break;
 
                 default:
@@ -181,6 +196,15 @@ public class HomeActivity extends AppCompatActivity
                 transaction.commit();
             }
 
+        } else if (id == R.id.nav_bills) {
+            if(!activeFragment.equals(billsFragment)) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+                transaction.remove(activeFragment);
+                transaction.add(R.id.container, billsFragment);
+                activeFragment = billsFragment;
+                transaction.commit();
+            }
         } else if (id == R.id.nav_rosters) {
             // TODO
         } else if (id == R.id.nav_calendar) {
@@ -200,7 +224,9 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_general_settings) {
 
         } else if (id == R.id.nav_profile_settings) {
-            startActivityForResult(new Intent(this, ProfileSettingsActivity.class), REQ_CODE_PROFILE_SETTINGS);
+            Intent intent = (new Intent(this, UserDetail.class));
+            intent.putExtra(Intent.EXTRA_UID, dataProvider.getCurrentUserUid());
+            startActivityForResult(intent, REQ_CODE_PROFILE_SETTINGS);
 
         } else if (id == R.id.nav_group_settings) {
             startActivityForResult(new Intent(this, GroupSettingsActivity.class), REQ_CODE_GROUP_SETTINGS);

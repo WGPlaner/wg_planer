@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiResponse;
+import io.swagger.client.model.Bill;
 import io.swagger.client.model.BillList;
 import io.swagger.client.model.Group;
 import io.swagger.client.model.GroupCode;
@@ -119,4 +120,8 @@ public abstract class ServerCallsInterface {
         @Nullable final OnAsyncCallListener<ShoppingList> listener);
 
     public abstract ApiResponse<ShoppingList> getBoughtItems(String uid);
+
+    public abstract void createBillAsync(Bill bill, @Nullable final OnAsyncCallListener<Bill> listener);
+
+    public abstract ApiResponse<Bill> createBill(Bill bill);
 }

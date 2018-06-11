@@ -113,7 +113,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         });
         image.setEnabled(false);
 
-        image.setImageBitmap(dataProvider.getCurrentUserImage(this));
+        image.setImageBitmap(dataProvider.getCurrentUserImage());
 
         btLeaveGroup = findViewById(R.id.bt_delete_group_profile_settings);
 

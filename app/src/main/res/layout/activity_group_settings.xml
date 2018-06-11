@@ -165,6 +165,14 @@
                 android:orientation="vertical">
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/group_settings_leave_group"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="@string/profile_settings_btn_leave_group" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
@@ -22,10 +23,13 @@ import io.swagger.client.model.User;
 
 public abstract class DataProviderInterface {
 
-    public static DataProviderInterface getInstance() {
+    public static DataProviderInterface getInstance(Context context) {
+        FirebaseApp.initializeApp(context);
+        Configuration.initConfig(context);
+
         return new DataProvider(
                 ServerCallsInterface.getInstance(),
-                ImageStore.getInstance(),
+                ImageStoreInterface.getInstance(context),
                 Configuration.singleton,
                 FirebaseInstanceId.getInstance()
             );
@@ -49,9 +53,7 @@ public abstract class DataProviderInterface {
         CURRENT_USER, CURRENT_GROUP, SHOPPING_LIST, SELECTED_ITEMS, CURRENT_GROUP_MEMBERS, BOUGHT_ITEMS, BILLS
     }
 
-
-
-    public abstract SetUpState initialize(String uid, Context context);
+    public abstract SetUpState initialize(String uid);
 
     public abstract void registerUser(final OnAsyncCallListener<User> listener);
 
@@ -75,7 +77,9 @@ public abstract class DataProviderInterface {
 
     public abstract String getCurrentUserDisplayName();
 
-    public abstract Bitmap getCurrentUserImage(Context context);
+    public abstract Bitmap getCurrentUserImage();
+
+    public abstract Bitmap getGroupMemberPicture(String uid);
 
     public abstract String getCurrentUserEmail();
 
@@ -96,7 +100,7 @@ public abstract class DataProviderInterface {
 
     public abstract Currency getCurrentGroupCurrency();
 
-    public abstract Bitmap getCurrentGroupImage(Context context);
+    public abstract Bitmap getCurrentGroupImage();
 
     public abstract List<User> getCurrentGroupMembers();
 
@@ -104,12 +108,12 @@ public abstract class DataProviderInterface {
 
     public abstract boolean isAdmin(String uid);
 
-    public abstract void createGroup(String name, String groupCountry, Bitmap image, Context context,
+    public abstract void createGroup(String name, String groupCountry, Bitmap image,
         final OnAsyncCallListener<Group> listener);
 
     public abstract void updateGroup(Group group, final OnAsyncCallListener<Group> listener);
 
-    public abstract void joinCurrentGroup(String accessKey, Context context,
+    public abstract void joinCurrentGroup(String accessKey,
         final OnAsyncCallListener<Group> listener);
 
     public abstract void leaveCurrentGroup(final OnAsyncCallListener<SuccessResponse> listener);
@@ -144,6 +148,8 @@ public abstract class DataProviderInterface {
 
     public abstract Bill getBill(String uid);
 
+    public abstract void createBill(Bill bill, @Nullable final OnAsyncCallListener<Bill> listener);
+
     public abstract ArrayList<ListItem> getBoughtItems();
 
     public abstract ApiResponse<ShoppingList> syncShoppingList();
@@ -152,15 +158,15 @@ public abstract class DataProviderInterface {
 
     public abstract void syncGroupMembers();
 
-    public abstract void syncGroupNewMember(String uid, Context context);
+    public abstract void syncGroupNewMember(String uid);
 
-    public abstract void syncGroupMemberLeft(String uid, Context context);
+    public abstract void syncGroupMemberLeft(String uid);
 
     public abstract void syncGroupMember(String uid);
 
-    public abstract void syncGroupMemberPicture(String uid, Context context);
+    public abstract void syncGroupMemberPicture(String uid);
 
-    public abstract void syncGroupPicture(Context context);
+    public abstract void syncGroupPicture();
 
     public abstract void syncBoughtItems();
 

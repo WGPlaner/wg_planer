@@ -63,7 +63,7 @@ public class JoinGroupFragment extends Fragment {
     }
 
     private void joinGroup(String key) {
-        dataProvider.joinCurrentGroup(key, getContext(),
+        dataProvider.joinCurrentGroup(key,
         new OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {

@@ -39,7 +39,7 @@ public class NotificationService extends FirebaseMessagingService {
                 break;
 
                 case GROUP_IMAGE: {
-                    dataProvider.syncGroupPicture(getApplicationContext());
+                    dataProvider.syncGroupPicture();
                 }
                 break;
 
@@ -47,7 +47,7 @@ public class NotificationService extends FirebaseMessagingService {
                     String uid = getUidsFromData(data);
 
                     if (uid != null && !uid.isEmpty()) {
-                        dataProvider.syncGroupNewMember(uid, getApplicationContext());
+                        dataProvider.syncGroupNewMember(uid);
                     }
                 }
                 break;
@@ -56,7 +56,7 @@ public class NotificationService extends FirebaseMessagingService {
                     String uid = getUidsFromData(data);
 
                     if (uid != null && !uid.isEmpty()) {
-                        dataProvider.syncGroupMemberLeft(uid, getApplicationContext());
+                        dataProvider.syncGroupMemberLeft(uid);
                     }
                 }
                 break;
@@ -74,7 +74,7 @@ public class NotificationService extends FirebaseMessagingService {
                     String uid = getUidsFromData(data);
 
                     if (uid != null && !uid.isEmpty()) {
-                        dataProvider.syncGroupMemberPicture(uid, getApplicationContext());
+                        dataProvider.syncGroupMemberPicture(uid);
                     }
                 }
                 break;

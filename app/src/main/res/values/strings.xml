@@ -190,4 +190,20 @@
 
     <string name="pick_image">Pick image</string>
     <string name="generate_image">Generate standard Image</string>
+
+    <string name="cost_recipient_sum_label">Sum</string>
+    <string name="cost_recipient_status_label">Status</string>
+    <string name="cost_recipient_action_confirm">Confirm Payment</string>
+    <string name="bill_detail_owner_label">Owner</string>
+    <string name="bill_detail_recipients_label">Recipients</string>
+
+    <string name="bought_items_empty">There are currently no bought Items which aren\'t billed yet</string>
+    <string name="bill_list_empty">There are currently no bills to display</string>
+
+    <string name="user_attribute_name">Name</string>
+    <string name="user_attribute_email">Email</string>
+    <string name="user_attribute_created_at">Joined at</string>
+    <string name="edit_display_name_title">Edit Name</string>
+    <string name="edit_email_title">Edit Email</string>
+    <string name="load_image_failed">Loading of image failed</string>
 </resources>

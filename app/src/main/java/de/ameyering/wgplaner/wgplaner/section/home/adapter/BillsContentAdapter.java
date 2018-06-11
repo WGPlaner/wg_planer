@@ -8,38 +8,51 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import de.ameyering.wgplaner.wgplaner.R;
 import de.ameyering.wgplaner.wgplaner.customview.CircularImageView;
+import de.ameyering.wgplaner.wgplaner.utils.DataProviderInterface;
 import de.ameyering.wgplaner.wgplaner.utils.ImageStore;
 import io.swagger.client.model.Bill;
 
-public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapter.ViewHolder>{
+public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapter.ViewHolder> {
+    private final DataProviderInterface dataProviderInterface;
     private List<Bill> bills = new ArrayList<>();
-    private Context context = null;
+    private List<OnItemTouchListener> listeners = new ArrayList<>();
+    private Context context;
 
-    private static ImageStore imageStore = ImageStore.getInstance();
+    public interface OnItemTouchListener {
+
+        void onItemTouch(UUID uuid);
+
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private SimpleDateFormat format = new SimpleDateFormat("dd. MMMM yyyy", context.getResources().getConfiguration().locale);
 
-        private Bill bill = null;
+        private Bill bill;
 
-        private CircularImageView profilePicture = null;
+        private LinearLayout container;
 
-        private TextView header = null;
-        private TextView subHeader = null;
+        private CircularImageView profilePicture;
 
-        private ImageView icon = null;
+        private TextView header;
+        private TextView subHeader;
+
+        private ImageView icon;
 
         public ViewHolder(View view) {
             super(view);
 
+            container = view.findViewById(R.id.bill_content_container);
             profilePicture = view.findViewById(R.id.received_bills_item_profile_picture);
             header = view.findViewById(R.id.received_bills_item_date);
             subHeader = view.findViewById(R.id.received_bills_item_price);
@@ -47,32 +60,41 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
         }
 
         public void setData(Bill bill) {
-            if(bill != null) {
+            if (bill != null) {
                 this.bill = bill;
+
+                DateFormat format = DateFormat.getDateInstance();
+                header.setText(format.format(bill.getDueDate().toDate()));
+                if(bill.getSum() != null) {
+                    subHeader.setVisibility(View.VISIBLE);
+                    subHeader.setText(Double.valueOf(((double) bill.getSum()) / 100).toString());
+                } else {
+                    subHeader.setVisibility(View.GONE);
+                }
+
+                container.setOnClickListener(view -> callAllListeners(bill.getUid()));
+
+                switch (bill.getState()) {
+                    case "paid":
+                        icon.setImageResource(R.drawable.ic_done_black_);
+                        break;
+                    case "confirmed paid":
+                        icon.setImageResource(R.drawable.ic_done_all_black);
+                        break;
+                    default:
+                        icon.setImageResource(R.drawable.ic_access_time_black);
+                }
+
+                profilePicture.setImageBitmap(dataProviderInterface.getGroupMemberPicture(bill.getCreatedBy()));
             }
-
-            header.setText(format.format(bill.getCreatedAt().toDate()));
-            subHeader.setText((bill.getSum() / 100));
-
-            switch (bill.getState()) {
-                case "paid":
-                    icon.setImageResource(R.drawable.ic_done_black_);
-                    break;
-                case "confirmed paid":
-                    icon.setImageResource(R.drawable.ic_done_all_black);
-                    break;
-                default:
-                    icon.setVisibility(View.INVISIBLE);
-            }
-
-            profilePicture.setImageBitmap(imageStore.loadGroupMemberPicture(bill.getCreatedBy(), context));
         }
     }
 
-    public BillsContentAdapter(List<Bill> bills, Context context) {
+    public BillsContentAdapter(List<Bill> bills, Context context, DataProviderInterface dataProviderInterface) {
         this.bills.clear();
         this.bills.addAll(bills);
         this.context = context;
+        this.dataProviderInterface = dataProviderInterface;
     }
 
     @Override
@@ -106,6 +128,24 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
         this.bills.addAll(bills);
 
         result.dispatchUpdatesTo(this);
+    }
+
+    private void callAllListeners(UUID uuid) {
+        for(OnItemTouchListener listener: listeners) {
+            listener.onItemTouch(uuid);
+        }
+    }
+
+    public void addOnTouchListener(OnItemTouchListener listener) {
+        if (listener != null && !listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeListener(OnItemTouchListener listener) {
+        if (listener != null) {
+            listeners.remove(listener);
+        }
     }
 
     private class DiffCallback extends DiffUtil.Callback {

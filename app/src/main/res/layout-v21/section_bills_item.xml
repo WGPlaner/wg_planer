@@ -4,15 +4,16 @@
     android:id="@+id/recieved_bills_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <LinearLayout
         android:id="@+id/bill_content_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:clickable="true"
         android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:gravity="center_vertical|start"
         android:orientation="horizontal">
 
@@ -66,8 +67,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
+        android:layout_margin="10dp"
         android:background="@color/colorDivider" />
 
 </LinearLayout>

@@ -162,7 +162,7 @@ public class CreateGroupFragment extends Fragment {
     private void createGroup() {
         String code = currencyMapping.get(editGroupCountry.getText().toString());
 
-        dataProvider.createGroup(groupName, code, bitmap, getContext(),
+        dataProvider.createGroup(groupName, code, bitmap,
         new OnAsyncCallListener<Group>() {
             @Override
             public void onFailure(ApiException e) {
