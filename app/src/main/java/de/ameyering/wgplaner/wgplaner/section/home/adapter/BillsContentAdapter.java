@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
     private List<Bill> bills = new ArrayList<>();
     private List<OnItemTouchListener> listeners = new ArrayList<>();
     private Context context;
+    NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
 
     public interface OnItemTouchListener {
 
@@ -68,7 +70,8 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
 
                 if (bill.getSum() != null) {
                     subHeader.setVisibility(View.VISIBLE);
-                    subHeader.setText(Double.valueOf(((double) bill.getSum()) / 100).toString());
+                    double price = Double.valueOf(((double) bill.getSum()) / 100);
+                    subHeader.setText(numberFormat.format(price));
 
                 } else {
                     subHeader.setVisibility(View.GONE);
@@ -97,6 +100,7 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
         this.bills.addAll(bills);
         this.context = context;
         this.dataProviderInterface = dataProviderInterface;
+        this.numberFormat.setCurrency(dataProviderInterface.getCurrentGroupCurrency());
     }
 
     @Override

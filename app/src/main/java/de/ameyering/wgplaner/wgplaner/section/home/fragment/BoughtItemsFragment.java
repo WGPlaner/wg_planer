@@ -119,7 +119,8 @@ public class BoughtItemsFragment extends SectionFragment implements ActionMode.C
         recycler.setHasFixedSize(false);
 
         if (adapter == null) {
-            adapter = new BoughtItemsAdapter(dataProvider.getBoughtItems(), getContext(), dataProvider);
+            adapter = new BoughtItemsAdapter(new ArrayList<>(), getContext(), dataProvider);
+            onNewData(dataProvider.getBoughtItems());
         }
 
         recycler.setAdapter(adapter);
