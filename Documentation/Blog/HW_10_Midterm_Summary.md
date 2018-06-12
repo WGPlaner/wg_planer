@@ -1,4 +1,4 @@
-# Midterm Summary
+# Week 10 - Midterm Summary
 
 In this blog post we want to sum up all the work we did so far. 
 Below you will find a list of weeks we spent working on WGPlaner so far. Each Week is linked to a blog post, which contains information for the corresponding topic. For your comfort we have also linked some of the requirement-specification documents and files directly from this post. 
@@ -14,4 +14,4 @@ Enjoy and leave us a comment if you feel like!
  - Week 8: [MVC and SAD (Software Architecture Document)](https://wgplanerblog.wordpress.com/2017/11/26/week-8-mvc-and-sad-software-architecture-document/)
  - Week 9: [Gantt Diagram](https://wgplanerblog.wordpress.com/2017/12/02/week-9-gantt-chart/)
 
-We will add a link to our midterm presentation as soon as we have finished it. :-)
+You can find our Midterm Presentation [here](./Midterm_Presentation.pptx).
