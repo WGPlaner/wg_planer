@@ -28,7 +28,7 @@ public class BillsContentAdapter extends RecyclerView.Adapter<BillsContentAdapte
     private List<Bill> bills = new ArrayList<>();
     private List<OnItemTouchListener> listeners = new ArrayList<>();
     private Context context;
-    NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
+    private NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
 
     public interface OnItemTouchListener {
 

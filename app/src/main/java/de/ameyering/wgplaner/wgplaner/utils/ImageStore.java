@@ -110,7 +110,7 @@ public class ImageStore extends ImageStoreInterface {
         }
     }
 
-    private void writeGroupMemberPicture(String uid, byte[] imageBytes) {
+    protected void writeGroupMemberPicture(String uid, byte[] imageBytes) {
         File image = new File(filesDir, uid + ".jpg");
 
         if (!image.exists()) {
@@ -145,7 +145,7 @@ public class ImageStore extends ImageStoreInterface {
         image.delete();
     }
 
-    private byte[] loadGroupMemberPicture(String uid) {
+    protected byte[] loadGroupMemberPicture(String uid) {
         File image = new File(filesDir, uid + ".jpg");
 
         if (!image.exists()) {
@@ -174,7 +174,7 @@ public class ImageStore extends ImageStoreInterface {
         return imageBytes;
     }
 
-    private byte[] loadGroupPicture() {
+    protected byte[] loadGroupPicture() {
         FileInputStream fileInputStream = null;
         File groupPicture = new File(filesDir, groupPictureName);
         byte[] groupPictureBytes = new byte[(int) groupPicture.length()];
