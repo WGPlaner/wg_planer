@@ -29,6 +29,7 @@ public class BillDetailActivity extends AppCompatActivity {
     private String billUid;
     private Bill bill;
     private Double amount;
+    private HashMap<String, Double> recipientCosts = new HashMap<>();
 
     private Toolbar toolbar;
     private FloatingActionButton actionPay;
@@ -42,8 +43,6 @@ public class BillDetailActivity extends AppCompatActivity {
     private LinearLayout itemsContainer;
 
     private DataProviderInterface dataProvider;
-
-    private HashMap<String, Double> recipientCosts = new HashMap<>();
 
     private NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
 
@@ -189,6 +188,13 @@ public class BillDetailActivity extends AppCompatActivity {
                 itemsContainer.addView(view);
             }
         }
+
+        View view = getLayoutInflater().inflate(R.layout.bill_detail_sum_layout, itemsContainer, false);
+
+        TextView sumView = view.findViewById(R.id.bill_detail_sum_view);
+        sumView.setText(numberFormat.format(amount));
+
+        itemsContainer.addView(view);
     }
 
     private void addRecipients() {
@@ -229,5 +235,13 @@ public class BillDetailActivity extends AppCompatActivity {
                 recipientsContainer.addView(view);
             }
         }
+
+        View view = getLayoutInflater().inflate(R.layout.bill_detail_sum_layout, recipientsContainer,
+                false);
+
+        TextView sumView = view.findViewById(R.id.bill_detail_sum_view);
+        sumView.setText(numberFormat.format(amount));
+
+        recipientsContainer.addView(view);
     }
 }
