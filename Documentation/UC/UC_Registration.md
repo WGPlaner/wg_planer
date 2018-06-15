@@ -68,8 +68,6 @@ The main postconditions for this use case are:
 # 7. Function Points
 To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
 
-For this use case we got a score of *41.8* function points. It took 1625min to implement this use case.
+For this use case we got a score of *62* function points. It took 1625min to implement this use case.
 
-![Function Points 1](../FunctionPoints/Registration_1.jpg)
-![Function Points 1](../FunctionPoints/Registration_2.jpg)
-![Function Points 1](../FunctionPoints/Registration_3.jpg)
+![Function Points](../FunctionPoints/Registration.png)

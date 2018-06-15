@@ -47,4 +47,8 @@ The main preconditions for this use case are:
 As a result of this use case the user can see the list of received bills.
 
 # 6. Function Points
-n/a
+To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
+
+For this use case we got a score of *27* function points. It was estimated to take us 531min to implement this use case.
+
+![Function Points](../FunctionPoints/ListSendBills.PNG)

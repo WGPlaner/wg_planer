@@ -40,8 +40,6 @@ As a result of this use case the user can see the list of bought items.
 # 6. Function Points
 To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
 
-For this use case we got a score of *18.48* function points. It is estimated to take us 600min to implement this use case.
+For this use case we got a score of *55* function points. It was estimated to take us 1080min to implement this use case.
 
-![Function Points 1](../FunctionPoints/ListBoughtItems_1.jpg)
-![Function Points 1](../FunctionPoints/ListBoughtItems_2.jpg)
-![Function Points 1](../FunctionPoints/ListBoughtItems_3.jpg)
+![Function Points](../FunctionPoints/ListBoughtItems.png)

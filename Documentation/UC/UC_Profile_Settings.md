@@ -56,8 +56,7 @@ The users profile has been saved and stored on the server.
 # 6. Function Points
 To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
 
-For this use case we got a score of *30* function points. It took 730min to implement this use case.
+For this use case we got a score of *26* function points. It took 730min to implement this use case.
 
-![Function Points 1](../FunctionPoints/ProfileSettings_1.jpg)
-![Function Points 1](../FunctionPoints/ProfileSettings_2.jpg)
-![Function Points 1](../FunctionPoints/ProfileSettings_3.jpg)
+![Function Points](../FunctionPoints/Profile_Settings.png)
+
