@@ -1,5 +1,7 @@
 # Use-Case Specification: Pay bills
 
+*Note: Due to a team member leaving the group, this use case has gone out of scope. Read more on our [blog](https://wgplanerblog.wordpress.com/2018/04/09/roadmap-2nd-semester/)*
+
 # 1. Pay bills
 
 ## 1.1 Brief Description

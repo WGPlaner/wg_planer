@@ -53,8 +53,6 @@ If a product has been added it must be synced with the server.
 # 6. Function Points
 To calculate function points, we used the tool on [http://groups.umd.umich.edu](http://groups.umd.umich.edu/cis/course.des/cis375/projects/fp99/main.html).
 
-For this use case we got a score of *29.76* function points. It took 710min to implement this use case.
+For this use case we got a score of *54* function points. It took 720min to implement this use case.
 
-![Function Points 1](../FunctionPoints/AddItem_1.jpg)
-![Function Points 1](../FunctionPoints/AddItem_2.jpg)
-![Function Points 1](../FunctionPoints/AddItem_3.jpg)
+![Function Points](../FunctionPoints/Add_Item.png)

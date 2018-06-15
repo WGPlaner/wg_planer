@@ -53,6 +53,4 @@ To calculate function points, we used the tool on [http://groups.umd.umich.edu](
 
 For this use case we set a score of *20* function points. It took 790min to implement this use case.
 
-![Function Points 1](../FunctionPoints/ShoppingList_1.jpg)
-![Function Points 1](../FunctionPoints/ShoppingList_2.jpg)
-![Function Points 1](../FunctionPoints/ShoppingList_3.jpg)
+![Function Points](../FunctionPoints/ShoppingList.png)
