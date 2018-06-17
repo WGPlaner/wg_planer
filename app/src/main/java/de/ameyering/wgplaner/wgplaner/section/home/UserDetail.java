@@ -206,7 +206,7 @@ public class UserDetail extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(SuccessResponse result) {
-                        runOnUiThread(() -> pickImage.setImageBitmap(bitmap));
+                        runOnUiThread(() -> toolbarImage.setImageBitmap(bitmap));
                     }
                 });
 

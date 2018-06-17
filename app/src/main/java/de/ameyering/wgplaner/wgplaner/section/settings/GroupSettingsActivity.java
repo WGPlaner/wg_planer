@@ -91,6 +91,9 @@ public class GroupSettingsActivity extends AppCompatActivity {
 
     private OnDataChangeListener groupListener = type -> {
         if (type == DataProviderInterface.DataType.CURRENT_GROUP || type == DataProviderInterface.DataType.CURRENT_GROUP_MEMBERS) {
+            if(dataProvider.getCurrentGroupName() == null || dataProvider.getCurrentGroupName().isEmpty()) {
+                runOnUiThread(this::finish);
+            }
             runOnUiThread(this::setEditModeDisabled);
         }
     };
