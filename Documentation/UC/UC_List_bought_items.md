@@ -7,7 +7,7 @@ This use case allows users to list their bought items/products. A product has a 
 
 ## 1.2 Mockup
 ### Page listing bought items
-*tbd*
+![Mockup Bought items with items](../Screenshots/bought_items_screenshot_item.png)
 
 ## 1.3 Screenshot
 ### List bought items - No items
